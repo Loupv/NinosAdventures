@@ -1,0 +1,1222 @@
+/**
+ * ══════════════════════════════════════════════════════════════════════════════
+ *  TOUS LES TEXTES DU JEU
+ * ══════════════════════════════════════════════════════════════════════════════
+ *
+ * **C'est le seul fichier à ouvrir pour changer ce qui se dit.** Toutes les phrases du
+ * jeu sont ici : les répliques, les noms des lieux, les haïkus, les cris de Maman, les
+ * énigmes, les boutons, l'écran de fin.
+ *
+ * Trois règles pour écrire dedans :
+ *
+ *  1. **Les guillemets `«  »` marquent la parole.** Sans eux, c'est le jeu qui raconte ;
+ *     avec eux, c'est quelqu'un qui parle.
+ *  2. **Trois lignes par boîte de dialogue.** Au-delà, la suite passe à la boîte suivante
+ *     toute seule, et une ligne trop longue est coupée automatiquement — mais c'est plus
+ *     joli de choisir soi-même où ça coupe.
+ *  3. **Apostrophes typographiques `’`** (jamais `'`, qui fermerait la chaîne), et accents
+ *     sur les capitales : la police du jeu les dessine tous.
+ *
+ * Le reste — quand une réplique sort (`when`), ce qu'elle change (`effects`) — est de la
+ * mécanique, décrite dans `dialogues.ts`. On peut l'ignorer et ne réécrire que les
+ * phrases : rien ne casse.
+ */
+import { state } from '../systems/state';
+import type { DialogueBeat } from './dialogues';
+
+// ═══════════════════════════════════════════════════════════════ 1. l'interface
+
+/** L'écran-titre. */
+export const TITRE = {
+  ligne1: 'LES AVENTURES',
+  ligne2: 'DE NINO',
+  continuer: 'ESPACE : CONTINUER',
+  commencer: 'APPUIE SUR ESPACE',
+  recommencer: 'R : RECOMMENCER',
+};
+
+/** Le journal, ouvert avec Entrée. */
+export const JOURNAL = {
+  titre: 'JOURNAL',
+  pages: ['LIEUX', 'LIEUX', 'SAC', 'PIÈCES'],
+  pied: 'ESPACE : fermer',
+  soeurComptee: (n: number, total: number) => `Hermione retrouvée ${n} fois sur ${total}.`,
+  sacVide: [
+    '(Le sac est vide.)',
+    '',
+    'Nino n’a rien dans les poches.',
+    'Ça n’a pas duré longtemps la',
+    'dernière fois.',
+  ],
+  aucunePiece: [
+    'Aucune pièce.',
+    '',
+    'Nino n’en a encore trouvé aucune.',
+    'Il ne sait pas non plus ce que',
+    'ce serait.',
+  ],
+  lieuInconnu: '?  . . . . . . . .',
+};
+
+/** Ce que le jeu annonce en passant, dans le petit bandeau. */
+export const ANNONCES = {
+  hermioneTrouvee: (n: number, total: number) => `Hermione retrouvée !  ${n}/${total}`,
+  objetRecu: (nom: string) => `${nom} !`,
+};
+
+/** Le rêve de la fusée, dans le grand lit. */
+export const FUSEE = {
+  consigne: 'Nino sur une fusée.',
+  demarrer: 'ESPACE pour pousser',
+  score: (n: number) => `${n} tuyau${n > 1 ? 'x' : ''}.`,
+  reessayer: 'ESPACE pour réessayer',
+  gagnePiece: 'Une pièce.',
+  gagneEncore: 'Encore une fois.',
+  reveil: 'ESPACE pour te réveiller',
+};
+
+/** Le vol en parapente, depuis le toit de la tour. */
+export const VOL = {
+  consigne: 'Viser sa fenêtre.',
+  demarrer: 'ESPACE pour sauter',
+  rafale: 'Une rafale.',
+  rate: 'Raté.',
+  lumiere: 'Une lumière s’allume.',
+  reussi: 'Pile dedans.',
+  atterrir: 'ESPACE pour atterrir',
+};
+
+/** L'écran de fin. */
+export const FIN = {
+  titre: 'FIN',
+  voeu: 'Bon anniversaire, Nino.',
+  compte: (soeur: string, pieces: string) => `Hermione ${soeur}   Pièces ${pieces}`,
+  suite: 'ESPACE',
+};
+
+// ═══════════════════════════════════════════════════════════════ 2. les lieux
+
+/** Le nom affiché en bandeau à l'arrivée. */
+export const LIEUX: Record<string, string> = {
+  chambre: 'La chambre de Nino',
+  couloir: 'Le couloir',
+  'chambre-parents': 'La chambre des parents',
+  mezzanine: 'La mezzanine',
+  sdb: 'La salle de bain',
+  cuisine: 'La cuisine',
+  salon: 'Le salon',
+  cour: 'La cour',
+  nantes: 'Nantes',
+  erdre: 'Le bord de l’Erdre',
+  'tour-hall': 'La Tour de Bretagne',
+  'tour-13': 'Treizième étage',
+  'tour-27': 'Vingt-septième étage',
+  'tour-31': 'Trente-et-unième étage',
+  'tour-toit': 'Le toit de la tour',
+};
+
+// ═══════════════════════════════════════════════════════════════ 3. le réveil
+
+/**
+ * Ce que Nino se dit s'il refuse de sortir du lit. Une ligne par refus ; au dernier, la
+ * chaleur le met dehors tout seul.
+ */
+export const CHALEUR = [
+  'Il fait trop chaud.',
+  'IL FAIT TROP CHAUD !',
+  'IL FAIT BEAUCOUP TROP CHAUD !!',
+];
+
+/** La question posée à chaque fois. */
+export const SORTIR_DU_LIT = 'Sortir du lit ?';
+
+// ═══════════════════════════════════════════════════════════════ 4. Hermione
+
+/** Ce qu'elle répond, quoi qu'il arrive et où qu'elle soit. */
+export const RENCONTRE = ['...'];
+
+/**
+ * Ce que crie Maman. Une variation par trouvaille : l'exaspération monte, puis elle
+ * renonce à comprendre. Court, toujours.
+ */
+export const RAPPELS: string[][] = [
+  ['« HERMIONE ! Viens ici ! »'],
+  ['« HERMIONE ! Tu ne peux pas être là ! »'],
+  ['« HERMIONE ! Comment tu es montée là ?! »'],
+  ['« HERMIONE ! Non. Non non non. »'],
+  ['« HERMIONE ! »'],
+  ['« HERMIONE ! Nino, tu la surveilles ? »'],
+  ['« HERMIONE ! Mais comment... »'],
+  ['« HERMIONE. »'],
+  ['« HERMIONE ! Bon. D’accord. »'],
+  ['« ... HERMIONE. »'],
+];
+
+/** La dernière fois : Maman renonce, et Hermione reste. */
+export const RAPPEL_FINAL: string[] = [
+  '« HERMIONE ! »',
+  '...',
+  '« Bon. »',
+  '« Elle reste avec toi. »',
+];
+
+// ═══════════════════════════════════════════════════════════════ 5. l'araignée
+
+/**
+ * Ses haïkus. Elle en dit un par visite, dans l'ordre, puis elle reprend au début.
+ * Trois lignes chacun, jamais plus : c'est la forme qui fait le comique.
+ *
+ * En ajouter = une ligne de plus ici, rien d'autre.
+ */
+export const HAIKUS: string[][] = [
+  ['Le mur est plus froid', 'que moi qui suis une bête.', 'C’est l’inverse d’août.'],
+  ['Huit pattes, et donc', 'huit fois moins de chagrin', 'pour chaque patte.'],
+  ['Personne ne monte', 'jamais dans la mezzanine.', 'Sauf toi. Et le chat.'],
+  ['La poussière tombe', 'à la même vitesse', 'que les grandes personnes.'],
+  ['J’ai tissé un piège.', 'Il n’attrape que le vent.', 'Le vent ne dit rien.'],
+  ['Ta mère m’a bien vue.', 'Elle a préféré partir.', 'Nous nous respectons.'],
+  ['L’été est un mur.', 'On attend qu’il se fatigue.', 'Il se fatiguera.'],
+  ['Quand tu seras grand,', 'tu ne me verras plus.', 'Ce n’est pas grave.'],
+  ['Il fait chaud ici.', 'Il fait chaud partout ailleurs.', 'Ici, c’est plus haut.'],
+  ['Je ne mange rien.', 'J’attends. C’est un métier.', 'Personne ne postule.'],
+];
+
+/** La toute première fois qu'on la voit : une phrase, puis son premier haïku. */
+export const PRESENTATION_ARAIGNEE = 'Une araignée géante occupe la mezzanine.';
+
+/** Ce qu'elle annonce avant de danser. */
+export const CHANSON: string[] = [
+  '« Voilà. »',
+  '« Je n’ai plus de poèmes. »',
+  '« Il me reste la danse. »',
+];
+
+/** Après la danse, quand elle est sortie de l'écran en pirouettant. */
+export const ARAIGNEE_PARTIE = ['Elle est partie...'];
+
+/**
+ * Ce qu'elle chante *pendant* la danse : un bout entre chaque mouvement, affiché
+ * au-dessus d'elle sans arrêter la chorégraphie.
+ */
+export const COUPLETS: string[] = [
+  'Tou-tou',
+  'tou-tou-tou',
+  'Tou !',
+  'tou-tou-tou-tou',
+  'TOU.',
+];
+
+/**
+ * Le numéro de Moon dans le salon : il annonce, il fait tomber le bol, papa hurle, et
+ * il donne à Nino le temps qu'il lui reste.
+ */
+export const DIVERSION = {
+  annonce: ['« Regarde bien. »'],
+  papa: ['« NON MAIS CE CHAT. »'],
+  minuterie: ['« Tu as environ deux minutes. »'],
+};
+
+// ═══════════════════════════════════════════════════════════════ 6. le poisson
+
+/** Le nom qui s'affiche au-dessus de la boîte. */
+export const POISSON = 'Le poisson';
+
+/** Sa vie, une boîte de dialogue à la fois. Racontée une seule fois par partie. */
+export const VIE: string[][] = [
+  ['« Je m’appelle Gérard. »'],
+  [
+    '« Je suis né dans un sac en plastique. »',
+    '« Après, il y a eu un bocal. »',
+    '« Puis un autre bocal. »',
+  ],
+  ['« Puis plus rien pendant très longtemps. »'],
+  ['« Et un matin : cette baignoire. »', '« Je n’ai jamais compris comment. »'],
+  ['« Voilà. »', '« C’était ma vie. »'],
+];
+
+/** Une fois le chat assis au bord de la baignoire. La troisième ligne est la scène. */
+export const SAUVE_MOI = [
+  '« Bon. »',
+  '« Tu peux retirer le bouchon, s’il te plaît ? »',
+  '« Tout de suite, plutôt. »',
+];
+
+export const RETIRE = [
+  'Nino retire le bouchon.',
+  'Le poisson descend, très digne, la tête la première.',
+  '« On se reverra. »',
+];
+
+export const REFUS = ['« D’accord. »', '« Je repose la question dans deux minutes. »'];
+
+/**
+ * Ce que Moon en pense — et il ne le dit que s'il a déjà eu sa pizza : c'est elle qui
+ * l'a fait parler, on ne va pas revenir là-dessus pour un poisson.
+ */
+export const LE_CHAT = ['« C’était mon poisson. »'];
+
+// ═══════════════════════════════════════════════════════════════ 7. la fin
+
+/** Il rentre par la fenêtre, il cache le parapente, il se couche. */
+export const SEMBLANT = [
+  ['Nino plie le parapente. Mal.', 'Il le pousse sous le lit.'],
+  ['Le ciel commence à être gris, dehors.'],
+  ['Il se glisse sous la couette.', 'Il ferme les yeux très fort.'],
+];
+
+/** Les parents entrent. Ils parlent à voix basse, ce qui est pire. */
+export const PARENTS: Array<{ qui?: string; lignes: string[] }> = [
+  { qui: 'Maman', lignes: ['« Il dort. »'] },
+  { qui: 'Papa', lignes: ['« À sept heures du matin ? »'] },
+  { qui: 'Maman', lignes: ['« Nino. »', '« Nino, viens. »'] },
+];
+
+/** Dans la cuisine. C'était ça, toute la journée. */
+export const FETE: Array<{ qui?: string; lignes: string[] }> = [
+  { lignes: ['Il fait jour dans la cuisine.', 'Ça sent le gâteau.'] },
+  { qui: 'Maman', lignes: ['« JOYEUX ANNIVERSAIRE ! »'] },
+  { qui: 'Papa', lignes: ['« JOYEUX ANNIVERSAIRE ! »'] },
+  { lignes: ['Sept bougies.', 'Hermione tape sur la table.'] },
+  { qui: 'Papa', lignes: ['« Souffle ! »'] },
+  { lignes: ['Nino prend une très grande respiration.'] },
+  { lignes: ['...'] },
+  { lignes: ['Nino dort.'] },
+];
+
+// ═══════════════════════════════════════════════════════ 9. la quête en pause
+
+/**
+ * Les moyens de faire baisser la température. **La quête est en pause** : plus aucune
+ * interaction n'en donne, et le journal ne les affiche plus. Les phrases restent ici,
+ * prêtes, au cas où on la reprenne — la mécanique, elle, est dans `fraicheur.ts`.
+ */
+export const FRAICHEURS_TEXTE: Record<string, string> = {
+  volets: 'Fermer les volets',
+  'frigo-ouvert': 'Rester devant le frigo ouvert',
+  'eau-figure': 'De l’eau froide sur la figure',
+  'baignoire-froide': 'L’eau froide de la baignoire',
+  'armoire-fraiche': 'Le fond de l’armoire est frais',
+  carrelage: 'S’allonger sur le carrelage',
+  'ombre-reverbere': 'L’ombre du réverbère',
+  'fenetre-cassee': 'La fenêtre cassée',
+  'glacon-hermione': 'Le glaçon d’Hermione',
+  pistolet: 'Le pistolet à eau, sur soi',
+  recoucher: 'Se recoucher (mauvaise idée)',
+  projecteur: 'Le vidéoprojecteur chauffe',
+  'chat-sur-genoux': 'Un chat sur les genoux',
+  'pieds-erdre': 'Tremper les pieds dans l’Erdre',
+  'ocean-evier': 'L’Océan de l’Évier',
+  'fond-armoire': 'Le Fond de l’Armoire',
+  'dans-la-lumiere': 'Dans la Lumière',
+  terrain: 'Le Terrain qui n’existe pas',
+  elephant: 'L’Éléphant des Machines',
+};
+
+// ═══════════════════════════════════════════════════════ 10. le sac et les pièces
+
+/** Ce que le journal raconte des objets ramassés. */
+export const OBJETS: Record<string, { nom: string; desc: string }> = {
+  'pistolet-eau': {
+    nom: 'Pistolet à eau',
+    desc: 'Trouvé tout au fond du coffre à jouets. Il fonctionne encore. C’est déjà beaucoup pour un objet de ce coffre.',
+  },
+  parapente: {
+    nom: 'Parapente',
+    desc: 'Trouvé sur le toit de la Tour de Bretagne. Personne ne l’a réclamé. Il tient sous un lit, une fois plié — mal plié, mais plié.',
+  },
+  pizza: {
+    nom: 'Bout de pizza',
+    desc: 'Froid, un peu mou. Personne ne le réclamera. Certains animaux le trouvent négociable.',
+  },
+};
+
+/** Les pièces à collectionner. On ne sait pas encore ce qu'elles veulent dire. */
+export const PIECES_TEXTE: Record<string, { nom: string; provenance: string }> = {
+  reve: {
+    nom: 'Pièce du rêve',
+    provenance: 'Gagnée sur une fusée, dans le rêve du grand lit.',
+  },
+};
+
+// ═══════════════════════════════════════════════════════════════ 11. le casting
+
+/** Les fiches du journal. Qui c'est, et ce qu'il fait là. */
+export const CASTING: Record<string, { nom: string; role: string }> = {
+  nino: {
+    nom: 'Nino',
+    role: 'Le héros. 7 ans. Prend très au sérieux les choses absurdes.',
+  },
+  moon: {
+    nom: 'Moon',
+    role: 'Le chat blanc. Dort sur le canapé. Se met à parler contre un bout de pizza, et devient le guide du jeu.',
+  },
+  hermione: {
+    nom: 'Hermione',
+    role: 'La petite sœur, un an. Elle est cachée quelque part, et elle change de cachette dès qu’on l’a trouvée. Ses cachettes deviennent de plus en plus impossibles, et personne ne s’en inquiète jamais.',
+  },
+  poisson: {
+    nom: 'Gérard',
+    role: 'Le poisson de la baignoire. Raconte sa vie avant de demander de l’aide, et n’en demande que quand le chat s’assoit au bord. Rend ses dettes, plus tard, dans l’Erdre.',
+  },
+  araignee: {
+    nom: 'L’araignée',
+    role: 'Géante, installée dans la mezzanine. Dit un haïku par visite. Quand elle les a tous dits, elle danse, elle part — et on la retrouve au 27e étage de la tour.',
+  },
+  ecureuil: {
+    nom: 'L’écureuil',
+    role: 'À moitié caché, toujours. Pousse Nino à viser la fenêtre avec le ballon, puis à couler le bateau de papa, puis garde un escalier avec une énigme. Nie tout, à chaque fois.',
+  },
+  elephant: {
+    nom: 'L’Éléphant des Machines',
+    role: 'Douze mètres de bois et d’acier, sur un palier du 31e étage. Personne ne demande comment il est monté. Pose la seule énigme dont il ne connaît pas la réponse.',
+  },
+  maman: {
+    nom: 'Maman',
+    role: 'Tient la cuisine et le réel. C’est elle qui envoie Nino vers le frigo sans savoir ce qu’elle déclenche.',
+  },
+  papa: {
+    nom: 'Papa',
+    role: 'Travaille dans la mezzanine, « cinq minutes » depuis quarante minutes. Et en même temps, chapeau de capitaine, il pilote un bateau sur l’Erdre. Ne trouve ça bizarre à aucun moment.',
+  },
+  maitresse: {
+    nom: 'La maîtresse',
+    role: 'Donnera des « devoirs » qui sont en fait des quêtes. Chapitre école, pas encore construit.',
+  },
+  copain1: { nom: 'Copain nº1 (à nommer)', role: 'Échange des objets. Croit Nino sur parole.' },
+  copain2: { nom: 'Copain nº2 (à nommer)', role: 'Ne croit rien. Contre-poids comique.' },
+  copain3: { nom: 'Copain nº3 (à nommer)', role: 'A déjà vu une dimension et n’en parle jamais.' },
+};
+
+// ══════════════════════════════════════════════════════ 12. toutes les répliques
+
+/**
+ * Les dialogues, un tableau par interlocuteur, du plus spécifique au plus général.
+ * Écrits pour être lus à voix haute par un adulte : phrases courtes, absurde
+ * traité très sérieusement, jamais de méchanceté.
+ */
+export const DIALOGUES: Record<string, DialogueBeat[]> = {
+  // ------------------------------------------------------------- la chambre
+  /**
+   * L'ouverture du jeu. Le texte du réveil et la montée de chaleur : la boucle du
+   * choix est dans WorldScene.reveil, parce qu'elle se répète.
+   */
+  reveil: [
+    {
+      lines: ['Nino ouvre les yeux.', 'Il fait nuit, et il fait chaud.', 'Quelle heure il est ?'],
+    },
+  ],
+
+  'fenetre-chambre': [
+    {
+      when: () => !state.flag('volets-fermes'),
+      lines: [
+        'La fenêtre est ouverte. Dehors il fait nuit noire, et chaud quand même.',
+        'Nino tire les volets.',
+      ],
+      effects: { flag: 'volets-fermes' },
+    },
+    { lines: ['Volets fermés.'] },
+  ],
+
+  'reveil-force': [{ lines: ['Nino sort du lit.', 'Il dégouline de sueur.'] }],
+
+  lit: [
+    {
+      lines: ['Le lit est encore tout défait.', 'Se recoucher ?'],
+      choice: {
+        oui: {
+          lines: [
+            'Nino se recouche.',
+            'Il fixe le plafond pendant une minute entière.',
+            'C’est encore plus long qu’il pensait.',
+            'Il se relève.',
+          ],
+          effects: { flag: 'recouche' },
+          // On le voit dans le lit : sa tête sur l'oreiller, la bosse sous la couverture.
+          montre: {
+            sprite: 'nino-couche',
+            x: 22,
+            y: 18,
+            depth: 60,
+            cacheNino: true,
+          },
+        },
+        non: { lines: ['Non. Pas un jour comme aujourd’hui.'] },
+      },
+    },
+  ],
+
+  // Lui parler, c'est toujours la même chose. C'est ça qui est drôle.
+  'hermione-suit': [{ lines: ['...'] }],
+
+  'lit-camp': [
+    {
+      lines: [
+        'Un lit de camp, dans la mezzanine.',
+        'Papa dit que c’est pour les invités.',
+        'Il n’y a jamais eu d’invité.',
+      ],
+    },
+  ],
+
+  wc: [
+    {
+      lines: [
+        'Les toilettes.',
+        'Nino n’a pas envie. Il vérifie quand même.',
+        'On ne sait jamais.',
+      ],
+    },
+  ],
+
+  coffre: [
+    {
+      when: () => !state.flag('coffre-ouvert'),
+      lines: [
+        'Nino ouvre le coffre à jouets.',
+        'Des briques, une trottinette cassée, un dinosaure.',
+        'Et, tout au fond, son pistolet à eau.',
+      ],
+      effects: { give: 'pistolet-eau', flag: 'coffre-ouvert' },
+    },
+    {
+      when: () => !state.flag('pistolet-teste'),
+      lines: [
+        'Nino essaie le pistolet à eau.',
+        'Sur lui-même, d’abord. Pour vérifier.',
+        'Ça marche.',
+      ],
+      effects: { flag: 'pistolet-teste' },
+    },
+    { lines: ['Le dinosaure le regarde.', 'Toujours pareil.'] },
+  ],
+
+  ventilo: [
+    {
+      when: () => !state.flag('ventilo-casse'),
+      lines: [
+        'Nino appuie sur le bouton du ventilateur.',
+        'Le ventilateur fait « klk klk klk ».',
+        'Et puis plus rien.',
+        'Il fait toujours aussi chaud.',
+      ],
+      effects: { flag: 'ventilo-casse' },
+    },
+    { lines: ['Le ventilateur est cassé.', 'Il fait semblant de réfléchir.'] },
+  ],
+
+  // -------------------------------------------------------------- la cuisine
+  'porte-cour': [{ lines: ['La porte est fermée à clé.'] }],
+
+  'panneau-sortie': [
+    {
+      lines: [
+        'Sur la porte du fond, celle qui donne sur la cour, un mot de Maman :',
+        '« NINO — PAS DEHORS SANS PRÉVENIR. »',
+        'Techniquement, une fenêtre, ce n’est pas une porte.',
+      ],
+    },
+  ],
+
+  // -------------------------------------------------------------- la cuisine
+  maman: [
+    {
+      when: () => state.flag('sueur') && !state.flag('maman-sueur'),
+      speaker: 'Maman',
+      lines: ['« Nino, tu mets de l’eau partout !! »'],
+      effects: { flag: 'maman-sueur' },
+    },
+    {
+      when: () => state.flag('chat-parle'),
+      speaker: 'Maman',
+      lines: [
+        'Tu parles au chat, maintenant ?',
+        '...',
+        'Ton père fait ça aussi. C’est héréditaire, apparemment.',
+      ],
+    },
+    {
+      when: () => state.has('pizza'),
+      speaker: 'Maman',
+      lines: [
+        'Tu manges de la pizza froide à dix heures du matin.',
+        '...',
+        'Bon. C’est les vacances.',
+      ],
+    },
+    {
+      speaker: 'Maman',
+      lines: [
+        'Il fait bien trop chaud pour cuisiner, Nino.',
+        'Va voir dans le frigo si tu as faim.',
+        'Et ne laisse pas la porte ouverte.',
+      ],
+      effects: { flag: 'indice-frigo' },
+    },
+  ],
+
+  frigo: [
+    {
+      when: () => !state.flag('pizza-prise'),
+      lines: [
+        'Nino ouvre le frigo. Le froid lui tombe sur les pieds.',
+        'C’est délicieux. Il reste comme ça un moment.',
+        'Sur l’étagère du milieu : un bout de pizza d’hier.',
+        'Nino le prend.',
+      ],
+      effects: { give: 'pizza', flag: 'pizza-prise' },
+    },
+    {
+      lines: [
+        'Le frigo ronronne.',
+        'Il ne reste plus rien d’intéressant dedans. Que des légumes.',
+      ],
+    },
+  ],
+
+  'evier-cuisine': [
+    {
+      lines: ['L’eau du robinet est tiède.', 'Même l’eau a chaud aujourd’hui.'],
+    },
+  ],
+
+  carrelage: [
+    {
+      when: () => !state.flag('carrelage-teste'),
+      lines: [
+        'Nino s’allonge de tout son long sur le carrelage de la cuisine.',
+        'Joue contre le sol.',
+        'C’est le meilleur endroit de la maison. Tout le monde le sait.',
+      ],
+      effects: { flag: 'carrelage-teste' },
+    },
+    {
+      lines: ['Le carrelage a repris la température de Nino.', 'Il faut changer de carreau.'],
+    },
+  ],
+
+  reverbere: [
+    {
+      when: () => !state.flag('ombre-testee'),
+      lines: [
+        'Nino se met dans l’ombre du réverbère.',
+        'Elle fait exactement sa taille.',
+        'Il reste là un moment, très content de lui.',
+      ],
+      effects: { flag: 'ombre-testee' },
+    },
+    { lines: ['L’ombre a bougé. Le soleil, lui, s’en fiche.'] },
+  ],
+
+  // ---------------------------------------------------------------- le salon
+  moon: [
+    {
+      when: () => state.vu('nantes'),
+      speaker: 'Moon',
+      lines: ['« Alors ? »', '...', '« Ne raconte pas. Les chats savent déjà. »'],
+    },
+    // La diversion est une scène jouée, pas un dialogue : voir WorldScene.diversion.
+    {
+      when: () => state.flag('chat-parle'),
+      speaker: 'Moon',
+      lines: ['« La fenêtre, Nino. »', '« Personne ne surveille jamais les fenêtres. »'],
+    },
+    {
+      when: () => state.has('pizza'),
+      speaker: 'Moon',
+      lines: [
+        'Nino tend le bout de pizza au chat blanc.',
+        'Moon renifle. Moon mange. Moon s’assoit très droit.',
+        '« Bon. »',
+        '« Puisque tu as payé, je vais te dire un truc. »',
+        '« S’il fait chaud comme ça, c’est parce que le monde est trop petit aujourd’hui. »',
+        '« Sors par la fenêtre du salon. Je m’occupe des adultes. »',
+      ],
+      effects: { take: 'pizza', flag: 'chat-parle' },
+    },
+    {
+      when: () => !state.flag('chat-porte'),
+      lines: [
+        'Moon, le chat blanc, dort sur le canapé.',
+        'Nino le prend sur ses genoux. Moon accepte, magnanime.',
+        'Un chat, ça fait exactement trente-huit degrés.',
+        'Nino le repose.',
+      ],
+      effects: { flag: 'chat-porte' },
+    },
+    {
+      lines: [
+        'Moon dort sur le canapé.',
+        'Il ouvre un œil.',
+        'Il le referme.',
+        'Il faudrait une très bonne raison.',
+      ],
+    },
+  ],
+
+  canape: [{ lines: ['Le canapé.', 'Poilu de chat, chaud de soleil.'] }],
+
+  'maman-salon': [
+    {
+      when: () => state.flag('indice-frigo'),
+      speaker: 'Maman',
+      lines: [
+        'Oui, je sais. Je t’ai dit ça dans la cuisine.',
+        'J’y suis aussi.',
+        '...',
+        'Ne commence pas.',
+      ],
+    },
+    {
+      speaker: 'Maman',
+      lines: [
+        'Il fait bien trop chaud pour bouger, Nino.',
+        'Alors on ne bouge pas. On reste là. Tous les trois.',
+      ],
+    },
+  ],
+
+  'papa-salon': [
+    {
+      speaker: 'Papa',
+      lines: ['« Cinq minutes, Nino. »', 'Ça fait quarante minutes que ça fait cinq minutes.'],
+    },
+  ],
+
+  bibliotheque: [
+    {
+      when: () => !state.flag('bibliotheque-fouillee'),
+      lines: [
+        'Nino cherche un livre au hasard.',
+        'Il tombe sur un album qu’il n’a jamais vu.',
+        'Sur la couverture, un petit garçon enjambe une fenêtre.',
+        'Nino remet le livre exactement où il était.',
+      ],
+      effects: { flag: 'bibliotheque-fouillee' },
+    },
+    { lines: ['L’album n’est plus là.', 'Nino ne dira rien à personne.'] },
+  ],
+
+  'table-ronde': [
+    {
+      when: () => state.flag('parents-sortis'),
+      lines: [
+        'Il ne reste qu’un bol sur la table.',
+        'L’autre est par terre. Il ne s’est même pas cassé.',
+      ],
+    },
+    {
+      lines: [
+        'La table ronde. Deux bols du petit déjeuner, encore là.',
+        'Un des deux n’est pas à Nino.',
+        'Un des deux n’est à personne, en fait.',
+      ],
+    },
+  ],
+
+  videoprojecteur: [
+    {
+      when: () => !state.flag('projecteur-allume'),
+      lines: [
+        'Nino appuie sur le bouton du vidéoprojecteur.',
+        'Un grand carré de lumière apparaît sur le mur de droite.',
+        'Dedans, il y a l’ombre de Nino.',
+        'Elle lui fait un petit signe de la main. Nino, lui, n’a pas fait signe.',
+      ],
+      effects: { flag: 'projecteur-allume' },
+    },
+    {
+      lines: [
+        'Le carré de lumière est toujours sur le mur.',
+        'L’ombre de Nino attend patiemment dedans.',
+      ],
+    },
+  ],
+
+  'fenetre-salon': [
+    {
+      when: () => state.flag('chat-parle'),
+      lines: [
+        'Moon a promis de s’occuper des adultes.',
+        'Moon n’a encore rien fait du tout.',
+        'Il faudrait peut-être aller le lui rappeler.',
+      ],
+    },
+    {
+      lines: [
+        'La fenêtre du salon. Elle donne sur la cour.',
+        'Papa et Maman sont installés juste là, à la table.',
+        'On n’enjambe pas une fenêtre devant ses parents. Tout le monde sait ça.',
+      ],
+    },
+  ],
+
+  // Moon est dans la pièce à côté, hors champ. On ne le voit pas : on l'entend, et on
+  // entend aussi comment ça se passe pour lui.
+  'moon-retient': [{ speaker: 'Moon', lines: ['« Vas-y, je les retiens. »'] }],
+  'papa-attrape': [{ speaker: 'Papa', lines: ['« VIENS LÀ, TOI !! »'] }],
+
+  'fenetre-salon-ouvre': [
+    {
+      // Moon est sorti avec les parents : il n'est plus là pour commenter.
+      lines: ['Nino monte sur l’accoudoir du canapé.', 'Enjamber la fenêtre ?'],
+      choice: {
+        oui: {
+          lines: ['Nino enjambe la fenêtre.'],
+          effects: { flag: 'fenetre-ouverte' },
+        },
+        non: {
+          lines: ['Nino redescend du canapé.'],
+        },
+      },
+    },
+  ],
+
+  // ------------------------------------------------------------ la mezzanine
+  // L'araignée récite ses haïkus depuis haikus.ts, un par visite.
+
+  // -------------------------------------------------- la chambre des parents
+  armoire: [
+    {
+      when: () => !state.flag('armoire-suspecte'),
+      lines: [
+        'L’armoire des parents. Ça sent le pull.',
+        'Nino a l’impression que le fond de l’armoire est plus loin qu’il ne devrait.',
+        'Beaucoup plus loin.',
+        'Il referme.',
+      ],
+      effects: { flag: 'armoire-suspecte' },
+    },
+    { lines: ['L’armoire attend.', 'Ce sera pour une autre fois.'] },
+  ],
+
+  'grand-lit': [
+    {
+      lines: [
+        'Le grand lit des parents. Interdit de sauter dessus.',
+        'Nino connaît la règle. Nino y pense quand même.',
+        'Mais il fait si chaud, et les draps ont l’air si frais.',
+        'S’allonger ?',
+      ],
+      choice: {
+        oui: {
+          lines: [
+            'Nino s’allonge au milieu du grand lit.',
+            'Les draps sentent le linge propre.',
+            'Il ferme les yeux une seconde.',
+            'Une seconde, pas...',
+          ],
+          effects: { flag: 'reve-ouvert' },
+          montre: {
+            sprite: 'nino-couche',
+            x: 62,
+            y: 26,
+            depth: 80,
+            cacheNino: true,
+          },
+        },
+        non: {
+          lines: ['Non. C’est le lit des parents.', 'Il y a des règles.'],
+        },
+      },
+    },
+  ],
+
+  // --------------------------------------------------------- la salle de bain
+  lavabo: [
+    {
+      when: () => !state.flag('miroir-retard'),
+      lines: [
+        'Nino se passe de l’eau sur la figure.',
+        'Dans le miroir, il y a Nino.',
+        'Un tout petit peu en retard.',
+      ],
+      effects: { flag: 'miroir-retard' },
+    },
+    { lines: ['Le Nino du miroir attend que le vrai Nino commence.'] },
+  ],
+
+  /**
+   * Le même écureuil, dans les roseaux, avec une idée plus grosse. Même structure que
+   * dans la cour : il propose, il insiste, il nie.
+   */
+  'ecureuil-erdre': [
+    {
+      when: () => state.flag('bateau-coule'),
+      speaker: 'L’écureuil',
+      lines: ['« Moi ? »', '« Je regardais l’eau. »'],
+    },
+    {
+      when: () => state.flag('ecureuil-bateau'),
+      speaker: 'L’écureuil',
+      lines: ['« La corde. »', '« Personne ne la tient. »'],
+    },
+    {
+      speaker: 'L’écureuil',
+      lines: ['« Psst. »', '« T’es fort ? »', '« Prouve-le. Tire sur cette corde. »'],
+      effects: { flag: 'ecureuil-bateau' },
+    },
+  ],
+
+  /**
+   * Trois états, et le deuxième dépend de la baignoire : **si Nino a sauvé le poisson,
+   * c'est le poisson qui repêche papa**. Sinon papa se débrouille, et il n'a pas l'air
+   * content. La chaîne de la salle de bain ne donne pas un objet, elle donne un sauveteur.
+   */
+  corde: [
+    {
+      when: () => state.flag('bateau-coule'),
+      lines: ['La corde pend dans l’eau.'],
+    },
+    {
+      when: () => state.flag('bouchon-retire'),
+      lines: ['Une corde, tendue depuis le bateau.', 'Tirer ?'],
+      choice: {
+        oui: {
+          lines: [
+            'Nino tire sur la corde.',
+            'Un bouchon saute au fond du bateau.',
+            'Le bateau descend tout doucement, sans un bruit.',
+            'Personne ne regardait.',
+            'Le poisson remonte, papa accroché à lui.',
+          ],
+          effects: { flag: 'bateau-coule' },
+        },
+        non: { lines: ['Nino lâche la corde.', 'Elle se retend toute seule.'] },
+      },
+    },
+    {
+      lines: ['Une corde, tendue depuis le bateau.', 'Tirer ?'],
+      choice: {
+        oui: {
+          lines: [
+            'Nino tire sur la corde.',
+            'Un bouchon saute au fond du bateau.',
+            'Le bateau descend tout doucement, sans un bruit.',
+            'Personne ne regardait.',
+            'Papa remonte tout seul, en nageant.',
+          ],
+          effects: { flag: 'bateau-coule' },
+        },
+        non: { lines: ['Nino lâche la corde.', 'Elle se retend toute seule.'] },
+      },
+    },
+  ],
+
+  'papa-repeche': [
+    {
+      when: () => state.flag('bouchon-retire'),
+      speaker: 'Papa',
+      lines: ['« C’est un poisson qui m’a ramené. »', '« Un poisson. »'],
+    },
+    { speaker: 'Papa', lines: ['« Ne dis rien à ta mère. »'] },
+  ],
+
+  'poisson-erdre': [
+    {
+      when: () => state.flag('bateau-coule'),
+      speaker: 'Le poisson',
+      lines: ['« Voilà. »', '« Passe, maintenant. »'],
+    },
+    {
+      when: () => state.flag('bateau-arrive'),
+      speaker: 'Le poisson',
+      lines: ['« Le bateau, là-bas. »', '« Il a un bouchon, lui aussi. »'],
+    },
+    {
+      speaker: 'Le poisson',
+      lines: [
+        '« Merci pour le bouchon. »',
+        '« Je n’oublie pas ces choses-là. »',
+        '« Il n’y a rien à couler, pour l’instant. »',
+      ],
+    },
+  ],
+
+  baignoire: [
+    {
+      when: () => state.flag('bouchon-retire'),
+      lines: ['La baignoire est vide.'],
+    },
+    { when: () => state.flag('eau-coule'), lines: ['L’eau coule.'] },
+    {
+      lines: ['La baignoire est vide.', 'Faire couler l’eau ?'],
+      choice: {
+        oui: {
+          lines: ['L’eau coule.'],
+          effects: { flag: 'eau-coule' },
+        },
+        non: { lines: ['...'] },
+      },
+    },
+  ],
+
+  // ------------------------------------------------------------------ la cour
+  velo: [{ lines: ['Le vélo de Nino.', 'Un pneu à plat depuis le mois de mars.'] }],
+
+  /**
+   * L'écureuil du coin de la cour. Il ne demande rien pour lui, il ne gagne rien, il
+   * n'explique rien : il pousse au crime et il se rétracte. C'est tout son personnage.
+   */
+  ecureuil: [
+    {
+      when: () => state.flag('fenetre-cassee'),
+      speaker: 'L’écureuil',
+      lines: ['« Je n’ai jamais dit ça. »', '« Je ne t’ai jamais parlé. »'],
+    },
+    {
+      when: () => state.flag('ecureuil-vu'),
+      speaker: 'L’écureuil',
+      lines: ['« La fenêtre. »', '« Elle est toujours là. »'],
+    },
+    {
+      speaker: 'L’écureuil',
+      lines: ['« Psst. »', '« T’es bon au foot ? »', '« Prouve-le. Vise la fenêtre. »'],
+      effects: { flag: 'ecureuil-vu' },
+    },
+  ],
+
+  // Le ballon ne se raconte plus : on tape dedans, il rebondit sur les murs, et si on
+  // vise la fenêtre elle casse. Papa, resté dedans, sait exactement qui accuser.
+  'fenetre-cassee': [
+    {
+      speaker: 'Papa',
+      lines: ['« NON MAIS CE CHAT. »'],
+    },
+  ],
+
+  // ------------------------------------------------ la Tour de Bretagne
+  'quai-est': [
+    {
+      when: () => state.flag('bateau-arrive'),
+      lines: ['Papa est sur son bateau, juste là.', 'Il regarde de ce côté.'],
+    },
+    { lines: ['Le quai continue vers la ville.', 'Nino n’a rien à y faire.'] },
+  ],
+
+  ascenseur: [{ lines: ['L’ascenseur.', '« HORS SERVICE »', 'Le papier est jauni.'] }],
+
+  'maman-fete': [{ speaker: 'Maman', lines: ['« Sept ans. »', '« Sept. »'] }],
+  'papa-fete': [{ speaker: 'Papa', lines: ['« On a préparé ça toute la journée. »'] }],
+  'hermione-fete': [{ speaker: 'Hermione', lines: ['« ... »'] }],
+
+  'plan-tour': [
+    {
+      lines: [
+        'Un plan de la tour.',
+        'Trente-deux étages.',
+        'Nino compte jusqu’à douze, puis arrête.',
+      ],
+    },
+  ],
+
+  'porte-cabinet': [{ lines: ['« CABINET DENTAIRE »', 'Fermé.', 'Tant mieux.'] }],
+
+  'plante-tour': [
+    { lines: ['Une plante en plastique.', 'Elle est là depuis 1976, elle aussi.'] },
+  ],
+
+  'fenetre-tour': [
+    { lines: ['La fenêtre est ouverte.', 'D’ici, les voitures font le bruit de la mer.'] },
+  ],
+
+  /**
+   * Les quatre gardiens de la tour. Une énigme par étage, et **aucune mauvaise réponse ne
+   * coûte quoi que ce soit** : on redemande autant qu'on veut. Chaque « faux » donne un
+   * indice, jamais la réponse.
+   */
+  'escalier-garde': [
+    { lines: ['Il y a une bête assise en travers de l’escalier.'] },
+  ],
+
+  'moon-tour': [
+    {
+      when: () => state.flag('enigme-moon'),
+      speaker: 'Moon',
+      lines: ['« Tu montes ? »', '« Moi je descends. »'],
+    },
+    {
+      speaker: 'Moon',
+      lines: ['« Une question, et je bouge. »', '« Qui dort seize heures par jour, et personne ne lui dit rien ? »'],
+      enigme: {
+        reponses: ['Un chat', 'Un bébé', 'Papa'],
+        bonne: 0,
+        juste: {
+          lines: ['« Voilà. »', '« Monte. »'],
+          effects: { flag: 'enigme-moon' },
+        },
+        faux: { lines: ['« Non. »', '« Réfléchis à qui tu parles. »'] },
+      },
+    },
+  ],
+
+  'ecureuil-tour': [
+    {
+      when: () => state.flag('enigme-ecureuil'),
+      speaker: 'L’écureuil',
+      lines: ['« Vas-y, monte. »', '« Moi j’ai des choses à faire ici. »'],
+    },
+    {
+      speaker: 'L’écureuil',
+      lines: ['« Psst. »', '« Qu’est-ce qui est mieux qu’une noisette ? »'],
+      enigme: {
+        reponses: ['Deux noisettes', 'Une pomme', 'Rien'],
+        bonne: 0,
+        juste: {
+          lines: ['« Exactement. »', '« Tu peux passer. »'],
+          effects: { flag: 'enigme-ecureuil' },
+        },
+        faux: { lines: ['« Non. »', '« Pense plus grand. »'] },
+      },
+    },
+  ],
+
+  'araignee-tour': [
+    {
+      when: () => state.flag('enigme-araignee'),
+      speaker: 'L’araignée',
+      lines: ['« Vas-y. »', '« Et tiens-toi bien. »'],
+    },
+    {
+      speaker: 'L’araignée',
+      lines: ['« Une aile, et pas d’oiseau. »', '« Un enfant dessous. »', '« Qu’est-ce que c’est ? »'],
+      enigme: {
+        reponses: ['Un parapente', 'Un cerf-volant', 'Un avion'],
+        bonne: 0,
+        juste: {
+          lines: ['« Oui. »', '« Tu vas en avoir besoin. »'],
+          effects: { flag: 'enigme-araignee' },
+        },
+        faux: { lines: ['« Non. »', '« Il n’y a pas de ficelle. »'] },
+      },
+    },
+  ],
+
+  elephant: [
+    {
+      when: () => state.flag('enigme-elephant'),
+      speaker: 'L’Éléphant',
+      lines: ['« ... »', 'Il crache un peu d’eau. Il fait très chaud, ici aussi.'],
+    },
+    {
+      speaker: 'L’Éléphant',
+      lines: ['« Combien de pas, d’ici jusqu’à la mer ? »'],
+      enigme: {
+        reponses: ['Beaucoup', 'Douze mille', 'Je ne sais pas'],
+        bonne: 2,
+        juste: {
+          lines: ['« Moi non plus. »', '« Passe. »'],
+          effects: { flag: 'enigme-elephant' },
+        },
+        faux: { lines: ['« Non. »', '« Tu ne sais pas. »', '« Dis-le. »'] },
+      },
+    },
+  ],
+
+  antenne: [
+    { lines: ['Une antenne.', 'Elle vibre un peu.', 'C’est le vent, ou c’est la ville.'] },
+  ],
+
+  'vue-tour': [
+    {
+      lines: [
+        'Toute la ville éteinte, d’un coup.',
+        'Et au-dessus, le ciel entier.',
+        'Nino n’avait jamais vu autant d’étoiles.',
+      ],
+    },
+  ],
+
+  /** Le ciel, si on insiste. */
+  'ciel-tour': [
+    {
+      lines: [
+        'Les étoiles ne bougent pas.',
+        'Elles ont l’air d’attendre quelque chose, elles aussi.',
+      ],
+    },
+  ],
+
+  parapente: [
+    {
+      when: () => state.flag('parapente-pris'),
+      lines: ['Il n’y a plus de parapente sur le toit.'],
+    },
+    { lines: ['Un parapente, plié contre le parapet.', 'À qui il est, on ne sait pas.'] },
+  ],
+
+  'parapente-envol': [
+    {
+      lines: [
+        'Nino déplie le parapente.',
+        'La maison est très loin, et sa fenêtre est toute petite.',
+        'Sauter ?',
+      ],
+      choice: {
+        oui: { lines: ['Nino saute.'], effects: { flag: 'parapente-pris' } },
+        non: {
+          lines: ['Nino replie le parapente.', 'Il reste un moment à regarder la ville.'],
+        },
+      },
+    },
+  ],
+
+  // ---------------------------------------------------------------- Nantes
+  'velos-ville': [{ lines: ['Trois vélos.', 'Six pneus à plat.'] }],
+
+  passant: [
+    {
+      lines: [
+        'Un monsieur en chemise passe très vite.',
+        '« Il fait trente-quatre, hein ! »',
+        'Il est déjà loin.',
+      ],
+    },
+  ],
+
+  'panneau-erdre': [
+    {
+      lines: ['Une plaque bleue : QUAI DE L’ERDRE.', 'Une flèche pointe vers l’eau.'],
+    },
+  ],
+
+  // ----------------------------------------------------------------- l'Erdre
+  'papa-capitaine': [
+    {
+      when: () => !state.flag('papa-capitaine-vu'),
+      speaker: 'Papa',
+      lines: [
+        'Sur le bateau, il y a Papa.',
+        'Il porte un chapeau de capitaine.',
+        '« Ah, Nino ! Monte pas, ça bouge. »',
+        '« Tu diras à ta mère que je suis dans la mezzanine. »',
+      ],
+      effects: { flag: 'papa-capitaine-vu' },
+    },
+    {
+      speaker: 'Papa',
+      lines: ['« Cinq minutes, Nino. »', 'Le bateau ne bouge pas d’un centimètre.'],
+    },
+  ],
+
+  bateau: [
+    {
+      lines: ['Un bateau blanc, arrêté au milieu de l’eau.', 'Il n’est attaché à rien.'],
+    },
+  ],
+
+  quai: [
+    {
+      when: () => !state.flag('pieds-eau'),
+      lines: [
+        'Nino s’assoit sur le quai et laisse pendre ses pieds dans l’Erdre.',
+        'L’eau est froide. Vraiment froide.',
+        'Quelque chose, en dessous, lui touche la cheville et repart.',
+      ],
+      effects: { flag: 'pieds-eau' },
+    },
+    {
+      lines: ['L’eau est toujours là.', 'La chose en dessous aussi, sans doute.'],
+    },
+  ],
+};

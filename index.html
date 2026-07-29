@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Les Aventures de Nino</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+        background: #14171a;
+        overflow: hidden;
+      }
+      body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      /* La console : un cadre gris autour de l'écran, comme une vraie Game Boy. */
+      #shell {
+        padding: 14px;
+        border-radius: 8px 8px 28px 8px;
+        background: #c9c6bd;
+        box-shadow:
+          inset -2px -2px 0 #8f8c84,
+          inset 2px 2px 0 #e6e3da,
+          0 18px 40px rgba(0, 0, 0, 0.6);
+      }
+      #game canvas {
+        display: block;
+        image-rendering: pixelated;
+        border: 4px solid #2b2f31;
+      }
+      #label {
+        margin-top: 8px;
+        font: 10px/1 ui-monospace, Menlo, monospace;
+        letter-spacing: 2px;
+        color: #6b2b6b;
+        text-align: right;
+        text-transform: uppercase;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="shell">
+      <div id="game"></div>
+      <div id="label">Nino&nbsp;Adventures</div>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
