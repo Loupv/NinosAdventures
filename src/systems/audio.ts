@@ -14,6 +14,33 @@ import { DOSSIER, SONS, VOIX, piocher, son } from '../data/sons';
 /** Clé Phaser d'une variante : `texte-1`, `prout-3`… */
 const cle = (id: string, n: number) => `${id}-${n}`;
 
+/**
+ * Le son est-il coupé ? **Notre propre drapeau**, et c'est volontaire : dans cette version
+ * de Phaser, `game.sound.mute` et `game.sound.volume` ne se relisent pas après une
+ * affectation — le setter n'alimente pas le getter. Comme tous les sons du jeu passent par
+ * `jouer()`, un booléen ici coupe tout, à coup sûr, sans dépendre de ces entrailles.
+ *
+ * **Coupé au démarrage, le temps du développement** : on travaille en silence, et on
+ * l'allume pour vérifier un bruitage.
+ */
+let coupe = true;
+
+export const estCoupe = () => coupe;
+
+/** Coupe ou rallume tout le son. Renvoie l'état obtenu. */
+export function couperSon(scene: Phaser.Scene | undefined, valeur: boolean): boolean {
+  coupe = valeur;
+  // Par acquit de conscience, on essaie aussi les leviers de Phaser : ils n'ont aucun
+  // effet ici, mais ils couperont les boucles déjà lancées le jour où il y aura des
+  // musiques, sur une version où ils fonctionnent.
+  if (scene) {
+    scene.sound.mute = valeur;
+    const noeud = (scene.sound as { masterMuteNode?: GainNode }).masterMuteNode;
+    if (noeud) noeud.gain.value = valeur ? 0 : 1;
+  }
+  return coupe;
+}
+
 /** À appeler dans le `preload` du Boot. */
 export function chargerSons(scene: Phaser.Scene): void {
   for (const s of SONS.filter((x) => x.present)) {
@@ -33,6 +60,7 @@ export function jouer(
   id: string,
   options: { volume?: number; detune?: number; rate?: number } = {},
 ): void {
+  if (coupe) return;
   const s = son(id);
   if (!s?.present) return;
   const n = piocher(id);

@@ -8,6 +8,7 @@ import { JournalScene } from './scenes/JournalScene';
 import { FlappyScene } from './scenes/FlappyScene';
 import { ParapenteScene } from './scenes/ParapenteScene';
 import { FinScene } from './scenes/FinScene';
+import { couperSon, estCoupe } from './systems/audio';
 
 /** Zoom entier uniquement : un pixel du jeu = N pixels de l'écran, jamais 1,5. */
 function bestZoom(): number {
@@ -41,6 +42,33 @@ const game = new Phaser.Game({
 });
 
 window.addEventListener('resize', () => game.scale.setZoom(bestZoom()));
+
+/**
+ * ── Bouton du son : TEMPORAIRE ──
+ *
+ * **Le son est coupé au démarrage** : on développe en silence, et on l'allume pour
+ * vérifier un bruitage. Le bouton est dans la page, sous l'écran — pas dans le jeu, pour
+ * ne pas manger de pixels et pour qu'il suffise de retirer ce bloc et le <button> de
+ * index.html le jour où on n'en veut plus. La touche **M** fait la même chose.
+ */
+const bouton = document.getElementById('son');
+const majSon = () => {
+  if (bouton) bouton.textContent = estCoupe() ? 'son : coupé' : 'son : allumé';
+};
+const basculerSon = () => {
+  // La scène courante sert juste à relayer aux leviers de Phaser ; l'état vit dans audio.ts.
+  couperSon(game.scene.scenes.find((s) => s.scene.isActive()), !estCoupe());
+  majSon();
+};
+bouton?.addEventListener('click', () => {
+  basculerSon();
+  // Le clic rend aussi la main au clavier : sinon les flèches pilotent le bouton.
+  (document.activeElement as HTMLElement | null)?.blur();
+});
+window.addEventListener('keydown', (e) => {
+  if (e.key === 'm' || e.key === 'M') basculerSon();
+});
+majSon();
 
 // Poignée de développement : absente du build de production.
 if (import.meta.env.DEV) (window as unknown as { jeu?: Phaser.Game }).jeu = game;

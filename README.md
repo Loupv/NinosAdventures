@@ -26,6 +26,12 @@ Puis ouvrir <http://localhost:5173>.
 | **Espace** ou **E** | Parler, fouiller, ouvrir, franchir |
 | **Entrée** ou **J** | Ouvrir le journal (← → pour changer de page) |
 | **Échap** | Fermer |
+| **M** ou le bouton sous l'écran | Couper / rallumer le son |
+
+**Le son est coupé au démarrage**, le temps du développement. Le bouton vit dans la page,
+sous l'écran, et pas dans le jeu : il ne mange aucun pixel, et il suffira de retirer le
+`<button>` de `index.html` et le bloc marqué *TEMPORAIRE* de `src/main.ts` le jour où on
+n'en voudra plus.
 
 Une petite bulle apparaît au-dessus de tout ce qui peut être actionné. La boîte de
 dialogue se place toujours du côté opposé à l'action, pour ne rien cacher. La partie est

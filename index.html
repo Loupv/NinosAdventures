@@ -32,20 +32,52 @@
         image-rendering: pixelated;
         border: 4px solid #2b2f31;
       }
-      #label {
+      /* La ligne du bas de la console : le bouton du son à gauche, la marque à droite. */
+      #bas {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
         margin-top: 8px;
         font: 10px/1 ui-monospace, Menlo, monospace;
         letter-spacing: 2px;
-        color: #6b2b6b;
-        text-align: right;
         text-transform: uppercase;
+      }
+      #label {
+        color: #6b2b6b;
+      }
+      /*
+        Bouton du son : TEMPORAIRE, le temps du développement. Il vit dans la page et pas
+        dans le jeu, pour ne pas manger de pixels à l'écran — et pour qu'il suffise de
+        supprimer ce bloc et le <button> le jour où on n'en veut plus.
+      */
+      #son {
+        font: inherit;
+        letter-spacing: inherit;
+        text-transform: inherit;
+        color: #4a4740;
+        background: #bdb9b0;
+        border: 0;
+        border-radius: 3px;
+        padding: 3px 7px;
+        cursor: pointer;
+        box-shadow:
+          inset -1px -1px 0 #8f8c84,
+          inset 1px 1px 0 #e6e3da;
+      }
+      #son:active {
+        box-shadow:
+          inset 1px 1px 0 #8f8c84,
+          inset -1px -1px 0 #e6e3da;
       }
     </style>
   </head>
   <body>
     <div id="shell">
       <div id="game"></div>
-      <div id="label">Nino&nbsp;Adventures</div>
+      <div id="bas">
+        <button id="son" type="button" title="Touche M">son : coupé</button>
+        <span id="label">Nino&nbsp;Adventures</span>
+      </div>
     </div>
     <script type="module" src="/src/main.ts"></script>
   </body>
