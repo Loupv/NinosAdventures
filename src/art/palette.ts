@@ -12,6 +12,8 @@ export type PaletteId =
   | 'ville-nuit'
   | 'eau'
   | 'eau-nuit'
+  | 'ville-aube'
+  | 'titre'
   | 'tv';
 
 export const PALETTES: Record<PaletteId, readonly [string, string, string, string]> = {
@@ -38,10 +40,21 @@ export const PALETTES: Record<PaletteId, readonly [string, string, string, strin
    * il y a des réverbères, dedans il n'y a personne qui allume.
    */
   'ville-nuit': ['#0f1218', '#2f3340', '#5f6474', '#a9a8b2'],
+  /**
+   * La toute fin de la nuit, sur le toit de la tour. Le noir se délave, et le ton clair
+   * part vers le chaud : c'est le seul endroit du jeu où l'on voit le jour se lever, et
+   * c'est ce qui met Nino en retard.
+   */
+  'ville-aube': ['#1b2030', '#3f4457', '#7f7f8c', '#e5cdb0'],
   /** L'Erdre, et tout ce qui sera aquatique. */
   eau: ['#04202c', '#0b4a5e', '#3f9fb5', '#c9f0f5'],
   /** L'Erdre de nuit : la même eau, sans le soleil dedans. */
   'eau-nuit': ['#04121c', '#0d2b3c', '#2c5566', '#7f9aa6'],
+  /**
+   * L'écran d'accueil, et lui seul. Le même escalier de quatre tons que la maison, mais
+   * tiré vers le bleu : la première image du jeu ne sera pas du vert acide.
+   */
+  titre: ['#1d3446', '#325a6d', '#6099ab', '#abd2da'],
   /** Le Monde de la Télé (chapitre à venir). */
   tv: ['#101010', '#3a3a3a', '#a0a0a0', '#e8e8e8'],
 };
@@ -73,10 +86,11 @@ export function paletteFor(base: PaletteId, temp: number): PaletteId {
 /**
  * La version nocturne d'une palette.
  *
- * **Tout le jeu se passe la nuit**, jusqu'à ce que Nino rentre par la fenêtre : il s'est
- * réveillé au milieu de la nuit et il a traversé la ville pendant que ses parents
- * préparaient son anniversaire dans la cuisine. Le retour, lui, est au petit matin — et
- * c'est le seul moment où on voit les couleurs du jour.
+ * **L'heure du jeu.** Nino se lève vers midi — c'est le plein soleil et la chaleur qui
+ * commencent l'aventure. La nuit ne tombe qu'en arrivant à la Tour de Bretagne, et au
+ * sommet il fait déjà presque jour : c'est de là que vient l'urgence de rentrer avant
+ * que ses parents s'inquiètent. Trois moments, trois familles de palettes, aucun asset
+ * supplémentaire.
  *
  * Les palettes qui n'ont pas de version de nuit (le rêve, le soir) restent elles-mêmes.
  */
@@ -89,3 +103,14 @@ const NUIT: Partial<Record<PaletteId, PaletteId>> = {
 };
 
 export const paletteNocturne = (base: PaletteId): PaletteId => NUIT[base] ?? base;
+
+/**
+ * Et la fin de la nuit, tout en haut de la tour. Seule la ville a son aube : c'est le
+ * seul décor qu'on voit à cette heure-là.
+ */
+const AUBE: Partial<Record<PaletteId, PaletteId>> = {
+  ville: 'ville-aube',
+  'ville-nuit': 'ville-aube',
+};
+
+export const paletteAube = (base: PaletteId): PaletteId => AUBE[base] ?? base;

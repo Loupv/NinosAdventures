@@ -1,18 +1,22 @@
 import Phaser from 'phaser';
 import { GB, GRAVITY, KEYS } from '../config';
 import { THEMES, SOLID } from '../art/tiles';
-import { paletteNocturne, shadeHex, type PaletteId } from '../art/palette';
+import { paletteAube, paletteNocturne, shadeHex, type PaletteId } from '../art/palette';
 import { animKey, blankCanvas, paintArt, texKey } from '../art/pixels';
 import { ROOMS, nomDuLieu, type Door, type Room, type RoomObject } from '../data/rooms';
 import { CHARACTER_SPRITES } from '../data/characters';
-import { ITEMS } from '../data/items';
+import { ITEMS, type ItemId } from '../data/items';
 import { pickBeat, type Effects, type Montre } from '../data/dialogues';
 import { fraicheur, labelFraicheur } from '../data/fraicheur';
 import {
   ANNONCES,
   ARAIGNEE_PARTIE,
   BATEAU_ARRIVE,
+  ARROSES,
+  ARROSE_DEFAUT,
   ECUREUIL_FUITE,
+  ECUREUIL_MOUILLE,
+  ECUREUIL_TREMPE,
   ECUREUIL_VANNES,
   CHALEUR,
   CHANSON,
@@ -167,6 +171,8 @@ export class WorldScene extends Phaser.Scene {
   private ballonEnVol = false;
   /** Combien de fois l'écureuil s'est moqué : il change de vanne à chaque tir raté. */
   private vannes = 0;
+  /** Combien de fois on a arrosé l'écureuil de la tour : il ne râle pas deux fois pareil. */
+  private mouillé = 0;
   /** La vanne affichée au-dessus de lui, s'il y en a une. */
   private vanne?: PixelText;
   private errants: Errant[] = [];
@@ -201,10 +207,17 @@ export class WorldScene extends Phaser.Scene {
     const id = ROOMS[wanted] ? wanted : 'chambre';
     this.room = ROOMS[id];
     state.room = id;
-    // Toute l'aventure se passe la nuit. Le jour ne revient qu'au retour par la fenêtre.
-    this.pal = state.flag('parapente-rentre')
-      ? this.room.palette
-      : paletteNocturne(this.room.palette);
+    // L'heure du jour, en deux drapeaux. On se lève vers midi ; la nuit tombe en entrant
+    // dans la tour ; sur le toit le ciel pâlit déjà — et une fois rentré par la fenêtre
+    // c'est le matin, donc les couleurs du jour à nouveau.
+    if (id.startsWith('tour')) state.setFlag('nuit');
+    if (id === 'tour-toit') state.setFlag('aube');
+    this.pal =
+      state.flag('aube') && !state.flag('parapente-rentre')
+        ? paletteAube(paletteNocturne(this.room.palette))
+        : state.flag('nuit') && !state.flag('parapente-rentre')
+          ? paletteNocturne(this.room.palette)
+          : this.room.palette;
     state.palette = this.pal;
     this.mode = this.room.view ?? 'top';
     this.roomW = this.room.tiles[0].length * GB.TILE;
@@ -319,6 +332,12 @@ export class WorldScene extends Phaser.Scene {
           this.scene.restart({ room: this.room.id });
           return [...state.flags];
         },
+        /** Met un objet dans le sac : le pistolet à eau sans ouvrir le coffre. */
+        sac: (id: ItemId) => {
+          state.give(id);
+          bus.emit(EV.hud);
+          return [...state.items];
+        },
         /** Applique un moyen de se rafraîchir, pour tester la jauge sans jouer. */
         cool: (id: string) => {
           this.applyFraicheur(id);
@@ -409,6 +428,7 @@ export class WorldScene extends Phaser.Scene {
       this.mode,
     );
     this.bruitDesPas(delta);
+    if (this.just('arroser')) this.tirerAuPistolet();
 
     const door = this.doorUnderPlayer();
     if (door) {
@@ -695,16 +715,19 @@ export class WorldScene extends Phaser.Scene {
   private vanner(): void {
     const lui = this.live.find((l) => l.def.id === 'ecureuil');
     if (!lui || !state.flag('ecureuil-vu')) return;
-    const t = ECUREUIL_VANNES[this.vannes % ECUREUIL_VANNES.length];
+    this.flotter(ECUREUIL_VANNES[this.vannes % ECUREUIL_VANNES.length], lui);
     this.vannes += 1;
+  }
 
+  /** Une phrase posée au-dessus de quelqu'un, sans boîte et sans verrou. */
+  private flotter(t: string, sur: Live): void {
     this.vanne?.destroy();
     const texte = new PixelText(this, 'wl-vanne', 0, 0, 90, 13);
     texte.image.setDepth(1300);
     texte.setLines([t], shadeHex(this.pal, 0));
     texte.image.setPosition(
-      Math.round(lui.def.x + lui.go.displayWidth / 2 - measure(t) / 2),
-      Math.round(lui.def.y - 12),
+      Math.round(sur.go.x + sur.go.displayWidth / 2 - measure(t) / 2),
+      Math.round(sur.go.y - 12),
     );
     this.vanne = texte;
     this.time.delayedCall(1700, () => {
@@ -714,7 +737,102 @@ export class WorldScene extends Phaser.Scene {
   }
 
   /**
-   * On vient lui demander des comptes : il détale. Il file en diagonale hors de l'écran et
+   * **Le pistolet à eau, sur sa propre touche.** Il ne pouvait pas passer par ESPACE :
+   * l'écureuil a une énigme à poser dans la tour, et une interaction ne peut pas être
+   * les deux à la fois. X arrose ce qu'on a en face — et si ce n'est personne, ça arrose
+   * le vide, ce qui est déjà un jeu en soi quand on a sept ans.
+   *
+   * Deux écureuils, deux réactions : celui de la cour s'en va pour de bon, celui de la
+   * tour change de coin en râlant et garde son énigme entière.
+   */
+  private tirerAuPistolet(): void {
+    if (!state.has('pistolet-eau') || state.locked || this.transitioning) return;
+    const main = { x: Math.round(this.player.sprite.x), y: Math.round(this.player.sprite.y - 8) };
+    // On arrose ce qui a quelque chose à dire : les gens et les bêtes, pas les meubles.
+    const vise = this.target?.def.dialogue ? this.target : undefined;
+    // Sans personne en face, le jet part droit devant : arroser le vide fait partie du jeu.
+    const f = this.player.facing;
+    const loin = {
+      x: main.x + (f === 'left' ? -30 : f === 'right' ? 30 : 0),
+      y: main.y + (f === 'up' ? -26 : f === 'down' ? 26 : 0),
+    };
+    const cible = vise
+      ? {
+          x: Math.round(vise.go.x + vise.go.displayWidth / 2),
+          y: Math.round(vise.go.y + vise.go.displayHeight / 2),
+        }
+      : loin;
+
+    jouer(this, 'pistolet', { volume: 0.6 });
+    for (let i = 0; i < 3; i++) {
+      const g = this.add
+        .image(main.x, main.y, texKey('goutte', this.pal))
+        .setOrigin(0.5, 0.5)
+        .setDepth(1350);
+      this.tweens.add({
+        targets: g,
+        x: cible.x,
+        y: cible.y,
+        duration: 240,
+        delay: i * 80,
+        ease: 'Quad.easeOut',
+        onComplete: () => {
+          g.destroy();
+          if (i < 2) return;
+          splash(this, this.pal, cible.x, cible.y);
+          if (!vise) return;
+          if (vise.def.id === 'ecureuil') {
+            state.locked = true;
+            say({
+              speaker: 'L’écureuil',
+              lines: ECUREUIL_TREMPE,
+              focusY: 130,
+              onDone: () => this.ecureuilDetale(vise),
+            });
+          } else if (vise.def.sprite === 'ecureuil') {
+            this.ecureuilChangeDeCoin(vise);
+          } else {
+            // Tous les autres : une phrase blasée au-dessus de la tête, et on continue.
+            const quoi = ARROSES[vise.def.id] ?? ARROSES[vise.def.sprite ?? ''] ?? ARROSE_DEFAUT;
+            this.flotter(quoi[this.mouillé % quoi.length], vise);
+            this.mouillé += 1;
+          }
+        },
+      });
+    }
+  }
+
+  /**
+   * L'écureuil de la tour, arrosé : il traverse le palier en couinant et se réinstalle
+   * ailleurs. Son énigme n'a pas bougé d'un mot — c'était juste pour le plaisir.
+   */
+  private ecureuilChangeDeCoin(l: Live): void {
+    const coins = [
+      { x: 84, y: 60 },
+      { x: 48, y: 44 },
+      { x: 108, y: 64 },
+      { x: 52, y: 96 },
+    ];
+    const i = coins.findIndex((c) => c.x === l.def.x && c.y === l.def.y);
+    const ou = coins[(i + 1) % coins.length];
+    this.flotter(ECUREUIL_MOUILLE[this.mouillé % ECUREUIL_MOUILLE.length], l);
+    this.mouillé += 1;
+    l.def.x = ou.x;
+    l.def.y = ou.y;
+    this.target = undefined;
+    jouer(this, 'pas', { volume: 0.4, rate: 2.4 });
+    this.tweens.add({
+      targets: l.go,
+      x: ou.x,
+      y: ou.y,
+      duration: 380,
+      ease: 'Quad.easeInOut',
+      onUpdate: () => l.go.setDepth(l.go.y + l.go.displayHeight),
+    });
+  }
+
+  /**
+   * On l'a arrosé : il détale. Il file en diagonale hors de l'écran et
    * ne revient pas — jusqu'à la prochaine visite, parce qu'un écureuil ne retient rien.
    */
   private ecureuilDetale(l: Live): void {
@@ -1827,12 +1945,6 @@ export class WorldScene extends Phaser.Scene {
       this.taperDansLeBallon(l);
       return;
     }
-    // Il s'est moqué : il ne va pas rester pour en discuter. On garde la fenêtre large —
-    // le lier à la vanne encore affichée ne laissait qu'une seconde et demie pour réagir.
-    if (l.def.id === 'ecureuil' && this.vannes > 0) {
-      this.ecureuilDetale(l);
-      return;
-    }
     if (l.def.id === 'parapente' && !state.flag('parapente-pris')) {
       this.sauterDuToit(l);
       return;
@@ -2066,7 +2178,10 @@ export class WorldScene extends Phaser.Scene {
     if (door.x <= 0) s.x = door.x + door.w + 6;
     else if (door.x + door.w >= largeur) s.x = door.x - 6;
     else if (door.y <= 0) s.y = door.y + door.h + 12;
-    else s.y = door.y - 2;
+    else if (door.y + door.h >= this.room.tiles.length * 8) s.y = door.y - 2;
+    // Un escalier gardé n'est pas contre un mur, il est au milieu du palier : on le
+    // redescend au pied des marches, seul côté par lequel il puisse arriver.
+    else s.y = door.y + door.h + 6;
     this.player.freeze(this.mode);
 
     // Les répliques s'enchaînent : Moon rassure, puis on entend ce que ça lui coûte.
@@ -2086,7 +2201,7 @@ export class WorldScene extends Phaser.Scene {
   }
 
   private goThroughDoor(door: Door): void {
-    jouer(this, 'porte', { volume: 0.5 });
+    jouer(this, door.son ?? 'porte', { volume: 0.5 });
     this.transitioning = true;
     this.player.freeze(this.mode);
     state.locked = true;

@@ -534,23 +534,30 @@ Tout le jeu tient sur quatre briques, volontairement pauvres.
 | **cachettes** | [hermione.ts](../src/data/hermione.ts) | Une liste ordonnée. La sœur se pose dans la pièce courante si c'est son tour. |
 | **portails** | [rooms.ts](../src/data/rooms.ts) | Une porte qui demande un objet ou un flag, avec un dialogue de refus et un dialogue de première ouverture. |
 
-### La nuit blanche
+### Un jour, une nuit, un matin
 
-**Tout le jeu se passe la nuit.** Nino se réveille au milieu de la nuit — *« Il fait nuit,
-et il fait chaud. Quelle heure il est ? »* — et il traverse la ville pendant que ses
-parents s'agitent dans la cuisine. C'est ce qui explique tout le reste sans qu'une seule
-ligne ne l'explique : pourquoi Papa dit « cinq minutes » depuis quarante minutes, pourquoi
-la cuisine est occupée, pourquoi personne ne remarque qu'un enfant de sept ans est sorti.
+**On se lève vers midi.** *« Le soleil est déjà haut, et il fait chaud. »* Tout le
+chapitre de la maison, la cour, la ville et l'Erdre se passent en pleine journée : c'est
+la chaleur qui ouvre le jeu, et c'est elle qui justifie les volets tirés, le ventilateur
+et les vélos à plat.
 
-Le jour ne revient qu'**au retour par la fenêtre** : *« Le ciel commence à être gris,
-dehors. »* Nino pousse le parapente sous le lit, fait semblant de dormir, et les parents
-viennent le chercher pour son anniversaire — *« À sept heures du matin ? »* La fête et
-l'écran de fin sont les deux seuls écrans du jeu où le soleil est levé.
+**La nuit tombe en arrivant à la Tour de Bretagne.** Personne ne la voit tomber — Nino
+entre dans le hall, et dehors il fait noir. Trente-deux étages plus haut, sur le toit, le
+ciel est déjà gris : *« Les étoiles ne bougent pas. Mais le ciel, derrière, commence à
+être gris. »* C'est de là que vient l'urgence du dernier chapitre — il faut rentrer avant
+que les parents se réveillent, et c'est la seule chose qui presse dans tout le jeu.
 
-Techniquement c'est une ligne : `paletteNocturne(base)` remplace chaque palette par sa
-version de nuit tant que le flag `parapente-rentre` n'est pas posé. `real` devient
-`real-soir` (bleu de nuit), `ville` devient `ville-nuit` (gris-violet, un cran plus tiède
-que la maison — dehors il y a des réverbères), `eau` devient `eau-nuit`.
+**Et le matin, au retour par la fenêtre.** Nino pousse le parapente sous le lit, fait
+semblant de dormir, et les parents viennent le chercher pour son anniversaire — *« À sept
+heures du matin ? »* Il s'endort en soufflant ses bougies : il est debout depuis la veille
+à midi, et personne ne s'en étonne.
+
+Techniquement, deux drapeaux et deux tables. `nuit` est posé en entrant dans n'importe
+quelle pièce `tour-*`, `aube` en arrivant sur le toit ; ensuite `paletteNocturne(base)`
+remplace chaque palette par sa version de nuit (`real` → `real-soir`, `ville` →
+`ville-nuit`, `eau` → `eau-nuit`) et `paletteAube` fait du toit son propre moment
+(`ville-aube` : le noir délavé, le ton clair qui part vers le chaud). Une fois
+`parapente-rentre` posé, plus rien ne s'applique : c'est le jour.
 
 **Et sur le toit de la tour, le ciel.** Cinq rangées d'étoiles au-dessus du parapet, la
 seule fois du jeu où on voit le ciel en entier. Les étoiles sont posées à la main,

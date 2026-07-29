@@ -91,6 +91,8 @@ export interface Door {
   needsFlag?: string;
   /** Les répliques jouées à la place du passage, dans l'ordre. */
   blockedDialogue?: string[];
+  /** Le bruit du passage. Par défaut celui d'une porte ; les escaliers ont le leur. */
+  son?: string;
 }
 
 export interface Room {
@@ -196,13 +198,9 @@ export const ROOMS: Record<string, Room> = {
         x: 120,
         y: 16,
         sprite: 'escalier',
-        portal: {
-          room: 'tour-13',
-          x: 52,
-          y: 108,
-          needsFlag: 'enigme-moon',
-          lockedDialogue: 'escalier-garde',
-        },
+        depth: 20,
+        // Il n'y a pas d'escalier avant que Moon accepte : c'est l'énigme qui le fait apparaître.
+        showIfFlag: 'enigme-moon',
       },
       // Il est arrivé avant lui. Personne ne demande comment.
       {
@@ -217,7 +215,21 @@ export const ROOMS: Record<string, Room> = {
       },
       { id: 'plante', ...at(17, 14), sprite: 'plante', solid: true },
     ],
-    doors: [{ x: 24, y: 136, w: 16, h: 8, to: { room: 'erdre', x: 300, y: 96 } }],
+    doors: [
+      { x: 24, y: 136, w: 16, h: 8, to: { room: 'erdre', x: 300, y: 96 } },
+      // On monte en marchant dans l'escalier. Moon garde la marche : sans son énigme,
+      // il nous renvoie au pied des marches.
+      {
+        x: 120,
+        y: 16,
+        w: 16,
+        h: 17,
+        to: { room: 'tour-13', x: 52, y: 108 },
+        needsFlag: 'enigme-moon',
+        blockedDialogue: ['escalier-garde'],
+        son: 'escalier',
+      },
+    ],
   },
 
   'tour-13': {
@@ -246,25 +258,14 @@ export const ROOMS: Record<string, Room> = {
       PALIER.vide,
     ],
     objects: [
-      {
-        id: 'escalier-bas',
-        x: 44,
-        y: 84,
-        sprite: 'escalier',
-        portal: { room: 'tour-hall', x: 128, y: 44 },
-      },
+      { id: 'escalier-bas', x: 44, y: 84, sprite: 'escalier', depth: 88 },
       {
         id: 'escalier-haut',
         x: 100,
         y: 36,
         sprite: 'escalier',
-        portal: {
-          room: 'tour-27',
-          x: 52,
-          y: 108,
-          needsFlag: 'enigme-ecureuil',
-          lockedDialogue: 'escalier-garde',
-        },
+        depth: 40,
+        showIfFlag: 'enigme-ecureuil',
       },
       {
         id: 'ecureuil-tour',
@@ -278,7 +279,19 @@ export const ROOMS: Record<string, Room> = {
       { id: 'porte-cabinet', x: 56, y: 32, sprite: 'porte', solid: true, dialogue: 'porte-cabinet' },
       { id: 'plante', x: 108, y: 88, sprite: 'plante', solid: true, dialogue: 'plante-tour' },
     ],
-    doors: [],
+    doors: [
+      { x: 44, y: 84, w: 16, h: 17, to: { room: 'tour-hall', x: 128, y: 44 }, son: 'escalier' },
+      {
+        x: 100,
+        y: 36,
+        w: 16,
+        h: 17,
+        to: { room: 'tour-27', x: 52, y: 108 },
+        needsFlag: 'enigme-ecureuil',
+        blockedDialogue: ['escalier-garde'],
+        son: 'escalier',
+      },
+    ],
   },
 
   'tour-27': {
@@ -307,25 +320,14 @@ export const ROOMS: Record<string, Room> = {
       PALIER.vide,
     ],
     objects: [
-      {
-        id: 'escalier-bas',
-        x: 44,
-        y: 84,
-        sprite: 'escalier',
-        portal: { room: 'tour-13', x: 108, y: 62 },
-      },
+      { id: 'escalier-bas', x: 44, y: 84, sprite: 'escalier', depth: 88 },
       {
         id: 'escalier-haut',
         x: 100,
         y: 36,
         sprite: 'escalier',
-        portal: {
-          room: 'tour-31',
-          x: 52,
-          y: 108,
-          needsFlag: 'enigme-araignee',
-          lockedDialogue: 'escalier-garde',
-        },
+        depth: 40,
+        showIfFlag: 'enigme-araignee',
       },
       {
         id: 'fenetre-tour',
@@ -348,7 +350,19 @@ export const ROOMS: Record<string, Room> = {
         dialogue: 'araignee-tour',
       },
     ],
-    doors: [],
+    doors: [
+      { x: 44, y: 84, w: 16, h: 17, to: { room: 'tour-13', x: 108, y: 62 }, son: 'escalier' },
+      {
+        x: 100,
+        y: 36,
+        w: 16,
+        h: 17,
+        to: { room: 'tour-31', x: 52, y: 108 },
+        needsFlag: 'enigme-araignee',
+        blockedDialogue: ['escalier-garde'],
+        son: 'escalier',
+      },
+    ],
   },
 
   /**
@@ -381,25 +395,14 @@ export const ROOMS: Record<string, Room> = {
       PALIER.vide,
     ],
     objects: [
-      {
-        id: 'escalier-bas',
-        x: 44,
-        y: 84,
-        sprite: 'escalier',
-        portal: { room: 'tour-27', x: 108, y: 62 },
-      },
+      { id: 'escalier-bas', x: 44, y: 84, sprite: 'escalier', depth: 88 },
       {
         id: 'escalier-haut',
         x: 100,
         y: 36,
         sprite: 'escalier',
-        portal: {
-          room: 'tour-toit',
-          x: 40,
-          y: 120,
-          needsFlag: 'enigme-elephant',
-          lockedDialogue: 'escalier-garde',
-        },
+        depth: 40,
+        showIfFlag: 'enigme-elephant',
       },
       {
         id: 'elephant',
@@ -411,7 +414,19 @@ export const ROOMS: Record<string, Room> = {
         dialogue: 'elephant',
       },
     ],
-    doors: [],
+    doors: [
+      { x: 44, y: 84, w: 16, h: 17, to: { room: 'tour-27', x: 108, y: 62 }, son: 'escalier' },
+      {
+        x: 100,
+        y: 36,
+        w: 16,
+        h: 17,
+        to: { room: 'tour-toit', x: 40, y: 120 },
+        needsFlag: 'enigme-elephant',
+        blockedDialogue: ['escalier-garde'],
+        son: 'escalier',
+      },
+    ],
   },
 
   /**
@@ -441,13 +456,7 @@ export const ROOMS: Record<string, Room> = {
       INT.wall,
     ],
     objects: [
-      {
-        id: 'escalier-bas',
-        x: 24,
-        y: 52,
-        sprite: 'escalier',
-        portal: { room: 'tour-27', x: 108, y: 62 },
-      },
+      { id: 'escalier-bas', x: 24, y: 52, sprite: 'escalier', depth: 56 },
       { id: 'antenne', x: 132, y: 56, sprite: 'reverbere', solid: true, dialogue: 'antenne' },
       { id: 'vue', x: 72, y: 50, sprite: 'panneau', solid: true, dialogue: 'vue-tour' },
       // Une étoile un peu plus grosse que les autres, posée dans le ciel : de quoi
@@ -464,7 +473,7 @@ export const ROOMS: Record<string, Room> = {
         dialogue: 'parapente',
       },
     ],
-    doors: [],
+    doors: [{ x: 24, y: 52, w: 16, h: 17, to: { room: 'tour-31', x: 108, y: 62 }, son: 'escalier' }],
   },
 
   // ═══════════════════════════════════════════════════════ chapitre 1 : la maison
@@ -567,8 +576,10 @@ export const ROOMS: Record<string, Room> = {
       'XXXXXX########XXXXXX',
       'XXXXXX#..##..#XXXXXX',
       'XXXXXX#......#XXXXXX',
-      'XXXXXX#......#XXXXXX',
-      'XXXXXX#......#XXXXXX',
+      // L'escalier de la mezzanine est **dans le mur de gauche**, pas au milieu du
+      // passage : on monte en marchant dessus, sans rien avoir à presser.
+      'XXXXXX.......#XXXXXX',
+      'XXXXXX.......#XXXXXX',
       'XXXXXX#......#XXXXXX',
       'XXXXXX#......#XXXXXX',
       'XXXXXX#......#XXXXXX',
@@ -586,9 +597,10 @@ export const ROOMS: Record<string, Room> = {
     objects: [
       {
         id: 'escalier',
-        ...at(7, 3),
+        x: 44,
+        y: 24,
         sprite: 'escalier',
-        portal: { room: 'mezzanine', x: 80, y: 110 },
+        depth: 28,
       },
       { id: 'plante', ...at(12, 12), sprite: 'plante', solid: true },
     ],
@@ -601,6 +613,8 @@ export const ROOMS: Record<string, Room> = {
         h: 8,
         to: { room: 'chambre-parents', x: 128, y: 128 },
       },
+      // On monte à la mezzanine en marchant dans l'escalier, à gauche.
+      { x: 48, y: 24, w: 8, h: 16, to: { room: 'mezzanine', x: 100, y: 42 }, son: 'escalier' },
       { x: 48, y: 72, w: 8, h: 16, to: { room: 'sdb', x: 144, y: 72 } },
       { x: 56, y: 136, w: 16, h: 8, to: { room: 'cuisine', x: 112, y: 28 } },
     ],
@@ -689,7 +703,7 @@ export const ROOMS: Record<string, Room> = {
         x: 104,
         y: 16,
         sprite: 'escalier',
-        portal: { room: 'couloir', x: 84, y: 44 },
+        depth: 20,
       },
       // Tout en bas de la pièce, centrée : loin de l'arrivée, on ne lui tombe plus dessus.
       {
@@ -725,7 +739,10 @@ export const ROOMS: Record<string, Room> = {
       },
       { id: 'carton', x: 40, y: 24, sprite: 'carton', solid: true },
     ],
-    doors: [],
+    doors: [
+      // On redescend en marchant dans l'escalier, en haut à droite.
+      { x: 104, y: 20, w: 16, h: 16, to: { room: 'couloir', x: 66, y: 52 }, son: 'escalier' },
+    ],
   },
 
   /**

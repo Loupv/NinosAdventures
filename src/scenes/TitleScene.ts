@@ -16,7 +16,7 @@ export class TitleScene extends Phaser.Scene {
   }
 
   create(): void {
-    const pal = 'real' as const;
+    const pal = 'titre' as const;
     state.palette = pal;
     const ink = shadeHex(pal, 3);
 

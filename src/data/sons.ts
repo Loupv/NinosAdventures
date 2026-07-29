@@ -207,6 +207,15 @@ export const SONS: Son[] = [
     maison: true,
   },
   {
+    id: 'pistolet',
+    quand: 'Le jet du pistolet à eau, sur l’écureuil de la cour.',
+    variantes: 2,
+    cherche:
+      'Un pschitt court et mouillé, une demi-seconde. Le vrai pistolet à eau de la maison, deux pressions différentes — ou une bouche qui souffle dans une paille dans un verre d’eau, c’est le même son et c’est plus drôle à enregistrer.',
+    priorite: 'important',
+    maison: true,
+  },
+  {
     id: 'refus',
     present: true,
     quand: 'Une porte fermée à clé, un passage qui refuse.',

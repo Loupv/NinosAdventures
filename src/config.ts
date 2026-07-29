@@ -21,6 +21,8 @@ export const KEYS = {
   left: ['LEFT', 'A', 'Q'],
   right: ['RIGHT', 'D'],
   action: ['SPACE', 'E'],
+  /** Le pistolet à eau. Sa propre touche : sinon il volerait l'interaction de tout. */
+  arroser: ['X'],
   cancel: ['ESC', 'BACKSPACE'],
   journal: ['ENTER', 'J'],
 } as const;

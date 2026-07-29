@@ -213,7 +213,7 @@ export const COUPLETS: string[] = [
 export const DIVERSION = {
   annonce: ['« Regarde bien. »'],
   papa: ['« NON MAIS CE CHAT. »'],
-  minuterie: ['« Tu as environ deux minutes. »'],
+  minuterie: ['« Tu vas voir !! »'],
 };
 
 /** Le bateau de papa qui remonte la rivière, pendant qu'on est sur le quai. */
@@ -237,8 +237,42 @@ export const ECUREUIL_VANNES = [
   '« Bon. »',
 ];
 
-/** Et quand on vient lui demander des comptes. */
-export const ECUREUIL_FUITE = 'L’écureuil détale.';
+/**
+ * Et quand on vient lui demander des comptes — **au pistolet à eau**. C'est la seule
+ * chose que l'écureuil ne discute pas, et c'est enfin à quoi sert le pistolet trouvé
+ * dans le coffre de la chambre : lui parler ne le fait plus fuir, l'arroser oui.
+ */
+export const ECUREUIL_TREMPE = ['« Non. »', '« Non non non — »'];
+export const ECUREUIL_FUITE = 'L’écureuil détale, trempé.';
+
+/**
+ * Et dans la tour, où l'arroser ne sert à rien : il change de coin, il râle, et son
+ * énigme reste entière. C'est du texte flottant, sans boîte — on n'interrompt pas
+ * l'escalade pour ça.
+ */
+export const ECUREUIL_MOUILLE = ['« HÉ ! »', '« Ça va pas ?! »', '« C’était pour quoi, ça ? »'];
+
+/**
+ * **Ce que dit chacun quand on l'arrose.** Une phrase flottante, sans boîte : on peut
+ * arroser tout le monde tout le temps, ça ne doit jamais couper le jeu.
+ *
+ * Personne ne se fâche vraiment. C'est le principe : le pistolet à eau ne sert à rien,
+ * et tout le monde a déjà eu une journée. Les listes tournent, phrase après phrase, pour
+ * que ça vaille le coup d'insister.
+ */
+export const ARROSES: Record<string, string[]> = {
+  maman: ['« Nino. »', '« Non. »', '« Range ça. »'],
+  papa: ['« Ah. »', '« De l’eau. »', '« Bon. »'],
+  moon: ['Moon ne bouge pas.', 'Moon ferme un œil.', 'Moon soupire.'],
+  poisson: ['« ... »', '« C’est de l’eau. »', '« Merci ? »'],
+  araignee: ['« Tiède. »', '« Encore. »'],
+  elephant: ['« Enfin. »', '« Il fait tellement chaud. »'],
+  hermione: ['Hermione rit très fort.', 'Hermione en veut encore.'],
+  parrain: ['« Il pleut ? »', '« Dedans ? »'],
+};
+
+/** Et pour tous les autres. */
+export const ARROSE_DEFAUT = ['« Hé. »', '« ... »', 'Personne ne réagit.'];
 
 // ═══════════════════════════════════════════════════════════════ 6. le poisson
 
@@ -276,7 +310,7 @@ export const PANIQUE: string[][] = [
 export const RETIRE = [
   'Nino retire le bouchon.',
   'Le poisson descend, très digne, la tête la première.',
-  '« On se reverra. »',
+  '« Merci, on se reverra. »',
 ];
 
 /**
@@ -368,7 +402,7 @@ export const FRAICHEURS_TEXTE: Record<string, string> = {
 export const OBJETS: Record<string, { nom: string; desc: string }> = {
   'pistolet-eau': {
     nom: 'Pistolet à eau',
-    desc: 'Trouvé tout au fond du coffre à jouets. Il fonctionne encore. C’est déjà beaucoup pour un objet de ce coffre.',
+    desc: 'Trouvé tout au fond du coffre à jouets. Il fonctionne encore, c’est déjà beaucoup pour un objet de ce coffre. X pour arroser.',
   },
   parapente: {
     nom: 'Parapente',
@@ -452,7 +486,11 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
    */
   reveil: [
     {
-      lines: ['Nino ouvre les yeux.', 'Il fait nuit, et il fait chaud.', 'Quelle heure il est ?'],
+      lines: [
+        'Nino ouvre les yeux.',
+        'Le soleil est déjà haut, et il fait chaud.',
+        'Quelle heure il est ?',
+      ],
     },
   ],
 
@@ -460,7 +498,7 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
     {
       when: () => !state.flag('volets-fermes'),
       lines: [
-        'La fenêtre est ouverte. Dehors il fait nuit noire, et chaud quand même.',
+        'La fenêtre est ouverte. Dehors, le soleil tape sur la cour.',
         'Nino tire les volets.',
       ],
       effects: { flag: 'volets-fermes' },
@@ -503,8 +541,7 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
     {
       lines: [
         'Un lit de camp, dans la mezzanine.',
-        'Papa dit que c’est pour les invités.',
-        'Il n’y a jamais eu d’invité.',
+        'Pas trop envie de dormir là avec cette chaleur...',
       ],
     },
   ],
@@ -513,8 +550,8 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
     {
       lines: [
         'Les toilettes.',
-        'Nino n’a pas envie. Il vérifie quand même.',
-        'On ne sait jamais.',
+        'On regarde dedans ? Un peu risqué.',
+        'Rien.. Déçu ?',
       ],
     },
   ],
@@ -534,7 +571,7 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
       lines: [
         'Nino essaie le pistolet à eau.',
         'Sur lui-même, d’abord. Pour vérifier.',
-        'Ça marche.',
+        'Ça marche. X pour arroser quelque chose.',
       ],
       effects: { flag: 'pistolet-teste' },
     },
@@ -588,7 +625,7 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
     {
       when: () => state.has('pizza'),
       speaker: 'Maman',
-      lines: ['Tu manges de la pizza en pleine nuit.', '...', 'Bon.'],
+      lines: ['Tu manges de la pizza froide au réveil.', '...', 'Bon.'],
     },
     /**
      * **Tant qu'elle cherche Hermione, elle est dans la cuisine et elle garde le frigo.**
@@ -1115,7 +1152,13 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
    * indice, jamais la réponse.
    */
   'escalier-garde': [
-    { lines: ['Il y a une bête assise en travers de l’escalier.'] },
+    {
+      lines: [
+        'Il n’y a pas d’escalier pour monter à l’étage.',
+        'Pas encore.',
+        'Quelqu’un ici doit savoir pourquoi.',
+      ],
+    },
   ],
 
   'moon-tour': [
@@ -1131,7 +1174,7 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
         reponses: ['Un chat', 'Un bébé', 'Papa'],
         bonne: 0,
         juste: {
-          lines: ['« Voilà. »', '« Monte. »'],
+          lines: ['« Voilà. »', 'Moon regarde le mur. Il y a un escalier, maintenant.', '« Monte. »'],
           effects: { flag: 'enigme-moon' },
         },
         faux: { lines: ['« Non. »', '« Réfléchis à qui tu parles. »'] },
@@ -1152,7 +1195,11 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
         reponses: ['Deux noisettes', 'Une pomme', 'Rien'],
         bonne: 0,
         juste: {
-          lines: ['« Exactement. »', '« Tu peux passer. »'],
+          lines: [
+            '« Exactement. »',
+            'L’escalier de l’étage est là, d’un coup.',
+            '« Tu peux passer. »',
+          ],
           effects: { flag: 'enigme-ecureuil' },
         },
         faux: { lines: ['« Non. »', '« Pense plus grand. »'] },
@@ -1173,7 +1220,11 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
         reponses: ['Un parapente', 'Un cerf-volant', 'Un avion'],
         bonne: 0,
         juste: {
-          lines: ['« Oui. »', '« Tu vas en avoir besoin. »'],
+          lines: [
+            '« Oui. »',
+            'Elle tire un fil. Les marches suivantes apparaissent.',
+            '« Tu vas en avoir besoin. »',
+          ],
           effects: { flag: 'enigme-araignee' },
         },
         faux: { lines: ['« Non. »', '« Il n’y a pas de ficelle. »'] },
@@ -1194,7 +1245,11 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
         reponses: ['Beaucoup', 'Douze mille', 'Je ne sais pas'],
         bonne: 2,
         juste: {
-          lines: ['« Moi non plus. »', '« Passe. »'],
+          lines: [
+            '« Moi non plus. »',
+            'Il se pousse. Derrière lui, l’escalier du toit.',
+            '« Passe. »',
+          ],
           effects: { flag: 'enigme-elephant' },
         },
         faux: { lines: ['« Non. »', '« Tu ne sais pas. »', '« Dis-le. »'] },
@@ -1216,12 +1271,13 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
     },
   ],
 
-  /** Le ciel, si on insiste. */
+  /** Le ciel, si on insiste. Il est en train de tourner, et ça compte. */
   'ciel-tour': [
     {
       lines: [
         'Les étoiles ne bougent pas.',
-        'Elles ont l’air d’attendre quelque chose, elles aussi.',
+        'Mais le ciel, derrière, commence à être gris.',
+        'C’est bientôt le matin.',
       ],
     },
   ],
@@ -1231,7 +1287,13 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
       when: () => state.flag('parapente-pris'),
       lines: ['Il n’y a plus de parapente sur le toit.'],
     },
-    { lines: ['Un parapente, plié contre le parapet.', 'À qui il est, on ne sait pas.'] },
+    {
+      lines: [
+        'Un parapente, plié contre le parapet.',
+        'À qui il est, on ne sait pas.',
+        'Il faut rentrer avant que ses parents se réveillent.',
+      ],
+    },
   ],
 
   'parapente-envol': [
