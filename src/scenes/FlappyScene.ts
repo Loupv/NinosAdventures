@@ -106,6 +106,8 @@ export class FlappyScene extends Phaser.Scene {
       .map((k) => Phaser.Input.Keyboard.JustDown(k))
       .some(Boolean);
 
+    // **On peut toujours se réveiller** : ÉCHAP sort du rêve à tout moment, gagné ou pas.
+    // Sans ça, un joueur qui n'arrive pas à passer cinq tuyaux resterait enfermé dedans.
     if (sortie) {
       this.repartir();
       return;
@@ -136,7 +138,7 @@ export class FlappyScene extends Phaser.Scene {
         if (this.etat === 'gagne') this.repartir();
         else {
           this.reinitialiser();
-          this.annoncer('', FUSEE.demarrer);
+          this.annoncer(FUSEE.score(this.score), `${FUSEE.reessayer}   ${FUSEE.abandonner}`);
           this.etat = 'attente';
         }
       }
@@ -226,7 +228,7 @@ export class FlappyScene extends Phaser.Scene {
   private perdre(): void {
     this.etat = 'perdu';
     this.cameras.main.shake(200, 0.008);
-    this.annoncer(FUSEE.score(this.score), FUSEE.reessayer);
+    this.annoncer(FUSEE.score(this.score), `${FUSEE.reessayer}   ${FUSEE.abandonner}`);
   }
 
   private gagner(): void {
@@ -258,8 +260,16 @@ export class FlappyScene extends Phaser.Scene {
     this.compteur.setLines([`${this.score}/${OBJECTIF}`], shadeHex(PALETTE, 0));
   }
 
-  /** Retour dans la chambre des parents : Nino se réveille. */
+  /**
+   * Retour dans la chambre des parents : Nino se réveille.
+   *
+   * **On pose le flag du rêve dans les deux cas**, qu'on ait gagné la pièce ou qu'on se soit
+   * réveillé en cours de route : c'est lui qui fait apparaître Hermione au bord du lit, et
+   * la chasse ne doit jamais dépendre de l'adresse de personne.
+   */
   private repartir(): void {
+    state.setFlag('reve-fait');
+    state.save();
     state.locked = false;
     this.scene.start('World', { room: 'chambre-parents', x: 80, y: 70 });
   }

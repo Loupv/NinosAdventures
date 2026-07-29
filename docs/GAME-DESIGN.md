@@ -347,6 +347,18 @@ dire, et c'est volontaire : Nino les ramasse d'abord, on comprendra après. Elle
 page dans le journal, et leur registre dans
 **[pieces.ts](../src/data/pieces.ts)**.
 
+**Et au réveil, Hermione est là.** Elle a rampé jusqu'au grand lit pendant qu'il dormait,
+et elle dépasse du bord du lit. C'est la deuxième cachette de la chasse, et **elle n'existe
+qu'une fois le rêve fait** — comme la cachette de la salle de bain n'existe qu'une fois la
+baignoire vidée. Le rêve devient donc obligatoire, et c'est très bien : c'est la scène la
+plus drôle du jeu, personne ne devrait pouvoir passer à côté.
+
+Ça ne demande aucune adresse : **le flag est posé au réveil, gagné ou pas.** Se réveiller
+avec ÉCHAP après trois échecs compte autant que passer les cinq tuyaux — et le grand lit
+est la seule chose à faire dans cette chambre, donc personne ne cherche longtemps. La
+réplique du réveil ne parle que du rêve — *« Quel drôle de rêve. Il y avait une fusée, et
+ça sentait bizarre. »* — et jamais de sa sœur : elle est là, à l'écran, ça suffit.
+
 ### Le coffre à jouets
 
 Il ne contient plus seulement un dinosaure vexé : tout au fond, il y a le **pistolet à

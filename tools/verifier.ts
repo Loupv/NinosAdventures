@@ -173,12 +173,24 @@ for (const [i, c] of CACHETTES.entries()) {
  * sans jamais entrer dans la salle de bain, et personne ne s'en apercevrait.
  */
 const reveles = CACHETTES.map((c, i) => ({ i, revele: c.revele })).filter((c) => c.revele);
-if (reveles.length !== 1) {
-  dit(`CHAÎNE : ${reveles.length} cachettes révélées par un flag, il en faut exactement une`);
-} else if (reveles[0].i !== CACHETTES_MAISON - 1) {
-  dit(`CHAÎNE : la cachette révélée est la nº${reveles[0].i}, elle doit être la dernière de la maison (nº${CACHETTES_MAISON - 1})`);
-} else if (reveles[0].revele !== 'bouchon-retire') {
-  dit(`CHAÎNE : la dernière cachette de la maison attend « ${reveles[0].revele} », pas le bouchon`);
+const derniere = reveles.find((r) => r.i === CACHETTES_MAISON - 1);
+if (!derniere) {
+  dit(`CHAÎNE : la dernière cachette de la maison (nº${CACHETTES_MAISON - 1}) n'est révélée par aucun flag`);
+} else if (derniere.revele !== 'bouchon-retire') {
+  dit(`CHAÎNE : la dernière cachette de la maison attend « ${derniere.revele} », pas le bouchon`);
+}
+// Les autres cachettes révélées rendent chacune une scène obligatoire, et c'est voulu — mais
+// chaque flag doit être posé par quelque chose, sinon la chasse s'arrête là pour toujours.
+const POSEURS: Record<string, string> = {
+  'bouchon-retire': 'la bonde de la baignoire',
+  'reve-fait': 'le rêve de la fusée',
+};
+for (const r of reveles) {
+  if (r.i >= CACHETTES_MAISON) {
+    dit(`CHAÎNE : la cachette nº${r.i} est dehors et attend un flag — Maman n'y arriverait jamais`);
+  } else if (!POSEURS[r.revele!]) {
+    dit(`CHAÎNE : la cachette nº${r.i} attend « ${r.revele} », et rien de connu ne pose ce flag`);
+  }
 }
 // Et les cachettes du dehors doivent bien être dehors : une cachette de la maison placée
 // après le seuil ne serait jamais nécessaire, et une du dehors avant le seuil rendrait

@@ -286,6 +286,16 @@ export class WorldScene extends Phaser.Scene {
       if (id === 'erdre' && !state.flag('bateau-arrive')) {
         this.time.delayedCall(3800, () => this.bateauArrive());
       }
+      // Au sortir du rêve de la fusée : il raconte son rêve à personne. Hermione, elle,
+      // est déjà apparue au bord du lit — c'est le flag du rêve qui l'a mise là, et on ne
+      // la commente pas.
+      if (id === 'chambre-parents' && state.flag('reve-fait') && !state.flag('reve-raconte')) {
+        this.time.delayedCall(500, () => {
+          if (this.room.id === 'chambre-parents' && !state.locked && !this.transitioning) {
+            this.runDialogue('sortie-du-reve');
+          }
+        });
+      }
       // Sur la terrasse, **c'est papa qui interpelle Nino**, pas l'inverse : il faut qu'il
       // le voie passer dans la rue pour que la blague existe. Le temps d'entrer dans
       // l'écran, et il lève la tête.

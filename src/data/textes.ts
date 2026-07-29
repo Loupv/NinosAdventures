@@ -73,6 +73,8 @@ export const FUSEE = {
   gagnePiece: 'Une pièce.',
   gagneEncore: 'Encore une fois.',
   reveil: 'ESPACE pour te réveiller',
+  /** Rien n'obligeait à le dire, et personne ne trouvait la sortie du rêve. */
+  abandonner: 'ÉCHAP pour te réveiller',
 };
 
 /** Le vol en parapente, depuis le toit de la tour. */
@@ -516,6 +518,22 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
   ],
 
   'reveil-force': [{ lines: ['Nino sort du lit.', 'Il dégouline de sueur.'] }],
+
+  /**
+   * **Au sortir du rêve de la fusée.** Il se réveille dans le grand lit des parents, et sa
+   * sœur est là, à dépasser du bord du lit : elle a rampé jusque là pendant qu'il dormait.
+   * On ne le dit pas — on le voit. La réplique ne parle que du rêve.
+   */
+  'sortie-du-reve': [
+    {
+      lines: [
+        'Nino ouvre les yeux.',
+        'Quel drôle de rêve.',
+        'Il y avait une fusée, et ça sentait bizarre.',
+      ],
+      effects: { flag: 'reve-raconte' },
+    },
+  ],
 
   lit: [
     {

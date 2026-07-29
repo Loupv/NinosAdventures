@@ -24,6 +24,9 @@ export interface Cachette {
    * pleine, on ne voit pas ce qu'il y a derrière. C'est ce qui rend la chaîne du poisson
    * obligatoire : sans elle, la chasse ne peut pas se terminer, et Maman ne quitte jamais
    * la cuisine.
+   *
+   * Deux cachettes s'en servent, et chaque fois pour rendre une scène obligatoire : le rêve
+   * de la fusée, et le poisson de la baignoire.
    */
   revele?: string;
   room: string;
@@ -39,9 +42,16 @@ export const CACHETTES: Cachette[] = [
   // ── sur celles-là, elle monte au salon et le frigo est libre.
   { room: 'couloir', x: 91, y: 100, depth: 104 }, // derrière la plante, un côté qui dépasse
   // **Pas dans la cuisine** : Maman y cherche justement Hermione jusqu'au bout de la
-  // chasse, et une petite sœur cachée dans la pièce où sa mère la cherche, ça ne tient
-  // pas debout. Elle est donc chez les parents, derrière leur armoire.
-  { room: 'chambre-parents', x: 115, y: 24, depth: 28 },
+  // chasse, et une petite sœur cachée dans la pièce où sa mère la cherche, ça ne tient pas
+  // debout. Elle est donc chez les parents — et elle n'y est **qu'au sortir du rêve de la
+  // fusée** : elle a rampé jusqu'au grand lit pendant qu'il dormait. Nino ouvre les yeux,
+  // et elle est là, à dépasser du bord du lit.
+  //
+  // C'est ce qui rend le rêve obligatoire, comme la baignoire rend le poisson obligatoire.
+  // Le grand lit est la seule chose à faire dans cette chambre : personne ne peut rester
+  // bloqué longtemps. Et se réveiller sans avoir gagné suffit — le rêve ne demande aucune
+  // adresse, seulement d'y être allé.
+  { room: 'chambre-parents', x: 85, y: 24, depth: 28, revele: 'reve-fait' },
   { room: 'chambre', x: 20, y: 40, depth: 42 }, // sous le lit de Nino
   { room: 'mezzanine', x: 46, y: 28, depth: 30 }, // derrière le carton
   // La cinquième ne se voit qu'une fois la baignoire vidée : c'est elle qui rend toute la
