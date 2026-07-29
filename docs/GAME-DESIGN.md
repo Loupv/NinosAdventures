@@ -76,9 +76,21 @@ salle de bain ──┤             │
         │        ┌ FENÊTRE ┐        │
         └────────┴────┬────┴────────┘
                       │ (une fois que le chat a parlé)
-                   NANTES ──── le bord de l'Erdre
-                                (papa, capitaine)
+                   NANTES
+                      │
+              LA RUE DES BARS   deux terrasses, trois personnes très occupées
+                      │
+              LE BORD DE L'ERDRE   (papa, capitaine — puis papa, repêché)
+                      │ (une fois le bateau coulé)
+              UNE TERRASSE, LA NUIT   papa et le parrain, un verre à la main
+                      │
+              LA TOUR DE BRETAGNE
 ```
+
+**Deux écrans de ville qui ne servent à rien**, et c'est leur fonction : entre deux
+morceaux d'histoire, un écran où l'on ne fait que traverser en écoutant des gens dire
+n'importe quoi donne au trajet une longueur. La rue des bars est en plein jour ; sur la
+terrasse, **la nuit est tombée** — personne ne l'a vue tomber.
 
 La maison et la ville tiennent sur **un seul écran** chacune (20 × 18 tuiles de 8 px),
 sans scrolling : c'est la grammaire de Zelda 1 et de Pokémon, et c'est très lisible pour
@@ -339,6 +351,18 @@ page dans le journal, et leur registre dans
 
 Il ne contient plus seulement un dinosaure vexé : tout au fond, il y a le **pistolet à
 eau** de Nino. Il fonctionne encore.
+
+Le pistolet s'utilise avec **X**, sa propre touche — ESPACE devait rester la parole, parce
+que l'écureuil de la tour a une énigme à poser et qu'une interaction ne peut pas être les
+deux à la fois. Il arrose ce qu'on a en face, et si ce n'est personne, il arrose le vide.
+Chacun a sa phrase quand il le reçoit, flottante et sans boîte : personne ne se fâche
+vraiment, tout le monde a déjà eu une journée. Le seul effet réel du jeu est sur
+l'écureuil : celui de la cour détale pour de bon, celui de la tour change de coin en
+râlant et garde son énigme entière.
+
+> **À décider.** Le pistolet est trouvé trop facilement pour ce qu'il permet : il devrait
+> **récompenser une quête de la maison** plutôt que d'être au fond d'un coffre qu'on ouvre
+> en passant. Laquelle, et à quel moment, reste à discuter.
 
 ### Branches secondaires déjà ouvertes
 

@@ -174,6 +174,29 @@ const PAPA_CAPITAINE: Art = [
   '.000.000',
 ];
 
+/**
+ * Le parrain, attablé avec papa sur une terrasse de la ville. Plus large que papa, casquette
+ * et grosse moustache : à huit pixels de large, c'est tout ce qu'il faut pour qu'on voie
+ * quelqu'un d'autre.
+ */
+const PARRAIN: Art = [
+  '.000000.',
+  '.033330.',
+  '.011110.',
+  '.111111.',
+  '.022220.',
+  '.020020.',
+  '.000000.',
+  '.022220.',
+  '.011110.',
+  '02222220',
+  '32222223',
+  '.222222.',
+  '.022220.',
+  '..2..2..',
+  '.000.000',
+];
+
 /** La maîtresse — grande, lunettes, chignon. Chapitre école, à venir. */
 const MAITRESSE: Art = [
   '..0000..',
@@ -863,6 +886,26 @@ const VIDEOPROJECTEUR: Art = [
 ];
 
 
+/**
+ * Une table de bistrot avec deux verres dessus. C'est le seul meuble des terrasses : deux
+ * verres suffisent à dire « des gens boivent un coup ici », et une table ronde sur un pied
+ * suffit à dire « dehors ».
+ */
+const TABLE_BAR: Art = [
+  '..0.0.....0.0...',
+  '..0.0.....0.0...',
+  '..030.....030...',
+  '...0.......0....',
+  '.0000000000000..',
+  '.0222222222220..',
+  '.0333333333330..',
+  '.0000000000000..',
+  '......000.......',
+  '......020.......',
+  '......020.......',
+  '....0000000.....',
+];
+
 const PLANTE: Art = [
   '..000000..',
   '.02222220.',
@@ -1483,6 +1526,7 @@ export const IMAGES: Record<string, Art> = {
   wc: WC,
   tele: TELE,
   table: TABLE,
+  'table-bar': TABLE_BAR,
   plante: PLANTE,
   ventilo: VENTILO,
   armoire: ARMOIRE,
@@ -1490,6 +1534,7 @@ export const IMAGES: Record<string, Art> = {
   ballon: BALLON,
   corde: CORDE,
   elephant: ELEPHANT,
+  parrain: PARRAIN,
   'maman-velo': MAMAN_VELO,
   'maman-helico': MAMAN_HELICO,
   'maman-jetpack': MAMAN_JETPACK,

@@ -79,6 +79,13 @@ export const ETAPES: Etape[] = [
     flags: ['reveil', 'bouchon-retire', 'maman-au-salon'],
     hermione: 9,
   },
+  { touche: 'b', nom: 'La rue des bars', room: 'bars', flags: DEHORS },
+  {
+    touche: 't',
+    nom: 'La terrasse, papa et le parrain',
+    room: 'terrasse',
+    flags: APRES_LE_NAUFRAGE,
+  },
   { touche: '0', nom: 'La tour', room: 'tour-hall', flags: APRES_LE_NAUFRAGE },
   {
     touche: 'p',

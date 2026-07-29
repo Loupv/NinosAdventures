@@ -107,7 +107,9 @@ export const LIEUX: Record<string, string> = {
   salon: 'Le salon',
   cour: 'La cour',
   nantes: 'Nantes',
+  bars: 'La rue des bars',
   erdre: 'Le bord de l’Erdre',
+  terrasse: 'Une terrasse, la nuit',
   'tour-hall': 'La Tour de Bretagne',
   'tour-13': 'Treizième étage',
   'tour-27': 'Vingt-septième étage',
@@ -449,6 +451,10 @@ export const CASTING: Record<string, { nom: string; role: string }> = {
   ecureuil: {
     nom: 'L’écureuil',
     role: 'À moitié caché, toujours. Pousse Nino à viser la fenêtre avec le ballon, puis à couler le bateau de papa, puis garde un escalier avec une énigme. Nie tout, à chaque fois.',
+  },
+  parrain: {
+    nom: 'Le parrain',
+    role: 'Attablé avec papa sur une terrasse, la nuit. Ne s’étonne de rien, pas même d’un papa trempé, pas même d’un enfant de sept ans qui passe à cette heure-ci.',
   },
   elephant: {
     nom: 'L’Éléphant des Machines',
@@ -1254,6 +1260,112 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
         },
         faux: { lines: ['« Non. »', '« Tu ne sais pas. »', '« Dis-le. »'] },
       },
+    },
+  ],
+
+  // ------------------------------------------------------ la rue des bars
+  /**
+   * On ne fait que traverser. Tout le monde ici est occupé à quelque chose qui n'a pas de
+   * fin, et personne ne s'adresse vraiment à Nino : c'est ce qui rend la ville grande.
+   */
+  'bar-porte': [
+    {
+      lines: [
+        'Un bar.',
+        'Ça sent le café et le sirop.',
+        'Il y a des adultes debout qui parlent tous en même temps.',
+      ],
+    },
+  ],
+
+  'enseigne-bar': [
+    { lines: ['L’enseigne grince un peu.', 'Nino ne sait pas encore lire les mots longs.'] },
+  ],
+
+  'table-bar': [
+    {
+      lines: ['Deux verres et un ticket sous un verre.', 'Personne à cette table.'],
+    },
+  ],
+
+  'compteur-de-fenetres': [
+    {
+      speaker: 'Un monsieur',
+      lines: ['« Quarante-trois. »', '« Quarante-quatre. »', '« Ne me parlez pas, je compte. »'],
+    },
+  ],
+
+  'dame-baguettes': [
+    {
+      speaker: 'Une dame',
+      lines: [
+        '« J’ai acheté douze baguettes. »',
+        '« On est deux. »',
+        '« Je ne veux pas en parler. »',
+      ],
+    },
+  ],
+
+  'monsieur-immobile': [
+    {
+      lines: [
+        'Un monsieur, parfaitement immobile.',
+        'Il attend quelqu’un depuis assez longtemps pour avoir arrêté d’y croire.',
+      ],
+    },
+  ],
+
+  // ------------------------------------------------------ la terrasse, la nuit
+  'bar-nuit': [
+    {
+      lines: [
+        'Le bar est encore ouvert.',
+        'Dedans, quelqu’un raconte une histoire très drôle à personne.',
+      ],
+    },
+  ],
+
+  /**
+   * **La blague de papa.** Il est de dos à la rue, il a bu un demi, et il ne reconnaît pas
+   * son fils — ou il fait semblant, et c'est encore mieux. Le rire qui s'éteint tout seul
+   * est la seule chose du jeu qui dit que les adultes savent, un peu.
+   */
+  'papa-terrasse': [
+    {
+      when: () => state.flag('papa-terrasse-vu'),
+      speaker: 'Papa',
+      lines: ['« Il vous ressemblait vraiment, hein. »', '« ... »', '« Bon. »'],
+    },
+    {
+      speaker: 'Papa',
+      lines: [
+        '« Vous savez... »',
+        '« J’ai un fils qui vous ressemble comme deux gouttes d’eau. »',
+        '« Mais lui il est couché à cette heure-ci. »',
+        '« Haha... »',
+        '« Haha... »',
+        '« Ha. »',
+      ],
+      effects: { flag: 'papa-terrasse-vu' },
+    },
+  ],
+
+  parrain: [
+    {
+      when: () => state.flag('papa-terrasse-vu'),
+      speaker: 'Le parrain',
+      lines: ['« Ton père est tout mouillé. »', '« Je n’ai rien demandé. »'],
+    },
+    {
+      speaker: 'Le parrain',
+      lines: ['« Tiens. »', '« Un client. »', '« Assieds-toi si tu veux. »'],
+    },
+  ],
+
+  serveur: [
+    {
+      speaker: 'Le serveur',
+      lines: ['« On ferme dans deux heures. »', '« Ou trois. »', '« Ça dépend d’eux. »'],
     },
   ],
 

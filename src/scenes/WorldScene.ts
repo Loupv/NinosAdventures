@@ -210,8 +210,7 @@ export class WorldScene extends Phaser.Scene {
     // L'heure du jour, en deux drapeaux. On se lève vers midi ; la nuit tombe en entrant
     // dans la tour ; sur le toit le ciel pâlit déjà — et une fois rentré par la fenêtre
     // c'est le matin, donc les couleurs du jour à nouveau.
-    if (id.startsWith('tour')) state.setFlag('nuit');
-    if (id === 'tour-toit') state.setFlag('aube');
+    if (this.room.heure) state.setFlag(this.room.heure);
     this.pal =
       state.flag('aube') && !state.flag('parapente-rentre')
         ? paletteAube(paletteNocturne(this.room.palette))
@@ -286,6 +285,16 @@ export class WorldScene extends Phaser.Scene {
       // de revenir : il attendait sur le quai devant une rivière vide.
       if (id === 'erdre' && !state.flag('bateau-arrive')) {
         this.time.delayedCall(3800, () => this.bateauArrive());
+      }
+      // Sur la terrasse, **c'est papa qui interpelle Nino**, pas l'inverse : il faut qu'il
+      // le voie passer dans la rue pour que la blague existe. Le temps d'entrer dans
+      // l'écran, et il lève la tête.
+      if (id === 'terrasse' && !state.flag('papa-terrasse-vu')) {
+        this.time.delayedCall(1400, () => {
+          if (this.room.id === 'terrasse' && !state.locked && !this.transitioning) {
+            this.runDialogue('papa-terrasse');
+          }
+        });
       }
     });
     bus.emit(EV.hud);

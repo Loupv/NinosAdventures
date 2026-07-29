@@ -104,6 +104,12 @@ export interface Room {
    * déplacement horizontal, et la caméra suit si la pièce dépasse l'écran.
    */
   view?: 'top' | 'side';
+  /**
+   * Ce que la pièce fait à l'heure du jeu, une fois pour toutes en y entrant. La nuit
+   * tombe sur la terrasse de la ville, et le jour se lève sur le toit de la tour : c'est
+   * la pièce qui le dit, pas une liste d'identifiants dans la scène.
+   */
+  heure?: 'nuit' | 'aube';
   /** Où Nino apparaît si on entre dans la pièce sans venir d'une porte. */
   spawn: { x: number; y: number };
   tiles: string[];
@@ -169,6 +175,7 @@ export const ROOMS: Record<string, Room> = {
     id: 'tour-hall',
     palette: 'ville',
     theme: 'ville',
+    heure: 'nuit',
     spawn: { x: 32, y: 128 },
     tiles: [
       INT.wall,
@@ -216,7 +223,7 @@ export const ROOMS: Record<string, Room> = {
       { id: 'plante', ...at(17, 14), sprite: 'plante', solid: true },
     ],
     doors: [
-      { x: 24, y: 136, w: 16, h: 8, to: { room: 'erdre', x: 300, y: 96 } },
+      { x: 24, y: 136, w: 16, h: 8, to: { room: 'terrasse', x: 144, y: 104 } },
       // On monte en marchant dans l'escalier. Moon garde la marche : sans son énigme,
       // il nous renvoie au pied des marches.
       {
@@ -236,6 +243,7 @@ export const ROOMS: Record<string, Room> = {
     id: 'tour-13',
     palette: 'ville',
     theme: 'ville',
+    heure: 'nuit',
     spawn: { x: 52, y: 108 },
     tiles: [
       PALIER.vide,
@@ -298,6 +306,7 @@ export const ROOMS: Record<string, Room> = {
     id: 'tour-27',
     palette: 'ville',
     theme: 'ville',
+    heure: 'nuit',
     spawn: { x: 52, y: 108 },
     tiles: [
       PALIER.vide,
@@ -373,6 +382,7 @@ export const ROOMS: Record<string, Room> = {
     id: 'tour-31',
     palette: 'ville',
     theme: 'ville',
+    heure: 'nuit',
     spawn: { x: 52, y: 108 },
     tiles: [
       PALIER.vide,
@@ -438,6 +448,7 @@ export const ROOMS: Record<string, Room> = {
     id: 'tour-toit',
     palette: 'ville',
     theme: 'ville',
+    heure: 'aube',
     spawn: { x: 40, y: 120 },
     tiles: [
       ...CIEL,
@@ -1247,7 +1258,7 @@ export const ROOMS: Record<string, Room> = {
       },
     ],
     doors: [
-      { x: 152, y: 96, w: 8, h: 16, to: { room: 'erdre', x: 24, y: 96 } },
+      { x: 152, y: 96, w: 8, h: 16, to: { room: 'bars', x: 16, y: 104 } },
       { x: 48, y: 136, w: 16, h: 8, to: { room: 'cour', x: 48, y: 30 } },
     ],
   },
@@ -1257,6 +1268,143 @@ export const ROOMS: Record<string, Room> = {
    * l'horizontale et on saute. Le bateau de papa flotte au second plan, derrière
    * Nino, plus haut à l'écran — donc plus loin.
    */
+  /**
+   * **La rue des bars**, entre la place et la rivière. Rien à y faire : deux terrasses,
+   * trois personnes qui ne vont nulle part, et une rue qui continue. C'est exprès — entre
+   * deux morceaux d'histoire, un écran où l'on ne fait que traverser et écouter des gens
+   * dire n'importe chose donne au trajet une longueur.
+   */
+  bars: {
+    id: 'bars',
+    palette: 'ville',
+    theme: 'ville',
+    spawn: { x: 16, y: 104 },
+    tiles: [
+      INT.wall,
+      INT.wall,
+      INT.wall,
+      INT.floor,
+      INT.floor,
+      INT.floor,
+      INT.floor,
+      '#,,,,,,,,,,,,,,,,,,#',
+      INT.floor,
+      INT.floor,
+      INT.floor,
+      INT.floor,
+      '....................',
+      '....................',
+      INT.floor,
+      INT.floor,
+      '#,,,,,,,,,,,,,,,,,,#',
+      INT.wall,
+    ],
+    objects: [
+      // Deux devantures, dans le mur du haut. On n'entre pas : à sept ans, on n'entre pas.
+      { id: 'bar-1', x: 24, y: 16, sprite: 'porte', solid: true, dialogue: 'bar-porte' },
+      { id: 'enseigne-1', x: 48, y: 18, sprite: 'panneau', solid: true, dialogue: 'enseigne-bar' },
+      { id: 'bar-2', x: 112, y: 16, sprite: 'porte', solid: true, dialogue: 'bar-porte' },
+      // Les terrasses.
+      { id: 'table-bar-1', x: 32, y: 44, sprite: 'table-bar', solid: true, dialogue: 'table-bar' },
+      { id: 'table-bar-2', x: 96, y: 52, sprite: 'table-bar', solid: true, dialogue: 'table-bar' },
+      // Trois personnes très occupées.
+      {
+        id: 'compteur-de-fenetres',
+        x: 72,
+        y: 30,
+        sprite: 'copain',
+        dialogue: 'compteur-de-fenetres',
+      },
+      {
+        id: 'dame-baguettes',
+        x: 120,
+        y: 88,
+        sprite: 'copain',
+        dialogue: 'dame-baguettes',
+        errance: { rayon: 30, vitesse: 22 },
+      },
+      { id: 'monsieur-immobile', x: 64, y: 104, sprite: 'copain', dialogue: 'monsieur-immobile' },
+      { id: 'reverbere', x: 136, y: 36, sprite: 'reverbere', solid: true, dialogue: 'reverbere' },
+    ],
+    doors: [
+      { x: 0, y: 96, w: 8, h: 16, to: { room: 'nantes', x: 144, y: 104 } },
+      { x: 152, y: 96, w: 8, h: 16, to: { room: 'erdre', x: 24, y: 96 } },
+    ],
+  },
+
+  /**
+   * **La terrasse**, entre la rivière et la tour. C'est ici que la nuit tombe : personne ne
+   * la voit tomber, on sort du quai et il fait noir. Papa et le parrain boivent un verre à
+   * une table, alors que papa vient d'être repêché un écran plus tôt — et comme d'habitude,
+   * personne ne trouve ça bizarre.
+   */
+  terrasse: {
+    id: 'terrasse',
+    palette: 'ville',
+    theme: 'ville',
+    heure: 'nuit',
+    spawn: { x: 16, y: 104 },
+    tiles: [
+      INT.wall,
+      INT.wall,
+      INT.wall,
+      INT.floor,
+      INT.floor,
+      INT.floor,
+      INT.floor,
+      INT.floor,
+      '#,,,,,,,,,,,,,,,,,,#',
+      INT.floor,
+      INT.floor,
+      INT.floor,
+      '....................',
+      '....................',
+      INT.floor,
+      INT.floor,
+      '#,,,,,,,,,,,,,,,,,,#',
+      INT.wall,
+    ],
+    objects: [
+      { id: 'bar-nuit', x: 32, y: 16, sprite: 'porte', solid: true, dialogue: 'bar-nuit' },
+      { id: 'enseigne-nuit', x: 60, y: 18, sprite: 'panneau', solid: true, dialogue: 'enseigne-bar' },
+      // La table de papa, et eux deux de chaque côté. Ils sont posés assez haut pour que
+      // le plateau leur coupe les jambes : à cette taille, c'est tout ce qu'il faut pour
+      // qu'on les voie assis.
+      {
+        id: 'table-papa',
+        x: 64,
+        y: 52,
+        sprite: 'table-bar',
+        solid: true,
+        // Serrée : sinon la table leur volait la parole à tous les deux.
+        portee: 4,
+        dialogue: 'table-bar',
+      },
+      {
+        id: 'papa-terrasse',
+        x: 52,
+        y: 48,
+        sprite: 'papa',
+        priorite: 2,
+        dialogue: 'papa-terrasse',
+      },
+      { id: 'parrain', x: 84, y: 48, sprite: 'parrain', priorite: 2, dialogue: 'parrain' },
+      {
+        id: 'serveur',
+        x: 120,
+        y: 88,
+        sprite: 'copain',
+        dialogue: 'serveur',
+        errance: { rayon: 26, vitesse: 24 },
+      },
+      { id: 'reverbere', x: 132, y: 36, sprite: 'reverbere', solid: true, dialogue: 'reverbere' },
+    ],
+    doors: [
+      { x: 0, y: 96, w: 8, h: 16, to: { room: 'erdre', x: 300, y: 96 } },
+      { x: 152, y: 96, w: 8, h: 16, to: { room: 'tour-hall', x: 32, y: 128 } },
+    ],
+  },
+
   erdre: {
     id: 'erdre',
     palette: 'eau',
@@ -1370,7 +1518,7 @@ export const ROOMS: Record<string, Room> = {
         y: 88,
         w: 8,
         h: 16,
-        to: { room: 'tour-hall', x: 32, y: 128 },
+        to: { room: 'terrasse', x: 16, y: 104 },
         needsFlag: 'bateau-coule',
         blockedDialogue: ['quai-est'],
       },
