@@ -850,6 +850,9 @@ export class WorldScene extends Phaser.Scene {
     }
     const cachette = cachetteActuelle(state.hermione);
     if (!cachette || cachette.room !== this.room.id) return;
+    // Une cachette peut attendre son heure : derrière la baignoire, il faut que l'eau soit
+    // partie pour qu'on voie quelque chose. C'est ce qui rend le poisson obligatoire.
+    if (cachette.revele && !state.flag(cachette.revele)) return;
     // Elle respire sur place : animée, mais elle ne quitte jamais sa cachette.
     this.trySpawn({
       id: 'hermione',
@@ -1222,6 +1225,9 @@ export class WorldScene extends Phaser.Scene {
    */
   private histoireDuPoisson(l: Live): void {
     state.locked = true;
+    // Voir un poisson dans une baignoire donne faim à un chat. C'est ce flag qui, plus
+    // tard, lui fera accepter la pizza.
+    state.setFlag('poisson-vu');
     this.sortirDeLEau(l);
     const focusY = l.def.y;
     const dire = (lines: string[], onDone: () => void) =>
@@ -1501,6 +1507,9 @@ export class WorldScene extends Phaser.Scene {
     const fin = () => {
       maman.destroy();
       state.hermione += 1;
+      // La dernière : elle renonce, Hermione suit Nino — et Maman monte enfin au salon,
+      // ce qui libère le frigo et toute la suite.
+      if (state.hermione >= CACHETTES.length) state.setFlag('maman-au-salon');
       toast(ANNONCES.hermioneTrouvee(state.hermione, CACHETTES.length));
       state.save();
       if (!derniere) {

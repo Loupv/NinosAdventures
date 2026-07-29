@@ -878,12 +878,15 @@ export const ROOMS: Record<string, Room> = {
         solid: true,
         dialogue: 'carrelage',
       },
+      // Elle cherche Hermione, et elle garde le frigo. Elle ne montera au salon que
+      // quand elle aura renoncé — c'est-à-dire quand on l'aura trouvée partout.
       {
         id: 'maman',
         ...at(13, 13),
         sprite: 'maman',
         dialogue: 'maman',
-        hideIfFlag: 'anniversaire',
+        errance: { rayon: 20 },
+        hideIfFlag: 'maman-au-salon',
       },
       // Tout ça était en préparation depuis le matin.
       { id: 'gateau', x: 100, y: 66, sprite: 'gateau', depth: 90, showIfFlag: 'anniversaire' },
@@ -997,6 +1000,7 @@ export const ROOMS: Record<string, Room> = {
       // c'est Moon qui les fera sortir, contre un bout de pizza.
       {
         id: 'maman-salon',
+        showIfFlag: 'maman-au-salon',
         x: 108,
         y: 56,
         sprite: 'maman',

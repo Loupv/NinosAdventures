@@ -46,8 +46,10 @@ Une petite bulle apparaît au-dessus de tout ce qui peut être actionné. La bo�
 dialogue se place toujours du côté opposé à l'action, pour ne rien cacher. La partie est
 sauvegardée automatiquement à chaque changement de pièce.
 
-**Le parcours de la première branche :** chambre → couloir → cuisine (parler à maman,
-ouvrir le frigo) → salon (donner la pizza à Moon) → la fenêtre en bas du salon → la cour
+**Le parcours de la première branche :** trouver Hermione dans ses vingt cachettes (Maman
+garde le frigo tant qu'elle la cherche, et la dernière cachette est derrière la baignoire —
+il faut donc faire couler l'eau et libérer le poisson) → le frigo → la pizza → Moon, qui ne
+l'accepte que parce qu'il a vu le poisson → la fenêtre en bas du salon → la cour
 → le trou dans la haie → Nantes → l'Erdre, où papa est sur un bateau avec un chapeau de
 capitaine → **la Tour de Bretagne**, une fois le bateau coulé → le toit, le parapente, et
 la fenêtre de sa chambre.

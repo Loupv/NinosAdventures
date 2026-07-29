@@ -139,6 +139,22 @@ for (const [i, c] of CACHETTES.entries()) {
   if (!masquee) dit('CACHETTE', i, 'à découvert dans', c.room);
 }
 
+/**
+ * La chaîne d'ouverture : **libérer le poisson doit rester obligatoire pour sortir de la
+ * maison.** Le mécanisme est indirect — la dernière cachette d'Hermione n'existe qu'une
+ * fois la baignoire vidée, et c'est en finissant la chasse que Maman quitte la cuisine et
+ * libère le frigo. Si cette cachette cessait d'être la dernière, on pourrait tout finir
+ * sans jamais entrer dans la salle de bain, et personne ne s'en apercevrait.
+ */
+const reveles = CACHETTES.map((c, i) => ({ i, revele: c.revele })).filter((c) => c.revele);
+if (reveles.length !== 1) {
+  dit(`CHAÎNE : ${reveles.length} cachettes révélées par un flag, il en faut exactement une`);
+} else if (reveles[0].i !== CACHETTES.length - 1) {
+  dit(`CHAÎNE : la cachette révélée est la nº${reveles[0].i}, elle doit être la dernière`);
+} else if (reveles[0].revele !== 'bouchon-retire') {
+  dit(`CHAÎNE : la dernière cachette attend « ${reveles[0].revele} », pas le bouchon`);
+}
+
 // Aucun dialogue manquant. Trois objets sont pris en charge par la scène elle-même
 // (WorldScene.interagir) : leur champ `dialogue` n'est qu'un marqueur « on peut parler ».
 const JOUES_PAR_LA_SCENE = new Set(['araignee', 'hermione', 'hermione-suit', 'poisson']);

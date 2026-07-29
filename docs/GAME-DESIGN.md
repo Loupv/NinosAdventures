@@ -28,7 +28,7 @@ avec cynisme, et personne n'est méchant.
 | **Nino** | partout | Le héros. Prend l'absurde au sérieux. |
 | **Hermione** | une cachette à la fois | La petite sœur, un an. Elle est cachée quelque part et **change de cachette dès qu'on l'a trouvée**. |
 | **Moon** | salon | Le chat blanc. Dort, jusqu'à ce qu'on le paie en pizza. Devient le guide du jeu. |
-| **Maman** | cuisine + salon | Elle est aux deux endroits en même temps, et si Nino le fait remarquer : « Ne commence pas. » Tient le réel. C'est elle qui envoie Nino au frigo sans savoir ce qu'elle déclenche. |
+| **Maman** | cuisine, puis salon | Elle cherche Hermione dans la cuisine, plantée devant le frigo, et ne monte au salon qu'une fois qu'elle a renoncé. Tient le réel. C'est elle qui envoie Nino au frigo sans savoir ce qu'elle déclenche. |
 | **Papa** | mezzanine | « Cinq minutes, Nino. » Depuis quarante minutes. |
 | **Papa (capitaine)** | l'Erdre | Le même papa, sur un bateau, avec un chapeau de capitaine. Il n'arrive que plus tard (flag `bateau-arrive`). |
 | **L'araignée** | mezzanine, puis le 27e étage de la tour | Géante, et elle dit des haïkus — un nouveau à chaque visite, dix en réserve. Quand elle les a tous dits, elle chante, elle danse, et elle s'en va. |
@@ -134,6 +134,37 @@ l'eau se disputent les mêmes pixels — donc un objet peut déclarer deux chose
 devenait injouable) et sa **`portee`** en pixels (celle de la corde est resserrée à 12). Le
 quai se lit alors comme des zones successives : la bouée, le panneau, **la corde**, **papa**,
 **le poisson**, puis **l'écureuil**.
+
+## La chaîne d'ouverture : rien ne s'ouvre tout seul
+
+Sortir de la maison demande **quatre choses, dans cet ordre**, et chacune débloque la
+suivante. Aucune n'est expliquée : on les découvre en butant dessus.
+
+1. **Maman cherche Hermione dans la cuisine**, et elle est plantée devant le frigo.
+   *« Pas maintenant, Nino. Je cherche ta sœur. »* — *« Cherche-la, tu veux ? Je n'avance
+   pas. »*
+2. **On trouve Hermione partout.** Vingt cachettes, et à chaque fois Maman la récupère…
+   puis la reperd : *« Elle est repartie. Trois secondes. J'ai tourné la tête trois
+   secondes. »* C'est la blague, et c'est aussi la quête.
+3. **La vingtième cachette est derrière la baignoire**, et on ne la voit pas : il y a de
+   l'eau et un poisson dedans. Il faut donc **faire couler l'eau, attendre le poisson,
+   l'écouter, et retirer le bouchon** — toute la chaîne de la salle de bain devient
+   obligatoire, sans qu'une ligne ne le dise.
+4. Une fois la chasse finie, **Maman renonce et monte au salon**. Le frigo est libre, la
+   pizza est prise.
+5. Et là seulement Moon accepte la pizza — **parce qu'il a vu le poisson**. Avant ça il
+   dort d'un sommeil imperturbable : *« Nino agite la pizza. Moon dort toujours. Il
+   faudrait quelque chose de plus intéressant qu'une pizza. »*
+
+Ce qui rend cette chaîne solide, c'est qu'elle est **entièrement indirecte** : nulle part
+le jeu ne dit « va voir le poisson pour que le chat ait faim ». Il dit « le chat dort », et
+« il faudrait quelque chose de plus intéressant ». Le joueur fait le lien tout seul, et
+c'est là que l'affaire devient un jeu plutôt qu'une liste de courses.
+
+> Le vérificateur surveille précisément ce point : il vérifie qu'il existe **exactement
+> une** cachette révélée par un flag, que c'est **la dernière**, et que ce flag est bien
+> `bouchon-retire`. Sans ça on pourrait finir le jeu sans jamais entrer dans la salle de
+> bain, et personne ne s'en apercevrait.
 
 ## Branche 1 : la pizza, le chat, la fenêtre
 

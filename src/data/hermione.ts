@@ -14,6 +14,13 @@
  * **Ses textes sont dans [textes.ts](./textes.ts)** — ici, seulement les endroits.
  */
 export interface Cachette {
+  /**
+   * Cachette **révélée par un flag** : avant lui, Hermione n'y est pas — la baignoire est
+   * pleine, on ne voit pas ce qu'il y a derrière. C'est ce qui rend la chaîne du poisson
+   * obligatoire : sans elle, la chasse ne peut pas se terminer, et Maman ne quitte jamais
+   * la cuisine.
+   */
+  revele?: string;
   room: string;
   x: number;
   y: number;
@@ -47,6 +54,9 @@ export const CACHETTES: Cachette[] = [
   { room: 'nantes', x: 34, y: 54, depth: 56 }, // derrière le réverbère
   { room: 'nantes', x: 24, y: 107, depth: 110 }, // derrière le vélo, à Nantes
   { room: 'erdre', x: 68, y: 86, depth: 90 }, // derrière la plaque du quai
+  // La dernière, et la seule qui se mérite : derrière la baignoire, invisible tant qu'il
+  // y a de l'eau et un poisson dedans.
+  { room: 'sdb', x: 18, y: 38, depth: 42, revele: 'bouchon-retire' },
 ];
 
 import { RAPPELS, RAPPEL_FINAL } from './textes';

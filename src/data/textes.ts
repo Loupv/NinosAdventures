@@ -22,6 +22,7 @@
  * phrases : rien ne casse.
  */
 import { state } from '../systems/state';
+import { CACHETTES } from './hermione';
 import type { DialogueBeat } from './dialogues';
 
 // ═══════════════════════════════════════════════════════════════ 1. l'interface
@@ -575,10 +576,29 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
     {
       when: () => state.has('pizza'),
       speaker: 'Maman',
+      lines: ['Tu manges de la pizza en pleine nuit.', '...', 'Bon.'],
+    },
+    /**
+     * **Tant qu'elle cherche Hermione, elle est dans la cuisine et elle garde le frigo.**
+     * Elle la retrouve à chaque fois, et à chaque fois elle la reperd : c'est ce qui rend
+     * la chasse indispensable, et c'est aussi toute la blague.
+     */
+    {
+      when: () => state.hermione === 0,
+      speaker: 'Maman',
       lines: [
-        'Tu manges de la pizza froide à dix heures du matin.',
-        '...',
-        'Bon. C’est les vacances.',
+        'Maman regarde derrière le frigo.',
+        '« Tu n’as pas vu ta sœur ? »',
+        '« Cherche-la, tu veux ? Je n’avance pas. »',
+      ],
+      effects: { flag: 'indice-hermione' },
+    },
+    {
+      when: () => state.hermione < CACHETTES.length,
+      speaker: 'Maman',
+      lines: [
+        '« Elle est repartie. »',
+        '« Trois secondes. J’ai tourné la tête trois secondes. »',
       ],
     },
     {
@@ -593,6 +613,12 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
   ],
 
   frigo: [
+    /** Elle est plantée devant, à chercher sa fille. On n'ouvre pas le frigo. */
+    {
+      when: () => !state.flag('maman-au-salon'),
+      speaker: 'Maman',
+      lines: ['« Pas maintenant, Nino. »', '« Je cherche ta sœur. »'],
+    },
     {
       when: () => !state.flag('pizza-prise'),
       lines: [
@@ -658,8 +684,13 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
       speaker: 'Moon',
       lines: ['« La fenêtre, Nino. »', '« Personne ne surveille jamais les fenêtres. »'],
     },
+    /**
+     * **Il ne prend la pizza que s'il a vu le poisson.** Avant ça il dort d'un sommeil
+     * imperturbable — et c'est la vue d'un poisson dans une baignoire qui lui donne faim.
+     * Toute la sortie de la maison tient à ce fil.
+     */
     {
-      when: () => state.has('pizza'),
+      when: () => state.has('pizza') && state.flag('poisson-vu'),
       speaker: 'Moon',
       lines: [
         'Nino tend le bout de pizza au chat blanc.',
@@ -670,6 +701,15 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
         '« Sors par la fenêtre du salon. Je m’occupe des adultes. »',
       ],
       effects: { take: 'pizza', flag: 'chat-parle' },
+    },
+    {
+      when: () => state.has('pizza') && !state.flag('poisson-vu'),
+      lines: [
+        'Nino tend le bout de pizza au chat blanc.',
+        'Moon dort.',
+        'Nino agite la pizza. Moon dort toujours.',
+        'Il faudrait quelque chose de plus intéressant qu’une pizza.',
+      ],
     },
     {
       when: () => !state.flag('chat-porte'),

@@ -36,11 +36,23 @@ export interface Etape {
   minijeu?: string;
 }
 
-/** Ce que Moon a déclenché : les parents dehors, les deux sorties ouvertes. */
-const DEHORS = ['reveil', 'chat-parle', 'parents-sortis', 'fenetre-ouverte'];
+/**
+ * Ce que Moon a déclenché : les parents dehors, les deux sorties ouvertes. Avec tout ce
+ * qu'il a fallu faire avant — la chasse à Hermione finie, Maman montée au salon, le
+ * poisson vu et libéré — sinon la maison est dans un état impossible.
+ */
+const DEHORS = [
+  'reveil',
+  'poisson-vu',
+  'bouchon-retire',
+  'maman-au-salon',
+  'chat-parle',
+  'parents-sortis',
+  'fenetre-ouverte',
+];
 
 /** Tout le chapitre 1 : le poisson sauvé, le bateau coulé, la ville ouverte à l'est. */
-const APRES_LE_NAUFRAGE = [...DEHORS, 'bouchon-retire', 'bateau-arrive', 'bateau-coule'];
+const APRES_LE_NAUFRAGE = [...DEHORS, 'bateau-arrive', 'bateau-coule'];
 
 /** Les quatre énigmes de la tour résolues. */
 const ENIGMES = ['enigme-moon', 'enigme-ecureuil', 'enigme-araignee', 'enigme-elephant'];
@@ -64,8 +76,8 @@ export const ETAPES: Etape[] = [
     touche: '9',
     nom: 'Hermione suit',
     room: 'chambre',
-    flags: ['reveil'],
-    hermione: 19,
+    flags: ['reveil', 'bouchon-retire', 'maman-au-salon'],
+    hermione: 20,
   },
   { touche: '0', nom: 'La tour', room: 'tour-hall', flags: APRES_LE_NAUFRAGE },
   {
