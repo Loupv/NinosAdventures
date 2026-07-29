@@ -268,6 +268,11 @@ prend son temps** :
    plaît. »* — *« Nino. »* La question revient à chaque fois, et il n'y a pas d'autre issue.
    C'est cohérent : il y a un chat dans la pièce, ce n'est plus une faveur qu'il demande.
 
+   **Et à chaque refus, le chat gagne un tout petit pas.** Trois pas d'une dizaine de pixels,
+   puis il s'arrête — et le poisson en est au dernier mot, qui se répète. Quand ni l'un ni
+   l'autre ne bouge plus, on sait qu'on a vu tout ce que la scène avait à montrer, et qu'il
+   ne reste qu'à retirer le bouchon.
+
 7. Une fois le bouchon retiré, il descend — et **Moon grogne**, parce que son dîner vient de
    passer par un trou de deux centimètres sous son nez. La baignoire se vide **complètement** :
    l'animation de l'eau est coupée avant de poser la frame vide, sinon le battement suivant
@@ -447,6 +452,21 @@ personne ne relève jamais :
 Elle crie « HERMIONE ! » dans les quatre cas, traverse l'écran, la ramasse et repart du même
 côté. Le sous-marin qui aborde un quai est le meilleur de la série, précisément parce que
 rien ne le commente.
+
+### Toujours un bout animé qui dépasse
+
+La règle n'est pas « à moitié cachée » mais **« un bout animé qui dépasse »**. Hermione
+respire : ses deux images se décalent d'un pixel, donc tout bouge chez elle **sauf ses
+jambes**, identiques d'une frame à l'autre. Si seuls ses pieds dépassent d'un meuble, on
+passe devant sans rien remarquer ; s'il dépasse un morceau de tête ou de torse, le petit
+mouvement attire l'œil et donne envie d'aller voir.
+
+Le vérificateur mesure donc deux choses, pixel par pixel, en tenant compte de **qui est
+dessiné devant qui** : la part d'elle recouverte (entre 15 et 55 %) et le nombre de pixels
+**animés** restés visibles (au moins douze). Les neuf cachettes sont entre 20 et 50 %.
+
+Ce n'est pas un défi — on la trouve tout de suite quand on entre dans la bonne pièce. C'est
+une invitation.
 
 ### Toujours à moitié cachée
 

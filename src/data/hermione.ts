@@ -37,9 +37,9 @@ export interface Cachette {
 export const CACHETTES: Cachette[] = [
   // ── Les cinq de la maison. Ce sont elles qui comptent : quand Maman a renoncé
   // ── sur celles-là, elle monte au salon et le frigo est libre.
-  { room: 'couloir', x: 64, y: 35, depth: 40 }, // derrière l'escalier, les pieds qui dépassent
+  { room: 'couloir', x: 66, y: 37, depth: 40 }, // derrière l'escalier, la tête qui dépasse
   { room: 'cuisine', x: 78, y: 32, depth: 36 }, // derrière le frigo
-  { room: 'chambre', x: 20, y: 38, depth: 42 }, // sous le lit de Nino
+  { room: 'chambre', x: 20, y: 40, depth: 42 }, // sous le lit de Nino
   { room: 'mezzanine', x: 46, y: 28, depth: 30 }, // derrière le carton
   // La cinquième ne se voit qu'une fois la baignoire vidée : c'est elle qui rend toute la
   // chaîne du poisson obligatoire.
@@ -49,7 +49,7 @@ export const CACHETTES: Cachette[] = [
   { room: 'cour', x: 32, y: 35, depth: 38, vehicule: 'maman-velo' }, // derrière le vélo
   { room: 'nantes', x: 34, y: 54, depth: 56, vehicule: 'maman-helico' }, // derrière le réverbère
   { room: 'nantes', x: 24, y: 112, depth: 115, vehicule: 'maman-jetpack' }, // derrière les vélos à plat
-  { room: 'erdre', x: 68, y: 88, depth: 92, vehicule: 'maman-sousmarin' }, // derrière le panneau du quai
+  { room: 'erdre', x: 70, y: 90, depth: 92, vehicule: 'maman-sousmarin' }, // derrière le panneau du quai
 ];
 
 /**

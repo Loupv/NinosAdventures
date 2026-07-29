@@ -1308,15 +1308,43 @@ export class WorldScene extends Phaser.Scene {
      * question, et il n'y a pas d'autre issue que le bouchon.
      */
     const MI_CHEMIN = { x: 92, y: 54 };
+    /**
+     * Là où le chat s'arrête pour de bon. Chaque refus le rapproche d'un tout petit pas —
+     * et quand il ne bouge plus, on sait qu'on a vu tout ce que la scène avait à montrer.
+     * Il n'atteint jamais le bord : il n'en a pas besoin.
+     */
+    const LIMITE = { x: 58, y: 50 };
     const pas = PANIQUE.length - 1;
     const insiste = (i: number) => {
-      const lignes = REFUS[Math.min(i, REFUS.length - 1)];
+      const dernierMot = i >= REFUS.length - 1;
       say({
         speaker: POISSON,
-        lines: lignes,
+        lines: REFUS[Math.min(i, REFUS.length - 1)],
         choices: ['Oui', 'Non'],
         focusY,
-        onDone: (reponse) => (reponse === 0 ? boire() : insiste(i + 1)),
+        onDone: (reponse) => {
+          if (reponse === 0) {
+            boire();
+            return;
+          }
+          if (dernierMot) {
+            // Le chat est arrivé au bout de ce qu'il fera, le poisson au bout de ce qu'il
+            // dira. On repose la même question, indéfiniment : c'est la seule sortie.
+            insiste(i);
+            return;
+          }
+          state.locked = true;
+          const avance = (i + 1) / (REFUS.length - 1);
+          this.tweens.add({
+            targets: moon,
+            x: Math.round(MI_CHEMIN.x + (LIMITE.x - MI_CHEMIN.x) * avance),
+            y: Math.round(MI_CHEMIN.y + (LIMITE.y - MI_CHEMIN.y) * avance),
+            duration: 420,
+            ease: 'Sine.easeInOut',
+            onUpdate: profondeur,
+            onComplete: () => insiste(i + 1),
+          });
+        },
       });
     };
 

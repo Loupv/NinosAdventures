@@ -129,7 +129,14 @@ for (const r of Object.values(ROOMS)) {
  * j'avais écrit se contentait de vérifier qu'un meuble la touchait : la toute première
  * cachette du jeu était recouverte à 100 % et personne ne pouvait la trouver.
  */
-const COUVERTURE = { min: 15, max: 70 };
+/**
+ * Elle respire : les deux frames se décalent d'un pixel, donc **tout bouge sauf les
+ * jambes** (les deux dernières lignes sont identiques). Il ne suffit donc pas qu'un bout
+ * d'elle dépasse : il faut que ce soit un bout **animé**, sinon on passe devant sans rien
+ * remarquer. C'est ce petit mouvement qui donne envie d'aller voir.
+ */
+const LIGNES_ANIMEES = 8;
+const COUVERTURE = { min: 15, max: 55 };
 for (const [i, c] of CACHETTES.entries()) {
   const r = ROOMS[c.room];
   if (!r) {
@@ -149,8 +156,13 @@ for (const [i, c] of CACHETTES.entries()) {
     }
   }
   const part = Math.round((cache.size / 80) * 100);
+  let anime = 0;
+  for (let x = c.x; x < c.x + 8; x++) {
+    for (let y = c.y; y < c.y + LIGNES_ANIMEES; y++) if (!cache.has(`${x},${y}`)) anime++;
+  }
   if (part < COUVERTURE.min) dit(`CACHETTE ${i} (${c.room}) : à découvert, recouverte à ${part} %`);
   else if (part > COUVERTURE.max) dit(`CACHETTE ${i} (${c.room}) : introuvable, recouverte à ${part} %`);
+  else if (anime < 12) dit(`CACHETTE ${i} (${c.room}) : seules ses jambes dépassent (${anime} px animés visibles), on ne verra pas qu’elle bouge`);
 }
 
 /**
