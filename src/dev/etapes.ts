@@ -77,7 +77,7 @@ export const ETAPES: Etape[] = [
     nom: 'Hermione suit',
     room: 'chambre',
     flags: ['reveil', 'bouchon-retire', 'maman-au-salon'],
-    hermione: 20,
+    hermione: 9,
   },
   { touche: '0', nom: 'La tour', room: 'tour-hall', flags: APRES_LE_NAUFRAGE },
   {

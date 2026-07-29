@@ -13,7 +13,7 @@
  */
 import { ROOMS } from '../src/data/rooms';
 import { IMAGES, SHEETS } from '../src/art/sprites';
-import { CACHETTES } from '../src/data/hermione';
+import { CACHETTES, CACHETTES_MAISON } from '../src/data/hermione';
 import { DIALOGUES } from '../src/data/dialogues';
 
 const SOLID = new Set(['#', '~', 'X', 'T', 'V', 'Q', 'M']);
@@ -149,11 +149,20 @@ for (const [i, c] of CACHETTES.entries()) {
 const reveles = CACHETTES.map((c, i) => ({ i, revele: c.revele })).filter((c) => c.revele);
 if (reveles.length !== 1) {
   dit(`CHAÎNE : ${reveles.length} cachettes révélées par un flag, il en faut exactement une`);
-} else if (reveles[0].i !== CACHETTES.length - 1) {
-  dit(`CHAÎNE : la cachette révélée est la nº${reveles[0].i}, elle doit être la dernière`);
+} else if (reveles[0].i !== CACHETTES_MAISON - 1) {
+  dit(`CHAÎNE : la cachette révélée est la nº${reveles[0].i}, elle doit être la dernière de la maison (nº${CACHETTES_MAISON - 1})`);
 } else if (reveles[0].revele !== 'bouchon-retire') {
-  dit(`CHAÎNE : la dernière cachette attend « ${reveles[0].revele} », pas le bouchon`);
+  dit(`CHAÎNE : la dernière cachette de la maison attend « ${reveles[0].revele} », pas le bouchon`);
 }
+// Et les cachettes du dehors doivent bien être dehors : une cachette de la maison placée
+// après le seuil ne serait jamais nécessaire, et une du dehors avant le seuil rendrait
+// l'ouverture impossible — il faudrait sortir pour pouvoir sortir.
+const DEDANS = ['chambre', 'couloir', 'chambre-parents', 'mezzanine', 'sdb', 'cuisine', 'salon'];
+CACHETTES.forEach((c, i) => {
+  const dedans = DEDANS.includes(c.room);
+  if (i < CACHETTES_MAISON && !dedans) dit(`CHAÎNE : cachette nº${i} (${c.room}) est dehors mais compte pour la maison`);
+  if (i >= CACHETTES_MAISON && dedans) dit(`CHAÎNE : cachette nº${i} (${c.room}) est dans la maison mais compte pour le dehors`);
+});
 
 // Aucun dialogue manquant. Trois objets sont pris en charge par la scène elle-même
 // (WorldScene.interagir) : leur champ `dialogue` n'est qu'un marqueur « on peut parler ».

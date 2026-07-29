@@ -22,7 +22,6 @@
  * phrases : rien ne casse.
  */
 import { state } from '../systems/state';
-import { CACHETTES } from './hermione';
 import type { DialogueBeat } from './dialogues';
 
 // ═══════════════════════════════════════════════════════════════ 1. l'interface
@@ -594,7 +593,7 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
       effects: { flag: 'indice-hermione' },
     },
     {
-      when: () => state.hermione < CACHETTES.length,
+      when: () => !state.flag('maman-au-salon'),
       speaker: 'Maman',
       lines: [
         '« Elle est repartie. »',

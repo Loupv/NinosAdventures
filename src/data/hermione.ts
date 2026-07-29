@@ -15,6 +15,11 @@
  */
 export interface Cachette {
   /**
+   * Le sprite de Maman à son arrivée. Dehors, elle emploie ce qu'elle a sous la main —
+   * vélo, hélicoptère, jetpack, sous-marin — et personne ne relève jamais.
+   */
+  vehicule?: string;
+  /**
    * Cachette **révélée par un flag** : avant lui, Hermione n'y est pas — la baignoire est
    * pleine, on ne voit pas ce qu'il y a derrière. C'est ce qui rend la chaîne du poisson
    * obligatoire : sans elle, la chasse ne peut pas se terminer, et Maman ne quitte jamais
@@ -30,34 +35,30 @@ export interface Cachette {
 
 /** Ce que Nino dit en la trouvant. Toujours ça. */
 export const CACHETTES: Cachette[] = [
-  // `y` est le HAUT du sprite (8x10), comme partout ailleurs dans le moteur.
-  // Chaque cachette chevauche un meuble et lui passe dessous en profondeur :
-  // Hermione est donc **toujours à moitié masquée**, jamais plantée au milieu du sol.
-  // La chambre de Nino n'arrive qu'en sixième : elle ne s'y cache pas dès le début,
-  // il faut y être retourné.
+  // ── Les cinq de la maison. Ce sont elles qui comptent : quand Maman a renoncé
+  // ── sur celles-là, elle monte au salon et le frigo est libre.
   { room: 'couloir', x: 64, y: 31, depth: 35 }, // sous l'escalier
   { room: 'cuisine', x: 78, y: 32, depth: 36 }, // derrière le frigo
-  { room: 'salon', x: 25, y: 105, depth: 105 }, // derrière le canapé
-  { room: 'sdb', x: 34, y: 52, depth: 55 }, // dans la baignoire
-  { room: 'chambre-parents', x: 116, y: 30, depth: 34 }, // derrière l'armoire
-  { room: 'chambre', x: 117, y: 34, depth: 38 }, // derrière le coffre à jouets
   { room: 'chambre', x: 20, y: 38, depth: 42 }, // sous le lit de Nino
-  { room: 'cuisine', x: 104, y: 78, depth: 82 }, // sous la table de la cuisine
   { room: 'mezzanine', x: 46, y: 28, depth: 30 }, // derrière le carton
-  { room: 'sdb', x: 24, y: 94, depth: 96 }, // derrière les toilettes
-  { room: 'couloir', x: 92, y: 105, depth: 108 }, // derrière la plante du couloir
-  { room: 'salon', x: 122, y: 34, depth: 38 }, // sous la table ronde
-  { room: 'chambre-parents', x: 56, y: 47, depth: 50 }, // dans le grand lit
-  { room: 'mezzanine', x: 46, y: 88, depth: 92 }, // sous le lit de camp
-  { room: 'cour', x: 32, y: 35, depth: 38 }, // derrière le vélo
-  { room: 'cour', x: 126, y: 114, depth: 118 }, // derrière le carton de la cour
-  { room: 'nantes', x: 34, y: 54, depth: 56 }, // derrière le réverbère
-  { room: 'nantes', x: 24, y: 107, depth: 110 }, // derrière le vélo, à Nantes
-  { room: 'erdre', x: 68, y: 86, depth: 90 }, // derrière la plaque du quai
-  // La dernière, et la seule qui se mérite : derrière la baignoire, invisible tant qu'il
-  // y a de l'eau et un poisson dedans.
+  // La cinquième ne se voit qu'une fois la baignoire vidée : c'est elle qui rend toute la
+  // chaîne du poisson obligatoire.
   { room: 'sdb', x: 18, y: 38, depth: 42, revele: 'bouchon-retire' },
+
+  // ── Les quatre du dehors, pour plus tard. Maman ne passe plus par la porte.
+  { room: 'cour', x: 32, y: 35, depth: 38, vehicule: 'maman-velo' }, // derrière le vélo
+  { room: 'nantes', x: 34, y: 54, depth: 56, vehicule: 'maman-helico' }, // derrière le réverbère
+  { room: 'nantes', x: 24, y: 107, depth: 110, vehicule: 'maman-jetpack' }, // derrière les vélos à plat
+  { room: 'erdre', x: 68, y: 86, depth: 90, vehicule: 'maman-sousmarin' }, // derrière la plaque du quai
 ];
+
+/**
+ * Combien de cachettes sont **dans la maison**. C'est le seuil qui compte pour l'ouverture
+ * du jeu : au-delà, Maman renonce, monte au salon et libère le frigo. Les suivantes sont
+ * dehors, et se trouvent après être sorti — sans elles on ne pourrait pas sortir, et sans
+ * être sorti on ne pourrait pas les trouver.
+ */
+export const CACHETTES_MAISON = 5;
 
 import { RAPPELS, RAPPEL_FINAL } from './textes';
 
@@ -68,6 +69,9 @@ export const cachetteActuelle = (trouvees: number): Cachette | undefined =>
 /** Ce que Maman crie à la nième trouvaille. */
 export const rappel = (trouvees: number): string[] =>
   trouvees + 1 >= CACHETTES.length ? RAPPEL_FINAL : RAPPELS[trouvees % RAPPELS.length];
+
+/** Vrai quand Maman a renoncé pour la maison : elle monte au salon. */
+export const mamanRenonce = (trouvees: number) => trouvees >= CACHETTES_MAISON;
 
 /** Vrai quand toutes les cachettes ont été trouvées : Hermione suit Nino. */
 export const hermioneSuit = (trouvees: number) => trouvees >= CACHETTES.length;

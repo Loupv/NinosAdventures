@@ -32,7 +32,7 @@ import {
   SORTIR_DU_LIT,
   VIE,
 } from '../data/textes';
-import { CACHETTES, cachetteActuelle, hermioneSuit, rappel } from '../data/hermione';
+import { CACHETTES, cachetteActuelle, hermioneSuit, mamanRenonce, rappel } from '../data/hermione';
 import { state } from '../systems/state';
 import { EV, bus, say, toast, type Buttons } from '../systems/bus';
 import { gbFade, portalWarp, sparkle, splash } from '../systems/fx';
@@ -1478,17 +1478,33 @@ export class WorldScene extends Phaser.Scene {
     state.locked = true;
     jouer(this, 'cri-maman', { volume: 0.9 });
 
-    // Elle entre par la porte la plus proche de la petite.
-    const porte = this.entrees().reduce((a, b) =>
-      Phaser.Math.Distance.Between(a.x, a.y, l.def.x, l.def.y) <
-      Phaser.Math.Distance.Between(b.x, b.y, l.def.x, l.def.y)
-        ? a
-        : b,
-    );
-    const depart = { x: Math.round(porte.x - 4), y: Math.round(porte.y - 15) };
+    /**
+     * **Dans la maison elle entre par une porte ; dehors elle arrive en véhicule**, par le
+     * côté de l'écran, et personne ne relève jamais. Le véhicule est déclaré sur la
+     * cachette : vélo, hélicoptère, jetpack, sous-marin.
+     */
+    const cachette = cachetteActuelle(state.hermione);
+    const vehicule = cachette?.vehicule;
+    const sprite = vehicule ?? 'maman';
+    const depart = vehicule
+      ? // Hors champ, du côté le plus proche : elle traverse tout l'écran.
+        {
+          x: l.def.x < this.roomW / 2 ? -30 : this.roomW + 6,
+          y: Math.max(2, Math.min(this.roomH - 24, l.def.y - 6)),
+        }
+      : (() => {
+          const porte = this.entrees().reduce((a, b) =>
+            Phaser.Math.Distance.Between(a.x, a.y, l.def.x, l.def.y) <
+            Phaser.Math.Distance.Between(b.x, b.y, l.def.x, l.def.y)
+              ? a
+              : b,
+          );
+          return { x: Math.round(porte.x - 4), y: Math.round(porte.y - 15) };
+        })();
     const maman = this.add
-      .image(depart.x, depart.y, texKey('maman', this.pal))
-      .setOrigin(0, 0);
+      .image(depart.x, depart.y, texKey(sprite, this.pal))
+      .setOrigin(0, 0)
+      .setFlipX(depart.x < 0);
     const profondeur = () => maman.y + maman.displayHeight;
     maman.setDepth(profondeur());
 
@@ -1507,9 +1523,9 @@ export class WorldScene extends Phaser.Scene {
     const fin = () => {
       maman.destroy();
       state.hermione += 1;
-      // La dernière : elle renonce, Hermione suit Nino — et Maman monte enfin au salon,
-      // ce qui libère le frigo et toute la suite.
-      if (state.hermione >= CACHETTES.length) state.setFlag('maman-au-salon');
+      // Les cinq de la maison faites : elle renonce, monte au salon, et le frigo est
+      // libre. Les quatre du dehors se trouveront plus tard.
+      if (mamanRenonce(state.hermione)) state.setFlag('maman-au-salon');
       toast(ANNONCES.hermioneTrouvee(state.hermione, CACHETTES.length));
       state.save();
       if (!derniere) {

@@ -46,10 +46,12 @@ Une petite bulle apparaît au-dessus de tout ce qui peut être actionné. La bo�
 dialogue se place toujours du côté opposé à l'action, pour ne rien cacher. La partie est
 sauvegardée automatiquement à chaque changement de pièce.
 
-**Le parcours de la première branche :** trouver Hermione dans ses vingt cachettes (Maman
-garde le frigo tant qu'elle la cherche, et la dernière cachette est derrière la baignoire —
-il faut donc faire couler l'eau et libérer le poisson) → le frigo → la pizza → Moon, qui ne
-l'accepte que parce qu'il a vu le poisson → la fenêtre en bas du salon → la cour
+**Le parcours de la première branche :** trouver Hermione dans les cinq cachettes de la
+maison (Maman garde le frigo tant qu'elle la cherche, et la cinquième est derrière la
+baignoire — il faut donc faire couler l'eau et libérer le poisson) → le frigo → la pizza →
+Moon, qui ne l'accepte que parce qu'il a vu le poisson → la fenêtre en bas du salon → la
+cour. Quatre autres cachettes attendent dehors, où Maman arrive à vélo, en hélicoptère, en
+jetpack et en sous-marin
 → le trou dans la haie → Nantes → l'Erdre, où papa est sur un bateau avec un chapeau de
 capitaine → **la Tour de Bretagne**, une fois le bateau coulé → le toit, le parapente, et
 la fenêtre de sa chambre.
@@ -84,7 +86,7 @@ cours, mais il donne toujours exactement la même chose.
 | **6** | La mezzanine, elle n'en a plus : elle danse |
 | **7** | La salle de bain, le poisson est arrivé |
 | **8** | Le rêve : Nino sur la fusée |
-| **9** | Hermione a été trouvée partout, elle suit Nino |
+| **9** | Les neuf cachettes trouvées, Hermione suit Nino |
 | **0** | La Tour de Bretagne, en bas |
 | **P** | Le toit de la tour, énigmes résolues, parapente à prendre |
 | **F** | La fin : dans la chambre, parapente sous le bras |

@@ -143,10 +143,10 @@ suivante. Aucune n'est expliquée : on les découvre en butant dessus.
 1. **Maman cherche Hermione dans la cuisine**, et elle est plantée devant le frigo.
    *« Pas maintenant, Nino. Je cherche ta sœur. »* — *« Cherche-la, tu veux ? Je n'avance
    pas. »*
-2. **On trouve Hermione partout.** Vingt cachettes, et à chaque fois Maman la récupère…
-   puis la reperd : *« Elle est repartie. Trois secondes. J'ai tourné la tête trois
-   secondes. »* C'est la blague, et c'est aussi la quête.
-3. **La vingtième cachette est derrière la baignoire**, et on ne la voit pas : il y a de
+2. **On trouve Hermione dans les cinq cachettes de la maison**, et à chaque fois Maman la
+   récupère… puis la reperd : *« Elle est repartie. Trois secondes. J'ai tourné la tête
+   trois secondes. »* C'est la blague, et c'est aussi la quête.
+3. **La cinquième cachette est derrière la baignoire**, et on ne la voit pas : il y a de
    l'eau et un poisson dedans. Il faut donc **faire couler l'eau, attendre le poisson,
    l'écouter, et retirer le bouchon** — toute la chaîne de la salle de bain devient
    obligatoire, sans qu'une ligne ne le dise.
@@ -161,10 +161,11 @@ le jeu ne dit « va voir le poisson pour que le chat ait faim ». Il dit « le c
 « il faudrait quelque chose de plus intéressant ». Le joueur fait le lien tout seul, et
 c'est là que l'affaire devient un jeu plutôt qu'une liste de courses.
 
-> Le vérificateur surveille précisément ce point : il vérifie qu'il existe **exactement
-> une** cachette révélée par un flag, que c'est **la dernière**, et que ce flag est bien
-> `bouchon-retire`. Sans ça on pourrait finir le jeu sans jamais entrer dans la salle de
-> bain, et personne ne s'en apercevrait.
+> Le vérificateur surveille précisément ce point : **exactement une** cachette révélée par
+> un flag, c'est **la dernière de la maison**, et ce flag est bien `bouchon-retire`. Sans
+> ça on pourrait finir le jeu sans jamais entrer dans la salle de bain, et personne ne s'en
+> apercevrait. Il vérifie aussi qu'**aucune cachette du dehors ne compte pour la maison** —
+> l'erreur inverse serait pire : il faudrait sortir pour pouvoir sortir.
 
 ## Branche 1 : la pizza, le chat, la fenêtre
 
@@ -409,6 +410,29 @@ montent en exaspération — de « Viens ici ! » à « Comment tu es montée l�
 
 À la dix-neuvième, Maman renonce : *« Bon. » « Elle reste avec toi. »* Hermione ne
 repart pas, et **elle suit Nino à quatre pattes** à partir de là.
+
+### Cinq dans la maison, quatre dehors
+
+**Neuf cachettes, et deux moitiés qui ne servent pas à la même chose.** Les cinq de la
+maison sont la quête d'ouverture : elles sont obligatoires, elles gardent le frigo, et la
+dernière exige le poisson. Les quatre du dehors se trouvent après être sorti — c'est ce qui
+donne à Hermione une raison de continuer à apparaître dans le chapitre de la ville, au lieu
+de disparaître à mi-parcours. Au bout des neuf, Maman renonce pour de bon et Hermione suit
+Nino à quatre pattes.
+
+**Et dehors, Maman n'entre plus par la porte.** Elle emploie ce qu'elle a sous la main, et
+personne ne relève jamais :
+
+| Où | Comment elle arrive |
+|---|---|
+| La cour | **à vélo**, avec un panier |
+| Nantes, près du réverbère | **en hélicoptère** |
+| Nantes, près des vélos à plat | **en jetpack** |
+| Le bord de l'Erdre | **en sous-marin** |
+
+Elle crie « HERMIONE ! » dans les quatre cas, traverse l'écran, la ramasse et repart du même
+côté. Le sous-marin qui aborde un quai est le meilleur de la série, précisément parce que
+rien ne le commente.
 
 ### Toujours à moitié cachée
 
