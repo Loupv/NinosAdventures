@@ -5,7 +5,7 @@ import { shade, shadeHex } from '../art/palette';
 import { state } from '../systems/state';
 import type { DialogueRequest } from '../systems/bus';
 import { PixelText, measure } from './PixelText';
-import { jouerVoix } from '../systems/audio';
+import { jouer, jouerVoix } from '../systems/audio';
 
 const BOX = { x: 4, w: 152, h: 48 };
 /**
@@ -127,6 +127,7 @@ export class DialogueBox {
     if (this.scene.time.now - this.openedAt < 140) return;
 
     if (this.choosing) {
+      jouer(this.scene, 'valider', { volume: 0.55 });
       this.close(this.choiceIndex);
       return;
     }
@@ -140,6 +141,7 @@ export class DialogueBox {
     if (this.page + 1 >= this.pages.length) {
       if (this.choices) {
         this.choosing = true;
+        jouer(this.scene, 'menu', { volume: 0.5 });
         this.drawChoices();
         return;
       }
@@ -155,6 +157,7 @@ export class DialogueBox {
   /** Flèches haut/bas dans la fenêtre de choix. */
   moveChoice(delta: number): void {
     if (!this.choosing || !this.choices) return;
+    jouer(this.scene, 'menu', { volume: 0.5 });
     const n = this.choices.length;
     this.choiceIndex = (this.choiceIndex + delta + n) % n;
     this.drawChoices();

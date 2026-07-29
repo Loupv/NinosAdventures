@@ -11,6 +11,9 @@ import { fraicheur, labelFraicheur } from '../data/fraicheur';
 import {
   ANNONCES,
   ARAIGNEE_PARTIE,
+  BATEAU_ARRIVE,
+  ECUREUIL_FUITE,
+  ECUREUIL_VANNES,
   CHALEUR,
   CHANSON,
   COUPLETS,
@@ -19,12 +22,12 @@ import {
   HAIKUS,
   LE_CHAT,
   PARENTS,
+  PANIQUE,
   POISSON,
   PRESENTATION_ARAIGNEE,
   REFUS,
   RENCONTRE,
   RETIRE,
-  SAUVE_MOI,
   SEMBLANT,
   SORTIR_DU_LIT,
   VIE,
@@ -159,6 +162,12 @@ export class WorldScene extends Phaser.Scene {
   private trace: { x: number; y: number }[] = [];
   /** Distance parcourue depuis le dernier bruit de pas, en pixels. */
   private depuisLePas = 0;
+  /** Vrai quand le ballon a été frappé fort et n'est pas encore retombé au calme. */
+  private ballonEnVol = false;
+  /** Combien de fois l'écureuil s'est moqué : il change de vanne à chaque tir raté. */
+  private vannes = 0;
+  /** La vanne affichée au-dessus de lui, s'il y en a une. */
+  private vanne?: PixelText;
   private errants: Errant[] = [];
   private transitioning = false;
   private keys!: Record<keyof typeof KEYS, Phaser.Input.Keyboard.Key[]>;
@@ -174,6 +183,8 @@ export class WorldScene extends Phaser.Scene {
     this.target = undefined;
     this.suiveuse = undefined;
     this.ballon = undefined;
+    this.ballonEnVol = false;
+    this.vanne = undefined;
     this.sauteurs = [];
     this.trace = [];
     this.errants = [];
@@ -256,6 +267,12 @@ export class WorldScene extends Phaser.Scene {
         return;
       }
       state.locked = false;
+      // Le bateau arrive **pendant qu'on est là**, quelques secondes après être arrivé.
+      // La règle des trois écrans marchait, mais rien ne disait au joueur de repartir et
+      // de revenir : il attendait sur le quai devant une rivière vide.
+      if (id === 'erdre' && !state.flag('bateau-arrive')) {
+        this.time.delayedCall(3800, () => this.bateauArrive());
+      }
     });
     bus.emit(EV.hud);
     bus.emit(EV.room, { name: nomDuLieu(id), isNew: !known });
@@ -378,12 +395,18 @@ export class WorldScene extends Phaser.Scene {
       return;
     }
 
-    this.player.move({
-      up: this.down('up'),
-      down: this.down('down'),
-      left: this.down('left'),
-      right: this.down('right'),
-    });
+    // **Avec la vue** : sans elle, le quai de l'Erdre se pilotait comme une pièce vue de
+    // dessus — on y marchait verticalement, et tout le code de la vue de profil (gravité,
+    // pas de saut, retournement du sprite) ne servait à rien.
+    this.player.move(
+      {
+        up: this.down('up'),
+        down: this.down('down'),
+        left: this.down('left'),
+        right: this.down('right'),
+      },
+      this.mode,
+    );
     this.bruitDesPas(delta);
 
     const door = this.doorUnderPlayer();
@@ -590,7 +613,15 @@ export class WorldScene extends Phaser.Scene {
     const cy = go.y + go.displayHeight / 2;
     go.setDepth(go.y + go.displayHeight);
 
-    if (state.flag('fenetre-cassee') || b.velocity.length() < BALLON_CASSE) return;
+    // Un tir part, puis retombe au calme : s'il n'a rien cassé, quelqu'un va le dire.
+    const vitesse = b.velocity.length();
+    if (vitesse > BALLON_CASSE) this.ballonEnVol = true;
+    else if (this.ballonEnVol && vitesse < 4) {
+      this.ballonEnVol = false;
+      if (!state.flag('fenetre-cassee')) this.vanner();
+    }
+
+    if (state.flag('fenetre-cassee') || vitesse < BALLON_CASSE) return;
     const vitre = this.live.find((l) => l.def.id === 'fenetre-cour');
     if (!vitre) return;
     const cadre = new Phaser.Geom.Rectangle(
@@ -644,6 +675,66 @@ export class WorldScene extends Phaser.Scene {
       // Visible dès que la moitié du corps est sortie de l'eau.
       go.setVisible(y + go.displayHeight / 2 < s.saute.eau);
     }
+  }
+
+  /** Le bateau remonte la rivière, sous les yeux de Nino. */
+  private bateauArrive(): void {
+    if (state.flag('bateau-arrive') || this.room.id !== 'erdre' || this.transitioning) return;
+    state.setFlag('bateau-arrive');
+    state.save();
+    this.refreshObjects();
+    say({ lines: BATEAU_ARRIVE, focusY: 30 });
+  }
+
+  /**
+   * L'écureuil se moque d'un tir raté. Le texte s'affiche **au-dessus de lui, sans boîte
+   * de dialogue et sans bloquer** : on est en train de jouer au ballon, ce n'est pas le
+   * moment de lire. Il ne dit rien avant de s'être présenté une première fois.
+   */
+  private vanner(): void {
+    const lui = this.live.find((l) => l.def.id === 'ecureuil');
+    if (!lui || !state.flag('ecureuil-vu')) return;
+    const t = ECUREUIL_VANNES[this.vannes % ECUREUIL_VANNES.length];
+    this.vannes += 1;
+
+    this.vanne?.destroy();
+    const texte = new PixelText(this, 'wl-vanne', 0, 0, 90, 13);
+    texte.image.setDepth(1300);
+    texte.setLines([t], shadeHex(this.pal, 0));
+    texte.image.setPosition(
+      Math.round(lui.def.x + lui.go.displayWidth / 2 - measure(t) / 2),
+      Math.round(lui.def.y - 12),
+    );
+    this.vanne = texte;
+    this.time.delayedCall(1700, () => {
+      if (this.vanne === texte) this.vanne = undefined;
+      texte.destroy();
+    });
+  }
+
+  /**
+   * On vient lui demander des comptes : il détale. Il file en diagonale hors de l'écran et
+   * ne revient pas — jusqu'à la prochaine visite, parce qu'un écureuil ne retient rien.
+   */
+  private ecureuilDetale(l: Live): void {
+    state.locked = true;
+    this.vanne?.destroy();
+    this.vanne = undefined;
+    this.target = undefined;
+    this.live = this.live.filter((o) => o !== l);
+    this.errants = this.errants.filter((e) => e.live !== l);
+    jouer(this, 'pas', { volume: 0.5, rate: 2.4 });
+    this.tweens.add({
+      targets: l.go,
+      x: l.go.x + 90,
+      y: l.go.y + 26,
+      duration: 480,
+      ease: 'Quad.easeIn',
+      onComplete: () => {
+        l.go.destroy();
+        say({ lines: [ECUREUIL_FUITE], focusY: 130 });
+      },
+    });
   }
 
   /** Un plouf sur la ligne d'eau, au bord où le poisson vient de la traverser. */
@@ -1186,27 +1277,47 @@ export class WorldScene extends Phaser.Scene {
       });
     };
 
-    const demander = () =>
+    /**
+     * Le chat se poste à la porte, puis **avance de quelques pas à chaque phrase**. Le
+     * poisson panique d'une boîte à l'autre ; c'est le chat qui donne le tempo, et personne
+     * n'explique pourquoi c'est un problème.
+     */
+    const BORD = { x: 42, y: 48 };
+    const pas = PANIQUE.length - 1;
+    const paniquer = (i: number) => {
+      const derniere = i >= PANIQUE.length - 1;
       say({
         speaker: POISSON,
-        lines: SAUVE_MOI,
-        choices: ['Oui', 'Non'],
+        lines: PANIQUE[i],
+        choices: derniere ? ['Oui', 'Non'] : undefined,
         focusY,
-        onDone: (reponse) => (reponse === 0 ? boire() : dire(REFUS, repartir)),
+        onDone: (reponse) => {
+          if (derniere) {
+            if (reponse === 0) boire();
+            else dire(REFUS, repartir);
+            return;
+          }
+          state.locked = true;
+          // Un pas de plus vers la baignoire, lentement.
+          const avance = (i + 1) / pas;
+          this.tweens.add({
+            targets: moon,
+            x: Math.round(seuil.x + (BORD.x - seuil.x) * avance),
+            y: Math.round(seuil.y + (BORD.y - seuil.y) * avance),
+            duration: 620,
+            ease: 'Sine.easeInOut',
+            onUpdate: profondeur,
+            onComplete: () => paniquer(i + 1),
+          });
+        },
       });
+    };
 
+    /** Il apparaît à la porte, et il regarde. C'est tout, pour l'instant. */
     const entrerLeChat = () => {
       state.locked = true;
       moon.setVisible(true);
-      this.tweens.add({
-        targets: moon,
-        x: 42,
-        y: 48,
-        duration: this.duree(moon.x, moon.y, 42, 48),
-        ease: 'Sine.easeInOut',
-        onUpdate: profondeur,
-        onComplete: demander,
-      });
+      this.time.delayedCall(700, () => paniquer(0));
     };
 
     const raconter = (i: number) => {
@@ -1595,6 +1706,12 @@ export class WorldScene extends Phaser.Scene {
       this.taperDansLeBallon(l);
       return;
     }
+    // Il s'est moqué : il ne va pas rester pour en discuter. On garde la fenêtre large —
+    // le lier à la vanne encore affichée ne laissait qu'une seconde et demie pour réagir.
+    if (l.def.id === 'ecureuil' && this.vannes > 0) {
+      this.ecureuilDetale(l);
+      return;
+    }
     if (l.def.id === 'parapente' && !state.flag('parapente-pris')) {
       this.sauterDuToit(l);
       return;
@@ -1689,7 +1806,10 @@ export class WorldScene extends Phaser.Scene {
     if (e.flag) state.setFlag(e.flag);
     // On note l'écran où le robinet a été ouvert : le poisson arrivera quelques
     // écrans plus tard.
-    if (e.flag === 'eau-coule') state.eauDepuis = state.ecrans;
+    if (e.flag === 'eau-coule') {
+      state.eauDepuis = state.ecrans;
+      jouer(this, 'robinet', { volume: 0.6 });
+    }
     if (e.flag === 'bateau-coule') jouer(this, 'bateau-coule', { volume: 0.7 });
     if (e.cool) this.applyFraicheur(e.cool, l);
     if (e.take) state.take(e.take);

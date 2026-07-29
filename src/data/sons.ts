@@ -63,6 +63,11 @@ export interface Son {
    */
   provisoire?: boolean;
   /**
+   * Fabriqué par `npx tsx tools/synthese.ts`, et pas trouvé : on voulait un contrôle exact
+   * sur ce qui pique l'oreille. Relancer l'outil réécrit exactement le même fichier.
+   */
+  fabrique?: boolean;
+  /**
    * Vrai quand les fichiers sont **réellement dans `public/sons/`** : c'est ce qui décide
    * si le jeu tente de les charger. `npx tsx tools/sons.ts` prévient si un drapeau ne
    * correspond plus au contenu du dossier.
@@ -79,16 +84,16 @@ export interface Son {
  * du jeu lui-même, quand personne ne parle : plus basse et plus discrète que tout le reste.
  */
 export const VOIX: Record<string, { detune: number; rate: number; volume: number }> = {
-  recit: { detune: -200, rate: 1, volume: 0.18 },
-  Nino: { detune: 600, rate: 1.1, volume: 0.2 },
-  Moon: { detune: 900, rate: 1.25, volume: 0.2 },
-  Maman: { detune: 300, rate: 1, volume: 0.22 },
-  Papa: { detune: -500, rate: 0.9, volume: 0.22 },
-  Hermione: { detune: 1400, rate: 1.3, volume: 0.2 },
-  'Le poisson': { detune: 100, rate: 0.85, volume: 0.18 },
-  'L’araignée': { detune: -300, rate: 0.75, volume: 0.2 },
-  'L’écureuil': { detune: 1100, rate: 1.4, volume: 0.18 },
-  'L’Éléphant': { detune: -1100, rate: 0.6, volume: 0.24 },
+  recit: { detune: -200, rate: 1, volume: 0.09 },
+  Nino: { detune: 600, rate: 1.1, volume: 0.1 },
+  Moon: { detune: 900, rate: 1.25, volume: 0.1 },
+  Maman: { detune: 300, rate: 1, volume: 0.11 },
+  Papa: { detune: -500, rate: 0.9, volume: 0.11 },
+  Hermione: { detune: 1400, rate: 1.3, volume: 0.1 },
+  'Le poisson': { detune: 100, rate: 0.85, volume: 0.09 },
+  'L’araignée': { detune: -300, rate: 0.75, volume: 0.1 },
+  'L’écureuil': { detune: 1100, rate: 1.4, volume: 0.09 },
+  'L’Éléphant': { detune: -1100, rate: 0.6, volume: 0.12 },
 };
 
 export const SONS: Son[] = [
@@ -96,22 +101,22 @@ export const SONS: Son[] = [
   {
     id: 'texte',
     present: true,
+    fabrique: true,
     quand: 'Chaque caractère qui s’écrit dans une boîte de dialogue.',
     variantes: 1,
     cherche:
-      'Un clic très court (30 ms), très bas en volume — le son le plus rejoué du jeu, au moindre excès il devient insupportable. **Une seule variante suffit** : on la rejouera à des hauteurs différentes selon qui parle, aigu pour Moon, très grave pour l’Éléphant. Une voix par personnage pour le prix d’un son.',
+      'Fabriqué par `tools/synthese.ts` : un triangle de 34 ms à 380 Hz, filtré quatre fois. Le son le plus rejoué du jeu — un carré, même bas, devient une agression au bout d’une minute (brillance 0,141 pour le bip du pack, 0,003 pour celui-ci). **Une seule variante suffit** : on la rejoue à des hauteurs différentes selon qui parle. Une voix par personnage pour le prix d’un son.',
     priorite: 'important',
   },
   {
     id: 'pas',
     present: true,
-    provisoire: true,
-    quand: 'Nino marche. Un son tous les deux pas de l’animation.',
-    variantes: 3,
+    fabrique: true,
+    quand: 'Nino marche : un son tous les quatorze pixels parcourus.',
+    variantes: 4,
     cherche:
-      'Chaussette sur parquet, ou pied nu sur carrelage. Sec, 60 ms. Quatre variantes pour que la marche ne fasse pas machine à coudre.',
+      'Fabriqué : **du bruit blanc filtré, aucune note** — le canal « noise » de la console. Les pas du pack avaient une hauteur, et une hauteur qui revient tous les quatorze pixels devient une mélodie. Quatre variantes de longueurs et de filtrages différents pour que la marche ne fasse pas machine à coudre.',
     priorite: 'important',
-    maison: true,
   },
   {
     id: 'prout',
@@ -169,6 +174,35 @@ export const SONS: Son[] = [
     quand: 'Changement de pièce.',
     variantes: 3,
     cherche: 'Une poignée, un battant. Discret : ça se joue à chaque écran.',
+    priorite: 'important',
+    maison: true,
+  },
+  {
+    id: 'menu',
+    present: true,
+    fabrique: true,
+    quand: 'Le curseur change de ligne dans une fenêtre de choix.',
+    variantes: 2,
+    cherche:
+      'Fabriqué : un carré de 38 ms, filtré trois fois — il garde le grain de la console sans en avoir l’arête. Deux hauteurs, 300 et 340 Hz, piochées au hasard.',
+    priorite: 'important',
+  },
+  {
+    id: 'valider',
+    present: true,
+    fabrique: true,
+    quand: 'Un choix est validé — oui, non, une réponse d’énigme.',
+    variantes: 1,
+    cherche:
+      'Fabriqué : deux carrés, 330 puis 440 Hz, une quarte. Ça se lit comme « pris en compte » sans faire fanfare.',
+    priorite: 'important',
+  },
+  {
+    id: 'robinet',
+    quand: 'Nino ouvre l’eau de la baignoire.',
+    variantes: 2,
+    cherche:
+      'De l’eau qui coule dans une baignoire vide, puis dans une baignoire qui se remplit — ce n’est pas le même son, et c’est tout l’intérêt d’en avoir deux. Deux ou trois secondes suffisent. Le vrai robinet de la vraie salle de bain.',
     priorite: 'important',
     maison: true,
   },

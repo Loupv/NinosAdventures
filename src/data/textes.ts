@@ -216,6 +216,30 @@ export const DIVERSION = {
   minuterie: ['« Tu as environ deux minutes. »'],
 };
 
+/** Le bateau de papa qui remonte la rivière, pendant qu'on est sur le quai. */
+export const BATEAU_ARRIVE = ['Un bateau remonte l’Erdre.', 'Il y a quelqu’un dessus.'];
+
+/**
+ * Les vannes de l'écureuil quand un tir de ballon rate la fenêtre. Elles s'affichent
+ * au-dessus de lui, sans arrêter le jeu — on est en train de jouer au ballon, ce n'est
+ * pas le moment de lire une boîte de dialogue.
+ *
+ * Elles sortent dans l'ordre, puis reprennent au début. Chacune tient sur une ligne
+ * courte : c'est écrit en tout petit au-dessus d'un écureuil de dix pixels.
+ */
+export const ECUREUIL_VANNES = [
+  '« Raté. »',
+  '« Oh là là. »',
+  '« Tu VISES ? »',
+  '« Moi je dis rien. »',
+  '« C’est large, hein. »',
+  '« Ça va, tu t’amuses ? »',
+  '« Bon. »',
+];
+
+/** Et quand on vient lui demander des comptes. */
+export const ECUREUIL_FUITE = 'L’écureuil détale.';
+
 // ═══════════════════════════════════════════════════════════════ 6. le poisson
 
 /** Le nom qui s'affiche au-dessus de la boîte. */
@@ -234,11 +258,19 @@ export const VIE: string[][] = [
   ['« Voilà. »', '« C’était ma vie. »'],
 ];
 
-/** Une fois le chat assis au bord de la baignoire. La troisième ligne est la scène. */
-export const SAUVE_MOI = [
-  '« Bon. »',
-  '« Tu peux retirer le bouchon, s’il te plaît ? »',
-  '« Tout de suite, plutôt. »',
+/**
+ * Le chat entre et **s'arrête à la porte pour regarder**. Puis il avance de quelques pas à
+ * chaque phrase, doucement, et le poisson change de ton d'une boîte à l'autre.
+ *
+ * Une boîte = un pas de plus. La dernière porte la question : à ce moment-là le chat est
+ * au bord de la baignoire, et il n'y a plus rien à ajouter.
+ */
+export const PANIQUE: string[][] = [
+  ['« Ah. »'],
+  ['« Il y a un chat, à la porte. »'],
+  ['« Il avance. »'],
+  ['« Il avance encore. »'],
+  ['« Bon. »', '« Tu peux retirer le bouchon ? »', '« Tout de suite, plutôt. »'],
 ];
 
 export const RETIRE = [

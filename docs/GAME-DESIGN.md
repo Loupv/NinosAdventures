@@ -116,10 +116,11 @@ meuble en travers fermerait définitivement l'accès au poisson et au bateau —
 le réverbère sont du décor auquel on peut parler, rien de plus. Les
 valeurs sont choisies pour que Nino (sombre) se détache toujours du plan derrière lui.
 Pour l'instant on **marche, c'est tout** : le quai est vide, il n'y a rien à franchir.
-**Le bateau de papa n'arrive que plus tard**, et « plus tard » se compte comme pour le
-poisson : **trois écrans après la première visite** de l'Erdre. Jamais à la découverte du
-lieu — on voit d'abord une rivière vide, et le bateau est là au retour. Le flag est
-`bateau-arrive`, posé tout seul par `chosesQuiArrivent()`. Il fait apparaître au second plan
+**Le bateau de papa arrive sous les yeux de Nino**, quatre secondes après son arrivée sur
+le quai : *« Un bateau remonte l'Erdre. Il y a quelqu'un dessus. »* La règle des trois
+écrans existe toujours en secours, mais elle ne suffisait pas — **rien ne disait au joueur
+de repartir et de revenir**, et il attendait sur le quai devant une rivière vide. Le voir
+arriver vaut mieux que le trouver là. Le flag `bateau-arrive` fait apparaître au second plan
 papa debout dessus : dessiné derrière Nino et plus haut à l'écran, donc plus loin, selon
 la convention 2D habituelle.
 
@@ -219,11 +220,16 @@ prend son temps** :
    compris comment. »* — *« Voilà. C'était ma vie. »*
 
    Cinq boîtes de dialogue. C'est long exprès.
-5. **Alors le chat entre.** Moon traverse la salle de bain et s'assoit au bord de la
-   baignoire. Sans un mot. Rien n'explique que c'est un problème : c'est un chat au bord
-   d'une baignoire avec un poisson dedans, il n'y a rien à expliquer.
-6. Et le poisson change de ton : *« Bon. »* — *« Tu peux retirer le bouchon, s'il te
-   plaît ? »* — *« Tout de suite, plutôt. »* → choix Oui / Non.
+5. **Alors le chat entre — et il s'arrête à la porte.** Il regarde. Puis il avance de
+   quelques pas **à chaque phrase du poisson**, doucement, et le poisson change de ton
+   d'une boîte à l'autre :
+
+   *« Ah. »* — *« Il y a un chat, à la porte. »* — *« Il avance. »* — *« Il avance
+   encore. »* — *« Bon. Tu peux retirer le bouchon ? Tout de suite, plutôt. »*
+
+   Une boîte = un pas de plus, et la dernière porte la question. C'est le chat qui donne le
+   tempo, et rien n'explique que c'est un problème : c'est un chat au bord d'une baignoire
+   avec un poisson dedans, il n'y a rien à expliquer.
 7. Si Nino le fait, il descend, très digne, la tête la première. *« On se reverra. »* La
    baignoire se vide tout de suite. Et **Moon regarde le trou** : s'il a déjà eu sa pizza —
    donc s'il sait parler — il a un avis : *« C'était mon poisson. »* Sinon il ne dit rien,
@@ -331,6 +337,15 @@ eau** de Nino. Il fonctionne encore.
 
   La formule marche parce qu'elle **flatte** : *t'es bon au foot ?*, *t'es fort ?* — et
   qu'elle donne un geste à faire, pas une idée à avoir.
+
+  **Et il commente.** Chaque tir de ballon qui retombe sans avoir cassé la fenêtre lui
+  vaut une pique, affichée au-dessus de lui **sans boîte de dialogue** : on est en train de
+  jouer au ballon, ce n'est pas le moment de lire. *« Raté. »* — *« Oh là là. »* — *« Tu
+  VISES ? »* — *« Moi je dis rien. »* — *« C'est large, hein. »*
+
+  Et si on va lui demander des comptes, **il détale** en diagonale hors de l'écran :
+  *« L'écureuil détale. »* Il revient à la visite suivante, parce qu'un écureuil ne retient
+  rien.
 
   C'est un patron réutilisable : **proposer, insister, nier**. Trois beats, aucun
   commentaire, et le même écureuil peut resservir dans n'importe quel chapitre.
@@ -711,10 +726,26 @@ japonais, et un héron qui exige des papiers.
 - [ ] Une deuxième pièce à collectionner : il n'y en a qu'une (le rêve de la fusée), et
       l'écran de fin les compte.
 
-**Son** — rien n'est encore branché, et **la liste complète est écrite** :
+**Son** — **dix-sept sons sont branchés**, et la liste complète est écrite :
 [`src/data/sons.ts`](../src/data/sons.ts), 28 sons, 70 fichiers. `npx tsx tools/sons.ts`
 dit à tout moment ce qui manque, par priorité, avec le nom exact du fichier à poser dans
 `public/sons/`.
+
+Quatre des plus importants sont **fabriqués** plutôt que trouvés (`npx tsx
+tools/synthese.ts`), parce qu'on voulait un contrôle exact sur ce qui pique l'oreille :
+
+- **le bip du texte** — un triangle de 34 ms filtré quatre fois. Il se joue trente fois par
+  phrase : le bip carré du pack avait un indice de brillance de 0,141, celui-ci 0,003.
+  Quarante fois moins d'aigu, et on peut l'écouter une heure.
+- **les pas** — du bruit blanc filtré, **aucune note**, comme le canal « noise » de la
+  console. Les pas du pack avaient une hauteur, et une hauteur qui revient tous les quatorze
+  pixels devient une mélodie.
+- **le curseur d'un choix** et **sa validation** — deux carrés doux, une quarte d'écart pour
+  le second : « pris en compte » sans faire fanfare.
+
+`tools/adoucir.ts` fait la même chose sur un fichier existant (passe-bas, fondus, gain), et
+affiche l'indice de brillance avant/après — c'est ce qui permet de comparer deux candidats
+sans les écouter.
 
 Trois principes y sont posés :
 

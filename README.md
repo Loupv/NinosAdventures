@@ -28,10 +28,12 @@ Puis ouvrir <http://localhost:5173>.
 | **Échap** | Fermer |
 | **M** ou le bouton sous l'écran | Couper / rallumer le son |
 
-**Quatorze sons sur vingt-huit sont branchés** : le texte qui s'écrit, les pas, les portes,
-les escaliers, le ballon, la vitre, les objets ramassés, les énigmes, les refus, le portail,
-le naufrage. Ils viennent du pack CC0 de Juhani Junkala ; cinq sont marqués *provisoires* et
-attendent leur version enregistrée à la maison. Les autres — le prout de la fusée, les cris
+**Dix-sept sons sur trente sont branchés** : le texte qui s'écrit, les pas, les portes, les
+escaliers, le curseur et la validation d'un choix, le ballon, la vitre, les objets ramassés,
+les énigmes, les refus, le portail, le naufrage. Quatre sont **fabriqués** par
+`npx tsx tools/synthese.ts` (le bip du texte, les pas, les deux sons de menu) ; les autres
+viennent du pack CC0 de Juhani Junkala, dont quatre marqués *provisoires* qui attendent leur
+version enregistrée à la maison. Les autres — le prout de la fusée, les cris
 de Maman, Hermione, Moon, le souffle des bougies — **sont déjà branchés dans le code et
 resteront muets jusqu'à ce que les fichiers arrivent**.
 
@@ -157,6 +159,15 @@ Vérifie le *plan* du jeu, pas le code : grilles de pièces, sprites qui débord
 qui se chevauchent, points d'arrivée dans un mur, portes murées, cachettes d'Hermione à
 découvert, dialogues manquants, lieux injoignables — et qu'aucun texte français ne traîne
 ailleurs que dans `textes.ts`.
+
+```bash
+npx tsx tools/synthese.ts
+```
+
+Refabrique les sons de synthèse (bip du texte, pas, menu, validation). Déterministe : deux
+exécutions donnent exactement les mêmes fichiers. `npx tsx tools/adoucir.ts` fait la même
+chose sur un fichier existant — passe-bas, fondus, gain — et affiche un indice de brillance
+avant/après.
 
 ```bash
 npx tsx tools/sons.ts
