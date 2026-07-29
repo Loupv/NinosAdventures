@@ -28,6 +28,13 @@ Puis ouvrir <http://localhost:5173>.
 | **Échap** | Fermer |
 | **M** ou le bouton sous l'écran | Couper / rallumer le son |
 
+**Quatorze sons sur vingt-huit sont branchés** : le texte qui s'écrit, les pas, les portes,
+les escaliers, le ballon, la vitre, les objets ramassés, les énigmes, les refus, le portail,
+le naufrage. Ils viennent du pack CC0 de Juhani Junkala ; cinq sont marqués *provisoires* et
+attendent leur version enregistrée à la maison. Les autres — le prout de la fusée, les cris
+de Maman, Hermione, Moon, le souffle des bougies — **sont déjà branchés dans le code et
+resteront muets jusqu'à ce que les fichiers arrivent**.
+
 **Le son est coupé au démarrage**, le temps du développement. Le bouton vit dans la page,
 sous l'écran, et pas dans le jeu : il ne mange aucun pixel, et il suffira de retirer le
 `<button>` de `index.html` et le bloc marqué *TEMPORAIRE* de `src/main.ts` le jour où on

@@ -4,6 +4,7 @@ import { shade, shadeHex } from '../art/palette';
 import { texKey } from '../art/pixels';
 import { state } from '../systems/state';
 import { VOL } from '../data/textes';
+import { jouer } from '../systems/audio';
 import { PixelText, measure } from '../ui/PixelText';
 
 /**
@@ -125,6 +126,7 @@ export class ParapenteScene extends Phaser.Scene {
     if (this.prochaineRafale <= 0) {
       this.prochaineRafale = RAFALE_TOUS;
       this.vx += Math.random() < 0.5 ? -RAFALE : RAFALE;
+      jouer(this, 'rafale', { volume: 0.6 });
       this.dire(VOL.rafale);
     }
 
@@ -159,6 +161,7 @@ export class ParapenteScene extends Phaser.Scene {
     state.setFlag('parapente-rentre');
     state.give('parapente');
     state.save();
+    jouer(this, 'objet-trouve', { volume: 0.6 });
     this.annoncer(VOL.reussi, VOL.atterrir);
     this.input.keyboard!.once('keydown-SPACE', () => this.repartir());
     this.time.delayedCall(400, () => {

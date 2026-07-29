@@ -34,7 +34,11 @@ for (const rang of RANGS) {
     attendus += noms.length;
     acquis += ok;
     const etat = ok === noms.length ? '✓' : ok === 0 ? ' ' : `${ok}/${noms.length}`;
-    const marques = [s.maison ? 'à enregistrer à la maison' : '', s.boucle ? 'boucle' : '']
+    const marques = [
+      s.provisoire ? 'PROVISOIRE, à remplacer' : '',
+      s.maison ? 'à enregistrer à la maison' : '',
+      s.boucle ? 'boucle' : '',
+    ]
       .filter(Boolean)
       .join(', ');
     console.log(

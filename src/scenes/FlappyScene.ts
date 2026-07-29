@@ -3,6 +3,7 @@ import { GB, KEYS } from '../config';
 import { shade, shadeHex } from '../art/palette';
 import { animKey, texKey } from '../art/pixels';
 import { state } from '../systems/state';
+import { jouer } from '../systems/audio';
 import { FUSEE } from '../data/textes';
 import { PixelText, measure } from '../ui/PixelText';
 
@@ -124,6 +125,7 @@ export class FlappyScene extends Phaser.Scene {
       if (appui) {
         this.etat = 'vol';
         this.vy = -BATTEMENT;
+        jouer(this, 'prout', { volume: 0.9 });
         this.annoncer('', '');
       }
       return;
@@ -141,7 +143,11 @@ export class FlappyScene extends Phaser.Scene {
       return;
     }
 
-    if (appui) this.vy = -BATTEMENT;
+    if (appui) {
+      this.vy = -BATTEMENT;
+      // La fonctionnalité la plus importante du projet.
+      jouer(this, 'prout', { volume: 0.9 });
+    }
     this.vy += GRAVITE * dt;
     this.fusee.y += this.vy * dt;
     this.fusee.setAngle(Phaser.Math.Clamp(this.vy * 0.12, -20, 45));
@@ -227,6 +233,7 @@ export class FlappyScene extends Phaser.Scene {
     this.etat = 'gagne';
     const neuve = !state.pieces.has('reve');
     state.pieces.add('reve');
+    jouer(this, 'piece', { volume: 0.8 });
     state.save();
     this.add
       .image(GB.W / 2 - 8, 60, texKey('piece', PALETTE))

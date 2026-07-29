@@ -33,6 +33,7 @@ import { CACHETTES, cachetteActuelle, hermioneSuit, rappel } from '../data/hermi
 import { state } from '../systems/state';
 import { EV, bus, say, toast, type Buttons } from '../systems/bus';
 import { gbFade, portalWarp, sparkle, splash } from '../systems/fx';
+import { jouer } from '../systems/audio';
 import { Player, type ViewMode } from '../entities/Player';
 import { ETAPES, type Etape } from '../dev/etapes';
 import { PixelText, measure } from '../ui/PixelText';
@@ -156,6 +157,8 @@ export class WorldScene extends Phaser.Scene {
   /** Les poissons de la pièce, avec où ils en sont de leur saut. */
   private sauteurs: Sauteur[] = [];
   private trace: { x: number; y: number }[] = [];
+  /** Distance parcourue depuis le dernier bruit de pas, en pixels. */
+  private depuisLePas = 0;
   private errants: Errant[] = [];
   private transitioning = false;
   private keys!: Record<keyof typeof KEYS, Phaser.Input.Keyboard.Key[]>;
@@ -381,6 +384,7 @@ export class WorldScene extends Phaser.Scene {
       left: this.down('left'),
       right: this.down('right'),
     });
+    this.bruitDesPas(delta);
 
     const door = this.doorUnderPlayer();
     if (door) {
@@ -504,7 +508,11 @@ export class WorldScene extends Phaser.Scene {
       // Il ne se laisse pas pousser : **il ne bouge que d'un coup de pied**. Marcher
       // dedans ne le déplace pas d'un pixel, c'est Nino qui est arrêté.
       b.pushable = false;
-      this.physics.add.collider(go, this.solids);
+      // Il rebondit : chaque contact sonne, mais seulement s'il va assez vite pour
+      // qu'on y croie — sinon un ballon qui roule contre un mur crépite.
+      this.physics.add.collider(go, this.solids, () => {
+        if (b.velocity.length() > 40) jouer(this, 'rebond', { volume: 0.5 });
+      });
       this.ballon = go;
     }
 
@@ -566,6 +574,7 @@ export class WorldScene extends Phaser.Scene {
         ? Math.PI - biais(cy - py)
         : biais(cy - py);
     b.setVelocity(Math.cos(a) * BALLON_TIR, Math.sin(a) * BALLON_TIR);
+    jouer(this, 'ballon', { volume: 0.7 });
   }
 
   /**
@@ -595,6 +604,7 @@ export class WorldScene extends Phaser.Scene {
     state.setFlag('fenetre-cassee');
     (vitre.go as Phaser.GameObjects.Image).setFrame('cassee');
     sparkle(this, this.pal, cx, cadre.bottom);
+    jouer(this, 'vitre-cassee', { volume: 0.8 });
     // Il retombe dans la cour au lieu de rester planté dans le cadre.
     b.setVelocity(0, 90);
     this.runDialogue('fenetre-cassee', vitre);
@@ -638,6 +648,7 @@ export class WorldScene extends Phaser.Scene {
 
   /** Un plouf sur la ligne d'eau, au bord où le poisson vient de la traverser. */
   private plouf(s: Sauteur, x: number): void {
+    jouer(this, 'plouf', { volume: 0.5 });
     splash(this, this.pal, Math.round(x + s.live.go.displayWidth / 2), Math.round(s.saute.eau));
   }
 
@@ -652,6 +663,24 @@ export class WorldScene extends Phaser.Scene {
       Math.round(s.saute.eau - s.saute.hauteur),
     );
     l.go.setVisible(true);
+  }
+
+  /**
+   * Le bruit des pas, au kilométrage : un son tous les quatorze pixels parcourus, et pas
+   * au rythme de l'animation. Un enfant qui longe un mur en frottant avance très peu, et
+   * il ne doit pas faire le bruit d'une course.
+   */
+  private bruitDesPas(dt: number): void {
+    const v = (this.player.sprite.body as Phaser.Physics.Arcade.Body).velocity;
+    const avance = (Math.abs(v.x) + Math.abs(v.y)) * (dt / 1000);
+    if (avance < 0.1) {
+      this.depuisLePas = 10;
+      return;
+    }
+    this.depuisLePas += avance;
+    if (this.depuisLePas < 14) return;
+    this.depuisLePas = 0;
+    jouer(this, 'pas', { volume: 0.35 });
   }
 
   /** Fait vivre les personnages : un pas, une pause, un autre pas. */
@@ -1307,6 +1336,8 @@ export class WorldScene extends Phaser.Scene {
         return;
       }
       // La boîte passe en haut : toute la scène du gâteau reste visible en dessous.
+      // La réplique dit elle-même si un son l'accompagne.
+      if (FETE[i].son) jouer(this, FETE[i].son, { volume: 0.9 });
       say({ speaker: FETE[i].qui, lines: FETE[i].lignes, focusY: 110, onDone: () => dire(i + 1) });
     };
     dire(0);
@@ -1328,6 +1359,7 @@ export class WorldScene extends Phaser.Scene {
 
   private mamanArrive(l: Live, derniere: boolean): void {
     state.locked = true;
+    jouer(this, 'cri-maman', { volume: 0.9 });
 
     // Elle entre par la porte la plus proche de la petite.
     const porte = this.entrees().reduce((a, b) =>
@@ -1543,6 +1575,7 @@ export class WorldScene extends Phaser.Scene {
       return;
     }
     if (l.def.id === 'hermione') {
+      jouer(this, 'hermione', { volume: 0.7 });
       this.trouveHermione(l);
       return;
     }
@@ -1572,6 +1605,8 @@ export class WorldScene extends Phaser.Scene {
       return;
     }
     if (l.def.saute) this.sortirDeLEau(l);
+    if (l.def.sprite === 'moon' && !state.flag('chat-parle')) jouer(this, 'chat', { volume: 0.7 });
+    if (l.def.sprite === 'elephant') jouer(this, 'elephant', { volume: 0.7 });
     if (l.def.dialogue) this.runDialogue(l.def.dialogue, l);
   }
 
@@ -1605,7 +1640,9 @@ export class WorldScene extends Phaser.Scene {
         choices: e.reponses,
         focusY: l?.def.y,
         onDone: (reponse) => {
-          const branche = reponse === e.bonne ? e.juste : e.faux;
+          const juste = reponse === e.bonne;
+          jouer(this, juste ? 'enigme-juste' : 'enigme-faux', { volume: 0.6 });
+          const branche = juste ? e.juste : e.faux;
           const retirerBranche = this.montrer(branche.montre);
           say({
             speaker: beat.speaker,
@@ -1653,12 +1690,14 @@ export class WorldScene extends Phaser.Scene {
     // On note l'écran où le robinet a été ouvert : le poisson arrivera quelques
     // écrans plus tard.
     if (e.flag === 'eau-coule') state.eauDepuis = state.ecrans;
+    if (e.flag === 'bateau-coule') jouer(this, 'bateau-coule', { volume: 0.7 });
     if (e.cool) this.applyFraicheur(e.cool, l);
     if (e.take) state.take(e.take);
     if (e.give) {
       state.give(e.give);
       const item = ITEMS[e.give];
       toast(ANNONCES.objetRecu(item.name), e.give);
+      jouer(this, 'objet-trouve', { volume: 0.6 });
       if (l) {
         sparkle(
           this,
@@ -1698,6 +1737,7 @@ export class WorldScene extends Phaser.Scene {
     const closed =
       (p.needs && !state.has(p.needs)) || (p.needsFlag && !state.flag(p.needsFlag));
     if (closed) {
+      jouer(this, 'refus', { volume: 0.5 });
       if (p.lockedDialogue) this.runDialogue(p.lockedDialogue, l);
       return;
     }
@@ -1709,6 +1749,8 @@ export class WorldScene extends Phaser.Scene {
     this.transitioning = true;
     this.player.freeze(this.mode);
     state.locked = true;
+    // Un escalier n'est pas un portail : on monte des marches, ça ne scintille pas.
+    jouer(this, l.def.id.startsWith('escalier') ? 'escalier' : 'portail', { volume: 0.6 });
     portalWarp(this, this.pal, () => {
       if (p.minijeu) {
         // L'interface appartient au monde : le mini-jeu a la sienne.
@@ -1773,6 +1815,7 @@ export class WorldScene extends Phaser.Scene {
     // On le renvoie vers l'intérieur de la pièce, pas vers l'endroit d'où il vient :
     // arrivé dans l'embrasure, il est déjà de l'autre côté du milieu de la porte, et
     // le calculer à partir de sa position le poussait dans le mur.
+    jouer(this, 'refus', { volume: 0.5 });
     const s = this.player.sprite;
     const largeur = this.room.tiles[0].length * 8;
     if (door.x <= 0) s.x = door.x + door.w + 6;
@@ -1798,6 +1841,7 @@ export class WorldScene extends Phaser.Scene {
   }
 
   private goThroughDoor(door: Door): void {
+    jouer(this, 'porte', { volume: 0.5 });
     this.transitioning = true;
     this.player.freeze(this.mode);
     state.locked = true;

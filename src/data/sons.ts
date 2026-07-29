@@ -58,6 +58,11 @@ export interface Son {
   /** À enregistrer à la maison plutôt qu'à télécharger. */
   maison?: boolean;
   /**
+   * Le fichier posé vient du pack 512 et **fait l'affaire en attendant** : il joue son
+   * rôle mais ce n'est pas le bon son. À remplacer par l'enregistrement maison.
+   */
+  provisoire?: boolean;
+  /**
    * Vrai quand les fichiers sont **réellement dans `public/sons/`** : c'est ce qui décide
    * si le jeu tente de les charger. `npx tsx tools/sons.ts` prévient si un drapeau ne
    * correspond plus au contenu du dossier.
@@ -99,8 +104,10 @@ export const SONS: Son[] = [
   },
   {
     id: 'pas',
+    present: true,
+    provisoire: true,
     quand: 'Nino marche. Un son tous les deux pas de l’animation.',
-    variantes: 4,
+    variantes: 3,
     cherche:
       'Chaussette sur parquet, ou pied nu sur carrelage. Sec, 60 ms. Quatre variantes pour que la marche ne fasse pas machine à coudre.',
     priorite: 'important',
@@ -117,6 +124,8 @@ export const SONS: Son[] = [
   },
   {
     id: 'ballon',
+    present: true,
+    provisoire: true,
     quand: 'Coup de pied dans le ballon de la cour.',
     variantes: 3,
     cherche: 'Un vrai coup de pied dans un ballon en plastique, à l’extérieur. 200 ms.',
@@ -125,6 +134,8 @@ export const SONS: Son[] = [
   },
   {
     id: 'rebond',
+    present: true,
+    provisoire: true,
     quand: 'Le ballon touche un mur, le vélo, le réverbère.',
     variantes: 3,
     cherche: 'Le même ballon contre un mur. Plus mat, plus court que le coup de pied.',
@@ -142,6 +153,8 @@ export const SONS: Son[] = [
   },
   {
     id: 'escalier',
+    present: true,
+    provisoire: true,
     quand: 'Chaque étage gravi dans la Tour de Bretagne.',
     variantes: 3,
     cherche:
@@ -151,6 +164,8 @@ export const SONS: Son[] = [
   },
   {
     id: 'porte',
+    present: true,
+    provisoire: true,
     quand: 'Changement de pièce.',
     variantes: 3,
     cherche: 'Une poignée, un battant. Discret : ça se joue à chaque écran.',
@@ -159,6 +174,7 @@ export const SONS: Son[] = [
   },
   {
     id: 'refus',
+    present: true,
     quand: 'Une porte fermée à clé, un passage qui refuse.',
     variantes: 2,
     cherche: 'Un petit « toc » sourd. Surtout pas un buzzer : personne n’a échoué.',
@@ -194,6 +210,7 @@ export const SONS: Son[] = [
   },
   {
     id: 'objet-trouve',
+    present: true,
     quand: 'Un objet entre dans le sac.',
     variantes: 1,
     cherche: 'Trois notes qui montent, en carré. Court.',
@@ -201,6 +218,7 @@ export const SONS: Son[] = [
   },
   {
     id: 'piece',
+    present: true,
     quand: 'Une pièce à collectionner est gagnée.',
     variantes: 1,
     cherche: 'Plus long et plus brillant que objet-trouve : c’est rare.',
@@ -208,6 +226,7 @@ export const SONS: Son[] = [
   },
   {
     id: 'enigme-juste',
+    present: true,
     quand: 'Bonne réponse à un gardien de la tour.',
     variantes: 1,
     cherche: 'Deux notes, vers le haut. Sobre — l’animal, lui, ne s’enthousiasme pas.',
@@ -215,6 +234,7 @@ export const SONS: Son[] = [
   },
   {
     id: 'enigme-faux',
+    present: true,
     quand: 'Mauvaise réponse.',
     variantes: 2,
     cherche:
@@ -223,6 +243,7 @@ export const SONS: Son[] = [
   },
   {
     id: 'vitre-cassee',
+    present: true,
     quand: 'Le ballon casse la fenêtre de la cour.',
     variantes: 1,
     cherche: 'Du verre, puis un silence. Le silence fait la moitié du gag.',
@@ -230,6 +251,7 @@ export const SONS: Son[] = [
   },
   {
     id: 'bateau-coule',
+    present: true,
     quand: 'On tire sur la corde et le bateau descend.',
     variantes: 1,
     cherche:
@@ -246,6 +268,7 @@ export const SONS: Son[] = [
   },
   {
     id: 'portail',
+    present: true,
     quand: 'Passage par la fenêtre du salon, saut du toit.',
     variantes: 1,
     cherche: 'Un souffle qui monte, une seconde.',

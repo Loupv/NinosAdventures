@@ -271,14 +271,19 @@ export const PARENTS: Array<{ qui?: string; lignes: string[] }> = [
   { qui: 'Maman', lignes: ['« Nino. »', '« Nino, viens. »'] },
 ];
 
-/** Dans la cuisine. C'était ça, toute la journée. */
-export const FETE: Array<{ qui?: string; lignes: string[] }> = [
+/**
+ * Dans la cuisine. C'était ça, toute la journée.
+ *
+ * `son` déclenche un bruitage sur la réplique : c'est ici et pas dans le code, pour qu'on
+ * puisse réécrire les phrases sans faire taire le souffle des bougies.
+ */
+export const FETE: Array<{ qui?: string; lignes: string[]; son?: string }> = [
   { lignes: ['Il fait jour dans la cuisine.', 'Ça sent le gâteau.'] },
   { qui: 'Maman', lignes: ['« JOYEUX ANNIVERSAIRE ! »'] },
   { qui: 'Papa', lignes: ['« JOYEUX ANNIVERSAIRE ! »'] },
   { lignes: ['Sept bougies.', 'Hermione tape sur la table.'] },
   { qui: 'Papa', lignes: ['« Souffle ! »'] },
-  { lignes: ['Nino prend une très grande respiration.'] },
+  { lignes: ['Nino prend une très grande respiration.'], son: 'bougies' },
   { lignes: ['...'] },
   { lignes: ['Nino dort.'] },
 ];
