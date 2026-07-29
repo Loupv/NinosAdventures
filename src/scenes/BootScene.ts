@@ -128,6 +128,16 @@ export class BootScene extends Phaser.Scene {
     });
 
     this.anims.create({
+      key: animKey('heron-vol', pal),
+      frames: [
+        { key: texKey('heron', pal), frame: 'vol-0' },
+        { key: texKey('heron', pal), frame: 'vol-1' },
+      ],
+      frameRate: 4,
+      repeat: -1,
+    });
+
+    this.anims.create({
       key: animKey('splash-plouf', pal),
       frames: ['plouf-0', 'plouf-1', 'plouf-2'].map((frame) => ({
         key: texKey('splash', pal),

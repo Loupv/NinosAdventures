@@ -216,6 +216,14 @@ export const SONS: Son[] = [
     maison: true,
   },
   {
+    id: 'heron',
+    quand: 'Un héron passe devant le parapente, ou se fait bousculer.',
+    variantes: 2,
+    cherche:
+      'Un cri rauque, court, très laid — un héron ne chante pas, il proteste. Un vrai cri de héron cendré, deux variantes, une demi-seconde chacune.',
+    priorite: 'plus tard',
+  },
+  {
     id: 'refus',
     present: true,
     quand: 'Une porte fermée à clé, un passage qui refuse.',

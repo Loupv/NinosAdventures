@@ -381,6 +381,38 @@ const FUSEE_B: Art = [
 ];
 
 /** Une goutte. Nino en laisse derrière lui s'il traîne trop au lit. */
+/**
+ * Un héron, de profil, en vol. Deux images : ailes hautes, ailes basses. À quatorze pixels
+ * de large, ce qui fait le héron c'est le cou tendu devant et les pattes qui traînent
+ * derrière — les ailes, elles, ne servent qu'à ce que ça bouge.
+ */
+const HERON_A: Art = [
+  '......00........',
+  '.....0330.......',
+  '....03330.......',
+  '...033330.......',
+  '..0333330.......',
+  '.00333333000....',
+  '000333333330000.',
+  '.00033333300....',
+  '...000000.......',
+  '..00............',
+  '.00.............',
+];
+const HERON_B: Art = [
+  '................',
+  '................',
+  '.....000000.....',
+  '.00333333000....',
+  '000333333330000.',
+  '.00033333300....',
+  '..03333330......',
+  '...033330.......',
+  '....03330.......',
+  '..000330........',
+  '.00..00.........',
+];
+
 const GOUTTE: Art = [
   '.0.',
   '.0.',
@@ -1500,6 +1532,7 @@ export const SHEETS: Record<string, Record<string, Art>> = {
   hermione4: { 'rampe-0': HERMIONE_RAMPE_A, 'rampe-1': HERMIONE_RAMPE_B },
   araignee: { 'pattes-0': ARAIGNEE_A, 'pattes-1': ARAIGNEE_B },
   poisson: { 'saut-0': POISSON_A, 'saut-1': POISSON_B },
+  heron: { 'vol-0': HERON_A, 'vol-1': HERON_B },
   fusee: { 'vol-0': FUSEE_A, 'vol-1': FUSEE_B },
   frigo: { ferme: FRIGO, ouvert: FRIGO_OUVERT },
   fenetre: { fermee: FENETRE, ouverte: FENETRE_OUVERTE, cassee: FENETRE_CASSEE },

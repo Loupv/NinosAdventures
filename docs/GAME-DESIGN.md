@@ -767,6 +767,16 @@ comme le rêve de la fusée, c'est-à-dire **sans aucune punition** : rater ne f
 perdre, une rafale remonte Nino et il recommence. Le vent pousse de côté toutes les
 secondes et demie, ce qui suffit à en faire un jeu.
 
+**Et les hérons.** Ils traversent l'écran pendant la descente, un toutes les deux
+secondes, à des hauteurs qui ne se répètent pas — ce sont ceux de l'Erdre, et ils rentrent
+à la même heure que lui. Les toucher ne fait pas perdre non plus : le héron proteste et
+l'écarte d'un grand coup d'aile, ce qui suffit largement à faire manquer la fenêtre. C'est
+le seul obstacle du jeu qu'on ne peut pas résoudre — on peut seulement l'éviter.
+
+L'écran du vol est **dans la palette de l'aube**, comme le toit d'où il vient : le ciel
+prend le ton moyen et non le plus clair, ce qui laisse le ton clair à la seule chose qui
+doit sauter aux yeux — sa fenêtre, la seule allumée de la façade.
+
 ### La fin
 
 De retour dans sa chambre, parapente sous le bras, il suffit d'aller au lit :
@@ -775,7 +785,7 @@ De retour dans sa chambre, parapente sous le bras, il suffit d'aller au lit :
 2. *« Il se glisse sous la couette. Il ferme les yeux très fort. »* — et on **le voit dans
    son lit**, comme au tout début du jeu.
 3. **Les parents entrent.** Ils ne parlent ni de la fenêtre ouverte, ni du parapente.
-   *« Il dort. »* — *« À sept heures du soir ? »* — *« Nino. Nino, viens. »*
+   *« Il dort. »* — *« À sept heures du matin ? »* — *« Nino. Nino, viens. »*
 4. **La cuisine.** La lumière est allumée. Un gâteau, **sept bougies**, Hermione qui tape
    sur la table. *« JOYEUX ANNIVERSAIRE ! »* — *« Souffle ! »*
 5. *« Nino prend une très grande respiration. »* — *« ... »* — **« Nino dort. »**

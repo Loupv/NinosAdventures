@@ -80,6 +80,9 @@ export const VOL = {
   consigne: 'Viser sa fenêtre.',
   demarrer: 'ESPACE pour sauter',
   rafale: 'Une rafale.',
+  /** Les hérons de l'Erdre rentrent à la même heure que lui. */
+  heron: 'Un héron !',
+  heronTouche: 'Le héron n’a pas aimé.',
   rate: 'Raté.',
   lumiere: 'Une lumière s’allume.',
   reussi: 'Pile dedans.',
