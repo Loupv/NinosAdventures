@@ -38,7 +38,10 @@ export const CACHETTES: Cachette[] = [
   // ── Les cinq de la maison. Ce sont elles qui comptent : quand Maman a renoncé
   // ── sur celles-là, elle monte au salon et le frigo est libre.
   { room: 'couloir', x: 91, y: 100, depth: 104 }, // derrière la plante, un côté qui dépasse
-  { room: 'cuisine', x: 78, y: 32, depth: 36 }, // derrière le frigo
+  // **Pas dans la cuisine** : Maman y cherche justement Hermione jusqu'au bout de la
+  // chasse, et une petite sœur cachée dans la pièce où sa mère la cherche, ça ne tient
+  // pas debout. Elle est donc chez les parents, derrière leur armoire.
+  { room: 'chambre-parents', x: 115, y: 24, depth: 28 },
   { room: 'chambre', x: 20, y: 40, depth: 42 }, // sous le lit de Nino
   { room: 'mezzanine', x: 46, y: 28, depth: 30 }, // derrière le carton
   // La cinquième ne se voit qu'une fois la baignoire vidée : c'est elle qui rend toute la

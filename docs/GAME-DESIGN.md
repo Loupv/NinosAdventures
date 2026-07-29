@@ -458,7 +458,13 @@ repart pas, et **elle suit Nino à quatre pattes** à partir de là.
 
 **Neuf cachettes, et deux moitiés qui ne servent pas à la même chose.** Les cinq de la
 maison sont la quête d'ouverture : elles sont obligatoires, elles gardent le frigo, et la
-dernière exige le poisson. Les quatre du dehors se trouvent après être sorti — c'est ce qui
+dernière exige le poisson.
+
+**Aucune n'est dans la cuisine**, et c'est une contrainte de l'histoire, pas du dessin :
+Maman y cherche Hermione pendant toute la chasse, et une petite sœur cachée dans la pièce
+où sa mère la cherche ne tient pas debout. Les cinq sont donc le couloir (derrière la
+plante), la chambre des parents (derrière l'armoire), la chambre de Nino (sous son lit), la
+mezzanine (derrière le carton) et la salle de bain (celle qui exige le poisson). Les quatre du dehors se trouvent après être sorti — c'est ce qui
 donne à Hermione une raison de continuer à apparaître dans le chapitre de la ville, au lieu
 de disparaître à mi-parcours. Au bout des neuf, Maman renonce pour de bon et Hermione suit
 Nino à quatre pattes.
