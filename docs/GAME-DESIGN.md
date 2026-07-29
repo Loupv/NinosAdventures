@@ -259,11 +259,21 @@ prend son temps** :
    *« Ah. »* — *« Il y a un chat, à la porte. »* — *« Il avance. »* — *« Il avance
    encore. »* — *« Bon. Tu peux retirer le bouchon ? Tout de suite, plutôt. »*
 
-   Une boîte = un pas de plus, et la dernière porte la question. C'est le chat qui donne le
-   tempo, et rien n'explique que c'est un problème : c'est un chat au bord d'une baignoire
-   avec un poisson dedans, il n'y a rien à expliquer.
-7. Si Nino le fait, il descend, très digne, la tête la première. *« On se reverra. »* La
-   baignoire se vide tout de suite. Et **Moon regarde le trou** : s'il a déjà eu sa pizza —
+   Une boîte = un pas de plus, et la dernière porte la question. **Il s'arrête à mi-chemin** :
+   un chat qui s'arrête en route est une plus grande menace qu'un chat arrivé. Rien n'explique
+   que c'est un problème : c'est un chat, une baignoire, un poisson dedans.
+
+   **Et le poisson ne lâche pas l'affaire.** Dire non ne termine rien : *« Non ?! Regarde-le.
+   Regarde-moi. »* — *« Je ne demande pas pour le plaisir. »* — *« Le bouchon. S'il te
+   plaît. »* — *« Nino. »* La question revient à chaque fois, et il n'y a pas d'autre issue.
+   C'est cohérent : il y a un chat dans la pièce, ce n'est plus une faveur qu'il demande.
+
+7. Une fois le bouchon retiré, il descend — et **Moon grogne**, parce que son dîner vient de
+   passer par un trou de deux centimètres sous son nez. La baignoire se vide **complètement** :
+   l'animation de l'eau est coupée avant de poser la frame vide, sinon le battement suivant
+   la remettait pleine.
+8. Il descend, très digne, la tête la première. *« On se reverra. »* Et **Moon regarde le
+   trou** : s'il a déjà eu sa pizza —
    donc s'il sait parler — il a un avis : *« C'était mon poisson. »* Sinon il ne dit rien,
    parce que ce jour-là il ne parle pas encore. Puis il repart par où il est venu.
 
@@ -297,6 +307,10 @@ banale a une conséquence dans un autre lieu, une heure plus tard, et personne n
 lien à part le joueur.
 
 ### Le grand lit des parents → le rêve de la fusée
+
+**Fermer les yeux lance le rêve tout de suite.** Le lit n'est plus un passage à deux temps :
+on répond oui, on voit Nino s'allonger, l'écran s'éteint et la fusée commence. Un enfant qui
+vient de s'endormir ne réappuie pas sur un bouton pour rêver.
 
 S'y allonger ouvre une branche : *« Il ferme les yeux une seconde. Une seconde, pas... »*
 — et Nino se réveille **sur une fusée**, dans un ciel gris cathodique.

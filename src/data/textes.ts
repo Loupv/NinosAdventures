@@ -279,13 +279,26 @@ export const RETIRE = [
   '« On se reverra. »',
 ];
 
-export const REFUS = ['« D’accord. »', '« Je repose la question dans deux minutes. »'];
+/**
+ * Ce qu'il répond si on dit non. **Il ne lâche pas l'affaire** : il y a un chat dans la
+ * pièce, ce n'est plus une faveur qu'il demande. La question revient tout de suite, et il
+ * n'y a pas d'autre issue que le bouchon.
+ */
+export const REFUS: string[][] = [
+  ['« Non ?! »', '« Regarde-le. Regarde-moi. »'],
+  ['« Je ne demande pas pour le plaisir. »'],
+  ['« Le bouchon. »', '« S’il te plaît. »'],
+  ['« Nino. »'],
+];
 
 /**
  * Ce que Moon en pense — et il ne le dit que s'il a déjà eu sa pizza : c'est elle qui
  * l'a fait parler, on ne va pas revenir là-dessus pour un poisson.
  */
 export const LE_CHAT = ['« C’était mon poisson. »'];
+
+/** Le bruit qu'il fait au moment où le poisson disparaît par le trou. Pas un mot. */
+export const GROGNEMENT = ['Moon grogne.'];
 
 // ═══════════════════════════════════════════════════════════════ 7. la fin
 

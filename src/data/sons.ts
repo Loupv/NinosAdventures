@@ -243,6 +243,15 @@ export const SONS: Son[] = [
     maison: true,
   },
   {
+    id: 'grognement',
+    quand: 'Le poisson disparaît par le trou de la baignoire, sous le nez du chat.',
+    variantes: 2,
+    cherche:
+      'Un grognement de chat contrarié — pas un miaulement, ce son de gorge qu’ils font quand on leur retire quelque chose. Moon, encore une fois, si on arrive à l’énerver assez.',
+    priorite: 'important',
+    maison: true,
+  },
+  {
     id: 'objet-trouve',
     present: true,
     quand: 'Un objet entre dans le sac.',

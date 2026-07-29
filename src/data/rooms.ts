@@ -637,15 +637,9 @@ export const ROOMS: Record<string, Room> = {
         ...at(6, 3),
         sprite: 'grand-lit',
         solid: true,
-        portal: {
-          // On s'endort, et on se réveille dans le rêve du canard.
-          room: 'chambre-parents',
-          x: 80,
-          y: 70,
-          minijeu: 'Flappy',
-          firstDialogue: 'grand-lit',
-          opensFlag: 'reve-ouvert',
-        },
+        // Pas un portail : c'est la scène qui enchaîne, pour que **fermer les yeux
+        // démarre le rêve tout de suite** au lieu de demander un deuxième appui.
+        dialogue: 'grand-lit',
       },
       {
         id: 'armoire',

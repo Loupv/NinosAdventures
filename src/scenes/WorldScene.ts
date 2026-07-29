@@ -19,6 +19,7 @@ import {
   COUPLETS,
   DIVERSION,
   FETE,
+  GROGNEMENT,
   HAIKUS,
   LE_CHAT,
   PARENTS,
@@ -1261,7 +1262,10 @@ export class WorldScene extends Phaser.Scene {
       // Le poisson part avec l'eau. La baignoire se vide tout de suite, pas au prochain
       // passage : c'est le seul moment où on le voit descendre.
       state.setFlag('bouchon-retire');
+      // La baignoire se vide pour de bon : on coupe l'animation de l'eau **avant** de
+      // poser la frame, sinon le battement suivant la remettrait pleine.
       const cuve = this.live.find((o) => o.def.id === 'baignoire');
+      if (cuve?.go instanceof Phaser.GameObjects.Sprite) cuve.go.anims.stop();
       (cuve?.go as Phaser.GameObjects.Image | undefined)?.setFrame('vide');
       say({
         lines: RETIRE,
@@ -1272,13 +1276,23 @@ export class WorldScene extends Phaser.Scene {
           this.sauteurs = this.sauteurs.filter((s) => s.live !== l);
           this.target = undefined;
           state.save();
-          if (state.flag('chat-parle')) {
-            say({ speaker: 'Moon', lines: LE_CHAT, focusY, onDone: repartir });
-          } else {
-            // Il n'a pas eu sa pizza : il ne parle pas encore. Il regarde, c'est tout.
-            state.locked = true;
-            this.time.delayedCall(900, repartir);
-          }
+          // Le poisson vient de passer par le trou, sous son nez.
+          jouer(this, 'grognement', { volume: 0.8 });
+          say({
+            speaker: 'Moon',
+            lines: GROGNEMENT,
+            focusY,
+            onDone: () => {
+              // Il n'ajoute un mot que s'il a déjà eu sa pizza : c'est elle qui l'a fait
+              // parler. Sinon il grogne, et c'est tout.
+              if (state.flag('chat-parle')) {
+                say({ speaker: 'Moon', lines: LE_CHAT, focusY, onDone: repartir });
+                return;
+              }
+              state.locked = true;
+              this.time.delayedCall(900, repartir);
+            },
+          });
         },
       });
     };
@@ -1287,9 +1301,25 @@ export class WorldScene extends Phaser.Scene {
      * Le chat se poste à la porte, puis **avance de quelques pas à chaque phrase**. Le
      * poisson panique d'une boîte à l'autre ; c'est le chat qui donne le tempo, et personne
      * n'explique pourquoi c'est un problème.
+     *
+     * Il **s'arrête à mi-chemin** : il n'a pas besoin d'arriver au bord pour que ce soit
+     * une menace, et un chat qui s'arrête en chemin en est une plus grande qu'un chat
+     * arrivé. Le poisson, lui, **ne lâche pas l'affaire** — dire non ne fait que ramener la
+     * question, et il n'y a pas d'autre issue que le bouchon.
      */
-    const BORD = { x: 42, y: 48 };
+    const MI_CHEMIN = { x: 92, y: 54 };
     const pas = PANIQUE.length - 1;
+    const insiste = (i: number) => {
+      const lignes = REFUS[Math.min(i, REFUS.length - 1)];
+      say({
+        speaker: POISSON,
+        lines: lignes,
+        choices: ['Oui', 'Non'],
+        focusY,
+        onDone: (reponse) => (reponse === 0 ? boire() : insiste(i + 1)),
+      });
+    };
+
     const paniquer = (i: number) => {
       const derniere = i >= PANIQUE.length - 1;
       say({
@@ -1300,16 +1330,16 @@ export class WorldScene extends Phaser.Scene {
         onDone: (reponse) => {
           if (derniere) {
             if (reponse === 0) boire();
-            else dire(REFUS, repartir);
+            else insiste(0);
             return;
           }
           state.locked = true;
-          // Un pas de plus vers la baignoire, lentement.
+          // Un pas de plus, lentement, jusqu'à la moitié de la pièce et pas plus loin.
           const avance = (i + 1) / pas;
           this.tweens.add({
             targets: moon,
-            x: Math.round(seuil.x + (BORD.x - seuil.x) * avance),
-            y: Math.round(seuil.y + (BORD.y - seuil.y) * avance),
+            x: Math.round(seuil.x + (MI_CHEMIN.x - seuil.x) * avance),
+            y: Math.round(seuil.y + (MI_CHEMIN.y - seuil.y) * avance),
             duration: 620,
             ease: 'Sine.easeInOut',
             onUpdate: profondeur,
@@ -1337,6 +1367,44 @@ export class WorldScene extends Phaser.Scene {
 
     if (state.flag('poisson-vie-racontee')) entrerLeChat();
     else raconter(0);
+  }
+
+  /**
+   * Le grand lit des parents. **Fermer les yeux lance le rêve tout de suite** : c'est le
+   * même enchaînement que le saut du toit, avec la mise en scène de Nino couché pendant la
+   * dernière réplique.
+   */
+  private sEndormir(l: Live): void {
+    const beat = pickBeat('grand-lit');
+    if (!beat?.choice) return;
+    state.locked = true;
+    say({
+      lines: beat.lines,
+      choices: ['Oui', 'Non'],
+      focusY: l.def.y,
+      onDone: (reponse) => {
+        const branche = reponse === 0 ? beat.choice!.oui : beat.choice!.non;
+        const retirer = this.montrer(branche.montre);
+        say({
+          lines: branche.lines,
+          focusY: l.def.y,
+          onDone: () => {
+            this.applyEffects(branche.effects, l);
+            if (reponse !== 0) {
+              retirer();
+              return;
+            }
+            // On garde Nino couché à l'écran pendant le fondu : c'est lui qui s'endort.
+            this.transitioning = true;
+            gbFade(this, this.pal, 'out', () => {
+              retirer();
+              this.scene.stop('Ui');
+              this.scene.start('Flappy');
+            });
+          },
+        });
+      },
+    });
   }
 
   /** Le saut du toit : si Nino dit oui, il part tout de suite. */
@@ -1739,6 +1807,10 @@ export class WorldScene extends Phaser.Scene {
     }
     if (l.def.id === 'parapente' && !state.flag('parapente-pris')) {
       this.sauterDuToit(l);
+      return;
+    }
+    if (l.def.id === 'grand-lit') {
+      this.sEndormir(l);
       return;
     }
     // Rentré par la fenêtre, parapente sous le bras : c'est la fin du chapitre.

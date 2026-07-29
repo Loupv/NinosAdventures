@@ -120,23 +120,37 @@ for (const r of Object.values(ROOMS)) {
   }
 }
 
-// Hermione n'est jamais plantée au milieu d'une pièce : toujours à moitié cachée.
+/**
+ * Hermione doit être **à moitié cachée** : ni plantée au milieu d'une pièce, ni recouverte
+ * au point d'être invisible.
+ *
+ * On compte, pixel par pixel, la part de ses 8×10 recouverte par un meuble **dessiné
+ * devant elle** — la profondeur compte autant que la position. Le premier contrôle que
+ * j'avais écrit se contentait de vérifier qu'un meuble la touchait : la toute première
+ * cachette du jeu était recouverte à 100 % et personne ne pouvait la trouver.
+ */
+const COUVERTURE = { min: 15, max: 70 };
 for (const [i, c] of CACHETTES.entries()) {
   const r = ROOMS[c.room];
   if (!r) {
     dit('CACHETTE', i, 'pièce inconnue', c.room);
     continue;
   }
-  const elle: Boite = [c.x, c.y, 8, 10];
-  let masquee = false;
+  const sienne = c.depth ?? c.y + 10;
+  const cache = new Set<string>();
   for (const o of r.objects) {
     if (!o.sprite || !dim[o.sprite]) continue;
-    const [x, y, w, h] = dessin(o);
-    const ox = Math.min(elle[0] + elle[2], x + w) - Math.max(elle[0], x);
-    const oy = Math.min(elle[1] + elle[3], y + h) - Math.max(elle[1], y);
-    if (ox >= 4 && oy >= 4 && Math.max(ox, oy) >= 6) masquee = true;
+    const [ox, oy, ow, oh] = dessin(o);
+    if ((o.depth ?? oy + oh) <= sienne) continue; // dessiné derrière elle : ne cache rien
+    for (let x = c.x; x < c.x + 8; x++) {
+      for (let y = c.y; y < c.y + 10; y++) {
+        if (x >= ox && x < ox + ow && y >= oy && y < oy + oh) cache.add(`${x},${y}`);
+      }
+    }
   }
-  if (!masquee) dit('CACHETTE', i, 'à découvert dans', c.room);
+  const part = Math.round((cache.size / 80) * 100);
+  if (part < COUVERTURE.min) dit(`CACHETTE ${i} (${c.room}) : à découvert, recouverte à ${part} %`);
+  else if (part > COUVERTURE.max) dit(`CACHETTE ${i} (${c.room}) : introuvable, recouverte à ${part} %`);
 }
 
 /**
