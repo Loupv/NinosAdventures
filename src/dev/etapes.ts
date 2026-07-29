@@ -52,7 +52,7 @@ const DEHORS = [
 ];
 
 /** Tout le chapitre 1 : le poisson sauvé, le bateau coulé, la ville ouverte à l'est. */
-const APRES_LE_NAUFRAGE = [...DEHORS, 'bateau-arrive', 'bateau-coule'];
+const APRES_LE_NAUFRAGE = [...DEHORS, 'bateau-coule', 'papa-dans-leau', 'papa-sauve'];
 
 /** Les quatre énigmes de la tour résolues. */
 const ENIGMES = ['enigme-moon', 'enigme-ecureuil', 'enigme-araignee', 'enigme-elephant'];

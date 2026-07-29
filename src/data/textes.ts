@@ -224,7 +224,28 @@ export const DIVERSION = {
 };
 
 /** Le bateau de papa qui remonte la rivière, pendant qu'on est sur le quai. */
-export const BATEAU_ARRIVE = ['Un bateau remonte l’Erdre.', 'Il y a quelqu’un dessus.'];
+/**
+ * **Le naufrage, réplique par réplique.** Le bateau descend tout doucement pendant huit
+ * secondes, et papa ne descend pas de son bateau. Ces phrases flottent au-dessus de lui,
+ * sans boîte et sans bloquer : on regarde, on n'appuie sur rien, c'est le seul moment du jeu
+ * qui se déroule tout seul.
+ *
+ * La dernière arrive quand l'eau lui passe au-dessus de la tête. Ne pas la changer.
+ */
+export const NAUFRAGE = [
+  '« Ce n’est rien. »',
+  '« C’est de l’eau. »',
+  '« Un capitaine ne quitte pas son navire. »',
+  '« Ça va se stabiliser. »',
+  '« Bon. »',
+  '« Blublublub. »',
+];
+
+/** Quand il remonte : avec un poisson si Nino l'a sauvé, tout seul sinon. */
+export const REPECHAGE = {
+  poisson: ['Le poisson remonte, papa accroché à lui.', 'Papa a gardé son chapeau.'],
+  seul: ['Papa remonte tout seul, en nageant.', 'Il a gardé son chapeau.'],
+};
 
 /**
  * Les vannes de l'écureuil quand un tir de ballon rate la fenêtre. Elles s'affichent
@@ -1029,9 +1050,7 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
           lines: [
             'Nino tire sur la corde.',
             'Un bouchon saute au fond du bateau.',
-            'Le bateau descend tout doucement, sans un bruit.',
             'Personne ne regardait.',
-            'Le poisson remonte, papa accroché à lui.',
           ],
           effects: { flag: 'bateau-coule' },
         },
@@ -1045,9 +1064,7 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
           lines: [
             'Nino tire sur la corde.',
             'Un bouchon saute au fond du bateau.',
-            'Le bateau descend tout doucement, sans un bruit.',
             'Personne ne regardait.',
-            'Papa remonte tout seul, en nageant.',
           ],
           effects: { flag: 'bateau-coule' },
         },
@@ -1466,6 +1483,18 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
 
   // ----------------------------------------------------------------- l'Erdre
   'papa-capitaine': [
+    // L'eau lui arrive au chapeau : il n'y a plus de conversation possible.
+    {
+      when: () => state.flag('papa-dans-leau'),
+      speaker: 'Papa',
+      lines: ['« Blublublub. »'],
+    },
+    // Le bateau descend, et il trouve encore que tout va bien.
+    {
+      when: () => state.flag('bateau-coule'),
+      speaker: 'Papa',
+      lines: ['« Ne reste pas là. »', '« Enfin, si. Reste. »', '« Mais ne dis rien. »'],
+    },
     {
       when: () => !state.flag('papa-capitaine-vu'),
       speaker: 'Papa',
@@ -1485,7 +1514,14 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
 
   bateau: [
     {
-      lines: ['Un bateau blanc, arrêté au milieu de l’eau.', 'Il n’est attaché à rien.'],
+      when: () => state.flag('bateau-coule'),
+      lines: ['Le bateau descend.', 'Très lentement, très régulièrement.'],
+    },
+    {
+      lines: [
+        'Un grand bateau blanc, au bout du quai.',
+        'Il n’est attaché à rien, à part une corde.',
+      ],
     },
   ],
 

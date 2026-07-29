@@ -300,10 +300,31 @@ prend son temps** :
    *« Merci pour le bouchon. Je n'oublie pas ces choses-là. »*
 
 **Ce n'est pas lui qui coule le bateau : c'est Nino.** Le bateau est amarré au quai par une
-**corde**, et l'écureuil la désigne. Tirer dessus fait sauter un bouchon au fond de la coque,
-et le bateau descend *tout doucement, sans un bruit. Personne ne regardait.* → **flag**
-`bateau-coule`. C'est mieux que de le faire faire au poisson : la bêtise est un geste de
-Nino, pas une faveur qu'on demande.
+**corde**, et l'écureuil la désigne. Tirer dessus fait sauter un bouchon au fond de la coque
+→ **flag** `bateau-coule`. C'est mieux que de le faire faire au poisson : la bêtise est un
+geste de Nino, pas une faveur qu'on demande.
+
+**Le bateau est déjà là, tout à droite du quai, et il est grand** — cinquante-six pixels de
+long, un tiers de l'écran. Il n'arrive plus quelques écrans après la première visite : on le
+voit en arrivant, et c'est ce qui donne envie de marcher jusqu'au bout. La moitié basse de sa
+coque est sous l'eau, découpée à la ligne de flottaison de la pièce (`flotte`).
+
+**Et il coule pendant huit secondes.** Pas une phrase qui raconte le naufrage : le naufrage.
+Le bateau descend de trente-deux pixels, papa descend avec — debout, à son bastingage — et la
+ligne de flottaison les découpe à mesure, si bien qu'ils *entrent* dans l'eau au lieu d'y
+glisser dessus. Une réplique flottante toutes les 1,3 seconde, sans boîte et sans rien à
+presser : c'est le seul moment du jeu qui se déroule tout seul.
+
+> *« Ce n'est rien. »* — *« C'est de l'eau. »* — *« Un capitaine ne quitte pas son navire. »*
+> — *« Ça va se stabiliser. »* — *« Bon. »* — et quand l'eau lui passe le chapeau :
+> **« Blublublub. »**
+
+Si on lui parle pendant qu'il descend, il trouve encore que tout va bien : *« Ne reste pas
+là. Enfin, si. Reste. Mais ne dis rien. »* Et une fois l'eau au chapeau, il n'y a plus de
+conversation possible — seulement « Blublublub. »
+
+Si on quitte l'écran en pleine descente, le naufrage se termine sans nous : on revient, il
+n'y a plus de bateau et papa est sur le quai. *Personne ne regardait*, c'était écrit.
 
 **Et alors le poisson sert à réparer.** C'est là que la chaîne de la salle de bain est
 payée, et elle change vraiment quelque chose :

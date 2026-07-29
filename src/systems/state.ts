@@ -15,7 +15,6 @@ export interface Snapshot {
   ecrans: number;
   eauDepuis: number;
   sueurDepuis: number;
-  erdreDepuis: number;
   room: string;
 }
 
@@ -40,8 +39,6 @@ class GameState {
   eauDepuis = 0;
   /** Valeur d'`ecrans` au moment où Nino s'est mis à dégouliner. */
   sueurDepuis = 0;
-  /** Valeur d'`ecrans` à la première visite de l'Erdre. Le bateau arrive après. */
-  erdreDepuis = 0;
   /** Nombre de fois où Hermione a été retrouvée. Détermine sa cachette suivante. */
   hermione = 0;
   room = 'chambre';
@@ -104,7 +101,6 @@ class GameState {
     this.ecrans = 0;
     this.eauDepuis = 0;
     this.sueurDepuis = 0;
-    this.erdreDepuis = 0;
     this.hermione = 0;
     this.room = 'chambre';
     this.palette = 'real';
@@ -123,7 +119,6 @@ class GameState {
       ecrans: this.ecrans,
       eauDepuis: this.eauDepuis,
       sueurDepuis: this.sueurDepuis,
-      erdreDepuis: this.erdreDepuis,
       room: this.room,
     };
     localStorage.setItem(SAVE_KEY, JSON.stringify(snap));
@@ -146,7 +141,6 @@ class GameState {
       this.ecrans = snap.ecrans ?? 0;
       this.eauDepuis = snap.eauDepuis ?? 0;
       this.sueurDepuis = snap.sueurDepuis ?? 0;
-      this.erdreDepuis = snap.erdreDepuis ?? 0;
       this.room = snap.room;
       return true;
     } catch {

@@ -11,7 +11,8 @@ import { fraicheur, labelFraicheur } from '../data/fraicheur';
 import {
   ANNONCES,
   ARAIGNEE_PARTIE,
-  BATEAU_ARRIVE,
+  NAUFRAGE,
+  REPECHAGE,
   ARROSES,
   ARROSE_DEFAUT,
   ECUREUIL_FUITE,
@@ -45,6 +46,7 @@ import { jouer } from '../systems/audio';
 import { Player, type ViewMode } from '../entities/Player';
 import { ETAPES, type Etape } from '../dev/etapes';
 import { PixelText, measure } from '../ui/PixelText';
+import { LINE_H, wrap } from '../art/font';
 
 /**
  * Hermione suit Nino sur ses traces : on garde ses positions passées, et elle avance
@@ -228,7 +230,6 @@ export class WorldScene extends Phaser.Scene {
     this.chosesQuiArrivent();
     // On note la première visite de l'Erdre après coup : le bateau ne peut pas être
     // déjà là au moment où on découvre l'endroit.
-    if (id === 'erdre' && state.erdreDepuis === 0) state.erdreDepuis = state.ecrans;
 
     this.drawFloor();
     this.buildWalls();
@@ -280,11 +281,14 @@ export class WorldScene extends Phaser.Scene {
         return;
       }
       state.locked = false;
-      // Le bateau arrive **pendant qu'on est là**, quelques secondes après être arrivé.
-      // La règle des trois écrans marchait, mais rien ne disait au joueur de repartir et
-      // de revenir : il attendait sur le quai devant une rivière vide.
-      if (id === 'erdre' && !state.flag('bateau-arrive')) {
-        this.time.delayedCall(3800, () => this.bateauArrive());
+      // **Le naufrage rattrapé.** Si on est parti pendant que le bateau descendait, il a
+      // fini sans nous : on revient, il n'y a plus de bateau et papa est sur le quai. « Personne
+      // ne regardait » — c'était déjà écrit dans le texte de la corde.
+      if (id === 'erdre' && state.flag('bateau-coule') && !state.flag('papa-sauve')) {
+        state.setFlag('papa-dans-leau');
+        state.setFlag('papa-sauve');
+        state.save();
+        this.refreshObjects();
       }
       // Au sortir du rêve de la fusée : il raconte son rêve à personne. Hermione, elle,
       // est déjà apparue au bord du lit — c'est le flag du rêve qui l'a mise là, et on ne
@@ -396,15 +400,6 @@ export class WorldScene extends Phaser.Scene {
       state.ecrans - state.sueurDepuis >= ECRANS
     ) {
       state.setFlag('sueur-sechee');
-    }
-    // Le bateau de papa finit par remonter l'Erdre. Comme le poisson : pas à la
-    // première visite, quelques portes plus tard.
-    if (
-      state.erdreDepuis &&
-      !state.flag('bateau-arrive') &&
-      state.ecrans - state.erdreDepuis >= ECRANS
-    ) {
-      state.setFlag('bateau-arrive');
     }
   }
 
@@ -581,6 +576,9 @@ export class WorldScene extends Phaser.Scene {
 
     const live = { def, go };
     this.live.push(live);
+    // Ce qui flotte est découpé à la surface dès son apparition : la coque est à moitié
+    // immergée sans qu'on ait eu à la dessiner deux fois.
+    this.couperALaFlottaison(live);
 
     if (def.saute) {
       this.sauteurs.push({
@@ -717,13 +715,69 @@ export class WorldScene extends Phaser.Scene {
     }
   }
 
-  /** Le bateau remonte la rivière, sous les yeux de Nino. */
-  private bateauArrive(): void {
-    if (state.flag('bateau-arrive') || this.room.id !== 'erdre' || this.transitioning) return;
-    state.setFlag('bateau-arrive');
-    state.save();
-    this.refreshObjects();
-    say({ lines: BATEAU_ARRIVE, focusY: 30 });
+  /**
+   * **Le naufrage.** Le bouchon a sauté : le bateau descend de trente pixels en huit
+   * secondes, et papa descend avec, debout, sans jamais rien lâcher. Ce qui rend la scène,
+   * c'est la lenteur — et le fait que **personne n'appuie sur rien** : les répliques flottent
+   * au-dessus de lui, l'une après l'autre, pendant qu'il s'enfonce.
+   *
+   * La ligne de flottaison découpe le bateau et papa à mesure : ils entrent dans l'eau, ils
+   * n'y glissent pas dessus. Quand l'eau passe le chapeau, c'est « Blublublub. »
+   */
+  private coulerLeBateau(): void {
+    const bateau = this.live.find((l) => l.def.id === 'bateau');
+    const papa = this.live.find((l) => l.def.id === 'papa-capitaine');
+    if (!bateau || !papa) return;
+    jouer(this, 'bateau-coule', { volume: 0.7 });
+
+    const DUREE = 8000;
+    const FOND = 32;
+    for (const l of [bateau, papa]) {
+      this.tweens.add({
+        targets: l.go,
+        y: l.go.y + FOND,
+        duration: DUREE,
+        ease: 'Sine.easeIn',
+        onUpdate: () => this.couperALaFlottaison(l),
+        onComplete: () => this.couperALaFlottaison(l),
+      });
+    }
+
+    // Une réplique tous les 1,3 s. La dernière tombe quand l'eau lui passe au-dessus du
+    // chapeau — d'où le décalage : elle n'est pas dans la même série que les autres.
+    NAUFRAGE.forEach((phrase, i) => {
+      this.time.delayedCall(700 + i * 1300, () => {
+        // On le retrouve par son identifiant à chaque fois : entre deux répliques, un
+        // rafraîchissement des objets peut avoir remplacé le sien.
+        const lui = this.live.find((l) => l.def.id === 'papa-capitaine');
+        if (!lui || this.room.id !== 'erdre') return;
+        if (i === NAUFRAGE.length - 1) state.setFlag('papa-dans-leau');
+        this.flotter(phrase, lui);
+      });
+    });
+
+    this.time.delayedCall(DUREE + 900, () => {
+      if (this.room.id !== 'erdre') return;
+      state.setFlag('papa-dans-leau');
+      state.setFlag('papa-sauve');
+      state.save();
+      this.refreshObjects();
+      say({
+        lines: state.flag('bouchon-retire') ? REPECHAGE.poisson : REPECHAGE.seul,
+        focusY: 30,
+      });
+    });
+  }
+
+  /**
+   * Découpe un dessin à la ligne de flottaison de la pièce : ce qui est sous l'eau ne se
+   * dessine pas. Une image sous la ligne disparaît entièrement, ce qui est exactement ce
+   * qu'on veut d'un bateau qui coule.
+   */
+  private couperALaFlottaison(l: Live): void {
+    if (l.def.flotte === undefined) return;
+    const haut = Math.max(0, Math.min(l.go.displayHeight, l.def.flotte - l.go.y));
+    l.go.setCrop(0, 0, l.go.displayWidth, haut);
   }
 
   /**
@@ -738,15 +792,35 @@ export class WorldScene extends Phaser.Scene {
     this.vannes += 1;
   }
 
-  /** Une phrase posée au-dessus de quelqu'un, sans boîte et sans verrou. */
+  /**
+   * Une phrase posée au-dessus de quelqu'un, sans boîte et sans verrou.
+   *
+   * Deux précautions, apprises sur l'Erdre qui fait deux écrans de large :
+   *  - **le texte vit dans la pièce, pas sur l'écran.** `PixelText` est fait pour
+   *    l'interface et ignore la caméra ; posé au-dessus de quelqu'un, il tombait hors du
+   *    cadre dès que la pièce défilait.
+   *  - **son canevas fait la largeur de la phrase**, une phrase trop longue passe à la
+   *    ligne, et le tout est ramené dans le champ de la caméra. Sans ça, « Un capitaine ne
+   *    quitte pas son navire » — deux cent dix-sept pixels — sortait de l'écran par la
+   *    droite, et il ne restait que « Un capitaine ne quit ».
+   */
   private flotter(t: string, sur: Live): void {
     this.vanne?.destroy();
-    const texte = new PixelText(this, 'wl-vanne', 0, 0, 90, 13);
+    const MAX = 140;
+    const lignes = measure(t) <= MAX ? [t] : wrap(t, MAX);
+    const large = Math.max(...lignes.map(measure)) + 2;
+    const texte = new PixelText(this, 'wl-vanne', 0, 0, large, LINE_H * lignes.length + 1);
     texte.image.setDepth(1300);
-    texte.setLines([t], shadeHex(this.pal, 0));
+    texte.image.setScrollFactor(1);
+    texte.setLines(lignes, shadeHex(this.pal, 0));
+    const cam = this.cameras.main;
     texte.image.setPosition(
-      Math.round(sur.go.x + sur.go.displayWidth / 2 - measure(t) / 2),
-      Math.round(sur.go.y - 12),
+      Phaser.Math.Clamp(
+        Math.round(sur.go.x + sur.go.displayWidth / 2 - large / 2),
+        Math.round(cam.scrollX) + 2,
+        Math.round(cam.scrollX + cam.width) - large - 2,
+      ),
+      Math.round(sur.go.y - 12 - LINE_H * (lignes.length - 1)),
     );
     this.vanne = texte;
     this.time.delayedCall(1700, () => {
@@ -2066,7 +2140,8 @@ export class WorldScene extends Phaser.Scene {
       state.eauDepuis = state.ecrans;
       jouer(this, 'robinet', { volume: 0.6 });
     }
-    if (e.flag === 'bateau-coule') jouer(this, 'bateau-coule', { volume: 0.7 });
+    // Le bouchon a sauté : le bateau commence à descendre, tout de suite et tout seul.
+    if (e.flag === 'bateau-coule') this.coulerLeBateau();
     if (e.cool) this.applyFraicheur(e.cool, l);
     if (e.take) state.take(e.take);
     if (e.give) {

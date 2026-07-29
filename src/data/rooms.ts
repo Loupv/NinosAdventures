@@ -74,6 +74,13 @@ export interface RoomObject {
    * en dessous il n'est plus là.
    */
   saute?: { gauche: number; droite: number; hauteur: number; eau: number };
+  /**
+   * Ligne de flottaison, en pixels : tout ce qui passe **sous** elle est sous l'eau, donc
+   * découpé du dessin. C'est ce qui fait que la coque du bateau est à moitié immergée sans
+   * qu'on ait à dessiner deux bateaux — et surtout ce qui fait qu'en descendant, il
+   * *disparaît dans l'eau* au lieu de glisser par-dessus.
+   */
+  flotte?: number;
   portal?: Portal;
   showIfFlag?: string;
   hideIfFlag?: string;
@@ -1431,65 +1438,69 @@ export const ROOMS: Record<string, Room> = {
         showIfFlag: 'bouchon-retire',
       },
       { id: 'roseaux', x: 40, y: 70, sprite: 'roseaux', depth: -15 },
-      { id: 'roseaux2', x: 232, y: 70, sprite: 'roseaux', depth: -15 },
-      // Le bateau de papa n'est pas encore là : il arrivera plus tard dans l'histoire.
-      // Poser le flag 'bateau-arrive' le fait apparaître, papa dessus.
+      { id: 'roseaux2', x: 196, y: 70, sprite: 'roseaux', depth: -15 },
+      // **Le bateau est déjà là**, tout au bout du quai, et il est énorme : on le voit en
+      // arrivant, et c'est ce qui donne envie d'aller jusque là. La moitié basse de la coque
+      // est sous l'eau (`flotte`), et c'est par là qu'il s'en va.
       {
         id: 'bateau',
-        x: 96,
-        y: 56,
+        x: 248,
+        y: 38,
         sprite: 'bateau',
         depth: -20,
+        flotte: 64,
+        // Large : de loin, c'est le bateau qu'on regarde. Papa et la corde, plus précis,
+        // lui prennent la parole quand on est à côté d'eux.
+        portee: 40,
         dialogue: 'bateau',
-        showIfFlag: 'bateau-arrive',
-        hideIfFlag: 'bateau-coule',
       },
+      // Debout au bastingage, et il n'en descendra pas.
       {
         id: 'papa-capitaine',
-        x: 104,
-        y: 51,
+        x: 284,
+        y: 39,
         sprite: 'papa-capitaine',
         depth: -19,
+        flotte: 64,
+        // Il est haut sur son pont : sans ça, on ne peut pas lui parler depuis le quai.
+        portee: 44,
         dialogue: 'papa-capitaine',
-        showIfFlag: 'bateau-arrive',
-        hideIfFlag: 'bateau-coule',
+        hideIfFlag: 'papa-sauve',
       },
       // ── premier plan : le quai ──
       // L'amarre, tendue entre le quai et la coque. Tant que le bateau flotte.
       {
         id: 'corde',
-        x: 84,
-        y: 72,
+        x: 236,
+        y: 58,
         sprite: 'corde',
         depth: -18,
         priorite: 2,
         // Serrée : au-delà, c'est à papa qu'on parle, puis au poisson.
-        portee: 12,
+        portee: 16,
         dialogue: 'corde',
-        showIfFlag: 'bateau-arrive',
         hideIfFlag: 'bateau-coule',
       },
       // Repêché. Il a gardé le chapeau.
       {
         id: 'papa-repeche',
-        x: 152,
+        x: 216,
         y: 81,
         sprite: 'papa-capitaine',
         dialogue: 'papa-repeche',
-        showIfFlag: 'bateau-coule',
+        showIfFlag: 'papa-sauve',
       },
       // L'écureuil revient, dans les roseaux, avec une nouvelle idée. Derrière eux :
       // profondeur inférieure à celle des roseaux, donc à moitié caché.
       {
         id: 'ecureuil-erdre',
-        x: 234,
+        x: 198,
         y: 74,
         sprite: 'ecureuil',
         frame: 'queue-0',
         anim: 'ecureuil-queue',
         depth: -16,
         dialogue: 'ecureuil-erdre',
-        showIfFlag: 'bateau-arrive',
       },
       { id: 'bouee', x: 40, y: 88, sprite: 'bouee', dialogue: 'quai' },
       {
@@ -1503,7 +1514,7 @@ export const ROOMS: Record<string, Room> = {
       },
       {
         id: 'reverbere',
-        x: 264,
+        x: 168,
         y: 76,
         sprite: 'reverbere',
         dialogue: 'reverbere',
