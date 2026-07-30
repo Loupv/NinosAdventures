@@ -2067,6 +2067,37 @@ export class WorldScene extends Phaser.Scene {
     const beat = pickBeat(id);
     if (!beat) return;
 
+    /**
+     * **Un devoir noté.** Comme une énigme, sauf qu'aucune réponse n'est fausse : chacune a sa
+     * réplique et sa note. La note est un souvenir, pas un verrou — elle s'affiche dans le
+     * journal et sur l'écran de fin, et rien ne se ferme derrière elle.
+     */
+    if (beat.devoir) {
+      const d = beat.devoir;
+      say({
+        speaker: beat.speaker,
+        lines: beat.lines,
+        choices: d.reponses,
+        focusY: l?.def.y,
+        onDone: (reponse) => {
+          const retour = d.retours[reponse ?? 0] ?? d.retours[0];
+          state.note = retour.note;
+          jouer(this, retour.note >= 16 ? 'enigme-juste' : 'enigme-faux', { volume: 0.6 });
+          say({
+            speaker: beat.speaker,
+            lines: retour.lines,
+            focusY: l?.def.y,
+            onDone: () => {
+              this.applyEffects(retour.effects, l);
+              state.save();
+              bus.emit(EV.hud);
+            },
+          });
+        },
+      });
+      return;
+    }
+
     // Une énigme : on propose les réponses, et seule la bonne applique ses effets.
     if (beat.enigme) {
       const e = beat.enigme;

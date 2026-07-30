@@ -1655,6 +1655,15 @@ export const ROOMS: Record<string, Room> = {
         dialogue: 'ecureuil-erdre',
       },
       { id: 'bouee', x: 40, y: 88, sprite: 'bouee', dialogue: 'quai' },
+      // Le projet d'art de Nino, qui ne le sait pas encore.
+      {
+        id: 'chaussure',
+        x: 96,
+        y: 86,
+        sprite: 'chaussure',
+        dialogue: 'chaussure',
+        hideIfFlag: 'chaussure-prise',
+      },
       {
         id: 'panneau-erdre',
         x: 64,

@@ -122,9 +122,11 @@ export class JournalScene extends Phaser.Scene {
 
   private sacLines(): string[] {
     const soeur = JOURNAL.soeurComptee(state.hermione, CACHETTES.length);
+    // La note du projet d'art n'apparaît qu'une fois rendu : avant, la ligne n'existe pas.
+    const entete = state.note > 0 ? [soeur, JOURNAL.noteComptee(state.note)] : [soeur];
     const owned = [...state.items];
-    if (owned.length === 0) return [soeur, '', ...JOURNAL.sacVide];
-    const lines: string[] = [soeur, ''];
+    if (owned.length === 0) return [...entete, '', ...JOURNAL.sacVide];
+    const lines: string[] = [...entete, ''];
     owned.forEach((id, i) => {
       const item = ITEMS[id];
       lines.push(`   ${item.name}`);

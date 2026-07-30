@@ -53,7 +53,12 @@ export class FinScene extends Phaser.Scene {
       ),
       108,
     );
-    centre(new PixelText(this, 'fin-suite', 0, 126, GB.W, 12), FIN.suite, 126);
+    // La note du projet d'art, s'il l'a rendu. Sinon la ligne n'existe pas : on ne compte
+    // que ce qui a eu lieu.
+    if (state.note > 0) {
+      centre(new PixelText(this, 'fin-note', 0, 118, GB.W, 12), FIN.note(state.note), 118);
+    }
+    centre(new PixelText(this, 'fin-suite', 0, 130, GB.W, 12), FIN.suite, 130);
 
     const kb = this.input.keyboard!;
     for (const code of KEYS.action) {

@@ -9,6 +9,8 @@ export interface Snapshot {
   lieux: string[];
   pieces: string[];
   haiku: number;
+  /** La note du projet d'art, sur vingt. 0 = pas encore rendu. */
+  note: number;
   hermione: number;
   ecrans: number;
   eauDepuis: number;
@@ -29,6 +31,8 @@ class GameState {
   pieces = new Set<string>();
   /** Nombre de haïkus déjà entendus. L'araignée en dit un nouveau à chaque visite. */
   haiku = 0;
+  /** La note du projet d'art, sur vingt. 0 = pas encore rendu. */
+  note = 0;
   /** Nombre d'écrans traversés depuis le début. Sert à faire arriver les choses « plus tard ». */
   ecrans = 0;
   /** Valeur d'`ecrans` au moment où on a ouvert le robinet de la baignoire. */
@@ -69,6 +73,7 @@ class GameState {
     this.lieux.clear();
     this.pieces.clear();
     this.haiku = 0;
+    this.note = 0;
     this.ecrans = 0;
     this.eauDepuis = 0;
     this.hermione = 0;
@@ -84,6 +89,7 @@ class GameState {
       lieux: [...this.lieux],
       pieces: [...this.pieces],
       haiku: this.haiku,
+      note: this.note,
       hermione: this.hermione,
       ecrans: this.ecrans,
       eauDepuis: this.eauDepuis,
@@ -104,6 +110,7 @@ class GameState {
       snap.lieux.forEach((l) => this.lieux.add(l));
       (snap.pieces ?? []).forEach((p) => this.pieces.add(p));
       this.haiku = snap.haiku ?? 0;
+      this.note = snap.note ?? 0;
       this.hermione = snap.hermione ?? 0;
       this.ecrans = snap.ecrans ?? 0;
       this.eauDepuis = snap.eauDepuis ?? 0;

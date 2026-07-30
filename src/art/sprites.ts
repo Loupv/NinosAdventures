@@ -413,6 +413,22 @@ const HERON_B: Art = [
   '.00..00.........',
 ];
 
+/**
+ * Une vieille chaussure. Trouvée sur le quai de l'Erdre, et c'est **le projet d'art** de Nino :
+ * la maîtresse en attend une explication, pas une chaussure.
+ */
+const CHAUSSURE: Art = [
+  '.....000000...',
+  '....03333300..',
+  '...0322222300.',
+  '..032222222300',
+  '.0322000022230',
+  '03220....02230',
+  '03220000002220',
+  '.032222222230.',
+  '..0000000000..',
+];
+
 const GOUTTE: Art = [
   '.0.',
   '.0.',
@@ -1602,6 +1618,7 @@ export const IMAGES: Record<string, Art> = {
   'nino-couche': NINO_COUCHE,
   pistolet: PISTOLET,
   bol: BOL,
+  chaussure: CHAUSSURE,
   goutte: GOUTTE,
   piece: PIECE,
   pizza: PIZZA,

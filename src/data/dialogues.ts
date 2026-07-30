@@ -40,6 +40,18 @@ export interface Enigme {
   faux: Branch;
 }
 
+/**
+ * **Un devoir noté.** Plusieurs réponses possibles, **aucune fausse** : chacune a sa
+ * réplique et sa note sur vingt. C'est l'inverse d'une énigme — on ne cherche pas la bonne
+ * réponse, on choisit ce qu'on a envie de dire, et le résultat n'est pas un verrou mais une
+ * note. Rien ne se bloque jamais derrière un devoir.
+ */
+export interface Devoir {
+  reponses: string[];
+  /** Une entrée par réponse, dans le même ordre. */
+  retours: Array<Branch & { note: number }>;
+}
+
 export interface DialogueBeat {
   /** Première condition vraie = réplique jouée. Sans condition = repli. */
   when?: () => boolean;
@@ -53,6 +65,7 @@ export interface DialogueBeat {
    */
   choice?: { oui: Branch; non: Branch };
   enigme?: Enigme;
+  devoir?: Devoir;
 }
 
 /**

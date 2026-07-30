@@ -97,6 +97,32 @@ n'importe quoi donne au trajet une longueur. La place et l'école sont en plein 
 des bars vient après l'Erdre, et sur la terrasse suivante **la nuit est tombée** — personne
 ne l'a vue tomber.
 
+### Le projet d'art
+
+**Le seul devoir du jeu, et il n'a pas de bonne réponse.** La maîtresse réclame le projet
+d'art de Nino : *« Rapporte-moi un objet, et explique-moi en quoi c'est de l'art. »* L'objet
+est **une vieille chaussure**, sur le quai de l'Erdre — elle a beaucoup marché, et pas avec
+lui. Il faut donc sortir de l'école, la trouver, et revenir : c'est la seule quête du jeu qui
+fait faire l'aller-retour, et elle passe par un écran qu'on traverse de toute façon.
+
+Rendu le devoir, elle demande l'explication. **Les trois réponses sont acceptées** — ce n'est
+pas une énigme, il n'y a rien à trouver — mais elles ne valent pas la même note :
+
+| Ce que Nino répond | Ce qu'elle répond | Note |
+|---|---|---|
+| *« C'est une chaussure »* | *« Oui. Ça, je vois. »* | 8 |
+| *« Elle a beaucoup vécu »* | *« Elle a marché longtemps, et on ne sait pas où. »* | 16 |
+| *« Je l'ai décidé »* | *« ... »* — elle regarde la chaussure très longtemps | 20 |
+
+La meilleure est celle que Duchamp aurait donnée, et c'est la maîtresse qui s'incline. La note
+s'affiche dans le journal et sur l'écran de fin, à côté des cachettes d'Hermione et des
+pièces : **c'est un souvenir, pas un verrou.** Rien ne se ferme derrière un devoir, et on peut
+finir le jeu sans jamais le rendre.
+
+Techniquement c'est un troisième type de réplique, à côté du choix Oui/Non et de l'énigme :
+`devoir`, une liste de réponses et une liste de retours notés. Ajouter un devoir ailleurs = une
+entrée dans **[textes.ts](../src/data/textes.ts)**, rien d'autre.
+
 **L'école** est là parce qu'elle devait y être : on passe devant, la grille est ouverte un
 jour sans classe, et il y a du monde dans la cour. Les trois copains n'ont pas de nom — ils
 sont dans le casting comme ça, et ce sont ceux de la vraie vie. Le premier croit Nino sur

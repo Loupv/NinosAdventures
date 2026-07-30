@@ -1,6 +1,6 @@
 import { OBJETS } from './textes';
 
-export type ItemId = 'pizza' | 'pistolet-eau' | 'parapente';
+export type ItemId = 'pizza' | 'pistolet-eau' | 'parapente' | 'chaussure';
 
 export interface ItemDef {
   id: ItemId;
@@ -15,6 +15,7 @@ const SPRITES: Record<ItemId, string> = {
   'pistolet-eau': 'pistolet',
   parapente: 'parapente',
   pizza: 'pizza',
+  chaussure: 'chaussure',
 };
 
 const fiche = (id: ItemId): ItemDef => ({
@@ -28,4 +29,5 @@ export const ITEMS: Record<ItemId, ItemDef> = {
   'pistolet-eau': fiche('pistolet-eau'),
   parapente: fiche('parapente'),
   pizza: fiche('pizza'),
+  chaussure: fiche('chaussure'),
 };

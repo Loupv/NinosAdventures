@@ -41,6 +41,8 @@ export const JOURNAL = {
   pages: ['LIEUX', 'LIEUX', 'SAC', 'PIÈCES'],
   pied: 'ESPACE : fermer',
   soeurComptee: (n: number, total: number) => `Hermione retrouvée ${n} fois sur ${total}.`,
+  /** Le projet d'art, une fois rendu. Avant, on n'en parle pas. */
+  noteComptee: (n: number) => `Projet d’art : ${n} sur 20.`,
   sacVide: [
     '(Le sac est vide.)',
     '',
@@ -109,6 +111,8 @@ export const FIN = {
   titre: 'FIN',
   voeu: 'Bon anniversaire, Nino.',
   compte: (soeur: string, pieces: string) => `Hermione ${soeur}   Pièces ${pieces}`,
+  /** Et la note du projet d'art, si Nino l'a rendu. */
+  note: (n: number) => `Projet d’art ${n}/20`,
   suite: 'ESPACE',
 };
 
@@ -421,6 +425,10 @@ export const OBJETS: Record<string, { nom: string; desc: string }> = {
   parapente: {
     nom: 'Parapente',
     desc: 'Trouvé sur le toit de la Tour de Bretagne. Personne ne l’a réclamé. Il tient sous un lit, une fois plié — mal plié, mais plié.',
+  },
+  chaussure: {
+    nom: 'Vieille chaussure',
+    desc: 'Trouvée sur le quai de l’Erdre. Elle a beaucoup marché, et pas avec Nino. C’est son projet d’art : la maîtresse attend une explication, pas une chaussure.',
   },
   pizza: {
     nom: 'Bout de pizza',
@@ -1363,24 +1371,67 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
   ],
 
   /**
-   * **La maîtresse.** Elle donnera de vrais « devoirs » — c'est-à-dire des quêtes — quand le
-   * chapitre de l'école existera. Pour l'instant elle dit ce qu'elle dirait vraiment : une
-   * phrase gentille, et une phrase qui n'a rien à voir.
+   * **La maîtresse et le projet d'art.** Le seul devoir du jeu, et il n'a pas de bonne
+   * réponse : rapporter un objet et dire en quoi c'est de l'art. Les trois explications sont
+   * toutes acceptées, elles ne valent simplement pas la même note — et la meilleure est celle
+   * que Duchamp aurait donnée. Rien ne se bloque derrière : on peut passer sa vie sans
+   * rendre le devoir.
    */
   maitresse: [
     {
-      when: () => state.flag('maitresse-vue'),
+      when: () => state.note > 0,
       speaker: 'La maîtresse',
-      lines: ['« Tu es encore là ? »', '« Va jouer. »'],
+      lines: ['« C’est noté, Nino. »', '« Tu peux aller jouer. »'],
+    },
+    {
+      when: () => state.has('chaussure'),
+      speaker: 'La maîtresse',
+      lines: [
+        '« Ah ! Tu as apporté quelque chose. »',
+        'Nino pose la vieille chaussure sur la table.',
+        '« Bien. Explique-moi en quoi c’est de l’art. »',
+      ],
+      devoir: {
+        // Trois réponses courtes : la fenêtre de choix fait 116 pixels utiles, au-delà la
+        // phrase est coupée en plein milieu.
+        reponses: ['C’est une chaussure', 'Elle a beaucoup vécu', 'Je l’ai décidé'],
+        retours: [
+          {
+            note: 8,
+            lines: ['« Oui. Ça, je vois. »', '« Huit sur vingt, Nino. »'],
+          },
+          {
+            note: 16,
+            lines: [
+              '« Ah. »',
+              '« Elle a marché longtemps, et on ne sait pas où. »',
+              '« Seize sur vingt. C’est joli, ça. »',
+            ],
+          },
+          {
+            note: 20,
+            lines: [
+              '« ... »',
+              'La maîtresse regarde la chaussure très longtemps.',
+              '« Vingt sur vingt. »',
+            ],
+          },
+        ],
+      },
+    },
+    {
+      when: () => state.flag('devoir-donne'),
+      speaker: 'La maîtresse',
+      lines: ['« Alors ? »', '« Un objet, Nino. N’importe lequel. »'],
     },
     {
       speaker: 'La maîtresse',
       lines: [
         '« Bonjour Nino. »',
-        '« Tu tombes bien, j’ai des devoirs pour toi. »',
-        '« Mais pas aujourd’hui. Aujourd’hui il fait trop chaud. »',
+        '« Ton projet d’art. »',
+        '« Rapporte-moi un objet, et explique-moi en quoi c’est de l’art. »',
       ],
-      effects: { flag: 'maitresse-vue' },
+      effects: { flag: 'devoir-donne' },
     },
   ],
 
@@ -1420,6 +1471,18 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
         'Il regarde Nino un long moment.',
         'Puis il fait oui de la tête, une fois.',
       ],
+    },
+  ],
+
+  /** Le projet d'art, avant de savoir que c'en est un. */
+  chaussure: [
+    {
+      lines: [
+        'Une vieille chaussure, sur le quai.',
+        'Elle a beaucoup marché, et pas avec Nino.',
+        'Il la prend.',
+      ],
+      effects: { give: 'chaussure', flag: 'chaussure-prise' },
     },
   ],
 
