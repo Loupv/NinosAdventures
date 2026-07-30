@@ -1474,6 +1474,17 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
     },
   ],
 
+  /**
+   * **Quand on s'approche trop.** Ce n'est pas un mur : c'est sa mère qui tourne la tête. Elle
+   * ne se fâche pas, elle le renvoie jouer — et il n'y a rien à négocier tant qu'elle est là.
+   */
+  'maman-voit': [
+    {
+      speaker: 'Maman',
+      lines: ['Maman tourne la tête.', '« Nino. »', '« Pas plus loin. »'],
+    },
+  ],
+
   /** Elle attend papa. Elle a tout le temps. */
   'maman-quai': [
     {
@@ -2075,10 +2086,17 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
   ],
 
   parrain: [
+    // Il n'est trempé que s'il est tombé à l'eau : le naufrage n'est pas obligatoire, et la
+    // terrasse ne doit pas raconter une baignade qui n'a pas eu lieu.
+    {
+      when: () => state.flag('papa-terrasse-vu') && state.flag('bateau-coule'),
+      speaker: 'Le parrain',
+      lines: ['« Ton père est tout mouillé. »', '« Je n’ai rien demandé. »'],
+    },
     {
       when: () => state.flag('papa-terrasse-vu'),
       speaker: 'Le parrain',
-      lines: ['« Ton père est tout mouillé. »', '« Je n’ai rien demandé. »'],
+      lines: ['« Il t’a raconté son bouchon ? »', '« À moi, deux fois. »'],
     },
     {
       speaker: 'Le parrain',

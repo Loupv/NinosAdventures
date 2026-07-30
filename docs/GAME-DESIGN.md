@@ -338,17 +338,25 @@ C'est la branche implémentée. Elle sert de gabarit à toutes les suivantes.
 ### La pluie de l'éléphant
 
 **Le seul endroit du jeu où l'absurde sert à quelque chose.** Le bout du quai est gardé — pas
-par une porte fermée, par sa mère — et il n'y a rien à faire contre ça. Sauf revenir voir
-l'éléphant, qui propose : *« Tu veux voir quelque chose ? »*
+par une porte fermée, par sa mère. Et ce n'est pas un mur : **une ligne invisible à quelques pas
+de son banc**. Si Nino la franchit, elle tourne la tête — *« Nino. » « Pas plus loin. »* — et il
+se retrouve un peu plus loin. Il n'y a rien à négocier tant qu'elle est là.
 
-Il aspire une trompe entière d'Erdre et la renvoie très haut, au-dessus du quai. Ça retombe
-partout. **Maman lève la tête** — *« Il pleut ! »* — et elle part en courant vers la maison,
-Hermione sous le bras. Le banc reste, le quai est libre, et personne ne reviendra vérifier le
-temps.
+Sauf revenir voir l'éléphant, qui propose : *« Tu veux voir quelque chose ? »* Alors, **et on le
+voit** : sa trompe se lève au-dessus de son dos (c'est une image de l'éléphant, pas un effet), un
+jet part de son bout, et **il pleut sur tout l'écran** pendant cinq secondes — des gouttes lâchées
+partout au hasard de la largeur, qui tombent et éclaboussent le quai.
+
+**Maman lève la tête** — *« Il pleut ! »* — et elle part en courant vers la maison, Hermione sous
+le bras. Le banc reste, le quai est libre, et personne ne reviendra vérifier le temps.
 
 C'est aussi ce qui remet le naufrage à sa place : **couler le bateau n'ouvre plus rien**. C'est
 une bêtise qu'on fait parce que l'écureuil l'a proposée, et le poisson la répare parce qu'il a
-une dette. Une bêtise obligatoire n'est pas une bêtise. Papa est sur un bateau, avec un chapeau de capitaine, et il
+une dette. Une bêtise obligatoire n'est pas une bêtise.
+
+Et ça se voit plus tard : **si le bateau n'a pas coulé, papa n'est pas trempé au bar.** Le
+parrain ne dit plus *« Ton père est tout mouillé »* mais *« Il t'a raconté son bouchon ? À moi,
+deux fois. »* Deux fins de soirée pour la même terrasse, selon ce qu'on a fait de l'après-midi. Papa est sur un bateau, avec un chapeau de capitaine, et il
    demande à Nino de dire à sa mère **qu'il est resté au salon** — ce qui est vrai, il y est
    aussi. Personne ne relève.
 

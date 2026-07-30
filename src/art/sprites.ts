@@ -1461,14 +1461,16 @@ const CORDE: Art = [
 ];
 
 /**
- * L'Éléphant des Machines, de profil, tourné vers la gauche. **Ce qui fait l'éléphant, c'est
- * la trompe et les pattes** : la trompe descend en diagonale jusqu'au sol, bien détachée du
- * corps pour qu'on voie le ciel autour, la défense sort dessous, la grande oreille est cernée
- * dans la tête, et les quatre pattes sont séparées. Les versions précédentes étaient des
- * masses grises où l'on cherchait la bête. Affiché au double (`scale: 2`), il fait douze
- * mètres — au bord de l'Erdre comme sur son palier.
+ * L'Éléphant des Machines, de profil, tourné vers la gauche. **Ce qui fait l'éléphant, c'est la
+ * trompe et les pattes** : la trompe descend en diagonale jusqu'au sol, bien détachée du corps
+ * pour qu'on voie le ciel autour, la défense sort dessous, la grande oreille est cernée dans la
+ * tête, et les quatre pattes sont séparées. Affiché au double (`scale: 2`), il fait douze mètres
+ * — au bord de l'Erdre comme sur son palier.
+ *
+ * Deux images : `boit`, la trompe dans l'eau, et `trompe`, **la trompe levée au-dessus du dos**
+ * quand il envoie l'Erdre en l'air. C'est ce geste-là qui déclenche la pluie, et il faut le voir.
  */
-const ELEPHANT: Art = [
+const ELEPHANT_BOIT: Art = [
   '............0000000000....',
   '...........022222222220...',
   '.....0000000000000000000..',
@@ -1487,6 +1489,28 @@ const ELEPHANT: Art = [
   '...020....020..020.020....',
   '....020...020..020.020....',
   '.....000..020..000.020....',
+  '..........000......000....',
+];
+
+const ELEPHANT_TROMPE: Art = [
+  '..000.......0000000000....',
+  '..020......022222222220...',
+  '.020.0000000000000000000..',
+  '.02000000002222222222220..',
+  '.0202222222222222222222000',
+  '.0202000002222222222222002',
+  '.0202011102222222222222002',
+  '.0202011102222222222222002',
+  '.0202011102222222222222002',
+  '.02020111022222222222220.0',
+  '.020.....022222222222220..',
+  '.02023222222222222222220..',
+  '.00033002220000000000000..',
+  '..........020..020.020....',
+  '..........020..020.020....',
+  '..........020..020.020....',
+  '..........020..020.020....',
+  '..........020..000.020....',
   '..........000......000....',
 ];
 
@@ -1786,6 +1810,7 @@ export const SHEETS: Record<string, Record<string, Art>> = {
   hermione4: { 'rampe-0': HERMIONE_RAMPE_A, 'rampe-1': HERMIONE_RAMPE_B },
   araignee: { 'pattes-0': ARAIGNEE_A, 'pattes-1': ARAIGNEE_B },
   poisson: { 'saut-0': POISSON_A, 'saut-1': POISSON_B },
+  elephant: { boit: ELEPHANT_BOIT, trompe: ELEPHANT_TROMPE },
   heron: { 'vol-0': HERON_A, 'vol-1': HERON_B },
   fusee: { 'vol-0': FUSEE_A, 'vol-1': FUSEE_B },
   frigo: { ferme: FRIGO, ouvert: FRIGO_OUVERT },
@@ -1818,7 +1843,6 @@ export const IMAGES: Record<string, Art> = {
   carton: CARTON,
   ballon: BALLON,
   corde: CORDE,
-  elephant: ELEPHANT,
   parrain: PARRAIN,
   'maman-velo': MAMAN_VELO,
   'maman-helico': MAMAN_HELICO,

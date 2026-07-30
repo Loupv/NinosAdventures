@@ -440,6 +440,7 @@ export class WorldScene extends Phaser.Scene {
       this.mode,
     );
     this.bruitDesPas(delta);
+    this.mamanSurveille();
     if (this.just('arroser')) this.tirerAuPistolet();
 
     const door = this.doorUnderPlayer();
@@ -978,42 +979,64 @@ export class WorldScene extends Phaser.Scene {
     });
   }
 
-  /** L'averse elle-même, puis Maman qui plie bagage. */
+  /**
+   * **L'averse.** Trois temps, et il faut les voir tous les trois : la trompe **se lève**
+   * au-dessus du dos (c'est une image de l'éléphant, pas un effet), un jet part de son bout,
+   * puis **il pleut sur tout l'écran** pendant cinq secondes — des gouttes lâchées partout au
+   * hasard de la largeur, qui tombent et éclaboussent le quai. Maman lève la tête au milieu.
+   */
   private averse(l: Live): void {
+    (l.go as Phaser.GameObjects.Image).setFrame('trompe');
     jouer(this, 'plouf', { volume: 0.7 });
-    const depart = { x: Math.round(l.go.x + 4), y: Math.round(l.go.y + 20) };
-    for (let i = 0; i < 6; i++) {
-      const g = this.add
-        .image(depart.x, depart.y, texKey('goutte', this.pal))
+
+    // Le jet : il sort du bout de la trompe, très haut, et se perd hors du cadre.
+    const bout = { x: Math.round(l.go.x + 6), y: Math.round(l.go.y) };
+    for (let i = 0; i < 5; i++) {
+      const j = this.add
+        .image(bout.x, bout.y, texKey('goutte', this.pal))
         .setOrigin(0.5, 0.5)
         .setDepth(1200);
-      const chute = 88 + i * 6;
       this.tweens.add({
-        targets: g,
-        x: depart.x + 40 + i * 22,
-        duration: 900,
-        delay: i * 90,
-        ease: 'Linear',
-        onComplete: () => {
-          splash(this, this.pal, Math.round(g.x), chute);
-          g.destroy();
-        },
-      });
-      // La cloche : elle monte, puis elle retombe.
-      this.tweens.add({
-        targets: g,
-        y: depart.y - 36,
-        duration: 400,
-        delay: i * 90,
+        targets: j,
+        x: bout.x + 30 + i * 14,
+        y: bout.y - 34 - i * 4,
+        duration: 500,
+        delay: i * 70,
         ease: 'Quad.easeOut',
-        yoyo: true,
-        hold: 0,
+        onComplete: () => j.destroy(),
       });
     }
 
-    this.time.delayedCall(1700, () => {
+    // Puis la pluie, sur toute la scène : une goutte toutes les soixante millisecondes.
+    this.time.addEvent({ delay: 60, repeat: 80, callback: () => this.uneGoutte() });
+    this.time.delayedCall(5200, () => {
+      (l.go as Phaser.GameObjects.Image).setFrame('boit');
+    });
+
+    this.time.delayedCall(1800, () => {
       if (this.room.id !== 'erdre') return;
       this.mamanFuitLaPluie();
+    });
+  }
+
+  /** Une goutte de pluie, quelque part dans le champ, qui tombe jusqu'au quai. */
+  private uneGoutte(): void {
+    const cam = this.cameras.main;
+    const x = Math.round(cam.scrollX + Math.random() * cam.width);
+    const g = this.add
+      .image(x, -4, texKey('goutte', this.pal))
+      .setOrigin(0.5, 0.5)
+      .setDepth(1150);
+    const sol = 92 + Math.random() * 14;
+    this.tweens.add({
+      targets: g,
+      y: sol,
+      duration: 520 + Math.random() * 160,
+      ease: 'Quad.easeIn',
+      onComplete: () => {
+        if (Math.random() < 0.35) splash(this, this.pal, Math.round(g.x), Math.round(sol));
+        g.destroy();
+      },
     });
   }
 
@@ -1099,6 +1122,25 @@ export class WorldScene extends Phaser.Scene {
       Math.round(s.saute.eau - s.saute.hauteur),
     );
     l.go.setVisible(true);
+  }
+
+  /**
+   * **Maman surveille le bout du quai.** Ce n'est pas une porte : c'est une ligne invisible à
+   * quelques pas de son banc. Si Nino la franchit, elle tourne la tête, elle le renvoie jouer,
+   * et il se retrouve un peu plus loin. Tant qu'elle est là, il n'y a rien à tenter de ce côté —
+   * il faudra qu'elle s'en aille d'elle-même.
+   */
+  private mamanSurveille(): void {
+    if (this.room.id !== 'erdre' || state.flag('maman-quai-partie')) return;
+    const maman = this.live.find((l) => l.def.id === 'maman-quai');
+    if (!maman) return;
+    const limite = maman.def.x - 32;
+    if (this.player.sprite.x < limite) return;
+    this.player.sprite.x = limite - 10;
+    this.player.freeze(this.mode);
+    state.locked = true;
+    jouer(this, 'refus', { volume: 0.5 });
+    this.runDialogue('maman-voit', maman);
   }
 
   /**
