@@ -848,6 +848,14 @@ Réglé comme le rêve de la fusée, c'est-à-dire **sans aucune punition** : ra
 perdre, une rafale remonte Nino, la maison repart au loin (moins loin que la première fois) et
 il recommence.
 
+> **Un cul-de-sac à ne pas refaire ailleurs.** Le parapente du toit était garé derrière le
+> flag `parapente-pris`, posé au moment du saut et sauvegardé aussitôt. Si le vol
+> s'interrompait — page rechargée, onglet fermé — on retrouvait le toit avec un parapente bien
+> visible et la phrase « Il n'y a plus de parapente sur le toit », sans plus aucune façon de
+> partir. La règle : **ne jamais fermer une interaction sur un flag posé avant que la chose
+> qu'il ouvre soit finie.** Ici, le parapente repart tant que `parapente-rentre` n'est pas
+> posé, c'est-à-dire tant que Nino n'est pas chez lui.
+
 **Et les hérons**, qui arrivent maintenant en face et grossissent : ce sont ceux de l'Erdre,
 et ils rentrent à la même heure que lui. Les toucher ne fait pas perdre non plus — le héron
 proteste et l'écarte d'un coup d'aile, ce qui suffit largement à faire manquer la fenêtre.

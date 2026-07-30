@@ -1615,9 +1615,15 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
   ],
 
   parapente: [
+    /**
+     * **Après le retour seulement.** C'était `parapente-pris`, posé au moment du saut : si le
+     * vol s'interrompait — page rechargée, jeu fermé — on retrouvait le toit avec un
+     * parapente bien visible et cette phrase qui disait le contraire, sans plus aucune façon
+     * de partir. Tant que Nino n'est pas rentré, le parapente est là et il repart.
+     */
     {
-      when: () => state.flag('parapente-pris'),
-      lines: ['Il n’y a plus de parapente sur le toit.'],
+      when: () => state.flag('parapente-rentre'),
+      lines: ['Il n’y a plus de parapente sur le toit.', 'Il est sous son lit.'],
     },
     {
       lines: [

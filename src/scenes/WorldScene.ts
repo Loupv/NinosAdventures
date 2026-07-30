@@ -2038,7 +2038,12 @@ export class WorldScene extends Phaser.Scene {
       this.taperDansLeBallon(l);
       return;
     }
-    if (l.def.id === 'parapente' && !state.flag('parapente-pris')) {
+    // **Tant qu'il n'est pas rentré, le parapente marche encore.** Le garde-fou était
+    // `parapente-pris`, posé au moment du saut et sauvegardé aussitôt : un rechargement de
+    // page pendant le vol laissait Nino sur le toit avec un parapente sous les yeux et
+    // « Il n'y a plus de parapente sur le toit. » — un cul-de-sac, sans autre issue que de
+    // recommencer la partie. On relance le vol autant de fois qu'il faut.
+    if (l.def.id === 'parapente' && !state.flag('parapente-rentre')) {
       this.sauterDuToit(l);
       return;
     }
