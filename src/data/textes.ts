@@ -1482,6 +1482,8 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
     {
       speaker: 'Maman',
       lines: ['Maman tourne la tête.', '« Nino. »', '« Pas plus loin. »'],
+      // Se faire prendre, c'est avoir vu le problème : ça compte autant que de lui parler.
+      effects: { flag: 'maman-quai-vue' },
     },
   ],
 
@@ -1503,6 +1505,7 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
         '« On attend ton père. »',
         '« Reste par là, je te vois. »',
       ],
+      effects: { flag: 'maman-quai-vue' },
     },
   ],
 

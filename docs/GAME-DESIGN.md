@@ -342,7 +342,10 @@ par une porte fermée, par sa mère. Et ce n'est pas un mur : **une ligne invisi
 de son banc**. Si Nino la franchit, elle tourne la tête — *« Nino. » « Pas plus loin. »* — et il
 se retrouve un peu plus loin. Il n'y a rien à négocier tant qu'elle est là.
 
-Sauf revenir voir l'éléphant, qui propose : *« Tu veux voir quelque chose ? »* Alors, **et on le
+Sauf revenir voir l'éléphant, qui propose : *« Tu veux voir quelque chose ? »* — mais **il ne
+propose rien avant qu'on ait vu le problème** : il faut avoir parlé à papa dans sa coque et à
+Maman sur son banc, ou s'être fait prendre par elle. Une solution offerte avant l'énigme n'est
+pas une solution, c'est un couloir. Avant ça, il boit, et c'est tout ce qu'il fait. Alors, **et on le
 voit** : sa trompe se lève au-dessus de son dos (c'est une image de l'éléphant, pas un effet), un
 jet part de son bout, et **il pleut sur tout l'écran** pendant cinq secondes — des gouttes lâchées
 partout au hasard de la largeur, qui tombent et éclaboussent le quai.

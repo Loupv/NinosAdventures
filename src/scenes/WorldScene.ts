@@ -2241,6 +2241,11 @@ export class WorldScene extends Phaser.Scene {
     if (
       l.def.id === 'elephant-erdre' &&
       state.flag('elephant-vu') &&
+      // **Il ne propose rien avant qu'on ait vu le problème.** Il faut avoir parlé à papa dans
+      // sa coque et à Maman sur son banc — ou s'être fait prendre par elle. Une solution
+      // offerte avant l'énigme n'est pas une solution, c'est un couloir.
+      state.flag('papa-capitaine-vu') &&
+      state.flag('maman-quai-vue') &&
       !state.flag('maman-quai-partie')
     ) {
       this.pluieDElephant(l);
