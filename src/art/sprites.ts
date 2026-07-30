@@ -1545,10 +1545,13 @@ const ELEPHANT_TROMPE: Art = [
  */
 const bosse = (art: Art, lignes: Record<number, string>): Art => art.map((l, i) => lignes[i] ?? l);
 
-/** Le poisson vient d'entrer : la bosse est au pied de la trompe, juste au-dessus de l'eau. */
+/**
+ * Le poisson vient d'entrer : la bosse est **sur la diagonale de la trompe**, en plein ciel entre
+ * la tête et l'eau. Au pied du tuyau elle se confondait avec le menton et on ne voyait rien.
+ */
 const ELEPHANT_AVALE = bosse(ELEPHANT_BOIT, {
-  11: '022023222222222222222220..',
-  12: '022003302220000000000000..',
+  13: '0222000...020..020.020....',
+  14: '.02220....020..020.020....',
 });
 
 /** La trompe à mi-hauteur : elle se lève, et elle s'arrête là le temps d'une seconde. */

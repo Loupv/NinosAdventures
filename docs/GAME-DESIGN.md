@@ -334,9 +334,9 @@ C'est la branche implémentée. Elle sert de gabarit à toutes les suivantes.
    interlocuteur une fois le quai libre — *« Deux minutes, Nino ! J'ai un bouchon qui fuit. »*
 
    Au second plan, **un éléphant de douze mètres boit dans la rivière** — en bois, et il bouge
-   les oreilles. Il est **dans** l'eau : la surface le coupe juste sous le ventre, on ne voit qu'un
-   tout petit bout de patte, et le bas de sa trompe est immergé. Posé dessus, il avait l'air de
-   marcher sur l'Erdre. Personne sur le quai ne s'arrête. C'est cette première rencontre qui rend drôle
+   les oreilles. Il est **dans** l'eau : la surface passe à la cheville, les pattes plongent et le
+   bout de la trompe trempe. Posé dessus, il avait l'air de marcher sur l'Erdre ; coupé sous le
+   ventre, ce n'était plus qu'une caisse — il faut que **tout ce qui fait l'éléphant reste dehors**. Personne sur le quai ne s'arrête. C'est cette première rencontre qui rend drôle
    la deuxième, trente-et-un étages plus haut : on ne demandera jamais comment il est monté,
    mais on saura qu'il était en bas. Et lui s'en souvient : *« On s'est déjà vus. » « En bas. »
    « Je bois beaucoup. »*
@@ -378,7 +378,8 @@ Avant ça l'éléphant boit, le poisson saute, et c'est tout ce qu'ils font.
 presser. Dans l'ordre, sans un mot de commentaire :
 
 1. Le poisson **nage jusqu'au bout de la trompe** et disparaît sous la surface.
-2. Une **bosse** apparaît au pied du tuyau, juste au-dessus de l'eau. C'est lui.
+2. Une **bosse** apparaît sur la diagonale de la trompe, entre la tête et l'eau. C'est lui.
+   Au pied du tuyau, elle se confondait avec le menton.
 3. La trompe **se lève à mi-hauteur**, puis tout en haut — quatre images de l'éléphant, une toutes
    les huit dixièmes de seconde. Rien n'est tweené : ce sont des dessins qui se succèdent.
 4. La bosse **remonte** à chaque image, jusqu'en haut du tuyau.

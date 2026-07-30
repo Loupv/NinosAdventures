@@ -1676,13 +1676,14 @@ export const ROOMS: Record<string, Room> = {
       {
         id: 'elephant-erdre',
         x: 148,
-        y: 28,
+        y: 26,
         sprite: 'elephant',
         frame: 'boit',
         scale: 2,
-        // **Il est dans l'eau, pas dessus.** La surface le coupe juste sous le ventre : on ne voit
-        // qu'un tout petit bout de patte, et le bas de la trompe est sous l'eau comme il faut.
-        flotte: 56,
+        // **Il est dans l'eau, pas dessus** — mais il faut encore le reconnaître. La surface passe
+        // à la cheville : les pattes plongent, le bout de la trompe trempe, et tout ce qui fait
+        // l'éléphant reste dehors. Coupé sous le ventre, ce n'était plus qu'une caisse.
+        flotte: 58,
         depth: -25,
         portee: 30,
         dialogue: 'elephant-erdre',
