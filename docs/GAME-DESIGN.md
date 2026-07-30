@@ -714,7 +714,12 @@ croise Maman entre-temps : *« Nino, tu mets de l'eau partout !! »*
 
 Ça ne se joue qu'une fois.
 
-## La quête : faire descendre la température — **en pause**
+## La quête : faire descendre la température — **en pause, et le code est parti**
+
+> **Le code de cette quête a été retiré.** Plus de température calculée, plus de
+> `fraicheur.ts`, plus de palettes `real-chaud` / `real-doux`, plus d'effet `cool` dans les
+> dialogues. Ce qui suit reste écrit **comme cahier des charges** : le jour où on la relance,
+> tout est là pour la refaire, et rien ne traîne dans le jeu en attendant.
 
 > **Suspendue le 28 juillet 2026.** Les interactions qui donnaient des degrés ont été
 > retirées du jeu : plus aucun dialogue ne rapporte de fraîcheur, la lumière de la maison
@@ -904,8 +909,8 @@ depuis ce matin, ils préparaient. Le joueur le comprend en voyant le gâteau, p
 lisant. Et Nino s'endort au moment de souffler, parce qu'il a fait tout ça aujourd'hui et
 que personne ne le sait.
 
-L'écran de fin est dans la palette du soir, et il compte ce qui a été **trouvé**, pas ce
-qui a été réussi : les cachettes d'Hermione, les pièces. Il n'y a pas de score dans ce jeu.
+L'écran de fin est dans la palette du jour — c'est le matin de son anniversaire — et il
+compte ce qui a été **trouvé**, pas ce qui a été réussi : les cachettes d'Hermione, les pièces. Il n'y a pas de score dans ce jeu.
 
 ## Branches proposées
 

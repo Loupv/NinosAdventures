@@ -7,7 +7,6 @@ import { ROOMS, nomDuLieu, type Door, type Room, type RoomObject } from '../data
 import { CHARACTER_SPRITES } from '../data/characters';
 import { ITEMS, type ItemId } from '../data/items';
 import { pickBeat, type Effects, type Montre } from '../data/dialogues';
-import { fraicheur, labelFraicheur } from '../data/fraicheur';
 import {
   ANNONCES,
   ARAIGNEE_PARTIE,
@@ -361,12 +360,6 @@ export class WorldScene extends Phaser.Scene {
           bus.emit(EV.hud);
           return [...state.items];
         },
-        /** Applique un moyen de se rafraîchir, pour tester la jauge sans jouer. */
-        cool: (id: string) => {
-          this.applyFraicheur(id);
-          bus.emit(EV.hud);
-          return { temperature: state.temperature, palette: state.palette };
-        },
         /** La liste des raccourcis chiffrés, pour la retrouver sans lire le code. */
         etapes: () => ETAPES.map((e) => `${e.touche} · ${e.nom}`),
       };
@@ -392,14 +385,6 @@ export class WorldScene extends Phaser.Scene {
       state.ecrans - state.eauDepuis >= ECRANS
     ) {
       state.setFlag('poisson-arrive');
-    }
-    // La sueur sèche.
-    if (
-      state.flag('sueur') &&
-      !state.flag('sueur-sechee') &&
-      state.ecrans - state.sueurDepuis >= ECRANS
-    ) {
-      state.setFlag('sueur-sechee');
     }
   }
 
@@ -1142,7 +1127,6 @@ export class WorldScene extends Phaser.Scene {
       state.setFlag('reveil');
       if (force) {
         state.setFlag('sueur');
-        state.sueurDepuis = state.ecrans;
       }
       state.save();
       retirer();
@@ -2147,7 +2131,6 @@ export class WorldScene extends Phaser.Scene {
     }
     // Le bouchon a sauté : le bateau commence à descendre, tout de suite et tout seul.
     if (e.flag === 'bateau-coule') this.coulerLeBateau();
-    if (e.cool) this.applyFraicheur(e.cool, l);
     if (e.take) state.take(e.take);
     if (e.give) {
       state.give(e.give);
@@ -2166,26 +2149,6 @@ export class WorldScene extends Phaser.Scene {
     state.save();
     this.refreshObjects();
     bus.emit(EV.hud);
-  }
-
-  /**
-   * Un moyen de se rafraîchir vient d'être trouvé. Si la température change assez
-   * pour faire basculer la lumière de la maison, on reconstruit la pièce : c'est la
-   * récompense visible de la quête.
-   */
-  private applyFraicheur(id: string, l?: Live): void {
-    const degres = state.trouveFraicheur(id);
-    if (degres === 0) return;
-    const f = fraicheur(id)!;
-    toast(`${degres > 0 ? '+' : ''}${degres}\u00b0  ${labelFraicheur(f.id)}`);
-    if (l && degres < 0) {
-      sparkle(
-        this,
-        this.pal,
-        Math.round(l.def.x + l.go.displayWidth / 2),
-        Math.round(l.def.y + l.go.displayHeight / 2),
-      );
-    }
   }
 
   private usePortal(l: Live): void {

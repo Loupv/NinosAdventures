@@ -4,9 +4,7 @@
  * C'est notre effet le plus fort, et il est gratuit.
  */
 export type PaletteId =
-  | 'real-chaud'
   | 'real'
-  | 'real-doux'
   | 'real-soir'
   | 'ville'
   | 'ville-nuit'
@@ -18,9 +16,7 @@ export type PaletteId =
 
 export const PALETTES: Record<PaletteId, readonly [string, string, string, string]> = {
   /**
-   * La maison, à quatre moments de la journée. C'est la jauge de la quête rendue
-   * visible : plus la température descend, plus la lumière s'adoucit — du midi
-   * blanchi jusqu'au bleu du soir. Aucun asset supplémentaire, juste 4 palettes.
+   * La maison, de jour et de nuit.
    *
    * Deux écarts assumés avec la vraie DMG :
    *  - le **ton 2 est plus sombre** que le #8bac0f d'origine, où il était presque
@@ -29,9 +25,7 @@ export const PALETTES: Record<PaletteId, readonly [string, string, string, strin
    *    fatigue sur un écran moderne rétroéclairé ; ce vert-gris garde l'écart entre les
    *    quatre tons sans piquer les yeux.
    */
-  'real-chaud': ['#2d3719', '#607233', '#a8b85d', '#e9eec1'],
   real: ['#193119', '#3c5a3c', '#739045', '#9cb048'],
-  'real-doux': ['#231c0d', '#4a4520', '#8a8a3a', '#cfc984'],
   'real-soir': ['#0b1220', '#243050', '#4a6a86', '#93b0bf'],
   /** Nantes, dehors, la pierre chaude. */
   ville: ['#2b1a10', '#6b4a24', '#c99a5b', '#f2e0b8'],
@@ -70,19 +64,6 @@ export function shadeHex(pal: PaletteId, index: 0 | 1 | 2 | 3): string {
   return PALETTES[pal][index];
 }
 
-/** La lumière de la maison, selon la température. */
-export function realStage(temp: number): PaletteId {
-  if (temp >= 30) return 'real-chaud';
-  if (temp >= 25) return 'real';
-  if (temp >= 21) return 'real-doux';
-  return 'real-soir';
-}
-
-/** Les lieux « réels » suivent la température ; les autres gardent leur palette. */
-export function paletteFor(base: PaletteId, temp: number): PaletteId {
-  return base === 'real' ? realStage(temp) : base;
-}
-
 /**
  * La version nocturne d'une palette.
  *
@@ -96,8 +77,6 @@ export function paletteFor(base: PaletteId, temp: number): PaletteId {
  */
 const NUIT: Partial<Record<PaletteId, PaletteId>> = {
   real: 'real-soir',
-  'real-chaud': 'real-soir',
-  'real-doux': 'real-soir',
   ville: 'ville-nuit',
   eau: 'eau-nuit',
 };

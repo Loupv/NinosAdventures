@@ -700,24 +700,7 @@ const FRIGO_OUVERT: Art = (() => {
 })();
 
 
-/** Canapé : dossier sombre, assise en ton moyen pour que Moon s'y détache. */
-const CANAPE: Art = stack(
-  40,
-  [
-    [1, '0'],
-    [2, '1'],
-    [1, '2'],
-    [2, '1'],
-    [1, '0'],
-    [2, '2'],
-    [1, '3'],
-    [2, '2'],
-    [1, '3'],
-    [1, '2'],
-    [1, '0'],
-  ],
-  2,
-);
+
 
 
 const FENETRE: Art = [
@@ -894,21 +877,7 @@ const WC: Art = [
   '...000000...',
 ];
 
-const TELE: Art = [
-  '..000000000000..',
-  '.01111111111110.',
-  '.01000000000110.',
-  '.01033333330110.',
-  '.01033333330110.',
-  '.01033333330110.',
-  '.01033333330110.',
-  '.01000000000110.',
-  '.01111111111110.',
-  '.01011101111110.',
-  '..000000000000..',
-  '...0........0...',
-  '..00........00..',
-];
+
 
 const TABLE: Art = stack(
   24,
@@ -1494,18 +1463,7 @@ const BOUEE: Art = [
   '..0000..',
 ];
 
-/** Le thermomètre : la jauge de toute la quête. */
-const THERMOMETRE: Art = [
-  '..00..',
-  '.0330.',
-  '.0330.',
-  '.0330.',
-  '.0110.',
-  '.0110.',
-  '001100',
-  '011110',
-  '.0000.',
-];
+
 
 /** L'étoile du journal : une chose découverte, un passage ouvert. */
 const ETOILE: Art = [
@@ -1611,7 +1569,6 @@ export const IMAGES: Record<string, Art> = {
   copain: COPAIN,
   lit: LIT,
   'grand-lit': GRAND_LIT,
-  canape: CANAPE,
   'canape-vertical': CANAPE_VERTICAL,
   'table-ronde': TABLE_RONDE,
   bibliotheque: BIBLIOTHEQUE,
@@ -1619,7 +1576,6 @@ export const IMAGES: Record<string, Art> = {
   escalier: ESCALIER,
   lavabo: LAVABO,
   wc: WC,
-  tele: TELE,
   table: TABLE,
   'table-bar': TABLE_BAR,
   plante: PLANTE,
@@ -1651,7 +1607,6 @@ export const IMAGES: Record<string, Art> = {
   pizza: PIZZA,
   bouee: BOUEE,
   roseaux: ROSEAUX,
-  thermometre: THERMOMETRE,
   etoile: ETOILE,
   bulle: BULLE,
 };

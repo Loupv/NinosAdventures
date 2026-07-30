@@ -4,8 +4,6 @@ export interface Effects {
   give?: ItemId;
   take?: ItemId;
   flag?: string;
-  /** Identifiant d'un moyen de se rafraîchir, cf. fraicheur.ts. */
-  cool?: string;
 }
 
 /**

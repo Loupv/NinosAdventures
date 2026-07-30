@@ -402,35 +402,6 @@ export const FETE: Array<{ qui?: string; lignes: string[]; son?: string }> = [
   { lignes: ['Nino dort.'] },
 ];
 
-// ═══════════════════════════════════════════════════════ 9. la quête en pause
-
-/**
- * Les moyens de faire baisser la température. **La quête est en pause** : plus aucune
- * interaction n'en donne, et le journal ne les affiche plus. Les phrases restent ici,
- * prêtes, au cas où on la reprenne — la mécanique, elle, est dans `fraicheur.ts`.
- */
-export const FRAICHEURS_TEXTE: Record<string, string> = {
-  volets: 'Fermer les volets',
-  'frigo-ouvert': 'Rester devant le frigo ouvert',
-  'eau-figure': 'De l’eau froide sur la figure',
-  'baignoire-froide': 'L’eau froide de la baignoire',
-  'armoire-fraiche': 'Le fond de l’armoire est frais',
-  carrelage: 'S’allonger sur le carrelage',
-  'ombre-reverbere': 'L’ombre du réverbère',
-  'fenetre-cassee': 'La fenêtre cassée',
-  'glacon-hermione': 'Le glaçon d’Hermione',
-  pistolet: 'Le pistolet à eau, sur soi',
-  recoucher: 'Se recoucher (mauvaise idée)',
-  projecteur: 'Le vidéoprojecteur chauffe',
-  'chat-sur-genoux': 'Un chat sur les genoux',
-  'pieds-erdre': 'Tremper les pieds dans l’Erdre',
-  'ocean-evier': 'L’Océan de l’Évier',
-  'fond-armoire': 'Le Fond de l’Armoire',
-  'dans-la-lumiere': 'Dans la Lumière',
-  terrain: 'Le Terrain qui n’existe pas',
-  elephant: 'L’Éléphant des Machines',
-};
-
 // ═══════════════════════════════════════════════════════ 10. le sac et les pièces
 
 /** Ce que le journal raconte des objets ramassés. */
