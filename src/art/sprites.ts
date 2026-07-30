@@ -543,6 +543,25 @@ const ARBRE: Art = [
   '......0000000.......',
 ];
 
+/**
+ * Un dessin froissé, repêché au-dessus d'une poubelle. Les plis sont dessinés en clair sur le
+ * papier : à quatorze pixels, c'est le froissé qui fait comprendre qu'il a été jeté.
+ */
+const DESSIN: Art = [
+  '..000000000...',
+  '.03333333300..',
+  '03302333233300',
+  '03033033033030',
+  '03303003300330',
+  '03033033033030',
+  '03302333233300',
+  '03330303030300',
+  '.0330333303300',
+  '..0330330330..',
+  '...033033300..',
+  '....0000000...',
+];
+
 /** Le bouchon de la baignoire. Celui qui a sauvé un poisson. */
 const BOUCHON: Art = [
   '.0000.',
@@ -1807,6 +1826,7 @@ export const IMAGES: Record<string, Art> = {
   pistolet: PISTOLET,
   bol: BOL,
   chaussure: CHAUSSURE,
+  dessin: DESSIN,
   bouchon: BOUCHON,
   noisette: NOISETTE,
   ticket: TICKET,

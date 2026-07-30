@@ -1285,7 +1285,15 @@ export const ROOMS: Record<string, Room> = {
         errance: { rayon: 30, vitesse: 26 },
       },
       { id: 'poubelle', x: 132, y: 30, sprite: 'poubelle', solid: true, dialogue: 'poubelle' },
-      { id: 'pigeon', x: 108, y: 100, sprite: 'pigeon', dialogue: 'pigeon' },
+      {
+        id: 'pigeon',
+        x: 108,
+        y: 100,
+        sprite: 'pigeon',
+        dialogue: 'pigeon',
+        // Il marche tout le temps, tout seul, sans jamais nous regarder.
+        errance: { rayon: 26, vitesse: 14 },
+      },
       {
         id: 'panneau-directions',
         ...at(16, 11),
@@ -1372,12 +1380,13 @@ export const ROOMS: Record<string, Room> = {
       {
         id: 'copain1',
         x: 28,
-        y: 57,
+        y: 52,
         sprite: 'copain',
         priorite: 2,
-        portee: 20,
+        portee: 24,
         dialogue: 'copain1',
-        errance: { rayon: 14, vitesse: 22 },
+        // Rayon serré et ancre remontée : sinon il finit les pieds dans la grille.
+        errance: { rayon: 10, vitesse: 20 },
       },
       { id: 'copain2', x: 88, y: 57, sprite: 'copain', priorite: 2, portee: 20, dialogue: 'copain2' },
       { id: 'copain3', x: 140, y: 52, sprite: 'copain', priorite: 2, portee: 20, dialogue: 'copain3' },
@@ -1387,8 +1396,17 @@ export const ROOMS: Record<string, Room> = {
       // ── dans la rue : le panneau, et le ballon passé par-dessus la grille ──
       { id: 'panneau-ecole', x: 28, y: 68, sprite: 'panneau', solid: true, dialogue: 'panneau-ecole' },
       { id: 'ballon-ecole', x: 120, y: 100, sprite: 'ballon', dialogue: 'ballon-ecole', hideIfFlag: 'ballon-pris' },
-      { id: 'poubelle', x: 52, y: 92, sprite: 'poubelle', solid: true, dialogue: 'poubelle' },
-      { id: 'pigeon', x: 88, y: 120, sprite: 'pigeon', dialogue: 'pigeon' },
+      // Celle-ci a quelque chose dedans : le dessin froissé.
+      { id: 'poubelle', x: 52, y: 92, sprite: 'poubelle', solid: true, dialogue: 'poubelle-ecole' },
+      {
+        id: 'pigeon',
+        x: 88,
+        y: 120,
+        sprite: 'pigeon',
+        dialogue: 'pigeon',
+        // Il marche tout le temps, tout seul, sans jamais nous regarder.
+        errance: { rayon: 26, vitesse: 14 },
+      },
     ],
     doors: [{ x: 48, y: 136, w: 48, h: 8, to: { room: 'nantes', x: 80, y: 26 } }],
   },
@@ -1457,7 +1475,15 @@ export const ROOMS: Record<string, Room> = {
       { id: 'reverbere-4', x: 196, y: 76, sprite: 'reverbere', dialogue: 'reverbere' },
       { id: 'carton-tour', x: 68, y: 96, sprite: 'carton', dialogue: 'carton-tour' },
       { id: 'banc', x: 116, y: 92, sprite: 'banc', dialogue: 'banc' },
-      { id: 'pigeon', x: 152, y: 96, sprite: 'pigeon', dialogue: 'pigeon' },
+      {
+        id: 'pigeon',
+        x: 152,
+        y: 96,
+        sprite: 'pigeon',
+        dialogue: 'pigeon',
+        // Il marche tout le temps, tout seul, sans jamais nous regarder.
+        errance: { rayon: 26, vitesse: 14 },
+      },
     ],
     doors: [
       { x: 0, y: 88, w: 8, h: 16, to: { room: 'terrasse', x: 144, y: 104 } },
@@ -1523,7 +1549,15 @@ export const ROOMS: Record<string, Room> = {
       { id: 'monsieur-immobile', x: 64, y: 104, sprite: 'copain', dialogue: 'monsieur-immobile' },
       { id: 'reverbere', x: 136, y: 36, sprite: 'reverbere', solid: true, dialogue: 'reverbere' },
       { id: 'poubelle', x: 84, y: 16, sprite: 'poubelle', solid: true, dialogue: 'poubelle' },
-      { id: 'pigeon', x: 68, y: 116, sprite: 'pigeon', dialogue: 'pigeon' },
+      {
+        id: 'pigeon',
+        x: 68,
+        y: 116,
+        sprite: 'pigeon',
+        dialogue: 'pigeon',
+        // Il marche tout le temps, tout seul, sans jamais nous regarder.
+        errance: { rayon: 26, vitesse: 14 },
+      },
     ],
     doors: [
       { x: 0, y: 96, w: 8, h: 16, to: { room: 'erdre', x: 296, y: 96 } },

@@ -19,6 +19,7 @@ import {
   ECUREUIL_MOUILLE,
   ECUREUIL_TREMPE,
   ECUREUIL_VANNES,
+  PIGEON,
   CHALEUR,
   CHANSON,
   COUPLETS,
@@ -71,6 +72,15 @@ interface Errant {
   ancreY: number;
   cibleX: number;
   cibleY: number;
+  /**
+   * **La position réelle, avec ses décimales.** Elle est indispensable : à quatorze pixels par
+   * seconde, un pas fait moins d'un quart de pixel par image. En écrivant l'arrondi dans le
+   * sprite et en le relisant à l'image suivante, la fraction était perdue à chaque fois et
+   * personne ne bougeait jamais d'un pixel — Maman, les copains, l'écureuil de la tour et le
+   * pigeon étaient tous immobiles sans que ça saute aux yeux.
+   */
+  x: number;
+  y: number;
   /** Millisecondes de pause restantes. */
   attente: number;
   rayon: number;
@@ -173,6 +183,8 @@ export class WorldScene extends Phaser.Scene {
   private ballonEnVol = false;
   /** Combien de fois l'écureuil s'est moqué : il change de vanne à chaque tir raté. */
   private vannes = 0;
+  /** Combien de fois on a dérangé un pigeon : il ne s'en va pas deux fois pareil. */
+  private pigeonneries = 0;
   /** Combien de fois on a arrosé l'écureuil de la tour : il ne râle pas deux fois pareil. */
   private mouillé = 0;
   /** La vanne affichée au-dessus de lui, s'il y en a une. */
@@ -586,6 +598,8 @@ export class WorldScene extends Phaser.Scene {
         ancreY: def.y,
         cibleX: def.x,
         cibleY: def.y,
+        x: def.x,
+        y: def.y,
         attente: Math.random() * 1200,
         rayon: def.errance.rayon,
         vitesse: def.errance.vitesse ?? ERRANCE_VITESSE,
@@ -935,6 +949,36 @@ export class WorldScene extends Phaser.Scene {
     });
   }
 
+  /**
+   * **Le pigeon se décale.** On ne le pousse pas d'un tween : on déplace **le point qu'il
+   * visait** et son ancre, et son errance l'y emmène de son propre pas. Il n'a donc pas l'air
+   * de fuir — il a l'air d'avoir décidé d'aller ailleurs, ce qui est très différent.
+   */
+  private pigeonSeDecale(l: Live): void {
+    const e = this.errants.find((x) => x.live === l);
+    const dir = Math.sign(l.go.x - this.player.sprite.x) || 1;
+    if (e) {
+      e.attente = 0;
+      const nx = Phaser.Math.Clamp(
+        Math.round(l.go.x + dir * (14 + Math.random() * 10)),
+        8,
+        this.roomW - 8 - l.go.displayWidth,
+      );
+      const ny = Math.round(l.go.y + (Math.random() < 0.5 ? -5 : 5));
+      if (this.solLibre(nx, ny, l.go.displayWidth, l.go.displayHeight)) {
+        e.cibleX = nx;
+        e.cibleY = ny;
+        e.ancreX = nx;
+        e.ancreY = ny;
+      }
+      // Un peu plus vif le temps de s'écarter : un pigeon dérangé n'a pas le même pas.
+      e.vitesse = 26;
+    }
+    this.flotter(PIGEON[this.pigeonneries % PIGEON.length], l);
+    this.pigeonneries += 1;
+    jouer(this, 'pas', { volume: 0.3, rate: 2.8 });
+  }
+
   /** Un plouf sur la ligne d'eau, au bord où le poisson vient de la traverser. */
   private plouf(s: Sauteur, x: number): void {
     jouer(this, 'plouf', { volume: 0.5 });
@@ -981,8 +1025,8 @@ export class WorldScene extends Phaser.Scene {
         continue;
       }
 
-      const dx = e.cibleX - go.x;
-      const dy = e.cibleY - go.y;
+      const dx = e.cibleX - e.x;
+      const dy = e.cibleY - e.y;
       const reste = Math.hypot(dx, dy);
 
       if (reste < 1) {
@@ -1000,8 +1044,10 @@ export class WorldScene extends Phaser.Scene {
       }
 
       const pas = Math.min(1, (e.vitesse * dt) / 1000 / reste);
-      const x = Math.round(go.x + dx * pas);
-      const y = Math.round(go.y + dy * pas);
+      e.x += dx * pas;
+      e.y += dy * pas;
+      const x = Math.round(e.x);
+      const y = Math.round(e.y);
       if (dx !== 0) go.setFlipX(dx < 0);
       go.setPosition(x, y);
       if (e.live.def.depth === undefined) go.setDepth(y + go.displayHeight);
@@ -2039,6 +2085,12 @@ export class WorldScene extends Phaser.Scene {
     // Rentré par la fenêtre, parapente sous le bras : c'est la fin du chapitre.
     if (l.def.id === 'lit' && state.flag('parapente-rentre') && !state.flag('anniversaire')) {
       this.faireSemblant(l);
+      return;
+    }
+    // **Le pigeon ignore Nino.** Pas de boîte de dialogue : une boîte supposerait qu'il
+    // s'intéresse à nous. Il se décale, il emmène son point d'ancrage avec lui, et il continue.
+    if (l.def.id === 'pigeon') {
+      this.pigeonSeDecale(l);
       return;
     }
     if (l.def.saute) this.sortirDeLEau(l);

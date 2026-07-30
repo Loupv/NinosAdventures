@@ -223,7 +223,7 @@ CACHETTES.forEach((c, i) => {
 
 // Aucun dialogue manquant. Trois objets sont pris en charge par la scène elle-même
 // (WorldScene.interagir) : leur champ `dialogue` n'est qu'un marqueur « on peut parler ».
-const JOUES_PAR_LA_SCENE = new Set(['araignee', 'hermione', 'hermione-suit', 'poisson']);
+const JOUES_PAR_LA_SCENE = new Set(['araignee', 'hermione', 'hermione-suit', 'poisson', 'pigeon']);
 const appeles = new Set<string>();
 for (const r of Object.values(ROOMS)) {
   for (const o of r.objects) {

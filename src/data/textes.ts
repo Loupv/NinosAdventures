@@ -327,6 +327,19 @@ export const ARROSES: Record<string, string[]> = {
   parrain: ['« Il pleut ? »', '« Dedans ? »'],
 };
 
+/**
+ * **Le pigeon.** Il ne s'envole pas, il ne parle pas, il ne s'arrête pas : il se décale, et il
+ * continue ce qu'il faisait. Ces phrases flottent au-dessus de lui, sans boîte et sans rien
+ * bloquer — une boîte de dialogue supposerait qu'il s'intéresse à nous.
+ */
+export const PIGEON = [
+  'Le pigeon se décale de trois pas.',
+  'Le pigeon ne regarde pas Nino.',
+  'Le pigeon fait comme s’il n’y avait personne.',
+  'Le pigeon a autre chose à faire.',
+  'Le pigeon s’éloigne, sans se presser.',
+];
+
 /** Et pour tous les autres. */
 export const ARROSE_DEFAUT = ['« Hé. »', '« ... »', 'Personne ne réagit.'];
 
@@ -455,6 +468,10 @@ export const OBJETS: Record<string, { nom: string; desc: string }> = {
     nom: 'Ballon dégonflé',
     desc: 'Le ballon de la cour d’école. Il est là depuis le mois dernier, et il n’a rien perdu de son calme.',
   },
+  dessin: {
+    nom: 'Dessin froissé',
+    desc: 'Repêché au-dessus de la poubelle, devant l’école. Ce n’est pas celui de Nino. Quelqu’un l’a jeté, et maintenant il est plié en quatre dans sa poche.',
+  },
   plume: {
     nom: 'Plume de héron',
     desc: 'Ramassée sur le quai. Les hérons passent par là — Nino le vérifiera plus tard, en parapente.',
@@ -542,6 +559,7 @@ export const CASTING: Record<string, { nom: string; role: string }> = {
  * au devoir, c'est deux lignes au même endroit.
  */
 const OFFRABLES: ItemId[] = [
+  'dessin',
   'chaussure',
   'bouchon',
   'noisette',
@@ -601,6 +619,11 @@ const ACCUEILS: Record<string, string[]> = {
     'Nino pose un bout de pizza sur la table.',
     '« ... »',
     '« Elle est mâchée ? »',
+  ],
+  dessin: [
+    'Nino déplie un dessin froissé sur la table.',
+    '« Ah. »',
+    '« Où tu l’as trouvé ? »',
   ],
 };
 
@@ -728,6 +751,27 @@ const DEVOIRS: Record<string, Devoir> = {
           { points: 3, lines: ['« Elle volait, et maintenant elle est là. »'] },
           { points: 3, lines: ['« Voilà. »', '« C’est ça. »'] },
           { points: 1, lines: ['« Oui. »'] },
+        ],
+      },
+    ],
+  },
+  dessin: {
+    etapes: [
+      {
+        reponses: ['Dans la poubelle', 'Par terre', 'C’est le mien'],
+        retours: [
+          { points: 3, lines: ['« Dans la poubelle. »', '« Oui. C’est là qu’il était. »'] },
+          { points: 1, lines: ['« Les dessins finissent par terre, c’est vrai. »'] },
+          { points: 0, lines: ['« Non. »', '« Celui-là n’est pas de toi, Nino. »'] },
+        ],
+      },
+      {
+        lines: ['« Et en quoi c’est de l’art ? »'],
+        reponses: ['Quelqu’un l’a jeté', 'Je l’ai décidé', 'C’est un dessin'],
+        retours: [
+          { points: 3, lines: ['« Jeté, et te voilà avec. »', '« Oui. »'] },
+          { points: 3, lines: ['« Voilà. »', '« C’est ça. »'] },
+          { points: 1, lines: ['« Un dessin, oui. »'] },
         ],
       },
     ],
@@ -1637,13 +1681,33 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
     { lines: ['Une poubelle de ville.', 'Nino ne regarde pas dedans.', 'Il a bien réfléchi.'] },
   ],
 
-  pigeon: [
+  /**
+   * **Celle de l'école, où il y a quelque chose.** Un dessin froissé posé dessus, jeté par
+   * quelqu'un — et c'est exactement l'objet qu'un projet d'art réclame. Le choix compte : on
+   * peut refuser de regarder, et la blague de la poubelle reste intacte.
+   */
+  'poubelle-ecole': [
+    {
+      when: () => state.has('dessin') || state.flag('dessin-pris'),
+      lines: ['La poubelle de l’école.', 'Il n’y a plus rien d’intéressant dedans.'],
+    },
     {
       lines: [
-        'Un pigeon.',
-        'Il ne s’envole pas. Il se décale de trois pas.',
-        'Il attend que Nino parte.',
+        'La poubelle, devant l’école.',
+        'Il y a un papier froissé posé dessus.',
+        'Regarder ?',
       ],
+      choice: {
+        oui: {
+          lines: [
+            'C’est un dessin.',
+            'Ce n’est pas celui de Nino.',
+            'Il le déplie, le replie en quatre, et le garde.',
+          ],
+          effects: { give: 'dessin', flag: 'dessin-pris' },
+        },
+        non: { lines: ['Nino ne regarde pas dedans.', 'Il a bien réfléchi.'] },
+      },
     },
   ],
 

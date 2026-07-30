@@ -13,7 +13,8 @@ export type ItemId =
   | 'noisette'
   | 'ticket'
   | 'ballon-degonfle'
-  | 'plume';
+  | 'plume'
+  | 'dessin';
 
 export interface ItemDef {
   id: ItemId;
@@ -34,6 +35,7 @@ const SPRITES: Record<ItemId, string> = {
   ticket: 'ticket',
   'ballon-degonfle': 'ballon',
   plume: 'plume',
+  dessin: 'dessin',
 };
 
 const fiche = (id: ItemId): ItemDef => ({
@@ -53,4 +55,5 @@ export const ITEMS: Record<ItemId, ItemDef> = {
   ticket: fiche('ticket'),
   'ballon-degonfle': fiche('ballon-degonfle'),
   plume: fiche('plume'),
+  dessin: fiche('dessin'),
 };
