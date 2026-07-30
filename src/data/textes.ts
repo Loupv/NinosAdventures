@@ -811,6 +811,12 @@ const DEVOIRS: Record<string, Devoir> = {
  * note** : le pire qu'on puisse faire est huit sur vingt pour avoir apporté quelque chose. La
  * première ligne dont `min` est atteint gagne, donc l'ordre est décroissant.
  */
+/**
+ * **Ce que dit un poisson qu'on envoie à la mer.** Une seule voyelle, tenue le temps du vol : il
+ * n'a rien demandé de plus précis, et il avait dit d'accord.
+ */
+export const POISSON_PART = { qui: 'Le poisson', lignes: ['« Aaaaaaaaaaaaaah. »'] };
+
 export const BAREME: Bareme[] = [
   { min: 6, note: 20, lines: ['« ... »', '« Vingt sur vingt. »', '« Ne le dis pas aux autres. »'] },
   { min: 4, note: 16, lines: ['« Seize sur vingt. »', '« C’est très joli, ce que tu dis. »'] },

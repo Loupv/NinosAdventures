@@ -1486,8 +1486,13 @@ const CORDE: Art = [
  * tête, et les quatre pattes sont séparées. Affiché au double (`scale: 2`), il fait douze mètres
  * — au bord de l'Erdre comme sur son palier.
  *
- * Deux images : `boit`, la trompe dans l'eau, et `trompe`, **la trompe levée au-dessus du dos**
- * quand il envoie l'Erdre en l'air. C'est ce geste-là qui déclenche la pluie, et il faut le voir.
+ * Deux images de base : `boit`, la trompe dans l'eau, et `trompe`, **la trompe levée au-dessus du
+ * dos** quand il envoie l'Erdre en l'air. C'est ce geste-là qui déclenche la pluie, et il faut le
+ * voir.
+ *
+ * **Et quatre images pour le poisson qui monte** : une bosse dans le tuyau, chaque fois un peu plus
+ * haut. C'est tout ce qu'il faut pour dire qu'il y a quelqu'un dedans — la trompe enfle d'un pixel
+ * de chaque côté, soit deux à l'écran, et on suit la bosse des yeux sans que personne l'explique.
  */
 const ELEPHANT_BOIT: Art = [
   '............0000000000....',
@@ -1532,6 +1537,38 @@ const ELEPHANT_TROMPE: Art = [
   '..........020..000.020....',
   '..........000......000....',
 ];
+
+/**
+ * **La même trompe, gonflée sur deux lignes** : le poisson dedans, en train de monter. On ne
+ * recopie pas dix-neuf lignes d'éléphant pour déplacer une bosse — on remplace les lignes qui
+ * changent, et elles restent lisibles telles quelles.
+ */
+const bosse = (art: Art, lignes: Record<number, string>): Art => art.map((l, i) => lignes[i] ?? l);
+
+/** Le poisson vient d'entrer : la bosse est au pied de la trompe, juste au-dessus de l'eau. */
+const ELEPHANT_AVALE = bosse(ELEPHANT_BOIT, {
+  11: '022023222222222222222220..',
+  12: '022003302220000000000000..',
+});
+
+/** La trompe à mi-hauteur : elle se lève, et elle s'arrête là le temps d'une seconde. */
+const ELEPHANT_MI_TROMPE: Art = [
+  ...ELEPHANT_BOIT.slice(0, 6),
+  '.0002011102222222222222002',
+  ...ELEPHANT_TROMPE.slice(7),
+];
+
+/** Trompe levée, la bosse à mi-tuyau. */
+const ELEPHANT_BOULE = bosse(ELEPHANT_TROMPE, {
+  7: '02202011102222222222222002',
+  8: '02202011102222222222222002',
+});
+
+/** Trompe levée, la bosse tout en haut : il ne reste qu'à souffler. */
+const ELEPHANT_BOULE_HAUT = bosse(ELEPHANT_TROMPE, {
+  3: '022000000002222222222220..',
+  4: '02202222222222222222222000',
+});
 
 /**
  * Les arrivées de Maman **dehors**. Dans la maison elle entre par une porte ; à
@@ -1829,7 +1866,14 @@ export const SHEETS: Record<string, Record<string, Art>> = {
   hermione4: { 'rampe-0': HERMIONE_RAMPE_A, 'rampe-1': HERMIONE_RAMPE_B },
   araignee: { 'pattes-0': ARAIGNEE_A, 'pattes-1': ARAIGNEE_B },
   poisson: { 'saut-0': POISSON_A, 'saut-1': POISSON_B },
-  elephant: { boit: ELEPHANT_BOIT, trompe: ELEPHANT_TROMPE },
+  elephant: {
+    boit: ELEPHANT_BOIT,
+    trompe: ELEPHANT_TROMPE,
+    avale: ELEPHANT_AVALE,
+    'mi-trompe': ELEPHANT_MI_TROMPE,
+    boule: ELEPHANT_BOULE,
+    'boule-haut': ELEPHANT_BOULE_HAUT,
+  },
   heron: { 'vol-0': HERON_A, 'vol-1': HERON_B },
   fusee: { 'vol-0': FUSEE_A, 'vol-1': FUSEE_B },
   frigo: { ferme: FRIGO, ouvert: FRIGO_OUVERT },

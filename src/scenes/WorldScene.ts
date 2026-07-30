@@ -12,6 +12,7 @@ import {
   ARAIGNEE_PARTIE,
   NAUFRAGE,
   AU_BORD_DE_LEAU,
+  POISSON_PART,
   PAPA_NAGE,
   ARROSES,
   ARROSE_DEFAUT,
@@ -126,6 +127,12 @@ const BALLON_ECART = 6;
 const BALLON_ANGLE = 0.9;
 /** Portée du coup de pied : on ne vise pas un ballon, on est à côté ou on n'y est pas. */
 const BALLON_PORTEE = 13;
+
+/** Ce qui dépasse de l'eau quand le poisson parle, en pixels. Le reste est sous la surface. */
+const EMERGE = 5;
+
+/** Le temps que met la bosse à passer d'une étape à la suivante, dans la trompe. En ms. */
+const MONTEE = 800;
 
 /** Un saut de poisson, et le temps qu'il passe sous l'eau entre deux. En ms. */
 const SAUT_DUREE = 850;
@@ -818,11 +825,23 @@ export class WorldScene extends Phaser.Scene {
    */
   private discussionAuBordDeLEau(elephant: Live): void {
     const poisson = this.live.find((x) => x.def.id === 'poisson-erdre');
-    // Le poisson sort de l'eau et reste là le temps de la conversation.
+    /**
+     * **Il parle depuis l'eau, la tête dehors.** On le sort de la liste des sauteurs — sinon il
+     * replongerait au milieu d'une phrase — et on le pose sur la **ligne de flottaison de sa
+     * bande** : le ventre est découpé à la surface, et seule la partie émergée se dessine.
+     *
+     * Plus haut, il avait l'air figé au milieu d'un saut, c'est-à-dire hors de l'eau.
+     */
     if (poisson) {
       const s = this.sauteurs.find((x) => x.live === poisson);
       if (s) this.sauteurs = this.sauteurs.filter((x) => x !== s);
-      poisson.go.setPosition(elephant.go.x - 18, 52);
+      const eau = poisson.def.saute?.eau ?? 64;
+      if (poisson.go instanceof Phaser.GameObjects.Sprite) {
+        poisson.go.anims.stop();
+        poisson.go.setFrame('saut-0');
+      }
+      poisson.go.setPosition(elephant.go.x - 18, eau - EMERGE);
+      poisson.go.setCrop(0, 0, poisson.go.displayWidth, EMERGE);
       poisson.go.setVisible(true);
     }
     state.locked = true;
@@ -842,24 +861,38 @@ export class WorldScene extends Phaser.Scene {
     suite(0);
   }
 
-  /** La trompe se lève, le poisson part vers la mer, et l'eau retombe sur tout l'écran. */
+  /**
+   * **Le poisson monte dans la trompe, et ça prend le temps que ça prend.** Quatre secondes où
+   * personne n'appuie sur rien : il nage jusqu'au bout de la trompe et disparaît dessous, une
+   * **bosse** apparaît au pied du tuyau — c'est lui —, la trompe se lève à mi-hauteur, puis
+   * tout en haut, et la bosse remonte à chaque étape.
+   *
+   * On ne dit rien de tout ça. Une bosse qui monte dans une trompe se comprend sans légende, et
+   * c'est le seul moment du jeu où il faut laisser le temps de regarder.
+   */
   private lancerLePoisson(elephant: Live, poisson?: Live): void {
     state.locked = true;
     state.setFlag('poisson-parti');
+    const img = elephant.go as Phaser.GameObjects.Sprite;
+
+    // Il nage jusqu'au bout de la trompe, sous la surface, et on ne le revoit qu'en l'air.
     if (poisson) {
       this.tweens.add({
         targets: poisson.go,
-        x: this.roomW + 30,
-        y: -40,
-        duration: 1400,
-        ease: 'Quad.easeOut',
+        x: elephant.go.x + 12,
+        y: 62,
+        duration: 800,
+        ease: 'Sine.easeInOut',
         onComplete: () => {
-          poisson.go.destroy();
-          this.live = this.live.filter((x) => x !== poisson);
+          poisson.go.setVisible(false);
+          jouer(this, 'plouf', { volume: 0.5 });
         },
       });
     }
-    this.averse(elephant);
+
+    const etapes = ['avale', 'mi-trompe', 'boule', 'boule-haut'];
+    etapes.forEach((f, i) => this.time.delayedCall(900 + i * MONTEE, () => img.setFrame(f)));
+    this.time.delayedCall(900 + etapes.length * MONTEE, () => this.averse(elephant, poisson));
   }
 
   /**
@@ -869,8 +902,11 @@ export class WorldScene extends Phaser.Scene {
    */
   private couperALaFlottaison(l: Live): void {
     if (l.def.flotte === undefined) return;
-    const haut = Math.max(0, Math.min(l.go.displayHeight, l.def.flotte - l.go.y));
-    l.go.setCrop(0, 0, l.go.displayWidth, haut);
+    // La découpe se compte en pixels du dessin, pas en pixels d'écran : l'éléphant est affiché
+    // au double, et sans cette division il ne serait jamais coupé du tout.
+    const echelle = l.go.scaleY || 1;
+    const haut = Phaser.Math.Clamp((l.def.flotte - l.go.y) / echelle, 0, l.go.height);
+    l.go.setCrop(0, 0, l.go.width, haut);
   }
 
   /**
@@ -1043,44 +1079,87 @@ export class WorldScene extends Phaser.Scene {
   }
 
   /**
-   * **L'averse.** Trois temps, et il faut les voir tous les trois : la trompe **se lève**
-   * au-dessus du dos (c'est une image de l'éléphant, pas un effet), un jet part de son bout,
-   * puis **il pleut sur tout l'écran** pendant cinq secondes — des gouttes lâchées partout au
-   * hasard de la largeur, qui tombent et éclaboussent le quai. Maman lève la tête au milieu.
+   * **L'averse, dans l'ordre.** Le jet **d'abord, tout seul** : la trompe est en l'air, l'eau
+   * part droit vers le haut et sort du cadre, et pendant deux secondes il ne se passe que ça —
+   * assez pour comprendre d'où va venir la pluie. Le poisson part avec, en criant.
+   *
+   * **Puis les gouttes retombent**, partout au hasard de la largeur. Et seulement une fois qu'il
+   * pleut pour de bon, la caméra va voir Maman : elle doit lever la tête sous une vraie averse,
+   * pas sous un jet qui monte.
    */
-  private averse(l: Live): void {
+  private averse(l: Live, poisson?: Live): void {
     (l.go as Phaser.GameObjects.Image).setFrame('trompe');
     jouer(this, 'plouf', { volume: 0.7 });
 
-    // **Le jet ne s'arrête pas non plus.** Il sort du bout de la trompe et monte hors du cadre,
-    // en continu : c'est lui qui explique la pluie. Tant qu'on est là, il envoie de l'eau.
+    // **Le jet ne s'arrête pas.** Il sort du bout de la trompe et monte hors du cadre, en
+    // continu : c'est lui qui explique la pluie. Tant qu'on est là, il envoie de l'eau.
     this.time.addEvent({ delay: 110, loop: true, callback: () => this.unJet(l) });
 
-    // Puis la pluie, **sans fin** : une goutte toutes les quarante millisecondes, et il ne
-    // s'arrête pas. La trompe reste levée, il continue d'envoyer de l'eau, et ça ne cesse que
-    // quand on quitte l'écran — le minuteur meurt avec la scène. Revenir plus tard, c'est
-    // revenir au sec.
-    this.time.addEvent({ delay: 40, loop: true, callback: () => this.uneGoutte() });
+    // Le poisson part avec le jet : il sort du bout de la trompe, pas de l'eau. On tue d'abord sa
+    // nage — sans ça, les deux mouvements se disputent le sprite et il repart de l'eau.
+    if (poisson) {
+      this.tweens.killTweensOf(poisson.go);
+      poisson.go.setCrop();
+      if (poisson.go instanceof Phaser.GameObjects.Sprite) {
+        poisson.go.play(animKey('poisson-saut', this.pal));
+      }
+      poisson.go.setPosition(l.go.x + 6, l.go.y).setVisible(true);
+      this.tweens.add({
+        targets: poisson.go,
+        x: this.roomW + 30,
+        y: -40,
+        duration: 1600,
+        ease: 'Quad.easeOut',
+        onComplete: () => {
+          poisson.go.destroy();
+          this.live = this.live.filter((x) => x !== poisson);
+        },
+      });
+    }
 
-    this.time.delayedCall(1200, () => {
-      if (this.room.id !== 'erdre') return;
+    /**
+     * Le travelling attend **deux choses** : que la pluie ait commencé, et que le cri du poisson
+     * ait été lu. Sans ce compte à deux, un joueur rapide envoyait Maman lever la tête sous un
+     * ciel sec, et un joueur lent voyait deux boîtes de dialogue se marcher dessus.
+     */
+    let pret = 0;
+    const puis = () => {
+      pret += 1;
+      if (pret < 2 || this.room.id !== 'erdre') return;
       this.mamanVoitLaPluie();
+    };
+
+    this.time.delayedCall(500, () =>
+      say({ speaker: POISSON_PART.qui, lines: POISSON_PART.lignes, focusY: 30, onDone: puis }),
+    );
+
+    // Deux secondes de jet seul, puis la pluie, **sans fin** : une goutte toutes les quarante
+    // millisecondes, et il ne s'arrête pas. La trompe reste levée, il continue d'envoyer de
+    // l'eau, et ça ne cesse que quand on quitte l'écran — le minuteur meurt avec la scène.
+    // Revenir plus tard, c'est revenir au sec.
+    this.time.delayedCall(2000, () => {
+      this.time.addEvent({ delay: 40, loop: true, callback: () => this.uneGoutte() });
+      puis();
     });
   }
 
-  /** Une giclée qui part du bout de la trompe et monte hors du cadre. */
+  /**
+   * Une giclée qui part du bout de la trompe et monte **droit en l'air**, hors du cadre. Elle
+   * dévie de trois pixels à peine : un jet en diagonale ressemblait à un arrosage, pas à un
+   * éléphant qui souffle vers le ciel.
+   */
   private unJet(l: Live): void {
     if (this.jets >= 8) return;
     this.jets += 1;
-    const bout = { x: Math.round(l.go.x + 6), y: Math.round(l.go.y + 4) };
+    const bout = { x: Math.round(l.go.x + 6), y: Math.round(l.go.y + 2) };
     const j = this.add
       .image(bout.x, bout.y, texKey('goutte', this.pal))
       .setOrigin(0.5, 0.5)
       .setDepth(1200);
     this.tweens.add({
       targets: j,
-      x: bout.x + 26 + Math.random() * 26,
-      y: bout.y - 40 - Math.random() * 20,
+      x: bout.x + Math.round(Math.random() * 6 - 3),
+      y: bout.y - 44 - Math.random() * 24,
       duration: 620,
       ease: 'Quad.easeOut',
       onComplete: () => {

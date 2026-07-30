@@ -334,7 +334,9 @@ C'est la branche implémentée. Elle sert de gabarit à toutes les suivantes.
    interlocuteur une fois le quai libre — *« Deux minutes, Nino ! J'ai un bouchon qui fuit. »*
 
    Au second plan, **un éléphant de douze mètres boit dans la rivière** — en bois, et il bouge
-   les oreilles. Personne sur le quai ne s'arrête. C'est cette première rencontre qui rend drôle
+   les oreilles. Il est **dans** l'eau : la surface le coupe juste sous le ventre, on ne voit qu'un
+   tout petit bout de patte, et le bas de sa trompe est immergé. Posé dessus, il avait l'air de
+   marcher sur l'Erdre. Personne sur le quai ne s'arrête. C'est cette première rencontre qui rend drôle
    la deuxième, trente-et-un étages plus haut : on ne demandera jamais comment il est monté,
    mais on saura qu'il était en bas. Et lui s'en souvient : *« On s'est déjà vus. » « En bas. »
    « Je bois beaucoup. »*
@@ -368,19 +370,43 @@ pas une solution qu'on demande, c'est deux animaux qui avaient une idée. Le poi
 pas — l'Erdre est sans poisson après ça, et c'est très bien : il voulait voir la mer.
 
 La scène n'existe **qu'une fois qu'on a vu le problème** : il faut s'être arrêté devant eux.
-Avant ça l'éléphant boit, le poisson saute, et c'est tout ce qu'ils font. Alors, **et on le
-voit** : sa trompe se lève au-dessus de son dos (c'est une image de l'éléphant, pas un effet), un
-jet part de son bout, et **il pleut sur tout l'écran** pendant cinq secondes — des gouttes lâchées
-partout au hasard de la largeur, qui tombent et éclaboussent le quai.
+Avant ça l'éléphant boit, le poisson saute, et c'est tout ce qu'ils font.
 
-**Et on ne raconte pas ce qui se voit.** L'éléphant dit une phrase — *« L'éléphant aspire une
-trompe entière d'Erdre. »* — et c'est tout : le jet qui monte, l'averse, Maman qui détale, ça se
-regarde. Une ligne de texte par-dessus une image qui parle déjà est une ligne de trop.
+### Le poisson monte dans la trompe
+
+**Quatre secondes où personne n'appuie sur rien**, et c'est le morceau qu'il ne faut surtout pas
+presser. Dans l'ordre, sans un mot de commentaire :
+
+1. Le poisson **nage jusqu'au bout de la trompe** et disparaît sous la surface.
+2. Une **bosse** apparaît au pied du tuyau, juste au-dessus de l'eau. C'est lui.
+3. La trompe **se lève à mi-hauteur**, puis tout en haut — quatre images de l'éléphant, une toutes
+   les huit dixièmes de seconde. Rien n'est tweené : ce sont des dessins qui se succèdent.
+4. La bosse **remonte** à chaque image, jusqu'en haut du tuyau.
+5. Le jet part, **droit vers le ciel**, et le poisson part avec.
+
+Une bosse qui monte dans une trompe se comprend sans légende. On ne recopie pas dix-neuf lignes
+d'éléphant pour la déplacer : les quatre variantes sont la même image avec **deux lignes changées**,
+et ces deux lignes se lisent telles quelles dans le fichier.
+
+**Et on ne raconte pas ce qui se voit** : le jet qui monte, l'averse, Maman qui détale, ça se
+regarde. Le seul texte de toute la séquence est le cri du poisson qui s'en va — *« Aaaaaaaaaaaaaah. »*
+
+**Le jet est vertical.** Il sort du bout de la trompe, dévie de trois pixels à peine et sort du
+cadre par le haut. En diagonale, ça ressemblait à un arrosage ; à la verticale, c'est un éléphant
+qui souffle vers le ciel — et l'eau retombe forcément quelque part.
+
+**Deux secondes de jet tout seul**, ensuite les gouttes. Cet écart est ce qui rend la pluie
+lisible : d'abord on voit l'eau monter, et seulement après on la voit tomber. Sans lui, tout
+arrivait en même temps et personne ne savait d'où venait l'averse.
 
 **La caméra va la voir.** Elle quitte Nino, se déplace jusqu'au banc — toute la scène est
 là-bas — et **Maman lève la tête sous l'averse** : *« Il pleut ! »* La réplique se lit pendant
 qu'elle est à l'écran, et ce n'est qu'après qu'elle se met à courir vers la maison, Hermione sous
 le bras. Avant, elle partait avant qu'on ait eu le temps de la voir.
+
+Le travelling attend **deux choses** : que la pluie ait commencé, et que le cri du poisson ait été
+lu. Un joueur rapide envoyait Maman lever la tête sous un ciel sec ; un joueur lent voyait deux
+boîtes de dialogue se marcher dessus. Un compte à deux règle les deux cas.
 
 **La pluie ne s'arrête pas.** La trompe reste levée, **le jet continue de partir de son bout** et
 ça tombe jusqu'à ce qu'on quitte l'écran — le minuteur meurt avec la scène. Quarante gouttes en vol au
