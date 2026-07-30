@@ -1391,8 +1391,8 @@ export const ROOMS: Record<string, Room> = {
       'eeeeeeeeeeeeeeEeeeeeeeeeeeeeeeTTTTTTTTTT',
       'eeeeeeeeeeeeeeeeeeeeeeeeeeeeee.TTTTTTTTT',
       'eeeeeeeeeeeeeeeeeeeeeeeeeeeeee.TTTTTTTTT',
-      band('#'),
-      band('#'),
+      band('V'),
+      band('V'),
       band('#'),
       band('#'),
       band('#'),
@@ -1411,9 +1411,14 @@ export const ROOMS: Record<string, Room> = {
         dialogue: 'tour-vue',
       },
       { id: 'porte-tour', x: 240, y: 88, sprite: 'porte', depth: -20, dialogue: 'porte-tour' },
-      { id: 'panneau-tour', x: 132, y: 88, sprite: 'panneau', dialogue: 'panneau-tour' },
-      { id: 'reverbere', x: 92, y: 76, sprite: 'reverbere', dialogue: 'reverbere' },
-      { id: 'bouee', x: 56, y: 96, sprite: 'carton', dialogue: 'carton-tour' },
+      { id: 'panneau-tour', x: 136, y: 88, sprite: 'panneau', dialogue: 'panneau-tour' },
+      // **Quatre réverbères tout le long du parvis.** De nuit, sans eux, l'écran était noir
+      // et la marche jusqu'à l'entrée se faisait à l'aveugle.
+      { id: 'reverbere', x: 36, y: 76, sprite: 'reverbere', dialogue: 'reverbere' },
+      { id: 'reverbere-2', x: 96, y: 76, sprite: 'reverbere', dialogue: 'reverbere' },
+      { id: 'reverbere-3', x: 164, y: 76, sprite: 'reverbere', dialogue: 'reverbere' },
+      { id: 'reverbere-4', x: 196, y: 76, sprite: 'reverbere', dialogue: 'reverbere' },
+      { id: 'carton-tour', x: 68, y: 96, sprite: 'carton', dialogue: 'carton-tour' },
     ],
     doors: [
       { x: 0, y: 88, w: 8, h: 16, to: { room: 'terrasse', x: 144, y: 104 } },

@@ -820,21 +820,42 @@ Quatre remarques sur ces énigmes :
 Sur le toit : la vue, une antenne qui vibre, et **un parapente plié contre le parapet**.
 À qui il est, on ne sait pas.
 
-Le vol est un mini-jeu — flèches gauche/droite, et **la façade de la maison a deux
-fenêtres** : la sienne, et celle des parents. Viser la mauvaise allume une lumière. Réglé
-comme le rêve de la fusée, c'est-à-dire **sans aucune punition** : rater ne fait pas
-perdre, une rafale remonte Nino et il recommence. Le vent pousse de côté toutes les
-secondes et demie, ce qui suffit à en faire un jeu.
+Le vol est un mini-jeu **vu vers l'avant**, comme une borne d'arcade : la ville vient vers
+nous, Nino se déplace sur tout l'écran aux quatre flèches, et le décor grandit à mesure. La
+traversée dure une bonne demi-minute — c'était dix secondes vues de côté, et c'était trop
+court pour le dernier morceau du jeu.
 
-**Et les hérons.** Ils traversent l'écran pendant la descente, un toutes les deux
-secondes, à des hauteurs qui ne se répètent pas — ce sont ceux de l'Erdre, et ils rentrent
-à la même heure que lui. Les toucher ne fait pas perdre non plus : le héron proteste et
-l'écarte d'un grand coup d'aile, ce qui suffit largement à faire manquer la fenêtre. C'est
-le seul obstacle du jeu qu'on ne peut pas résoudre — on peut seulement l'éviter.
+**La perspective tient en deux lignes.** Chaque chose a une position dans le monde (`x`
+latéral, `y` vertical, `z` la distance) et l'écran s'en déduit :
 
-L'écran du vol est **dans la palette de l'aube**, comme le toit d'où il vient : le ciel
-prend le ton moyen et non le plus clair, ce qui laisse le ton clair à la seule chose qui
-doit sauter aux yeux — sa fenêtre, la seule allumée de la façade.
+```
+sx = 80 + x * FOCALE / z        sy = HORIZON + y * FOCALE / z
+```
+
+Plus `z` est grand, plus c'est petit et proche du point de fuite. La taille des immeubles,
+l'échelle des hérons, la fenêtre qui grossit à la fin : tout n'est que cette division. Il n'y
+a pas de moteur 3D, il y a un rapport. Quatorze immeubles recyclés en boucle (deux suites
+d'entiers qui ne retombent pas en phase, donc pas de hasard : deux vols se ressemblent), une
+fenêtre allumée sur chacun quand il est assez proche, et **huit lignes de sol qui foncent vers
+nous** — sans elles, on ne sait pas si on vole ou si on flotte.
+
+**La maison arrive au bout**, avec ses deux fenêtres : la sienne, allumée, et celle des
+parents. Viser la mauvaise allume une lumière. La décision se prend à `z = 70` et pas au
+dernier moment : en approchant, les deux fenêtres s'écartent vers les bords, et trop près la
+sienne sortait de l'écran — la cible devenait injoignable pile au moment de viser.
+
+Réglé comme le rêve de la fusée, c'est-à-dire **sans aucune punition** : rater ne fait pas
+perdre, une rafale remonte Nino, la maison repart au loin (moins loin que la première fois) et
+il recommence.
+
+**Et les hérons**, qui arrivent maintenant en face et grossissent : ce sont ceux de l'Erdre,
+et ils rentrent à la même heure que lui. Les toucher ne fait pas perdre non plus — le héron
+proteste et l'écarte d'un coup d'aile, ce qui suffit largement à faire manquer la fenêtre.
+C'est le seul obstacle du jeu qu'on ne peut pas résoudre : on peut seulement l'éviter.
+
+L'écran du vol est **dans la palette de l'aube**, comme le toit d'où il vient : le ciel prend
+le ton moyen et non le plus clair, ce qui laisse le ton clair aux deux seules choses qui
+doivent sauter aux yeux — les fenêtres allumées de la ville, et la sienne au bout.
 
 ### La fin
 

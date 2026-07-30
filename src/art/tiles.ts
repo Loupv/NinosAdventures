@@ -132,6 +132,20 @@ const VILLE: Record<string, Art> = {
     '00000000',
   ],
   /**
+   * Dalles de béton du parvis. Solide (`V`), et **claire** : au pied de la tour, de nuit, un
+   * sol en pierre sombre donnait un écran noir où l'on ne voyait plus rien.
+   */
+  V: [
+    '22222222',
+    '23333332',
+    '23333332',
+    '23333332',
+    '22222222',
+    '23333332',
+    '23333332',
+    '23333332',
+  ],
+  /**
    * **La Tour de Bretagne**, en tuiles. Une tour de bureaux est une répétition : en faire une
    * tuile plutôt qu'un dessin de cent trente pixels de haut coûte huit pixels sur huit, monte
    * aussi haut qu'on veut, et bloque le passage toute seule (`T` est solide).

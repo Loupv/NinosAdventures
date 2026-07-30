@@ -85,6 +85,8 @@ export const VOL = {
   /** Les hérons de l'Erdre rentrent à la même heure que lui. */
   heron: 'Un héron !',
   heronTouche: 'Le héron n’a pas aimé.',
+  /** Quand la maison apparaît au loin, après une bonne demi-minute de vol. */
+  maison: 'La maison !',
   rate: 'Raté.',
   lumiere: 'Une lumière s’allume.',
   reussi: 'Pile dedans.',
@@ -1167,12 +1169,20 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
   ],
 
   // ------------------------------------------------ la Tour de Bretagne
+  /**
+   * **Pourquoi on ne passe pas à l'est.** Le quai continue derrière le bateau : pour aller
+   * plus loin, Nino devrait passer sous le nez de son père, debout à son bastingage. Ce n'est
+   * pas une porte fermée, c'est un adulte qui regarde — et c'est ce qui rend le naufrage
+   * indispensable. Une fois papa dans l'eau, plus personne ne surveille le quai.
+   */
   'quai-est': [
     {
-      when: () => state.flag('bateau-arrive'),
-      lines: ['Papa est sur son bateau, juste là.', 'Il regarde de ce côté.'],
+      lines: [
+        'Le quai continue derrière le bateau.',
+        'Papa est debout dessus, et il regarde de ce côté.',
+        'Impossible de passer sans qu’il le voie.',
+      ],
     },
-    { lines: ['Le quai continue vers la ville.', 'Nino n’a rien à y faire.'] },
   ],
 
   ascenseur: [{ lines: ['L’ascenseur.', '« HORS SERVICE »', 'Le papier est jauni.'] }],
