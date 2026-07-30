@@ -1192,8 +1192,7 @@ export const ROOMS: Record<string, Room> = {
         id: 'reverbere',
         ...at(2, 13),
         sprite: 'reverbere',
-        solid: true,
-        dialogue: 'reverbere',
+        solid: true
       },
       { id: 'carton', ...at(16, 14), sprite: 'carton', solid: true },
       // Derrière le carton, dans le coin : on ne le voit qu'à moitié, et il ne bouge
@@ -1248,8 +1247,7 @@ export const ROOMS: Record<string, Room> = {
         x: 8,
         y: 64,
         sprite: 'reverbere',
-        solid: true,
-        dialogue: 'reverbere',
+        solid: true
       },
       // **Un tramway arrêté.** Nantes en est pleine, et celui-là ne va nulle part : il fait
       // trop chaud. C'est la chose la plus grosse de l'écran, et elle ne sert à rien — c'est
@@ -1470,10 +1468,10 @@ export const ROOMS: Record<string, Room> = {
       { id: 'panneau-tour', x: 136, y: 88, sprite: 'panneau', dialogue: 'panneau-tour' },
       // **Quatre réverbères tout le long du parvis.** De nuit, sans eux, l'écran était noir
       // et la marche jusqu'à l'entrée se faisait à l'aveugle.
-      { id: 'reverbere', x: 36, y: 76, sprite: 'reverbere', dialogue: 'reverbere' },
-      { id: 'reverbere-2', x: 96, y: 76, sprite: 'reverbere', dialogue: 'reverbere' },
-      { id: 'reverbere-3', x: 164, y: 76, sprite: 'reverbere', dialogue: 'reverbere' },
-      { id: 'reverbere-4', x: 196, y: 76, sprite: 'reverbere', dialogue: 'reverbere' },
+      { id: 'reverbere', x: 36, y: 76, sprite: 'reverbere' },
+      { id: 'reverbere-2', x: 96, y: 76, sprite: 'reverbere' },
+      { id: 'reverbere-3', x: 164, y: 76, sprite: 'reverbere' },
+      { id: 'reverbere-4', x: 196, y: 76, sprite: 'reverbere' },
       { id: 'carton-tour', x: 68, y: 96, sprite: 'carton', dialogue: 'carton-tour' },
       { id: 'banc', x: 116, y: 92, sprite: 'banc', dialogue: 'banc' },
       {
@@ -1548,7 +1546,7 @@ export const ROOMS: Record<string, Room> = {
         errance: { rayon: 30, vitesse: 22 },
       },
       { id: 'monsieur-immobile', x: 64, y: 104, sprite: 'copain', dialogue: 'monsieur-immobile' },
-      { id: 'reverbere', x: 136, y: 36, sprite: 'reverbere', solid: true, dialogue: 'reverbere' },
+      { id: 'reverbere', x: 136, y: 36, sprite: 'reverbere', solid: true },
       { id: 'poubelle', x: 84, y: 16, sprite: 'poubelle', solid: true, dialogue: 'poubelle' },
       {
         id: 'pigeon',
@@ -1631,7 +1629,7 @@ export const ROOMS: Record<string, Room> = {
         dialogue: 'serveur',
         errance: { rayon: 26, vitesse: 24 },
       },
-      { id: 'reverbere', x: 132, y: 36, sprite: 'reverbere', solid: true, dialogue: 'reverbere' },
+      { id: 'reverbere', x: 132, y: 36, sprite: 'reverbere', solid: true },
       { id: 'banc', x: 20, y: 60, sprite: 'banc', solid: true, dialogue: 'banc' },
       { id: 'poubelle', x: 104, y: 16, sprite: 'poubelle', solid: true, dialogue: 'poubelle' },
     ],
@@ -1748,6 +1746,35 @@ export const ROOMS: Record<string, Room> = {
         portee: 14,
         dialogue: 'ecureuil-erdre',
       },
+      // **Le bout du quai est gardé, et c'est Maman qui garde.** Assise sur son banc avec
+      // Hermione, elle attend papa qui bricole — et elle voit tout ce qui passe. Il faudra
+      // qu'elle s'en aille d'elle-même : c'est l'éléphant qui s'en chargera.
+      // Le banc reste quand ils sont partis : c'est le quai qui se vide, pas le décor.
+      { id: 'banc-quai', x: 256, y: 82, sprite: 'banc', depth: 96, dialogue: 'banc' },
+      {
+        id: 'maman-quai',
+        x: 264,
+        y: 72,
+        sprite: 'maman',
+        depth: 97,
+        priorite: 2,
+        portee: 18,
+        dialogue: 'maman-quai',
+        hideIfFlag: 'maman-quai-partie',
+      },
+      {
+        id: 'hermione-bras',
+        x: 267,
+        y: 76,
+        sprite: 'hermione',
+        frame: 'idle-0',
+        anim: 'hermione-idle',
+        depth: 98,
+        priorite: 2,
+        portee: 14,
+        dialogue: 'hermione-bras',
+        hideIfFlag: 'maman-quai-partie',
+      },
       { id: 'bouee', x: 40, y: 88, sprite: 'bouee', dialogue: 'quai' },
       {
         id: 'plume',
@@ -1779,8 +1806,7 @@ export const ROOMS: Record<string, Room> = {
         id: 'reverbere',
         x: 120,
         y: 76,
-        sprite: 'reverbere',
-        dialogue: 'reverbere',
+        sprite: 'reverbere'
       },
     ],
     doors: [
@@ -1793,7 +1819,7 @@ export const ROOMS: Record<string, Room> = {
         w: 8,
         h: 16,
         to: { room: 'bars', x: 16, y: 104 },
-        needsFlag: 'bateau-coule',
+        needsFlag: 'maman-quai-partie',
         blockedDialogue: ['quai-est'],
       },
     ],

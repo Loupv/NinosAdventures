@@ -1060,19 +1060,6 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
     },
   ],
 
-  reverbere: [
-    {
-      when: () => !state.flag('ombre-testee'),
-      lines: [
-        'Nino se met dans l’ombre du réverbère.',
-        'Elle fait exactement sa taille.',
-        'Il reste là un moment, très content de lui.',
-      ],
-      effects: { flag: 'ombre-testee' },
-    },
-    { lines: ['L’ombre a bougé. Le soleil, lui, s’en fiche.'] },
-  ],
-
   // ---------------------------------------------------------------- le salon
   moon: [
     {
@@ -1472,17 +1459,82 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
 
   // ------------------------------------------------ la Tour de Bretagne
   /**
-   * **Pourquoi on ne passe pas à l'est.** Le quai continue derrière le bateau : pour aller
-   * plus loin, Nino devrait passer sous le nez de son père, debout à son bastingage. Ce n'est
-   * pas une porte fermée, c'est un adulte qui regarde — et c'est ce qui rend le naufrage
-   * indispensable. Une fois papa dans l'eau, plus personne ne surveille le quai.
+   * **Pourquoi on ne passe pas à l'est.** Ce n'est pas une porte fermée, c'est **Maman assise
+   * au bout du quai**, Hermione sur les genoux, en train d'attendre papa. Elle regarde le
+   * bateau, donc elle regarde aussi le passage. Il faudra qu'elle s'en aille d'elle-même — et
+   * elle ne s'en ira que s'il se met à pleuvoir.
    */
   'quai-est': [
     {
       lines: [
-        'Le quai continue derrière le bateau.',
-        'Papa est debout dessus, et il regarde de ce côté.',
-        'Impossible de passer sans qu’il le voie.',
+        'Le quai continue derrière le banc.',
+        'Maman est assise dessus, Hermione sur les genoux.',
+        'Impossible de passer sans qu’elle le voie.',
+      ],
+    },
+  ],
+
+  /** Elle attend papa. Elle a tout le temps. */
+  'maman-quai': [
+    {
+      when: () => state.flag('elephant-vu'),
+      speaker: 'Maman',
+      lines: [
+        '« Ton père a un bouchon qui fuit. »',
+        '« On attend. »',
+        '« Ne va pas plus loin, Nino. »',
+      ],
+    },
+    {
+      speaker: 'Maman',
+      lines: [
+        'Maman est assise au bout du quai, Hermione sur les genoux.',
+        '« On attend ton père. »',
+        '« Reste par là, je te vois. »',
+      ],
+    },
+  ],
+
+  'hermione-bras': [
+    {
+      lines: [
+        'Hermione, sur les genoux de Maman.',
+        'Elle tend la main vers le bateau.',
+        'Puis vers l’éléphant. Puis vers le bateau.',
+      ],
+    },
+  ],
+
+  /**
+   * **La pluie de l'éléphant.** Il aspire l'Erdre et l'envoie en l'air : ça retombe sur le
+   * quai, Maman croit à un orage et rentre en courant avec Hermione. C'est le seul endroit du
+   * jeu où l'absurde **sert** — sans ça, on ne passe pas.
+   */
+  'elephant-pluie': [
+    {
+      speaker: 'L’Éléphant',
+      lines: ['« ... »', '« Tu veux voir quelque chose ? »'],
+      choice: {
+        oui: {
+          lines: [
+            'L’éléphant aspire une trompe entière d’Erdre.',
+            'Il la renvoie très haut, au-dessus du quai.',
+            'Ça retombe partout.',
+          ],
+        },
+        non: { lines: ['« Comme tu veux. »', 'Il continue de boire.'] },
+      },
+    },
+  ],
+
+  /** Ce que Maman en conclut, et ce qu'elle fait — très vite. */
+  'maman-pluie': [
+    {
+      speaker: 'Maman',
+      lines: [
+        'Maman lève la tête.',
+        '« Il pleut ! »',
+        'Elle part en courant vers la maison, Hermione sous le bras.',
       ],
     },
   ],
@@ -2187,20 +2239,25 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
       speaker: 'Papa',
       lines: ['« Ne reste pas là. »', '« Enfin, si. Reste. »', '« Mais ne dis rien. »'],
     },
+    /**
+     * **Il bricole, et il ne lève pas la tête.** Maman l'attend au bout du quai avec Hermione :
+     * il n'a plus d'alibi à donner à personne, il a un bouchon qui fuit. C'est aussi là que
+     * Nino entend parler du bouchon pour la première fois.
+     */
     {
       when: () => !state.flag('papa-capitaine-vu'),
       speaker: 'Papa',
       lines: [
-        'Sur le bateau, il y a Papa.',
-        'Il porte un chapeau de capitaine.',
-        '« Ah, Nino ! Monte pas, ça bouge. »',
-        '« Tu diras à ta mère que je suis resté au salon. »',
+        'Sur le bateau, il y a Papa, à genoux dans la coque.',
+        'Il porte son chapeau de capitaine.',
+        '« Deux minutes, Nino ! »',
+        '« J’ai un bouchon qui fuit. »',
       ],
       effects: { flag: 'papa-capitaine-vu' },
     },
     {
       speaker: 'Papa',
-      lines: ['« Cinq minutes, Nino. »', 'Le bateau ne bouge pas d’un centimètre.'],
+      lines: ['« Deux minutes. »', 'Ça fait deux minutes depuis un moment.'],
     },
   ],
 

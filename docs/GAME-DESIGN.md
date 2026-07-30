@@ -324,11 +324,31 @@ C'est la branche implémentée. Elle sert de gabarit à toutes les suivantes.
    au sépia. Un panneau pointe vers l'eau, et **trois vélos affaissés** sont posés contre
    le mur : *« Trois vélos. Six pneus à plat. »* Le vélo de Nino, lui, reste dans la cour —
    c'est le sien, il n'y en a qu'un.
-9. **L'Erdre.** Palette cyan. Au second plan, **un éléphant de douze mètres boit dans la
-   rivière** — en bois, et il bouge les oreilles. Personne sur le quai ne s'arrête. C'est cette
-   première rencontre qui rend drôle la deuxième, trente-et-un étages plus haut : on ne
-   demandera jamais comment il est monté, mais on saura qu'il était en bas. Et lui s'en
-   souvient : *« On s'est déjà vus. » « En bas. » « Je bois beaucoup. »* Papa est sur un bateau, avec un chapeau de capitaine, et il
+9. **L'Erdre.** Palette cyan. Papa bricole dans la coque de son bateau — *« Deux minutes,
+   Nino ! J'ai un bouchon qui fuit. »* — et **Maman l'attend au bout du quai**, assise sur un
+   banc avec Hermione sur les genoux. Elle regarde le bateau, donc elle regarde aussi le
+   passage : *« Reste par là, je te vois. »*
+
+   Au second plan, **un éléphant de douze mètres boit dans la rivière** — en bois, et il bouge
+   les oreilles. Personne sur le quai ne s'arrête. C'est cette première rencontre qui rend drôle
+   la deuxième, trente-et-un étages plus haut : on ne demandera jamais comment il est monté,
+   mais on saura qu'il était en bas. Et lui s'en souvient : *« On s'est déjà vus. » « En bas. »
+   « Je bois beaucoup. »*
+
+### La pluie de l'éléphant
+
+**Le seul endroit du jeu où l'absurde sert à quelque chose.** Le bout du quai est gardé — pas
+par une porte fermée, par sa mère — et il n'y a rien à faire contre ça. Sauf revenir voir
+l'éléphant, qui propose : *« Tu veux voir quelque chose ? »*
+
+Il aspire une trompe entière d'Erdre et la renvoie très haut, au-dessus du quai. Ça retombe
+partout. **Maman lève la tête** — *« Il pleut ! »* — et elle part en courant vers la maison,
+Hermione sous le bras. Le banc reste, le quai est libre, et personne ne reviendra vérifier le
+temps.
+
+C'est aussi ce qui remet le naufrage à sa place : **couler le bateau n'ouvre plus rien**. C'est
+une bêtise qu'on fait parce que l'écureuil l'a proposée, et le poisson la répare parce qu'il a
+une dette. Une bêtise obligatoire n'est pas une bêtise. Papa est sur un bateau, avec un chapeau de capitaine, et il
    demande à Nino de dire à sa mère **qu'il est resté au salon** — ce qui est vrai, il y est
    aussi. Personne ne relève.
 

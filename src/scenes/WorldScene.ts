@@ -950,6 +950,100 @@ export class WorldScene extends Phaser.Scene {
   }
 
   /**
+   * La trompe se lève, l'Erdre retombe sur le quai, et Maman s'en va. Les gouttes sont dessinées
+   * une par une en arc : à cette taille, six gouttes suffisent à faire une averse.
+   */
+  private pluieDElephant(l: Live): void {
+    const beat = pickBeat('elephant-pluie');
+    if (!beat?.choice) return;
+    state.locked = true;
+    say({
+      speaker: beat.speaker,
+      lines: beat.lines,
+      choices: ['Oui', 'Non'],
+      focusY: l.def.y,
+      onDone: (reponse) => {
+        const branche = reponse === 0 ? beat.choice!.oui : beat.choice!.non;
+        say({
+          speaker: beat.speaker,
+          lines: branche.lines,
+          focusY: l.def.y,
+          onDone: () => {
+            if (reponse !== 0) return;
+            state.locked = true;
+            this.averse(l);
+          },
+        });
+      },
+    });
+  }
+
+  /** L'averse elle-même, puis Maman qui plie bagage. */
+  private averse(l: Live): void {
+    jouer(this, 'plouf', { volume: 0.7 });
+    const depart = { x: Math.round(l.go.x + 4), y: Math.round(l.go.y + 20) };
+    for (let i = 0; i < 6; i++) {
+      const g = this.add
+        .image(depart.x, depart.y, texKey('goutte', this.pal))
+        .setOrigin(0.5, 0.5)
+        .setDepth(1200);
+      const chute = 88 + i * 6;
+      this.tweens.add({
+        targets: g,
+        x: depart.x + 40 + i * 22,
+        duration: 900,
+        delay: i * 90,
+        ease: 'Linear',
+        onComplete: () => {
+          splash(this, this.pal, Math.round(g.x), chute);
+          g.destroy();
+        },
+      });
+      // La cloche : elle monte, puis elle retombe.
+      this.tweens.add({
+        targets: g,
+        y: depart.y - 36,
+        duration: 400,
+        delay: i * 90,
+        ease: 'Quad.easeOut',
+        yoyo: true,
+        hold: 0,
+      });
+    }
+
+    this.time.delayedCall(1700, () => {
+      if (this.room.id !== 'erdre') return;
+      this.mamanFuitLaPluie();
+    });
+  }
+
+  /**
+   * Elle croit à l'orage et part en courant vers la maison, Hermione sous le bras. Le bout du
+   * quai est libre à partir de là — c'est ce que valait la pluie.
+   */
+  private mamanFuitLaPluie(): void {
+    const maman = this.live.find((x) => x.def.id === 'maman-quai');
+    const petite = this.live.find((x) => x.def.id === 'hermione-bras');
+    this.runDialogue('maman-pluie', maman);
+    if (!maman) return;
+    jouer(this, 'cri-maman', { volume: 0.5 });
+    for (const qui of [maman, petite]) {
+      if (!qui) continue;
+      this.tweens.add({
+        targets: qui.go,
+        x: qui.go.x - 260,
+        duration: 2200,
+        ease: 'Quad.easeIn',
+      });
+    }
+    this.time.delayedCall(2400, () => {
+      state.setFlag('maman-quai-partie');
+      state.save();
+      this.refreshObjects();
+    });
+  }
+
+  /**
    * **Le pigeon.** Une boîte de texte — le texte flottant se lisait mal sur les pavés — puis,
    * **quand la boîte se ferme**, il s'écarte. On lit ce qu'il fait, ensuite il le fait, et on
    * le voit le faire : dans l'autre ordre, il bougeait derrière la boîte.
@@ -2094,6 +2188,20 @@ export class WorldScene extends Phaser.Scene {
     // Rentré par la fenêtre, parapente sous le bras : c'est la fin du chapitre.
     if (l.def.id === 'lit' && state.flag('parapente-rentre') && !state.flag('anniversaire')) {
       this.faireSemblant(l);
+      return;
+    }
+    /**
+     * **L'éléphant fait pleuvoir.** Une fois qu'on l'a vu boire, il propose de montrer quelque
+     * chose : il envoie une trompe d'Erdre par-dessus le quai, Maman croit à un orage et rentre
+     * en courant avec Hermione. C'est le seul endroit du jeu où l'absurde **sert à quelque
+     * chose** — sans cette pluie, le bout du quai reste gardé.
+     */
+    if (
+      l.def.id === 'elephant-erdre' &&
+      state.flag('elephant-vu') &&
+      !state.flag('maman-quai-partie')
+    ) {
+      this.pluieDElephant(l);
       return;
     }
     // **Le pigeon ignore Nino.** Pas de boîte de dialogue : une boîte supposerait qu'il
