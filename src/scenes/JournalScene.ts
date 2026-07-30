@@ -13,13 +13,17 @@ import { state } from '../systems/state';
 import { PixelText, measure } from '../ui/PixelText';
 
 /**
- * Quatre pages courtes : les lieux (x2), le sac, les pièces.
- *
- * La page « FRAIS » de la quête de température est retirée le temps qu'on décide si
- * cette quête reste. Elle reviendra avec elle, ou pas du tout.
+ * Les lieux, puis le sac, puis les pièces. **Le nombre de pages de lieux se calcule** sur
+ * `LIEUX_ORDER` : quand j'ai écrit deux pages en dur, les quatre écrans de ville ajoutés
+ * ensuite n'apparaissaient plus nulle part dans le journal.
  */
-const PAGES = JOURNAL.pages;
 const PER_PAGE = 5;
+const PAGES_LIEUX = Math.ceil(LIEUX_ORDER.length / PER_PAGE);
+const PAGES = [
+  ...Array.from({ length: PAGES_LIEUX }, () => JOURNAL.pageLieux),
+  JOURNAL.pageSac,
+  JOURNAL.pagePieces,
+];
 
 /**
  * Le journal : la mémoire de Nino. C'est là qu'on voit ce qui a été découvert,
@@ -89,9 +93,9 @@ export class JournalScene extends Phaser.Scene {
     this.icons = [];
 
     const lines =
-      this.page < 2
+      this.page < PAGES_LIEUX
         ? this.lieuxLines(this.page)
-        : this.page === 2
+        : this.page === PAGES_LIEUX
           ? this.sacLines()
           : this.piecesLines();
     this.bodyText.setLines(lines.slice(0, 8), ink);

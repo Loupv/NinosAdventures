@@ -11,7 +11,7 @@
  *  - **Tout le reste** (meubles, personnages, Hermione) est placé par son coin haut
  *    gauche : `y` est le haut du dessin.
  */
-import { ROOMS } from '../src/data/rooms';
+import { LIEUX_ORDER, ROOMS } from '../src/data/rooms';
 import { IMAGES, SHEETS } from '../src/art/sprites';
 import { CACHETTES, CACHETTES_MAISON } from '../src/data/hermione';
 import { DIALOGUES } from '../src/data/dialogues';
@@ -168,6 +168,20 @@ for (const [i, c] of CACHETTES.entries()) {
   if (part < COUVERTURE.min) dit(`CACHETTE ${i} (${c.room}) : à découvert, recouverte à ${part} %`);
   else if (part > COUVERTURE.max) dit(`CACHETTE ${i} (${c.room}) : introuvable, recouverte à ${part} %`);
   else if (anime < 12) dit(`CACHETTE ${i} (${c.room}) : seules ses jambes dépassent (${anime} px animés visibles), on ne verra pas qu’elle bouge`);
+}
+
+/**
+ * **Toutes les pièces doivent être dans `LIEUX_ORDER`**, et rien d'autre. C'est la liste que
+ * le journal parcourt : une pièce qui n'y est pas n'apparaît jamais dedans, et le joueur n'a
+ * aucun moyen de savoir qu'il l'a visitée. Quatre écrans de ville y ont manqué pendant un
+ * moment, sans que rien ne le signale.
+ */
+const listees = new Set(LIEUX_ORDER);
+for (const id of Object.keys(ROOMS)) {
+  if (!listees.has(id)) dit(`JOURNAL : la pièce ${id} n'est pas dans LIEUX_ORDER`);
+}
+for (const id of LIEUX_ORDER) {
+  if (!ROOMS[id]) dit(`JOURNAL : LIEUX_ORDER cite ${id}, qui n'est pas une pièce`);
 }
 
 /**

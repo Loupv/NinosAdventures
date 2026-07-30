@@ -39,7 +39,15 @@ export const TITRE = {
 /** Le journal, ouvert avec Entrée. */
 export const JOURNAL = {
   titre: 'JOURNAL',
-  pages: ['LIEUX', 'LIEUX', 'SAC', 'PIÈCES'],
+  /**
+   * Les intitulés des pages. **Le nombre de pages « LIEUX » n'est plus écrit ici** : il se
+   * calcule sur la liste des lieux, sinon les pièces ajoutées après coup n'apparaissent
+   * jamais dans le journal — c'est arrivé à l'école, à la rue des bars, à la terrasse et au
+   * pied de la tour.
+   */
+  pageLieux: 'LIEUX',
+  pageSac: 'SAC',
+  pagePieces: 'PIÈCES',
   pied: 'ESPACE : fermer',
   soeurComptee: (n: number, total: number) => `Hermione retrouvée ${n} fois sur ${total}.`,
   /** Le projet d'art, une fois rendu. Avant, on n'en parle pas. */
@@ -1608,10 +1616,6 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
   ],
 
   'ballon-ecole': [
-    {
-      when: () => state.has('ballon-degonfle'),
-      lines: ['Il n’y a plus de ballon dans la cour.', 'Il est dans le sac de Nino.'],
-    },
     {
       lines: [
         'Un ballon, dégonflé.',
