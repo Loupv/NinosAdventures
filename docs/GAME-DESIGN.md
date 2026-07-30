@@ -122,10 +122,12 @@ d'art de Nino : *« Rapporte-moi un objet, et explique-moi en quoi c'est de l'ar
 Chercher l'objet fait sortir de l'école et revenir : c'est la seule quête du jeu qui fait
 faire l'aller-retour, et elle passe par des écrans qu'on traverse de toute façon.
 
-**Et on ne rentre pas dans l'école.** La cour est derrière une grille, en haut de l'écran ; Nino
-longe la rue en bas et parle **à travers les barreaux**. Un jour sans classe, la grille est
-fermée, et il y a quand même du monde dedans — personne ne vient ouvrir. Le ballon dégonflé, lui,
-est passé par-dessus il y a longtemps : il traîne dans la rue, du bon côté.
+**Et on ne rentre pas dans l'école.** Au fond, **le bâtiment** : quatre-vingt-seize pixels de
+façade, un fronton avec son horloge qui dépasse du haut de l'écran, deux rangées de fenêtres à
+petits carreaux, une grande porte et ses marches. Devant, la cour. Et entre la cour et la rue,
+**une grille** : Nino longe le trottoir en bas et parle **à travers les barreaux**. Un jour sans
+classe, la grille est fermée, il y a quand même du monde dedans, et personne ne vient ouvrir. Le
+ballon dégonflé, lui, est passé par-dessus il y a longtemps : il traîne dans la rue, du bon côté.
 
 Puis vient **la discussion**, et c'est là que tout se joue : deux questions à la suite, propres
 à chaque objet, trois réponses chacune. *« À qui elle est, cette chaussure ? »*, *« Pourquoi ce

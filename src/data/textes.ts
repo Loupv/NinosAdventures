@@ -1679,20 +1679,10 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
   ],
 
   // ---------------------------------------------------------- l'école
-  'grille-ecole': [
-    {
-      lines: [
-        'La grille de l’école est fermée.',
-        'Un jour sans classe, et il y a quand même du monde dans la cour.',
-        'Personne ne vient ouvrir.',
-      ],
-    },
-  ],
-
   'panneau-ecole': [
     {
       lines: [
-        'Le panneau d’affichage, accroché à la grille.',
+        'Le panneau d’affichage, accroché à la grille fermée.',
         'Des dessins derrière la vitre.',
         'Il y en a un de Nino.',
       ],

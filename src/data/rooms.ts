@@ -1365,25 +1365,26 @@ export const ROOMS: Record<string, Room> = {
       '######......########',
     ],
     objects: [
-      // ── derrière la grille : la cour ──
+      // ── derrière la grille : le bâtiment, puis la cour ──
+      // Il est au fond, dessiné derrière tout le monde, et on ne l'atteint jamais.
+      { id: 'batiment-ecole', x: 32, y: 4, sprite: 'batiment-ecole', depth: -20 },
       { id: 'maitresse', x: 56, y: 54, sprite: 'maitresse', priorite: 2, portee: 22, dialogue: 'maitresse' },
       {
         id: 'copain1',
-        x: 36,
+        x: 28,
         y: 57,
         sprite: 'copain',
         priorite: 2,
         portee: 20,
         dialogue: 'copain1',
-        errance: { rayon: 16, vitesse: 22 },
+        errance: { rayon: 14, vitesse: 22 },
       },
-      { id: 'copain2', x: 112, y: 57, sprite: 'copain', priorite: 2, portee: 20, dialogue: 'copain2' },
-      { id: 'copain3', x: 132, y: 40, sprite: 'copain', priorite: 2, portee: 20, dialogue: 'copain3' },
-      // Le seul arbre du jeu, dans un coin de la cour.
-      { id: 'arbre', x: 16, y: 16, sprite: 'arbre', solid: [6, 18, 8, 6], dialogue: 'arbre' },
-      { id: 'banc', x: 96, y: 20, sprite: 'banc', solid: true, dialogue: 'banc' },
-      // ── dans la rue : la grille, le panneau, et le ballon passé par-dessus ──
-      { id: 'grille', x: 72, y: 66, sprite: 'porte', solid: true, dialogue: 'grille-ecole' },
+      { id: 'copain2', x: 88, y: 57, sprite: 'copain', priorite: 2, portee: 20, dialogue: 'copain2' },
+      { id: 'copain3', x: 140, y: 52, sprite: 'copain', priorite: 2, portee: 20, dialogue: 'copain3' },
+      // Le seul arbre du jeu, dans le coin gauche de la cour.
+      { id: 'arbre', x: 8, y: 24, sprite: 'arbre', dialogue: 'arbre' },
+      { id: 'banc', x: 108, y: 46, sprite: 'banc', dialogue: 'banc' },
+      // ── dans la rue : le panneau, et le ballon passé par-dessus la grille ──
       { id: 'panneau-ecole', x: 28, y: 68, sprite: 'panneau', solid: true, dialogue: 'panneau-ecole' },
       { id: 'ballon-ecole', x: 120, y: 100, sprite: 'ballon', dialogue: 'ballon-ecole', hideIfFlag: 'ballon-pris' },
       { id: 'poubelle', x: 52, y: 92, sprite: 'poubelle', solid: true, dialogue: 'poubelle' },
