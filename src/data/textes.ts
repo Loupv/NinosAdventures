@@ -90,6 +90,14 @@ export const VOL = {
   /** Et quand il rentre dans un immeuble, ce qui arrive. */
   immeuble: 'Boum.',
   immeubleEncore: 'Pardon !',
+  /**
+   * **Trois essais.** Le compteur reste affiché en haut à gauche pendant tout le vol, et au
+   * troisième raté une rafale le repose sur le toit : on n'est jamais enfermé dans le vol, et
+   * il n'y a rien à perdre — le parapente est toujours là, en haut.
+   */
+  essais: (n: number) => `ESSAIS ${n}`,
+  repose: 'Le vent le repose sur le toit.',
+  reposeSuite: 'ESPACE',
   rate: 'Raté.',
   lumiere: 'Une lumière s’allume.',
   reussi: 'Pile dedans.',

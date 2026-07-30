@@ -94,6 +94,13 @@ const PARENTS = { x: -26, y: -16, w: 26, h: 20 };
  */
 const ARRIVEE = 70;
 
+/**
+ * **Trois essais, puis on redescend.** Rater ne coûte toujours rien, mais on ne reste pas
+ * enfermé dans le vol : au troisième, le vent repose Nino sur le toit de la tour, à côté de
+ * son parapente. Il repart quand il veut — et c'est le même geste qu'au début.
+ */
+const ESSAIS = 3;
+
 const HERON_TOUS = 2400; // ms entre deux hérons
 const HERON_Z = 1000;
 
@@ -126,6 +133,8 @@ export class ParapenteScene extends Phaser.Scene {
   private titre!: PixelText;
   private sous!: PixelText;
   private message!: PixelText;
+  private compteur!: PixelText;
+  private essais = ESSAIS;
 
   private immeubles: Immeuble[] = [];
   private lignes: { z: number; go: Phaser.GameObjects.Rectangle }[] = [];
@@ -170,6 +179,7 @@ export class ParapenteScene extends Phaser.Scene {
     this.nesHerons = 0;
     this.cognes = 0;
     this.rafales = 0;
+    this.essais = ESSAIS;
     this.immeubles = [];
     this.lignes = [];
     this.herons = [];
@@ -246,7 +256,9 @@ export class ParapenteScene extends Phaser.Scene {
     this.titre = new PixelText(this, 'pp-titre', 0, 44, GB.W, 12);
     this.sous = new PixelText(this, 'pp-sous', 0, 58, GB.W, 12);
     this.message = new PixelText(this, 'pp-msg', 0, 4, GB.W, 12);
-    for (const t of [this.titre, this.sous, this.message]) t.image.setDepth(2100);
+    this.compteur = new PixelText(this, 'pp-essais', 3, GB.H - 13, 60, 12);
+    for (const t of [this.titre, this.sous, this.message, this.compteur]) t.image.setDepth(2100);
+    this.majEssais();
 
     const kb = this.input.keyboard!;
     this.keys = {
@@ -428,9 +440,18 @@ export class ParapenteScene extends Phaser.Scene {
     else this.remonter(dans(PARENTS) ? VOL.lumiere : VOL.rate);
   }
 
-  /** Rater ne coûte rien : une rafale le remonte, et la maison repart au loin. */
+  /**
+   * Rater ne coûte rien : une rafale le remonte, et la maison repart au loin. Au troisième
+   * essai, elle le repose plutôt en haut de la tour, à côté du parapente.
+   */
   private remonter(pourquoi: string): void {
     this.dire(pourquoi);
+    this.essais -= 1;
+    this.majEssais();
+    if (this.essais <= 0) {
+      this.reposerSurLeToit();
+      return;
+    }
     this.maisonZ = MAISON_Z_RETOUR;
     this.annoncee = false;
     this.px = GB.W / 2;
@@ -438,6 +459,23 @@ export class ParapenteScene extends Phaser.Scene {
     this.vx = 0;
     this.ventReste = 0;
     this.prochaineRafale = RAFALE_TOUS;
+  }
+
+  private majEssais(): void {
+    this.compteur.setLines([VOL.essais(Math.max(0, this.essais))], shadeHex(PALETTE, 3));
+  }
+
+  /** Trois essais passés : le vent le ramène d'où il vient, et il repart quand il veut. */
+  private reposerSurLeToit(): void {
+    this.etat = 'fini';
+    for (const h of this.herons) h.go.destroy();
+    this.herons = [];
+    jouer(this, 'rafale', { volume: 0.7 });
+    this.annoncer(VOL.repose, VOL.reposeSuite, true);
+    this.input.keyboard!.once('keydown-SPACE', () => {
+      state.locked = false;
+      this.scene.start('World', { room: 'tour-toit', x: 96, y: 122 });
+    });
   }
 
   // ───────────────────────────────────────────────────────────── le dessin
