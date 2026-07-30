@@ -12,6 +12,8 @@ import {
   ARAIGNEE_PARTIE,
   NAUFRAGE,
   AU_BORD_DE_LEAU,
+  LA_JOIE_DU_BATEAU,
+  LA_JOIE_PAPA,
   MAMAN_PARTIE,
   PAPA_BRICOLE,
   PAPA_GRAIN,
@@ -589,6 +591,24 @@ export class WorldScene extends Phaser.Scene {
     // immergée sans qu'on ait eu à la dessiner deux fois.
     this.couperALaFlottaison(live);
 
+    /**
+     * **Les cent pas.** Un aller-retour sans fin sur la largeur donnée. C'est pour papa sur son
+     * pont : de l'endroit où Nino s'arrête, la poupe est hors du cadre, et un père qu'on ne voit
+     * jamais ne sert à rien. Le naufrage tue ce va-et-vient — on ne fait pas les cent pas sur un
+     * bateau qui coule.
+     */
+    if (def.patrouille) {
+      go.setPosition(def.patrouille.gauche, def.y);
+      this.tweens.add({
+        targets: go,
+        x: def.patrouille.droite,
+        duration: def.patrouille.duree,
+        ease: 'Sine.easeInOut',
+        yoyo: true,
+        repeat: -1,
+      });
+    }
+
     if (def.saute) {
       this.sauteurs.push({
         live,
@@ -727,6 +747,30 @@ export class WorldScene extends Phaser.Scene {
   }
 
   /**
+   * **Deux adultes parlent bateau, Nino écoute.** Le parrain s'enthousiasme, papa approuve au
+   * conditionnel, et le « ahem » dit tout le reste. La dernière réplique change selon que sa coque
+   * est au fond de l'Erdre ou juste percée : c'est la même gêne, à un naufrage près.
+   */
+  private discussionDuBateau(): void {
+    state.locked = true;
+    state.setFlag('joie-bateau');
+    state.save();
+    const suite = (i: number) => {
+      if (i >= LA_JOIE_DU_BATEAU.length) {
+        say({
+          speaker: LA_JOIE_PAPA.qui,
+          lines: state.flag('bateau-coule') ? LA_JOIE_PAPA.coule : LA_JOIE_PAPA.flotte,
+          focusY: 48,
+        });
+        return;
+      }
+      const beat = LA_JOIE_DU_BATEAU[i];
+      say({ speaker: beat.qui, lines: beat.lignes, focusY: 48, onDone: () => suite(i + 1) });
+    };
+    suite(0);
+  }
+
+  /**
    * **Papa se parle à lui-même en réparant.** Une phrase au-dessus de lui toutes les six
    * secondes, sans boîte et sans verrou : on n'est pas son interlocuteur, on est le gamin qui
    * regarde son père bricoler. Il se tait pendant les dialogues — et pour de bon quand son
@@ -765,6 +809,8 @@ export class WorldScene extends Phaser.Scene {
     const papa = this.live.find((l) => l.def.id === 'papa-capitaine');
     if (!bateau || !papa) return;
     jouer(this, 'bateau-coule', { volume: 0.7 });
+    // Il s'arrête de faire les cent pas : à partir d'ici, il a autre chose à gérer.
+    this.tweens.killTweensOf(papa.go);
 
     const DUREE = 8000;
     const FOND = 32;
@@ -2428,7 +2474,7 @@ export class WorldScene extends Phaser.Scene {
    * départ pendant qu'ils sont ailleurs ne marche pas.
    */
   private ou(l: Live): { x: number; y: number } {
-    return l.def.ballon || l.def.errance
+    return l.def.ballon || l.def.errance || l.def.patrouille
       ? { x: Math.round(l.go.x), y: Math.round(l.go.y) }
       : { x: l.def.x, y: l.def.y };
   }
@@ -2513,6 +2559,16 @@ export class WorldScene extends Phaser.Scene {
         this.discussionAuBordDeLEau(elephant);
         return;
       }
+    }
+    /**
+     * **La joie d'avoir un bateau.** On s'adresse au parrain, et ce sont eux deux qui parlent :
+     * Nino écoute. Une fois seulement, et après la blague de papa — c'est elle qui installe la
+     * table, et un père doit avoir fait semblant de ne pas reconnaître son fils avant de discuter
+     * navigation devant lui.
+     */
+    if (l.def.id === 'parrain' && state.flag('papa-terrasse-vu') && !state.flag('joie-bateau')) {
+      this.discussionDuBateau();
+      return;
     }
     // **Le pigeon ignore Nino.** Pas de boîte de dialogue : une boîte supposerait qu'il
     // s'intéresse à nous. Il se décale, il emmène son point d'ancrage avec lui, et il continue.

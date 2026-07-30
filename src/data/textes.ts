@@ -270,6 +270,27 @@ export const NAUFRAGE = [
 ];
 
 /**
+ * **La joie d'avoir un bateau**, telle qu'on en parle à une terrasse. Le parrain s'enthousiasme
+ * pour la liberté du marin, et papa — qui a un bateau, ou qui en avait un jusqu'à cet après-midi —
+ * approuve **au conditionnel**. Le « ahem » fait tout le travail : personne ne dit ce qui s'est
+ * passé, et Nino est le seul à la table à savoir pourquoi.
+ */
+export const LA_JOIE_DU_BATEAU: Array<{ qui: string; lignes: string[] }> = [
+  {
+    qui: 'Le parrain',
+    lignes: ['« Ce qui est bien, avec un bateau… »', '« C’est qu’on part quand on veut. »'],
+  },
+  { qui: 'Le parrain', lignes: ['« Personne ne te demande rien. »', '« Moi, j’en rêve. »'] },
+];
+
+/** Ce que papa répond — selon qu'il a encore un bateau, ou qu'il est au fond de l'Erdre. */
+export const LA_JOIE_PAPA = {
+  qui: 'Papa',
+  coule: ['« Oh oui. »', '« Ça doit être bien… »', '« Ahem. »'],
+  flotte: ['« Oh oui. »', '« Le mien fuit un peu. »', '« Ahem. »'],
+};
+
+/**
  * **Papa bricole tout haut.** Il ne voit pas Nino : il a un bouchon qui fuit, et il commente son
  * propre travail comme on le fait quand on est seul sur un bateau. Ces phrases sortent toutes
  * seules, au-dessus de lui, sans boîte et sans qu'on ait rien demandé — c'est ce qui le rend
@@ -1428,15 +1449,6 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
         non: { lines: ['Nino lâche la corde.', 'Elle se retend toute seule.'] },
       },
     },
-  ],
-
-  'papa-repeche': [
-    {
-      when: () => state.flag('bouchon-retire'),
-      speaker: 'Papa',
-      lines: ['« C’est un poisson qui m’a ramené. »', '« Un poisson. »'],
-    },
-    { speaker: 'Papa', lines: ['« Ne dis rien à ta mère. »'] },
   ],
 
   'poisson-erdre': [

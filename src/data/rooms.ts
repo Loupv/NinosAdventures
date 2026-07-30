@@ -75,6 +75,15 @@ export interface RoomObject {
    */
   saute?: { gauche: number; droite: number; hauteur: number; eau: number };
   /**
+   * **Il fait les cent pas**, entre `gauche` et `droite`, en `duree` millisecondes par trajet.
+   * Un seul cas : papa sur le pont de son bateau. Nino s'arrête à cinquante pixels de sa mère,
+   * et de là le bateau est au bord du cadre — s'il restait planté à la poupe, on ne verrait
+   * jamais son père. Qu'il aille et vienne suffit à le mettre à l'écran.
+   *
+   * La cible d'interaction suit sa vraie position, comme pour tout ce qui bouge.
+   */
+  patrouille?: { gauche: number; droite: number; duree: number };
+  /**
    * Le dessin sort du cadre de la pièce, et c'est voulu. Un seul cas : la Tour de Bretagne
    * vue d'en bas, dont on ne doit jamais voir le sommet.
    */
@@ -1719,6 +1728,9 @@ export const ROOMS: Record<string, Room> = {
         flotte: 64,
         // Il est haut sur son pont : sans ça, on ne peut pas lui parler depuis le quai.
         portee: 44,
+        // Il va et vient sur son pont, lentement : c'est ce qui le rend visible depuis l'endroit
+        // où Nino s'arrête, et ça dit qu'il cherche quelque chose dans sa coque.
+        patrouille: { gauche: 250, droite: 288, duree: 5200 },
         dialogue: 'papa-capitaine',
         hideIfFlag: 'papa-sauve',
       },
@@ -1736,15 +1748,10 @@ export const ROOMS: Record<string, Room> = {
         dialogue: 'corde',
         hideIfFlag: 'bateau-coule',
       },
-      // Repêché. Il a gardé le chapeau.
-      {
-        id: 'papa-repeche',
-        x: 216,
-        y: 81,
-        sprite: 'papa-capitaine',
-        dialogue: 'papa-repeche',
-        showIfFlag: 'papa-sauve',
-      },
+      // **Et il ne revient pas.** Il part à la nage vers la droite et sort du cadre : le quai
+      // reste vide, et on le retrouve un verre à la main deux écrans plus loin. Le repêcher ici
+      // enlevait tout le sel de la terrasse — un père trempé qu'on a déjà vu sortir de l'eau ne
+      // surprend plus personne.
       // L'écureuil revient avec une nouvelle idée. **En pleine vue, au pied de la corde** :
       // caché dans les roseaux, on ne le voyait pas, et c'est lui qui donne la clé du naufrage.
       {

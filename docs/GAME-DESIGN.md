@@ -80,7 +80,7 @@ salle de bain ──┤             │
                  la place                            on parle à travers les barreaux
        un tram arrêté, un accordéon
                       │ (vers la droite)
-              LE BORD DE L'ERDRE   papa capitaine, l'éléphant qui boit, puis papa repêché
+              LE BORD DE L'ERDRE   papa capitaine, l'éléphant qui boit, maman sur son banc
                       │ (une fois le bateau coulé)
               LA RUE DES BARS   deux terrasses, trois personnes très occupées
                       │
@@ -441,6 +441,12 @@ le quai est libre, et personne ne reviendra vérifier le temps.
 
 ### Papa bricole tout haut
 
+**Il fait les cent pas sur son pont**, d'un bout à l'autre, cinq secondes par trajet. Ce n'est pas
+de la décoration : Nino s'arrête à cinquante pixels de sa mère, et de là le bateau est tout au bord
+du cadre — planté à la poupe, son père restait invisible pendant tout le chapitre. Qu'il aille et
+vienne suffit à le mettre à l'écran. Le naufrage tue ce va-et-vient : on ne fait pas les cent pas
+sur un bateau qui coule.
+
 **Il ne voit pas Nino.** Toutes les six secondes, une phrase sort au-dessus de lui, sans boîte et
 sans verrou, pendant qu'il visse dans sa coque :
 
@@ -467,6 +473,22 @@ sa coque, sans jamais rien lâcher.
 C'est aussi ce qui remet le naufrage à sa place : **couler le bateau n'ouvre plus rien**. C'est
 une bêtise qu'on fait parce que l'écureuil l'a proposée, et le poisson la répare parce qu'il a
 une dette. Une bêtise obligatoire n'est pas une bêtise.
+
+### La joie d'avoir un bateau
+
+À la terrasse, quand on s'adresse au parrain, **ce sont eux deux qui parlent** et Nino écoute :
+
+> — *« Ce qui est bien, avec un bateau… » « C'est qu'on part quand on veut. »*
+> — *« Personne ne te demande rien. » « Moi, j'en rêve. »*
+> — **Papa :** *« Oh oui. » « Ça doit être bien… » « Ahem. »*
+
+Papa approuve **au conditionnel** la joie de posséder ce qu'il possédait encore ce matin. Le
+« ahem » fait tout le travail, personne ne dit ce qui s'est passé, et **Nino est le seul à la table
+à savoir pourquoi**. Si le bateau flotte toujours, la même gêne à un naufrage près : *« Le mien
+fuit un peu. » « Ahem. »*
+
+Ça n'arrive qu'une fois, et après la blague de papa : c'est elle qui installe la table, et un père
+doit avoir fait semblant de ne pas reconnaître son fils avant de discuter navigation devant lui.
 
 Et ça se voit plus tard : **si le bateau n'a pas coulé, papa n'est pas trempé au bar.** Le
 parrain ne dit plus *« Ton père est tout mouillé »* mais *« Il t'a raconté son bouchon ? À moi,
@@ -555,7 +577,12 @@ là. Enfin, si. Reste. Mais ne dis rien. »* Et une fois l'eau au chapeau, il n'
 conversation possible — seulement « Blublublub. »
 
 Si on quitte l'écran en pleine descente, le naufrage se termine sans nous : on revient, il
-n'y a plus de bateau et papa est sur le quai. *Personne ne regardait*, c'était écrit.
+n'y a plus de bateau et **plus de papa non plus**. *Personne ne regardait*, c'était écrit.
+
+**Et il ne remonte pas sur le quai.** Il part à la nage vers la droite, sort du cadre, et le quai
+reste vide — on le retrouve un verre à la main deux écrans plus loin. Le repêcher ici enlevait
+tout le sel de la terrasse : un père trempé qu'on a déjà vu sortir de l'eau ne surprend plus
+personne.
 
 **Et alors le poisson sert à réparer.** C'est là que la chaîne de la salle de bain est
 payée, et elle change vraiment quelque chose :
@@ -566,9 +593,6 @@ payée, et elle change vraiment quelque chose :
 
 La chaîne de la baignoire ne donne donc pas un objet : elle donne **un sauveteur**. Et dans
 les deux cas personne ne se noie — l'absurde est constaté, jamais expliqué.
-
-> Le jour où il y aura un passage vers l'est, penser à replacer papa-repêché : là où il est,
-> il ne bloque rien, mais il est sur le chemin.
 
 C'est la meilleure façon d'utiliser la règle du jeu : un geste minuscule dans une pièce
 banale a une conséquence dans un autre lieu, une heure plus tard, et personne ne fait le
