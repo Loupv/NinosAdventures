@@ -678,9 +678,31 @@ vraiment, tout le monde a déjà eu une journée. Le seul effet réel du jeu est
 l'écureuil : celui de la cour détale pour de bon, celui de la tour change de coin en
 râlant et garde son énigme entière.
 
+**Il arrose plus loin qu'on ne parle** : quarante pixels devant soi, pas seulement la personne
+qu'on pourrait toucher du doigt. Un pistolet à eau qui exige d'être collé à sa cible n'est pas un
+pistolet, c'est une poignée de main.
+
+**Et il n'arrose que ce qui est vivant** — les personnages et les pigeons. Dans ce jeu un vélo, un
+banc et un tram ont un dialogue comme tout le monde, mais un vélo arrosé n'a rien à répondre : on
+mouille des gens, pas du mobilier (`ARROSABLES`).
+
 > **À décider.** Le pistolet est trouvé trop facilement pour ce qu'il permet : il devrait
 > **récompenser une quête de la maison** plutôt que d'être au fond d'un coffre qu'on ouvre
 > en passant. Laquelle, et à quel moment, reste à discuter.
+
+### Qui gronde quand la vitre casse
+
+Le ballon dans la fenêtre de la cour ne réveille pas toujours la même personne, et c'est une
+question de **qui est derrière ce mur** :
+
+| Quand | Qui réagit |
+|---|---|
+| Les parents tiennent encore le salon | **Papa** : *« NON MAIS CE CHAT. »* |
+| Ils sont sortis (papa sur son bateau, puis à sa terrasse) | **personne** — la maison est vide, et il ne reste que **l'écureuil, qui rit** : *« Hé hé hé. »* |
+| Maman est rentrée sous la pluie de l'éléphant | **Maman**, même phrase : c'est toujours le chat qui prend |
+
+Une vitre qui casse dans une maison vide ne fait pas de bruit. C'est la version décor de la règle
+du jeu : **rien ne réagit tout seul**, quelqu'un doit être là.
 
 ### Branches secondaires déjà ouvertes
 
@@ -1098,6 +1120,26 @@ Quatre remarques sur ces énigmes :
   parles »*, l'araignée dit *« Il n'y a pas de ficelle »* (ce qui élimine le cerf-volant).
 - **L'araignée était partie de la mezzanine** en dansant, très tôt dans le jeu. Voilà où
   elle était.
+
+### L'éléphant du trentième étage
+
+Il est **inutilement gros, mais pas absurde** : trois fois le dessin, quatre-vingt-dix pixels de
+long dans un palier qui n'en fait que quatre-vingts entre ses murs. Il est donc **coincé entre les
+deux**, il dépasse de cinq pixels de chaque côté sans jamais sortir dans le noir, et il tient **la
+moitié haute** de la pièce. À cinq fois le dessin il remplissait l'écran entier : ça ne ressemblait
+plus à un éléphant trop grand, ça ressemblait à un bug.
+
+C'est ce qui pose sans l'écrire la question qu'on ne pose jamais — sauf une fois, la première, et
+c'est Nino qui la pense : *« Comment il est arrivé ici ?… »* Personne ne répond, et l'éléphant
+enchaîne sur ses retrouvailles et son énigme.
+
+**Il ne boit pas** : il n'y a pas d'eau à cet étage. Seule l'oreille bat, très lentement. Un animal
+immobile qui remue une oreille est vivant ; le même qui trempe sa trompe dans un plancher est un
+décor mal réglé.
+
+Et **le second escalier s'ouvre juste à droite de celui d'arrivée**, en bas du palier : on débouche
+des marches, on lève la tête sur un éléphant qui occupe tout le fond, et les marches suivantes sont
+à deux pas — pas de l'autre côté d'un animal de douze mètres.
 
 ### Voler
 

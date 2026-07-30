@@ -4,7 +4,7 @@ import { THEMES, SOLID } from '../art/tiles';
 import { paletteAube, paletteNocturne, shadeHex, type PaletteId } from '../art/palette';
 import { animKey, blankCanvas, paintArt, texKey } from '../art/pixels';
 import { ROOMS, nomDuLieu, type Door, type Room, type RoomObject } from '../data/rooms';
-import { CHARACTER_SPRITES } from '../data/characters';
+import { ARROSABLES, CHARACTER_SPRITES } from '../data/characters';
 import { ITEMS, type ItemId } from '../data/items';
 import { pickBeat, type Effects, type Montre } from '../data/dialogues';
 import {
@@ -23,6 +23,7 @@ import {
   BAREME,
   ECUREUIL_FUITE,
   ECUREUIL_MOUILLE,
+  ECUREUIL_RIT,
   ECUREUIL_TREMPE,
   ECUREUIL_VANNES,
   PIGEON,
@@ -155,6 +156,10 @@ const EAU_VITESSE = 380;
 /** Fait glisser un dessin de `n` pixels vers la droite, en enroulant les lignes. */
 const decaler = (art: readonly string[], n: number): readonly string[] =>
   n === 0 ? art : art.map((l) => l.slice(l.length - n) + l.slice(0, l.length - n));
+
+/** Vivant, donc arrosable : il a quelque chose à dire **et** ce n'est pas un meuble. */
+const vivant = (l: { def: RoomObject }) =>
+  !!l.def.dialogue && ARROSABLES.has(l.def.sprite ?? '');
 
 interface Arrival {
   room?: string;
@@ -701,7 +706,19 @@ export class WorldScene extends Phaser.Scene {
     jouer(this, 'vitre-cassee', { volume: 0.8 });
     // Il retombe dans la cour au lieu de rester planté dans le cadre.
     b.setVelocity(0, 90);
-    this.runDialogue('fenetre-cassee', vitre);
+    /**
+     * **Une vitre qui casse dans une maison vide ne fait pas de bruit.** Papa gronde tant qu'il est
+     * dans le salon ; Maman gronde si elle est rentrée sous la pluie ; entre les deux, il n'y a
+     * personne derrière ce mur — papa est sur son bateau, puis à sa terrasse — et il ne reste que
+     * l'écureuil, qui rit.
+     */
+    const personne = state.flag('parents-sortis') && !state.flag('maman-quai-partie');
+    if (!personne) {
+      this.runDialogue('fenetre-cassee', vitre);
+      return;
+    }
+    const lui = this.live.find((l) => l.def.id === 'ecureuil');
+    if (lui) this.flotter(ECUREUIL_RIT, lui);
   }
 
   /**
@@ -1082,6 +1099,35 @@ export class WorldScene extends Phaser.Scene {
   }
 
   /**
+   * **Qui est dans le jet.** Le plus proche à quarante pixels, du côté où Nino regarde, parmi ce
+   * qui a un dialogue — et on ignore ce qui est trop loin en travers. C'est volontairement généreux :
+   * viser au pixel près à sept ans n'a aucun intérêt, et le jet part de toute façon.
+   */
+  private quiEstDansLeJet(): Live | undefined {
+    const f = this.player.facing;
+    const moi = { x: this.player.sprite.x, y: this.player.sprite.y - 4 };
+    const PORTEE = 40;
+    let best: Live | undefined;
+    let bestDist = Infinity;
+    for (const l of this.live) {
+      if (!vivant(l)) continue;
+      const c = { x: l.go.x + l.go.displayWidth / 2, y: l.go.y + l.go.displayHeight / 2 };
+      const dx = c.x - moi.x;
+      const dy = c.y - moi.y;
+      // Devant lui, pas derrière : on n'arrose pas dans son dos.
+      if (f === 'left' && dx > 4) continue;
+      if (f === 'right' && dx < -4) continue;
+      if (f === 'up' && dy > 4) continue;
+      if (f === 'down' && dy < -4) continue;
+      const d = Math.hypot(dx, dy);
+      if (d > PORTEE || d >= bestDist) continue;
+      bestDist = d;
+      best = l;
+    }
+    return best;
+  }
+
+  /**
    * **Le pistolet à eau, sur sa propre touche.** Il ne pouvait pas passer par ESPACE :
    * l'écureuil a une énigme à poser dans la tour, et une interaction ne peut pas être
    * les deux à la fois. X arrose ce qu'on a en face — et si ce n'est personne, ça arrose
@@ -1093,8 +1139,14 @@ export class WorldScene extends Phaser.Scene {
   private tirerAuPistolet(): void {
     if (!state.has('pistolet-eau') || state.locked || this.transitioning) return;
     const main = { x: Math.round(this.player.sprite.x), y: Math.round(this.player.sprite.y - 8) };
-    // On arrose ce qui a quelque chose à dire : les gens et les bêtes, pas les meubles.
-    const vise = this.target?.def.dialogue ? this.target : undefined;
+    /**
+     * **On arrose ce qui est vivant** : les gens et les bêtes, pas le mobilier. Dans ce jeu un vélo
+     * a un dialogue comme tout le monde, mais un vélo arrosé n'a rien à répondre. Et on arrose
+     * **plus loin qu'on ne parle** — un pistolet qui exige d'être collé à sa cible n'est pas un
+     * pistolet, c'est une poignée de main : à défaut de quelqu'un dans la portée des dialogues, on
+     * prend le plus proche à quarante pixels, du côté où Nino regarde.
+     */
+    const vise = this.target && vivant(this.target) ? this.target : this.quiEstDansLeJet();
     // Sans personne en face, le jet part droit devant : arroser le vide fait partie du jeu.
     const f = this.player.facing;
     const loin = {

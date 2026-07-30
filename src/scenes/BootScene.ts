@@ -109,6 +109,22 @@ export class BootScene extends Phaser.Scene {
     });
 
     /**
+     * **L'éléphant du palier ne boit pas** : il n'y a pas d'eau au trentième étage. Deux images,
+     * la même trompe, et **l'oreille seule** qui bat toutes les huit dixièmes de seconde. Un
+     * animal immobile qui remue une oreille est vivant ; le même qui trempe sa trompe dans un
+     * plancher est un décor mal réglé.
+     */
+    this.anims.create({
+      key: animKey('elephant-oreille', pal),
+      frames: ['boit', 'boit-oreille'].map((frame) => ({
+        key: texKey('elephant', pal),
+        frame,
+      })),
+      frameRate: 1.2,
+      repeat: -1,
+    });
+
+    /**
      * **L'éléphant boit, et il bat de l'oreille.** Quatre images d'une seconde, et **deux rythmes
      * dans le même cycle** : la trompe change toutes les deux images — l'eau, puis la bouche — et
      * l'oreille à chacune. À cette vitesse ce n'est pas une animation, c'est un animal qui prend

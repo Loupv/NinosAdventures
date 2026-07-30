@@ -299,6 +299,12 @@ export const LA_JOIE_DU_BATEAU: Record<'coule' | 'flotte', Array<{ qui: string; 
   };
 
 /**
+ * **Ce qu'il dit quand la vitre casse et que personne ne gronde.** Rien d'utile : il rit. C'est sa
+ * seule contribution, et il n'a jamais rien proposé à personne.
+ */
+export const ECUREUIL_RIT = '« Hé hé hé. »';
+
+/**
  * **Papa bricole tout haut.** Il ne voit pas Nino : il a un bouchon qui fuit, et il commente son
  * propre travail comme on le fait quand on est seul sur un bateau. Ces phrases sortent toutes
  * seules, au-dessus de lui, sans boîte et sans qu'on ait rien demandé — c'est ce qui le rend
@@ -1524,11 +1530,23 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
     },
   ],
 
-  // Le ballon ne se raconte plus : on tape dedans, il rebondit sur les murs, et si on
-  // vise la fenêtre elle casse. Papa, resté dedans, sait exactement qui accuser.
+  /**
+   * **Qui gronde dépend de qui est là.** Papa tant qu'il est dans le salon ; Maman si elle est
+   * rentrée sous la pluie de l'éléphant ; et **personne** entre les deux — papa est sur son bateau
+   * ou à sa terrasse, la maison est vide, et une vitre qui casse dans une maison vide ne fait pas
+   * de bruit. Il ne reste que l'écureuil, qui rit.
+   *
+   * Dans les deux cas où il y a quelqu'un, c'est le chat qui prend : c'est toujours le chat.
+   */
   'fenetre-cassee': [
     {
+      when: () => !state.flag('parents-sortis'),
       speaker: 'Papa',
+      lines: ['« NON MAIS CE CHAT. »'],
+    },
+    {
+      when: () => state.flag('maman-quai-partie'),
+      speaker: 'Maman',
       lines: ['« NON MAIS CE CHAT. »'],
     },
   ],
@@ -1705,6 +1723,13 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
   ],
 
   elephant: [
+    // **La seule fois où quelqu'un se pose la question.** Un éléphant de douze mètres sur un palier
+    // du trentième étage, et personne n'a jamais expliqué comment. Nino, lui, la pense.
+    {
+      when: () => !state.flag('elephant-tour-vu'),
+      lines: ['Comment il est arrivé ici ?…'],
+      effects: { flag: 'elephant-tour-vu' },
+    },
     {
       when: () => state.flag('enigme-elephant'),
       speaker: 'L’Éléphant',

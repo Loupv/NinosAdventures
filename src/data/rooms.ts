@@ -443,22 +443,46 @@ export const ROOMS: Record<string, Room> = {
     ],
     objects: [
       { id: 'escalier-bas', x: 44, y: 84, sprite: 'escalier', depth: 88 },
+      /**
+       * **Le second escalier s'ouvre juste à droite de celui d'arrivée**, en bas du palier. On
+       * débouche des marches, on lève la tête sur un éléphant qui occupe tout le fond, et les
+       * marches suivantes sont à deux pas — pas de l'autre côté d'un animal de douze mètres.
+       */
       {
         id: 'escalier-haut',
-        x: 100,
-        y: 36,
+        x: 68,
+        y: 84,
         sprite: 'escalier',
-        depth: 40,
+        depth: 88,
         showIfFlag: 'enigme-elephant',
       },
+      /**
+       * **Inutilement gros, mais pas absurde.** Trois fois le dessin — quatre-vingt-dix pixels de
+       * long, la moitié du palier, une tête et demie de plus qu'un éléphant normal. C'est ce qu'il
+       * faut pour poser sans l'écrire la question qu'on ne pose jamais : il ne rentre visiblement
+       * pas ici. À cinq fois, il remplissait l'écran entier et on ne voyait plus la pièce — ça ne
+       * ressemblait plus à un éléphant trop grand, ça ressemblait à un bug.
+       *
+       * Le palier ne fait que **quatre-vingts pixels de large** entre ses deux murs : à
+       * quatre-vingt-dix, il est **coincé entre les deux**, et il dépasse d'autant de chaque côté
+       * sans jamais sortir dans le noir. C'est précisément le bon effet — il ne rentre pas.
+       *
+       * Il tient **la moitié haute du palier** : le bas reste dégagé pour les deux escaliers et
+       * pour Nino, qui marche devant lui sans avoir à en faire le tour.
+       *
+       * Il **ne boit pas** : il n'y a pas d'eau à cet étage. Seule l'oreille bat, très lentement, la trompe reste où elle est.
+       * Et il est dessiné **derrière Nino** : à cette taille, sa profondeur naturelle l'aurait fait
+       * passer devant lui.
+       */
       {
         id: 'elephant',
-        x: 36,
+        x: 35,
         y: 34,
         sprite: 'elephant',
         frame: 'boit',
-        anim: 'elephant-boit',
-        scale: 2,
+        anim: 'elephant-oreille',
+        scale: 3,
+        depth: 40,
         priorite: 2,
         dialogue: 'elephant',
       },
@@ -466,8 +490,8 @@ export const ROOMS: Record<string, Room> = {
     doors: [
       { x: 44, y: 84, w: 16, h: 17, to: { room: 'tour-27', x: 108, y: 62 }, son: 'escalier' },
       {
-        x: 100,
-        y: 36,
+        x: 68,
+        y: 84,
         w: 16,
         h: 17,
         to: { room: 'tour-toit', x: 40, y: 120 },

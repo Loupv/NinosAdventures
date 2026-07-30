@@ -51,3 +51,11 @@ export const CHARACTERS: Record<string, CharacterDef> = Object.fromEntries(
 export const CHARACTER_SPRITES = new Set(
   Object.values(CHARACTERS).flatMap((c) => c.sprites),
 );
+
+/**
+ * **Ce qui réagit au pistolet à eau : ce qui est vivant.** Les personnages, plus les pigeons — qui
+ * n'en sont pas tout à fait, mais qui ont un avis. Tout le reste s'en fiche : dans ce jeu, un vélo,
+ * un banc et un tram ont un dialogue, et arroser un vélo ne peut pas lui arracher une réplique
+ * blasée. On mouille des gens, pas du mobilier.
+ */
+export const ARROSABLES = new Set([...CHARACTER_SPRITES, 'pigeon']);
