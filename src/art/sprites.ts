@@ -413,6 +413,58 @@ const HERON_B: Art = [
   '.00..00.........',
 ];
 
+/** Le bouchon de la baignoire. Celui qui a sauvé un poisson. */
+const BOUCHON: Art = [
+  '.0000.',
+  '033330',
+  '032230',
+  '032230',
+  '033330',
+  '032230',
+  '033330',
+  '.0000.',
+];
+
+/** Une noisette, oubliée dans la cour. Par qui, on se demande. */
+const NOISETTE: Art = [
+  '..000...',
+  '.03330..',
+  '0322230.',
+  '03222230',
+  '03222230',
+  '.0322230',
+  '..033330',
+  '...0000.',
+];
+
+/** Un ticket de tram, poinçonné, illisible. */
+const TICKET: Art = [
+  '0000000000',
+  '0333333330',
+  '0300030030',
+  '0333333330',
+  '0300300030',
+  '0333333330',
+  '0303003030',
+  '0000000000',
+];
+
+/** Une plume de héron, sur le quai. Ils passent par là. */
+const PLUME: Art = [
+  '........00',
+  '.......030',
+  '......0330',
+  '.....03330',
+  '....033300',
+  '...033300.',
+  '..033300..',
+  '..03300...',
+  '.03300....',
+  '.0300.....',
+  '.000......',
+  '.00.......',
+];
+
 /**
  * Une vieille chaussure. Trouvée sur le quai de l'Erdre, et c'est **le projet d'art** de Nino :
  * la maîtresse en attend une explication, pas une chaussure.
@@ -1619,6 +1671,10 @@ export const IMAGES: Record<string, Art> = {
   pistolet: PISTOLET,
   bol: BOL,
   chaussure: CHAUSSURE,
+  bouchon: BOUCHON,
+  noisette: NOISETTE,
+  ticket: TICKET,
+  plume: PLUME,
   goutte: GOUTTE,
   piece: PIECE,
   pizza: PIZZA,

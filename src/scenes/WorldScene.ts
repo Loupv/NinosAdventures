@@ -2081,7 +2081,9 @@ export class WorldScene extends Phaser.Scene {
         focusY: l?.def.y,
         onDone: (reponse) => {
           const retour = d.retours[reponse ?? 0] ?? d.retours[0];
-          state.note = retour.note;
+          // On garde la meilleure : un enfant qui revient avec une autre idée ne doit pas
+          // pouvoir *perdre* sa note.
+          state.note = Math.max(state.note, retour.note);
           jouer(this, retour.note >= 16 ? 'enigme-juste' : 'enigme-faux', { volume: 0.6 });
           say({
             speaker: beat.speaker,

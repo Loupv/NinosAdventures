@@ -23,6 +23,7 @@
  */
 import { state } from '../systems/state';
 import type { DialogueBeat } from './dialogues';
+import type { ItemId } from './items';
 
 // ═══════════════════════════════════════════════════════════════ 1. l'interface
 
@@ -428,7 +429,27 @@ export const OBJETS: Record<string, { nom: string; desc: string }> = {
   },
   chaussure: {
     nom: 'Vieille chaussure',
-    desc: 'Trouvée sur le quai de l’Erdre. Elle a beaucoup marché, et pas avec Nino. C’est son projet d’art : la maîtresse attend une explication, pas une chaussure.',
+    desc: 'Trouvée sur le quai de l’Erdre. Elle a beaucoup marché, et pas avec Nino.',
+  },
+  bouchon: {
+    nom: 'Bouchon de baignoire',
+    desc: 'Celui qu’on a retiré pour laisser partir le poisson. Il a sauvé quelqu’un, ce bouchon, et personne ne le sait.',
+  },
+  noisette: {
+    nom: 'Noisette',
+    desc: 'Oubliée dans la cour. Par qui, on se demande — et on ne demandera pas.',
+  },
+  ticket: {
+    nom: 'Ticket de tram',
+    desc: 'Poinçonné, illisible, ramassé sous un tramway qui ne roule pas.',
+  },
+  'ballon-degonfle': {
+    nom: 'Ballon dégonflé',
+    desc: 'Le ballon de la cour d’école. Il est là depuis le mois dernier, et il n’a rien perdu de son calme.',
+  },
+  plume: {
+    nom: 'Plume de héron',
+    desc: 'Ramassée sur le quai. Les hérons passent par là — Nino le vérifiera plus tard, en parapente.',
   },
   pizza: {
     nom: 'Bout de pizza',
@@ -504,6 +525,94 @@ export const CASTING: Record<string, { nom: string; role: string }> = {
  * Écrits pour être lus à voix haute par un adulte : phrases courtes, absurde
  * traité très sérieusement, jamais de méchanceté.
  */
+/**
+ * **Ce qu'on peut offrir pour le projet d'art**, dans l'ordre où la maîtresse les regarde si
+ * Nino en porte plusieurs. Tout ce qui traîne dans le jeu y passe — même le bout de pizza,
+ * qu'elle ne garde pas : rien n'est jamais retiré du sac par un devoir.
+ *
+ * La liste est ici et pas dans `items.ts` pour rester à côté des accueils : ajouter un objet
+ * au devoir, c'est deux lignes au même endroit.
+ */
+const OFFRABLES: ItemId[] = [
+  'chaussure',
+  'bouchon',
+  'noisette',
+  'ticket',
+  'ballon-degonfle',
+  'plume',
+  'pizza',
+];
+
+/**
+ * **Ce que la maîtresse dit selon l'objet posé sur sa table.** Une entrée par objet offrable ;
+ * ajouter un objet au projet d'art = une ligne ici et une dans `OFFRABLES`.
+ */
+const ACCUEILS: Record<string, string[]> = {
+  chaussure: [
+    '« Ah ! Tu as apporté quelque chose. »',
+    'Nino pose une vieille chaussure sur la table.',
+    '« Bien. Explique-moi en quoi c’est de l’art. »',
+  ],
+  bouchon: [
+    'Nino pose un bouchon de baignoire sur la table.',
+    '« Un bouchon. »',
+    '« Explique-moi en quoi c’est de l’art. »',
+  ],
+  noisette: [
+    'Nino pose une noisette sur la table.',
+    'La maîtresse la regarde. La noisette ne bouge pas.',
+    '« Explique-moi en quoi c’est de l’art. »',
+  ],
+  ticket: [
+    'Nino pose un ticket de tram sur la table.',
+    '« Poinçonné, en plus. »',
+    '« Explique-moi en quoi c’est de l’art. »',
+  ],
+  'ballon-degonfle': [
+    'Nino pose le ballon dégonflé de la cour sur la table.',
+    '« Celui-là ? Il est à l’école, Nino. »',
+    '« Bon. Explique-moi en quoi c’est de l’art. »',
+  ],
+  plume: [
+    'Nino pose une plume de héron sur la table.',
+    '« Oh. »',
+    '« Explique-moi en quoi c’est de l’art. »',
+  ],
+  pizza: [
+    'Nino pose un bout de pizza froide sur la table.',
+    '« ... »',
+    '« Explique-moi en quoi c’est de l’art. »',
+  ],
+};
+
+/**
+ * **Les trois explications, pour n'importe quel objet.** Aucune n'est fausse, elles ne valent
+ * pas la même note, et la meilleure est celle de Duchamp. Les phrases restent courtes : la
+ * fenêtre de choix fait cent seize pixels utiles, au-delà elles sont coupées en deux.
+ */
+const EXPLICATIONS = {
+  reponses: ['C’est un objet', 'Il a beaucoup vécu', 'Je l’ai décidé'],
+  retours: [
+    { note: 8, lines: ['« Oui. Ça, je vois. »', '« Huit sur vingt, Nino. »'] },
+    {
+      note: 16,
+      lines: [
+        '« Ah. »',
+        '« Il a servi longtemps, et on ne sait pas à qui. »',
+        '« Seize sur vingt. C’est joli, ça. »',
+      ],
+    },
+    {
+      note: 20,
+      lines: [
+        '« ... »',
+        'La maîtresse regarde l’objet très longtemps.',
+        '« Vingt sur vingt. »',
+      ],
+    },
+  ],
+};
+
 export const DIALOGUES: Record<string, DialogueBeat[]> = {
   // ------------------------------------------------------------- la chambre
   /**
@@ -1378,46 +1487,21 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
    * rendre le devoir.
    */
   maitresse: [
+    // Un accueil par objet, puis **toujours les mêmes trois explications** : c'est la blague
+    // du devoir. Ce qu'on apporte ne change que la tête de la maîtresse ; ce qui compte, c'est
+    // ce qu'on en dit. On peut revenir avec autre chose, la meilleure note est gardée.
+    ...OFFRABLES.map((id) => ({
+      // Il faut qu'elle ait demandé : sinon Nino qui passe avec sa pizza dans la poche se
+      // faisait noter avant même d'avoir entendu parler du devoir.
+      when: () => state.flag('devoir-donne') && state.has(id),
+      speaker: 'La maîtresse',
+      lines: ACCUEILS[id],
+      devoir: EXPLICATIONS,
+    })),
     {
       when: () => state.note > 0,
       speaker: 'La maîtresse',
-      lines: ['« C’est noté, Nino. »', '« Tu peux aller jouer. »'],
-    },
-    {
-      when: () => state.has('chaussure'),
-      speaker: 'La maîtresse',
-      lines: [
-        '« Ah ! Tu as apporté quelque chose. »',
-        'Nino pose la vieille chaussure sur la table.',
-        '« Bien. Explique-moi en quoi c’est de l’art. »',
-      ],
-      devoir: {
-        // Trois réponses courtes : la fenêtre de choix fait 116 pixels utiles, au-delà la
-        // phrase est coupée en plein milieu.
-        reponses: ['C’est une chaussure', 'Elle a beaucoup vécu', 'Je l’ai décidé'],
-        retours: [
-          {
-            note: 8,
-            lines: ['« Oui. Ça, je vois. »', '« Huit sur vingt, Nino. »'],
-          },
-          {
-            note: 16,
-            lines: [
-              '« Ah. »',
-              '« Elle a marché longtemps, et on ne sait pas où. »',
-              '« Seize sur vingt. C’est joli, ça. »',
-            ],
-          },
-          {
-            note: 20,
-            lines: [
-              '« ... »',
-              'La maîtresse regarde la chaussure très longtemps.',
-              '« Vingt sur vingt. »',
-            ],
-          },
-        ],
-      },
+      lines: ['« C’est noté, Nino. »', '« Rapporte-moi autre chose si tu veux. »'],
     },
     {
       when: () => state.flag('devoir-donne'),
@@ -1474,6 +1558,43 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
     },
   ],
 
+  /** Les objets qu'on ramasse pour le projet d'art. Ils ne servent qu'à ça. */
+  bouchon: [
+    {
+      lines: [
+        'Le bouchon de la baignoire, posé sur le rebord.',
+        'Il a laissé partir un poisson.',
+        'Nino le met dans sa poche.',
+      ],
+      effects: { give: 'bouchon', flag: 'bouchon-pris' },
+    },
+  ],
+
+  noisette: [
+    {
+      lines: ['Une noisette, dans un coin de la cour.', 'Nino la ramasse.'],
+      effects: { give: 'noisette', flag: 'noisette-prise' },
+    },
+  ],
+
+  ticket: [
+    {
+      lines: [
+        'Un ticket de tram, par terre.',
+        'Poinçonné. Illisible.',
+        'Nino le plie en quatre et le garde.',
+      ],
+      effects: { give: 'ticket', flag: 'ticket-pris' },
+    },
+  ],
+
+  plume: [
+    {
+      lines: ['Une plume, sur le quai.', 'Grise, très longue.', 'Nino la prend.'],
+      effects: { give: 'plume', flag: 'plume-prise' },
+    },
+  ],
+
   /** Le projet d'art, avant de savoir que c'en est un. */
   chaussure: [
     {
@@ -1487,7 +1608,18 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
   ],
 
   'ballon-ecole': [
-    { lines: ['Un ballon, dégonflé.', 'Il est là depuis le mois dernier.'] },
+    {
+      when: () => state.has('ballon-degonfle'),
+      lines: ['Il n’y a plus de ballon dans la cour.', 'Il est dans le sac de Nino.'],
+    },
+    {
+      lines: [
+        'Un ballon, dégonflé.',
+        'Il est là depuis le mois dernier.',
+        'Nino le prend. Personne ne dit rien.',
+      ],
+      effects: { give: 'ballon-degonfle', flag: 'ballon-pris' },
+    },
   ],
 
   // ------------------------------------------------------- au pied de la tour

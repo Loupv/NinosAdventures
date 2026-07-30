@@ -831,6 +831,16 @@ export const ROOMS: Record<string, Room> = {
         showIfFlag: 'poisson-arrive',
       },
       { id: 'wc', x: 16, y: 88, sprite: 'wc', solid: true, dialogue: 'wc' },
+      // Le bouchon, posé sur le rebord : il n'existe qu'une fois retiré de la baignoire.
+      {
+        id: 'bouchon',
+        x: 108,
+        y: 94,
+        sprite: 'bouchon',
+        dialogue: 'bouchon',
+        showIfFlag: 'bouchon-retire',
+        hideIfFlag: 'bouchon-pris',
+      },
       {
         id: 'lavabo',
         x: 72,
@@ -1168,6 +1178,15 @@ export const ROOMS: Record<string, Room> = {
         solid: true,
         dialogue: 'velo',
       },
+      // Une noisette, dans un coin. L'écureuil n'est pas loin.
+      {
+        id: 'noisette',
+        x: 132,
+        y: 112,
+        sprite: 'noisette',
+        dialogue: 'noisette',
+        hideIfFlag: 'noisette-prise',
+      },
       { id: 'ballon', ...at(9, 11), sprite: 'ballon', ballon: true },
       {
         id: 'reverbere',
@@ -1234,6 +1253,14 @@ export const ROOMS: Record<string, Room> = {
       // trop chaud. C'est la chose la plus grosse de l'écran, et elle ne sert à rien — c'est
       // exactement ce qu'on veut d'une place de ville.
       { id: 'tram', x: 40, y: 30, sprite: 'tram', solid: true, dialogue: 'tram' },
+      {
+        id: 'ticket',
+        x: 60,
+        y: 56,
+        sprite: 'ticket',
+        dialogue: 'ticket',
+        hideIfFlag: 'ticket-pris',
+      },
       {
         id: 'conducteur',
         x: 92,
@@ -1347,7 +1374,7 @@ export const ROOMS: Record<string, Room> = {
       },
       { id: 'copain2', x: 112, y: 40, sprite: 'copain', priorite: 2, dialogue: 'copain2' },
       { id: 'copain3', x: 128, y: 88, sprite: 'copain', priorite: 2, dialogue: 'copain3' },
-      { id: 'ballon-ecole', x: 60, y: 96, sprite: 'ballon', dialogue: 'ballon-ecole' },
+      { id: 'ballon-ecole', x: 60, y: 96, sprite: 'ballon', dialogue: 'ballon-ecole', hideIfFlag: 'ballon-pris' },
       { id: 'plante', x: 20, y: 84, sprite: 'plante', solid: true },
     ],
     doors: [
@@ -1655,6 +1682,14 @@ export const ROOMS: Record<string, Room> = {
         dialogue: 'ecureuil-erdre',
       },
       { id: 'bouee', x: 40, y: 88, sprite: 'bouee', dialogue: 'quai' },
+      {
+        id: 'plume',
+        x: 152,
+        y: 84,
+        sprite: 'plume',
+        dialogue: 'plume',
+        hideIfFlag: 'plume-prise',
+      },
       // Le projet d'art de Nino, qui ne le sait pas encore.
       {
         id: 'chaussure',

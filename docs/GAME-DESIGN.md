@@ -100,19 +100,35 @@ ne l'a vue tomber.
 ### Le projet d'art
 
 **Le seul devoir du jeu, et il n'a pas de bonne réponse.** La maîtresse réclame le projet
-d'art de Nino : *« Rapporte-moi un objet, et explique-moi en quoi c'est de l'art. »* L'objet
-est **une vieille chaussure**, sur le quai de l'Erdre — elle a beaucoup marché, et pas avec
-lui. Il faut donc sortir de l'école, la trouver, et revenir : c'est la seule quête du jeu qui
-fait faire l'aller-retour, et elle passe par un écran qu'on traverse de toute façon.
+d'art de Nino : *« Rapporte-moi un objet, et explique-moi en quoi c'est de l'art. »*
 
-Rendu le devoir, elle demande l'explication. **Les trois réponses sont acceptées** — ce n'est
-pas une énigme, il n'y a rien à trouver — mais elles ne valent pas la même note :
+**N'importe quel objet fait l'affaire**, et il y en a sept à ramasser un peu partout :
+
+| L'objet | Où | Ce qu'elle en dit |
+|---|---|---|
+| Une **vieille chaussure** | le quai de l'Erdre | *« Ah ! Tu as apporté quelque chose. »* |
+| Le **bouchon de la baignoire** | la salle de bain, après le poisson | *« Un bouchon. »* |
+| Une **noisette** | un coin de la cour | elle la regarde ; la noisette ne bouge pas |
+| Un **ticket de tram** | sous le tram, sur la place | *« Poinçonné, en plus. »* |
+| Le **ballon dégonflé** | la cour de l'école elle-même | *« Celui-là ? Il est à l'école, Nino. »* |
+| Une **plume de héron** | le quai de l'Erdre | *« Oh. »* |
+| Un **bout de pizza froide** | le frigo | *« ... »* |
+
+Chercher l'objet fait sortir de l'école et revenir : c'est la seule quête du jeu qui fait
+faire l'aller-retour, et elle passe par des écrans qu'on traverse de toute façon.
+
+Puis elle demande l'explication, et **c'est là que tout se joue** : ce qu'on apporte ne change
+que sa tête, ce qu'on en dit change la note. **Les trois réponses sont acceptées** — ce n'est
+pas une énigme, il n'y a rien à trouver :
 
 | Ce que Nino répond | Ce qu'elle répond | Note |
 |---|---|---|
-| *« C'est une chaussure »* | *« Oui. Ça, je vois. »* | 8 |
-| *« Elle a beaucoup vécu »* | *« Elle a marché longtemps, et on ne sait pas où. »* | 16 |
-| *« Je l'ai décidé »* | *« ... »* — elle regarde la chaussure très longtemps | 20 |
+| *« C'est un objet »* | *« Oui. Ça, je vois. »* | 8 |
+| *« Il a beaucoup vécu »* | *« Il a servi longtemps, et on ne sait pas à qui. »* | 16 |
+| *« Je l'ai décidé »* | *« ... »* — elle regarde l'objet très longtemps | 20 |
+
+On peut revenir avec autre chose autant qu'on veut : **la meilleure note est gardée**, jamais
+remplacée par une moins bonne. Un enfant qui a une meilleure idée ne doit pas pouvoir y perdre.
 
 La meilleure est celle que Duchamp aurait donnée, et c'est la maîtresse qui s'incline. La note
 s'affiche dans le journal et sur l'écran de fin, à côté des cachettes d'Hermione et des

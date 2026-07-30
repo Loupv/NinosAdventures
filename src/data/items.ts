@@ -1,6 +1,19 @@
 import { OBJETS } from './textes';
 
-export type ItemId = 'pizza' | 'pistolet-eau' | 'parapente' | 'chaussure';
+/**
+ * **Les objets du projet d'art** sont tous des ItemId comme les autres : ce qui les distingue
+ * est qu'ils ne servent à rien d'autre qu'à être offerts à la maîtresse. Voir `OFFRABLES`.
+ */
+export type ItemId =
+  | 'pizza'
+  | 'pistolet-eau'
+  | 'parapente'
+  | 'chaussure'
+  | 'bouchon'
+  | 'noisette'
+  | 'ticket'
+  | 'ballon-degonfle'
+  | 'plume';
 
 export interface ItemDef {
   id: ItemId;
@@ -16,6 +29,11 @@ const SPRITES: Record<ItemId, string> = {
   parapente: 'parapente',
   pizza: 'pizza',
   chaussure: 'chaussure',
+  bouchon: 'bouchon',
+  noisette: 'noisette',
+  ticket: 'ticket',
+  'ballon-degonfle': 'ballon',
+  plume: 'plume',
 };
 
 const fiche = (id: ItemId): ItemDef => ({
@@ -30,4 +48,9 @@ export const ITEMS: Record<ItemId, ItemDef> = {
   parapente: fiche('parapente'),
   pizza: fiche('pizza'),
   chaussure: fiche('chaussure'),
+  bouchon: fiche('bouchon'),
+  noisette: fiche('noisette'),
+  ticket: fiche('ticket'),
+  'ballon-degonfle': fiche('ballon-degonfle'),
+  plume: fiche('plume'),
 };
