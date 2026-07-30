@@ -13,6 +13,8 @@ import {
   NAUFRAGE,
   AU_BORD_DE_LEAU,
   MAMAN_PARTIE,
+  PAPA_BRICOLE,
+  PAPA_GRAIN,
   POISSON_PART,
   PAPA_NAGE,
   ARROSES,
@@ -192,6 +194,8 @@ export class WorldScene extends Phaser.Scene {
   private ballonEnVol = false;
   /** Combien de fois l'écureuil s'est moqué : il change de vanne à chaque tir raté. */
   private vannes = 0;
+  /** Combien de phrases papa a marmonnées sur son bateau : il ne se répète pas d'affilée. */
+  private bricolages = 0;
   /** Combien de fois on a dérangé un pigeon : il ne s'en va pas deux fois pareil. */
   private pigeonneries = 0;
   /** Gouttes de pluie en vol : la pluie de l'éléphant est plafonnée. */
@@ -325,16 +329,9 @@ export class WorldScene extends Phaser.Scene {
           }
         });
       }
-      // Sur la terrasse, **c'est papa qui interpelle Nino**, pas l'inverse : il faut qu'il
-      // le voie passer dans la rue pour que la blague existe. Le temps d'entrer dans
-      // l'écran, et il lève la tête.
-      if (id === 'terrasse' && !state.flag('papa-terrasse-vu')) {
-        this.time.delayedCall(1400, () => {
-          if (this.room.id === 'terrasse' && !state.locked && !this.transitioning) {
-            this.runDialogue('papa-terrasse');
-          }
-        });
-      }
+      // **Papa bricole tout haut.** Il ne voit pas Nino, il a un bouchon qui fuit, et il
+      // commente son propre travail : c'est ce qui le rend occupé.
+      if (id === 'erdre') this.papaBricole();
     });
     bus.emit(EV.hud);
     bus.emit(EV.room, { name: nomDuLieu(id), isNew: !known });
@@ -730,6 +727,31 @@ export class WorldScene extends Phaser.Scene {
   }
 
   /**
+   * **Papa se parle à lui-même en réparant.** Une phrase au-dessus de lui toutes les six
+   * secondes, sans boîte et sans verrou : on n'est pas son interlocuteur, on est le gamin qui
+   * regarde son père bricoler. Il se tait pendant les dialogues — et pour de bon quand son
+   * bateau est au fond, où il a d'autres phrases.
+   */
+  private papaBricole(): void {
+    this.time.addEvent({
+      delay: 6000,
+      startAt: 3800,
+      loop: true,
+      callback: () => {
+        const lui = this.live.find((l) => l.def.id === 'papa-capitaine');
+        if (!lui || state.locked || this.transitioning || state.flag('bateau-coule')) return;
+        // **Seulement s'il est à l'écran.** Le texte flottant se recale dans le cadre quand son
+        // personnage en sort : sans ce test, une phrase de papa apparaissait au bord de l'écran
+        // alors qu'il était cinquante pixels plus loin, sans personne dessous.
+        const cam = this.cameras.main;
+        if (lui.go.x < cam.scrollX || lui.go.x > cam.scrollX + cam.width) return;
+        this.flotter(PAPA_BRICOLE[this.bricolages % PAPA_BRICOLE.length], lui);
+        this.bricolages += 1;
+      },
+    });
+  }
+
+  /**
    * **Le naufrage.** Le bouchon a sauté : le bateau descend de trente pixels en huit
    * secondes, et papa descend avec, debout, sans jamais rien lâcher. Ce qui rend la scène,
    * c'est la lenteur — et le fait que **personne n'appuie sur rien** : les répliques flottent
@@ -746,21 +768,43 @@ export class WorldScene extends Phaser.Scene {
 
     const DUREE = 8000;
     const FOND = 32;
+    /**
+     * **Il penche d'abord, il descend ensuite.** Une seconde et demie où le bateau se couche sur
+     * la gauche sans encore s'enfoncer — l'eau entre par là, c'est de ce côté que ça penche — et
+     * c'est là que tombe la première réplique de papa. Un bateau qui descend tout droit ne dit
+     * pas qu'il a un trou.
+     *
+     * La bascule se fait à l'angle, autour du coin haut-gauche du dessin : six degrés suffisent,
+     * et papa se penche avec, debout dans sa coque, sans jamais rien lâcher.
+     */
+    const PENCHE = 1500;
+    // Papa se tient à trente-six pixels de l'axe de bascule : le pont **se relève** sous ses pieds
+    // de quatre pixels, et il monte avec. Sans ça, il s'enfonçait dans sa propre coque.
+    const leve = (l: Live) => (l === papa ? -4 : 0);
     for (const l of [bateau, papa]) {
       this.tweens.add({
         targets: l.go,
-        y: l.go.y + FOND,
+        angle: -6,
+        y: l.go.y + leve(l),
+        duration: PENCHE,
+        ease: 'Sine.easeOut',
+      });
+      this.tweens.add({
+        targets: l.go,
+        y: l.go.y + leve(l) + FOND,
         duration: DUREE,
+        delay: PENCHE,
         ease: 'Sine.easeIn',
         onUpdate: () => this.couperALaFlottaison(l),
         onComplete: () => this.couperALaFlottaison(l),
       });
     }
 
-    // Une réplique tous les 1,3 s. La dernière tombe quand l'eau lui passe au-dessus du
-    // chapeau — d'où le décalage : elle n'est pas dans la même série que les autres.
+    // Une réplique tous les 1,3 s, la première pendant qu'il penche. La dernière tombe quand
+    // l'eau lui passe au-dessus du chapeau — d'où le décalage : elle n'est pas dans la même
+    // série que les autres.
     NAUFRAGE.forEach((phrase, i) => {
-      this.time.delayedCall(700 + i * 1300, () => {
+      this.time.delayedCall(500 + i * 1300, () => {
         // On le retrouve par son identifiant à chaque fois : entre deux répliques, un
         // rafraîchissement des objets peut avoir remplacé le sien.
         const lui = this.live.find((l) => l.def.id === 'papa-capitaine');
@@ -770,7 +814,7 @@ export class WorldScene extends Phaser.Scene {
       });
     });
 
-    this.time.delayedCall(DUREE + 900, () => {
+    this.time.delayedCall(PENCHE + DUREE + 900, () => {
       if (this.room.id !== 'erdre') return;
       state.setFlag('papa-dans-leau');
       state.save();
@@ -875,6 +919,9 @@ export class WorldScene extends Phaser.Scene {
     state.locked = true;
     state.setFlag('poisson-parti');
     const img = elephant.go as Phaser.GameObjects.Sprite;
+    // Il arrête de boire : sans ça, son animation de trompe écraserait toutes les images de la
+    // scène une demi-seconde après qu'on les a posées.
+    img.anims.stop();
 
     // Il nage jusqu'au bout de la trompe, sous la surface, et on ne le revoit qu'en l'air. Le bout
     // est tout à gauche du dessin, là où la trompe plonge : deux pixels après le bord.
@@ -1251,11 +1298,20 @@ export class WorldScene extends Phaser.Scene {
       state.setFlag('maman-quai-partie');
       state.save();
       this.refreshObjects();
-      // **Et la caméra revient sur Nino**, en travelling elle aussi : elle est allée voir la
+      /**
+       * **Et papa, qui n'a pas levé la tête.** Sa femme vient de partir en courant avec sa fille
+       * sous le bras, il pleut sur tout l'écran, et il en est à la météo. La caméra est encore sur
+       * le bateau : c'est le bon moment, et c'est la seule fois où on l'entend sans lui parler.
+       */
+      const lui = this.live.find((x) => x.def.id === 'papa-capitaine');
+      if (lui) this.flotter(PAPA_GRAIN, lui);
+      // **Puis la caméra revient sur Nino**, en travelling elle aussi : elle est allée voir la
       // scène, elle revient au personnage. Reprendre le suivi d'un coup ferait un saut.
       const cam = this.cameras.main;
-      cam.pan(this.player.sprite.x, cam.midPoint.y, 700, 'Sine.easeInOut');
-      this.time.delayedCall(760, () => {
+      this.time.delayedCall(1600, () =>
+        cam.pan(this.player.sprite.x, cam.midPoint.y, 700, 'Sine.easeInOut'),
+      );
+      this.time.delayedCall(2400, () => {
         cam.startFollow(this.player.sprite, true, 0.15, 0.15);
         // Le seul commentaire de la scène, et il arrive quand le quai est vide : ce n'est pas une
         // description de ce qu'on vient de voir, c'est ce que Nino en conclut.

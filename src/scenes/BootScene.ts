@@ -87,6 +87,18 @@ export class BootScene extends Phaser.Scene {
       repeat: -1,
     });
 
+    // **L'éléphant boit.** Deux images très lentes : la trompe dans l'eau, la trompe à la bouche.
+    // À cette vitesse ce n'est pas une animation, c'est un animal qui prend son temps.
+    this.anims.create({
+      key: animKey('elephant-boit', pal),
+      frames: [
+        { key: texKey('elephant', pal), frame: 'boit' },
+        { key: texKey('elephant', pal), frame: 'bouche' },
+      ],
+      frameRate: 0.5,
+      repeat: -1,
+    });
+
     this.anims.create({
       key: animKey('poisson-saut', pal),
       frames: [

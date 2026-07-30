@@ -259,6 +259,8 @@ export const DIVERSION = {
  * La dernière arrive quand l'eau lui passe au-dessus de la tête. Ne pas la changer.
  */
 export const NAUFRAGE = [
+  // Le bateau vient de pencher : c'est tout ce qu'il en dit, et il continue à visser.
+  '« Hm… pas bon. »',
   '« Ce n’est rien. »',
   '« C’est de l’eau. »',
   '« Un capitaine ne quitte pas son navire. »',
@@ -266,6 +268,24 @@ export const NAUFRAGE = [
   '« Bon. »',
   '« Blublublub. »',
 ];
+
+/**
+ * **Papa bricole tout haut.** Il ne voit pas Nino : il a un bouchon qui fuit, et il commente son
+ * propre travail comme on le fait quand on est seul sur un bateau. Ces phrases sortent toutes
+ * seules, au-dessus de lui, sans boîte et sans qu'on ait rien demandé — c'est ce qui le rend
+ * occupé. Un père occupé est un père qu'on peut regarder sans lui parler.
+ */
+export const PAPA_BRICOLE = [
+  '« Si je mets ça là… »',
+  '« Hmm. Ça vient d’où, ça ? »',
+  '« Un coup de scie ici, quelques clous là. »',
+];
+
+/**
+ * **Sa conclusion sous l'averse.** Sa femme part en courant avec sa fille sous le bras, il pleut
+ * sur tout l'écran, et lui ne lève pas la tête de sa coque. La météo, c'est un sujet.
+ */
+export const PAPA_GRAIN = '« On dirait qu’un gros grain se prépare. »';
 
 /**
  * **Ce que papa dit en nageant.** Il remonte tout seul, il a gardé son chapeau, et il s'en va

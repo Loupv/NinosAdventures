@@ -1556,6 +1556,19 @@ const ELEPHANT_AVALE = bosse(ELEPHANT_BOIT, {
   14: '.022220.......020..020.020....',
 });
 
+/**
+ * **Il boit.** La trompe quitte l'eau et revient sous la bouche, le bout replié vers la tête. En
+ * alternance avec `boit`, toutes les deux secondes, ça fait un éléphant qui se sert de l'Erdre —
+ * et un décor qui bouge un peu vaut mieux qu'un décor qui pose.
+ */
+const ELEPHANT_BOUCHE = bosse(ELEPHANT_BOIT, {
+  13: '....0220.00...020..020.020....',
+  14: '.....0220.....020..020.020....',
+  15: '......000.....020..020.020....',
+  16: '..............020..020.020....',
+  17: '..............020..000.020....',
+});
+
 /** La trompe à mi-hauteur : elle se lève, et elle s'arrête là le temps d'une seconde. */
 const ELEPHANT_MI_TROMPE: Art = [
   ...ELEPHANT_BOIT.slice(0, 6),
@@ -1873,6 +1886,7 @@ export const SHEETS: Record<string, Record<string, Art>> = {
   poisson: { 'saut-0': POISSON_A, 'saut-1': POISSON_B },
   elephant: {
     boit: ELEPHANT_BOIT,
+    bouche: ELEPHANT_BOUCHE,
     trompe: ELEPHANT_TROMPE,
     avale: ELEPHANT_AVALE,
     'mi-trompe': ELEPHANT_MI_TROMPE,

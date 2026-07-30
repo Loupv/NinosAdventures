@@ -98,9 +98,14 @@ depuis le début.
 
 **Quatre écrans de ville qui ne servent à rien**, et c'est leur fonction : entre deux
 morceaux d'histoire, un écran où l'on ne fait que traverser en écoutant des gens dire
-n'importe quoi donne au trajet une longueur. La place et l'école sont en plein jour ; la rue
-des bars vient après l'Erdre, et sur la terrasse suivante **la nuit est tombée** — personne
-ne l'a vue tomber.
+n'importe quoi donne au trajet une longueur. **Les quatre sont en plein jour**, y compris la rue
+des bars et la terrasse : deux écrans qui se touchent ne peuvent pas être l'un au soleil et
+l'autre en pleine nuit. **La nuit tombe au pied de la tour**, et nulle part ailleurs — personne ne
+la voit tomber, mais au moins elle ne tombe qu'une fois.
+
+Sur la terrasse, **c'est Nino qui va voir son père** : la blague ne se déclenche pas en entrant
+dans l'écran. Un père qui interpelle son fils dès qu'il apparaît, c'est le jeu qui vient nous
+chercher ; un père qu'on va voir de son plein gré, c'est un enfant qui décide.
 
 ### Le projet d'art
 
@@ -340,7 +345,13 @@ C'est la branche implémentée. Elle sert de gabarit à toutes les suivantes.
 
    Sa **trompe part loin vers l'avant**, en diagonale : quatre colonnes de dessin ajoutées à sa
    gauche rien que pour elle. Sans cette longueur, la partie émergée était trop courte pour qu'on
-   y voie passer un poisson — et c'est tout l'enjeu de la scène suivante. Personne sur le quai ne s'arrête. C'est cette première rencontre qui rend drôle
+   y voie passer un poisson — et c'est tout l'enjeu de la scène suivante.
+
+   **Et il boit vraiment** : deux images en alternance, une toutes les deux secondes — la trompe
+   dans l'eau, puis repliée sous la bouche. À cette vitesse ce n'est pas une animation, c'est un
+   animal qui prend son temps ; et un décor qui bouge un peu vaut mieux qu'un décor qui pose. Il
+   s'arrête de boire dès que le poisson monte dans sa trompe, sinon son animation écraserait les
+   images de la scène une demi-seconde après qu'on les a posées. Personne sur le quai ne s'arrête. C'est cette première rencontre qui rend drôle
    la deuxième, trente-et-un étages plus haut : on ne demandera jamais comment il est monté,
    mais on saura qu'il était en bas. Et lui s'en souvient : *« On s'est déjà vus. » « En bas. »
    « Je bois beaucoup. »*
@@ -422,6 +433,31 @@ il dit ce que Nino en retient, c'est-à-dire qu'il l'a échappé belle.
 ça tombe jusqu'à ce qu'on quitte l'écran — le minuteur meurt avec la scène. Quarante gouttes en vol au
 maximum, ce qui est déjà une averse. Revenir plus tard, c'est revenir au sec : le banc est vide,
 le quai est libre, et personne ne reviendra vérifier le temps.
+
+### Papa bricole tout haut
+
+**Il ne voit pas Nino.** Toutes les six secondes, une phrase sort au-dessus de lui, sans boîte et
+sans verrou, pendant qu'il visse dans sa coque :
+
+> *« Si je mets ça là… »* — *« Hmm. Ça vient d'où, ça ? »* — *« Un coup de scie ici, quelques clous
+> là. »*
+
+C'est ce qui le rend **occupé** plutôt qu'immobile, et ça vaut mieux qu'un dialogue : un père
+occupé est un père qu'on peut regarder sans lui parler. Il se tait pendant les dialogues, et pour
+de bon quand son bateau est au fond — là, il a d'autres phrases.
+
+Et pendant l'averse, alors que sa femme part en courant avec sa fille sous le bras, il ne lève pas
+la tête : *« On dirait qu'un gros grain se prépare. »* La caméra est encore sur le bateau à ce
+moment-là — c'est la seule fois où on l'entend sans lui avoir parlé, et c'est le seul commentaire
+que mérite une pluie faite par un éléphant.
+
+### Le naufrage
+
+**Il penche d'abord, il descend ensuite.** Une seconde et demie où le bateau se couche sur la
+gauche sans encore s'enfoncer — l'eau entre par là, c'est de ce côté que ça penche — et c'est
+pendant cette bascule que tombe la première réplique : *« Hm… pas bon. »* Un bateau qui descend
+tout droit ne dit pas qu'il a un trou. Six degrés suffisent, et papa se penche avec, debout dans
+sa coque, sans jamais rien lâcher.
 
 C'est aussi ce qui remet le naufrage à sa place : **couler le bateau n'ouvre plus rien**. C'est
 une bêtise qu'on fait parce que l'écureuil l'a proposée, et le poisson la répare parce qu'il a

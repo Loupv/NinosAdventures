@@ -432,6 +432,7 @@ export const ROOMS: Record<string, Room> = {
         y: 34,
         sprite: 'elephant',
         frame: 'boit',
+        anim: 'elephant-boit',
         scale: 2,
         priorite: 2,
         dialogue: 'elephant',
@@ -1566,16 +1567,18 @@ export const ROOMS: Record<string, Room> = {
   },
 
   /**
-   * **La terrasse**, entre la rivière et la tour. C'est ici que la nuit tombe : personne ne
-   * la voit tomber, on sort du quai et il fait noir. Papa et le parrain boivent un verre à
-   * une table, alors que papa vient d'être repêché un écran plus tôt — et comme d'habitude,
-   * personne ne trouve ça bizarre.
+   * **La terrasse**, entre la rivière et la tour. Papa et le parrain boivent un verre à une table,
+   * alors que papa vient d'être repêché un écran plus tôt — et comme d'habitude, personne ne
+   * trouve ça bizarre.
+   *
+   * **Il y fait encore jour**, comme dans la rue des bars juste avant : deux écrans qui se
+   * touchent ne peuvent pas être l'un en plein jour et l'autre en pleine nuit. La nuit tombe au
+   * pied de la tour, et nulle part ailleurs.
    */
   terrasse: {
     id: 'terrasse',
     palette: 'ville',
     theme: 'ville',
-    heure: 'nuit',
     spawn: { x: 16, y: 104 },
     tiles: [
       INT.wall,
@@ -1679,6 +1682,7 @@ export const ROOMS: Record<string, Room> = {
         y: 26,
         sprite: 'elephant',
         frame: 'boit',
+        anim: 'elephant-boit',
         scale: 2,
         // **Il est dans l'eau, pas dessus** — mais il faut encore le reconnaître. La surface passe
         // à la cheville : les pattes plongent, le bout de la trompe trempe, et tout ce qui fait
