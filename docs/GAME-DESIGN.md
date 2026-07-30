@@ -76,21 +76,41 @@ salle de bain ──┤             │
         │        ┌ FENÊTRE ┐        │
         └────────┴────┬────┴────────┘
                       │ (une fois que le chat a parlé)
-                   NANTES
+                   NANTES   la place : un tram arrêté, un accordéon, un panneau
                       │
-              LA RUE DES BARS   deux terrasses, trois personnes très occupées
+                  L'ÉCOLE   trois copains, la maîtresse, un ballon dégonflé
                       │
               LE BORD DE L'ERDRE   (papa, capitaine — puis papa, repêché)
                       │ (une fois le bateau coulé)
+              LA RUE DES BARS   deux terrasses, trois personnes très occupées
+                      │
               UNE TERRASSE, LA NUIT   papa et le parrain, un verre à la main
+                      │
+              AU PIED DE LA TOUR   de profil, et elle sort du cadre par le haut
                       │
               LA TOUR DE BRETAGNE
 ```
 
-**Deux écrans de ville qui ne servent à rien**, et c'est leur fonction : entre deux
+**Quatre écrans de ville qui ne servent à rien**, et c'est leur fonction : entre deux
 morceaux d'histoire, un écran où l'on ne fait que traverser en écoutant des gens dire
-n'importe quoi donne au trajet une longueur. La rue des bars est en plein jour ; sur la
-terrasse, **la nuit est tombée** — personne ne l'a vue tomber.
+n'importe quoi donne au trajet une longueur. La place et l'école sont en plein jour ; la rue
+des bars vient après l'Erdre, et sur la terrasse suivante **la nuit est tombée** — personne
+ne l'a vue tomber.
+
+**L'école** est là parce qu'elle devait y être : on passe devant, la grille est ouverte un
+jour sans classe, et il y a du monde dans la cour. Les trois copains n'ont pas de nom — ils
+sont dans le casting comme ça, et ce sont ceux de la vraie vie. Le premier croit Nino sur
+parole (*« Tu sais que les chats parlent, en fait ? »*), le deuxième ne croit rien (*« Et il
+n'y a pas de poisson dans les baignoires. »*), le troisième ne dit rien et **fait oui de la
+tête, une fois**. La maîtresse a des devoirs pour lui, mais pas aujourd'hui : il fait trop
+chaud.
+
+**Au pied de la tour**, un écran entier pour une seule information : c'est très haut. De
+profil comme l'Erdre, déplacement horizontal seulement. La tour est faite de **tuiles**
+(`T`, solide) qui montent jusqu'en haut de l'écran et le dépassent : on n'en voit jamais le
+sommet. Une brèche d'une tuile à son pied, c'est l'entrée, et comme tout le reste du mur
+bloque, c'est le seul passage. On marche longtemps le long du socle avant d'y arriver — c'est
+ce temps de marche qui dit la taille du bâtiment, pas un dessin.
 
 La maison et la ville tiennent sur **un seul écran** chacune (20 × 18 tuiles de 8 px),
 sans scrolling : c'est la grammaire de Zelda 1 et de Pokémon, et c'est très lisible pour

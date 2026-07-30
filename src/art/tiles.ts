@@ -131,6 +131,21 @@ const VILLE: Record<string, Art> = {
     '00000000',
     '00000000',
   ],
+  /**
+   * **La Tour de Bretagne**, en tuiles. Une tour de bureaux est une répétition : en faire une
+   * tuile plutôt qu'un dessin de cent trente pixels de haut coûte huit pixels sur huit, monte
+   * aussi haut qu'on veut, et bloque le passage toute seule (`T` est solide).
+   */
+  T: [
+    '02222220',
+    '02000020',
+    '02033020',
+    '02033020',
+    '02000020',
+    '02222220',
+    '00000000',
+    '22222222',
+  ],
   // trottoir
   ',': [
     '33333333',

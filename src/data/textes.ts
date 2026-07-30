@@ -112,9 +112,11 @@ export const LIEUX: Record<string, string> = {
   salon: 'Le salon',
   cour: 'La cour',
   nantes: 'Nantes',
+  ecole: 'L’école',
   bars: 'La rue des bars',
   erdre: 'Le bord de l’Erdre',
   terrasse: 'Une terrasse, la nuit',
+  'tour-pied': 'Au pied de la tour',
   'tour-hall': 'La Tour de Bretagne',
   'tour-13': 'Treizième étage',
   'tour-27': 'Vingt-septième étage',
@@ -1042,6 +1044,15 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
       when: () => state.flag('bateau-coule'),
       lines: ['La corde pend dans l’eau.'],
     },
+    /**
+     * **Tant que l'écureuil n'a rien dit, ce n'est qu'une corde.** L'idée de tirer dessus ne
+     * vient pas de Nino : il ne saborderait pas le bateau de son père tout seul. C'est
+     * l'écureuil qui la lui met dans la tête, et c'est tout le personnage.
+     */
+    {
+      when: () => !state.flag('ecureuil-bateau'),
+      lines: ['Une corde, tendue depuis le bateau.', 'Elle est bien serrée.'],
+    },
     {
       when: () => state.flag('bouchon-retire'),
       lines: ['Une corde, tendue depuis le bateau.', 'Tirer ?'],
@@ -1301,6 +1312,158 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
     },
   ],
 
+  // ------------------------------------------------------------- la place
+  /**
+   * **Le tram arrêté.** La chose la plus grosse de la place, et elle ne sert à rien. Le
+   * conducteur ne s'excuse pas : il fait trop chaud, c'est un argument.
+   */
+  tram: [
+    {
+      lines: [
+        'Un tramway, arrêté au milieu de la place.',
+        'Les portes sont ouvertes.',
+        'Il n’y a personne dedans.',
+      ],
+    },
+  ],
+
+  'conducteur-tram': [
+    {
+      when: () => state.flag('tram-explique'),
+      speaker: 'Le conducteur',
+      lines: ['« Toujours trop chaud. »'],
+    },
+    {
+      speaker: 'Le conducteur',
+      lines: [
+        '« Il ne roule pas. »',
+        '« Les rails ont chaud. »',
+        '« Moi aussi, d’ailleurs. »',
+      ],
+      effects: { flag: 'tram-explique' },
+    },
+  ],
+
+  accordeon: [
+    {
+      lines: [
+        'Un monsieur joue de l’accordéon.',
+        'Toujours les six mêmes notes.',
+        'Il recommence.',
+      ],
+    },
+  ],
+
+  // ---------------------------------------------------------- l'école
+  'grille-ecole': [
+    {
+      lines: [
+        'La grille de l’école, grande ouverte.',
+        'Un jour sans classe, et il y a du monde dans la cour.',
+        'Personne ne trouve ça bizarre.',
+      ],
+    },
+  ],
+
+  'panneau-ecole': [
+    { lines: ['Des dessins sont accrochés derrière la vitre.', 'Il y en a un de Nino.'] },
+  ],
+
+  /**
+   * **La maîtresse.** Elle donnera de vrais « devoirs » — c'est-à-dire des quêtes — quand le
+   * chapitre de l'école existera. Pour l'instant elle dit ce qu'elle dirait vraiment : une
+   * phrase gentille, et une phrase qui n'a rien à voir.
+   */
+  maitresse: [
+    {
+      when: () => state.flag('maitresse-vue'),
+      speaker: 'La maîtresse',
+      lines: ['« Tu es encore là ? »', '« Va jouer. »'],
+    },
+    {
+      speaker: 'La maîtresse',
+      lines: [
+        '« Bonjour Nino. »',
+        '« Tu tombes bien, j’ai des devoirs pour toi. »',
+        '« Mais pas aujourd’hui. Aujourd’hui il fait trop chaud. »',
+      ],
+      effects: { flag: 'maitresse-vue' },
+    },
+  ],
+
+  copain1: [
+    {
+      when: () => state.flag('copains-vus'),
+      speaker: 'Un copain',
+      lines: ['« Tu reviens quand ? »'],
+    },
+    {
+      speaker: 'Un copain',
+      lines: [
+        '« Nino ! »',
+        '« Tu sais que les chats parlent, en fait ? »',
+        '« Non ? Bon. Moi non plus. »',
+      ],
+      effects: { flag: 'copains-vus' },
+    },
+  ],
+
+  copain2: [
+    {
+      speaker: 'Un autre copain',
+      lines: [
+        '« Il raconte n’importe quoi. »',
+        '« Les chats ne parlent pas. »',
+        '« Et il n’y a pas de poisson dans les baignoires. »',
+      ],
+    },
+  ],
+
+  /** Celui qui a déjà vu une dimension, et qui n'en parle jamais. */
+  copain3: [
+    {
+      lines: [
+        'Le troisième copain ne dit rien.',
+        'Il regarde Nino un long moment.',
+        'Puis il fait oui de la tête, une fois.',
+      ],
+    },
+  ],
+
+  'ballon-ecole': [
+    { lines: ['Un ballon, dégonflé.', 'Il est là depuis le mois dernier.'] },
+  ],
+
+  // ------------------------------------------------------- au pied de la tour
+  /** Lever la tête. C'est tout le sujet de cet écran. */
+  'tour-vue': [
+    {
+      lines: [
+        'Nino lève la tête.',
+        'Des fenêtres, des fenêtres, des fenêtres.',
+        'Ça continue au-dessus de l’écran.',
+      ],
+    },
+  ],
+
+  'porte-tour': [
+    { lines: ['La porte est ouverte.', 'Dedans, ça sent le tapis et l’ascenseur.'] },
+  ],
+
+  'panneau-tour': [
+    {
+      lines: [
+        'TOUR DE BRETAGNE',
+        'TRENTE-DEUX ÉTAGES',
+        'Nino compte jusqu’à douze, puis renonce.',
+      ],
+    },
+  ],
+
+  'carton-tour': [
+    { lines: ['Un carton vide, au pied de la tour.', 'Quelqu’un l’a mis là très soigneusement.'] },
+  ],
+
   // ------------------------------------------------------ la rue des bars
   /**
    * On ne fait que traverser. Tout le monde ici est occupé à quelque chose qui n'a pas de
@@ -1311,14 +1474,23 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
       lines: [
         'Un bar.',
         'Ça sent le café et le sirop.',
-        'Il y a des adultes debout qui parlent tous en même temps.',
+        'Des adultes debout parlent tous en même temps.',
       ],
     },
   ],
 
-  'enseigne-bar': [
-    { lines: ['L’enseigne grince un peu.', 'Nino ne sait pas encore lire les mots longs.'] },
+  /** Le deuxième bar de la rue. Deux portes, deux choses différentes à voir. */
+  'bar-porte-2': [
+    {
+      lines: [
+        'Un autre bar, plus petit.',
+        'À l’intérieur, un chien dort sous une table.',
+        'Il ouvre un œil, puis se rendort.',
+      ],
+    },
   ],
+
+  'enseigne-bar': [{ lines: ['L’enseigne grince un peu.', 'Elle tourne toute seule.'] }],
 
   'table-bar': [
     {
@@ -1471,6 +1643,20 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
         'Un monsieur en chemise passe très vite.',
         '« Il fait trente-quatre, hein ! »',
         'Il est déjà loin.',
+      ],
+    },
+  ],
+
+  /**
+   * Le panneau de la place. **Il sert vraiment** : depuis que la ville fait six écrans, il
+   * faut bien que quelque chose dise où mène quoi. Les distances sont fausses.
+   */
+  'panneau-directions': [
+    {
+      lines: [
+        'ÉCOLE 200 m — QUAI DE L’ERDRE 400 m',
+        'TOUR DE BRETAGNE 1 km',
+        'Nino ne sait pas ce que c’est, un kilomètre.',
       ],
     },
   ],

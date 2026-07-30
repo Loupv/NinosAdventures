@@ -61,6 +61,7 @@ export const ETAPES: Etape[] = [
   { touche: '1', nom: 'Le réveil', room: 'chambre' },
   { touche: '2', nom: 'La cour', room: 'cour', flags: DEHORS },
   { touche: '3', nom: 'Nantes', room: 'nantes', flags: DEHORS },
+  { touche: 'c', nom: 'La cour de l’école', room: 'ecole', flags: DEHORS },
   { touche: '4', nom: 'L’Erdre', room: 'erdre', flags: [...DEHORS, 'bouchon-retire'] },
   { touche: '5', nom: 'L’araignée', room: 'mezzanine', flags: ['reveil'], haiku: 0 },
   { touche: '6', nom: 'La danse', room: 'mezzanine', flags: ['reveil'], haiku: 10 },
@@ -86,6 +87,7 @@ export const ETAPES: Etape[] = [
     room: 'terrasse',
     flags: APRES_LE_NAUFRAGE,
   },
+  { touche: 'v', nom: 'Au pied de la tour', room: 'tour-pied', flags: APRES_LE_NAUFRAGE },
   { touche: '0', nom: 'La tour', room: 'tour-hall', flags: APRES_LE_NAUFRAGE },
   {
     touche: 'p',

@@ -60,7 +60,12 @@ for (const r of Object.values(ROOMS)) {
       continue;
     }
     const [x, y, w, h] = dessin(o);
-    if (x < 0 || y < 0 || x + w > largeur || y + h > 144) dit('DEBORDE', r.id, o.id);
+    // `deborde` = on sort du cadre exprès. Un seul cas aujourd'hui : la Tour de Bretagne,
+    // dont on ne doit jamais voir le sommet. Sans ce champ, la seule façon de faire taire
+    // le contrôle serait de rentrer la tour dans l'écran, ce qui la rendrait petite.
+    if (!o.deborde && (x < 0 || y < 0 || x + w > largeur || y + h > 144)) {
+      dit('DEBORDE', r.id, o.id);
+    }
   }
 
   // Deux dessins au même endroit : l'un cache l'autre.

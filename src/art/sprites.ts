@@ -553,6 +553,27 @@ function bookshelf(w: number, shelves: number, shelfH: number): Art {
   return rows;
 }
 
+/**
+ * Un tramway, arrêté. Nantes en a partout, et celui-là ne va nulle part : il fait trop chaud.
+ * Deux voitures, des vitres, un pantographe sur le toit.
+ */
+const TRAM: Art = [
+  '..............0.....................',
+  '..............0.....................',
+  '.....000000000000000000000000000....',
+  '....03333333333333333333333333330...',
+  '....03000330003300033000330003330...',
+  '....03011130011300113001130011130...',
+  '....03011130011300113001130011130...',
+  '....03000330003300033000330003330...',
+  '....03333333333333333333333333330...',
+  '....02222222222222222222222222220...',
+  '....00000000000000000000000000000...',
+  '.....0.000.................000.0....',
+  '.....0.000.................000.0....',
+  '......00000.................00000...',
+];
+
 // -------------------------------------------------------------------- décors
 
 /** Le lit de Nino : oreiller clair, drap replié, couverture sombre. */
@@ -1427,19 +1448,25 @@ const ASCENSEUR: Art = [
   '0000000000000000',
 ];
 
+/**
+ * Une touffe de roseaux, plantée au bord de l'eau. La première version faisait deux tiges en
+ * V posées sur la rivière : personne ne comprenait ce que c'était. Celle-ci est large,
+ * touffue, et se termine par une base sombre — c'est la base qui dit « ça pousse là ».
+ */
 const ROSEAUX: Art = [
-  '.0...0..',
-  '030.030.',
-  '030.030.',
-  '030.0300',
-  '0300030.',
-  '.030030.',
-  '.030030.',
-  '..03030.',
-  '..03030.',
-  '...0300.',
-  '...030..',
-  '...000..',
+  '....0......0....',
+  '...030....030...',
+  '..0.030..030.0..',
+  '..0..03..30..0..',
+  '.03..030030..30.',
+  '.030..03300..030',
+  '0.030..000..030.',
+  '..0030.000.0300.',
+  '...0300.0.0030..',
+  '....030303030...',
+  '.....0303030....',
+  '.....0303030....',
+  '......00000.....',
 ];
 
 /** Bouée d'amarrage sur le quai de l'Erdre. */
@@ -1599,6 +1626,7 @@ export const IMAGES: Record<string, Art> = {
   gateau: GATEAU,
   ascenseur: ASCENSEUR,
   reverbere: REVERBERE,
+  tram: TRAM,
   bateau: BATEAU,
   panneau: PANNEAU,
   porte: PORTE,

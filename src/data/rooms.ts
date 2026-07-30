@@ -75,6 +75,11 @@ export interface RoomObject {
    */
   saute?: { gauche: number; droite: number; hauteur: number; eau: number };
   /**
+   * Le dessin sort du cadre de la pièce, et c'est voulu. Un seul cas : la Tour de Bretagne
+   * vue d'en bas, dont on ne doit jamais voir le sommet.
+   */
+  deborde?: boolean;
+  /**
    * Ligne de flottaison, en pixels : tout ce qui passe **sous** elle est sous l'eau, donc
    * découpé du dessin. C'est ce qui fait que la coque du bateau est à moitié immergée sans
    * qu'on ait à dessiner deux bateaux — et surtout ce qui fait qu'en descendant, il
@@ -230,7 +235,7 @@ export const ROOMS: Record<string, Room> = {
       { id: 'plante', ...at(17, 14), sprite: 'plante', solid: true },
     ],
     doors: [
-      { x: 24, y: 136, w: 16, h: 8, to: { room: 'terrasse', x: 144, y: 104 } },
+      { x: 24, y: 136, w: 16, h: 8, to: { room: 'tour-pied', x: 228, y: 104 } },
       // On monte en marchant dans l'escalier. Moon garde la marche : sans son énigme,
       // il nous renvoie au pied des marches.
       {
@@ -1225,19 +1230,38 @@ export const ROOMS: Record<string, Room> = {
         solid: true,
         dialogue: 'reverbere',
       },
+      // **Un tramway arrêté.** Nantes en est pleine, et celui-là ne va nulle part : il fait
+      // trop chaud. C'est la chose la plus grosse de l'écran, et elle ne sert à rien — c'est
+      // exactement ce qu'on veut d'une place de ville.
+      { id: 'tram', x: 40, y: 30, sprite: 'tram', solid: true, dialogue: 'tram' },
       {
-        id: 'passant',
-        ...at(13, 6),
+        id: 'conducteur',
+        x: 92,
+        y: 50,
         sprite: 'copain',
-        dialogue: 'passant',
-        errance: { rayon: 34, vitesse: 26 },
+        priorite: 2,
+        dialogue: 'conducteur-tram',
       },
       {
-        id: 'panneau-erdre',
+        id: 'accordeon',
+        x: 120,
+        y: 62,
+        sprite: 'copain',
+        dialogue: 'accordeon',
+      },
+      {
+        id: 'passant',
+        ...at(3, 8),
+        sprite: 'copain',
+        dialogue: 'passant',
+        errance: { rayon: 30, vitesse: 26 },
+      },
+      {
+        id: 'panneau-directions',
         ...at(16, 11),
         sprite: 'panneau',
         solid: true,
-        dialogue: 'panneau-erdre',
+        dialogue: 'panneau-directions',
       },
       {
         id: 'velos-ville-1',
@@ -1265,7 +1289,7 @@ export const ROOMS: Record<string, Room> = {
       },
     ],
     doors: [
-      { x: 152, y: 96, w: 8, h: 16, to: { room: 'bars', x: 16, y: 104 } },
+      { x: 152, y: 96, w: 8, h: 16, to: { room: 'ecole', x: 16, y: 104 } },
       { x: 48, y: 136, w: 16, h: 8, to: { room: 'cour', x: 48, y: 30 } },
     ],
   },
@@ -1275,6 +1299,128 @@ export const ROOMS: Record<string, Room> = {
    * l'horizontale et on saute. Le bateau de papa flotte au second plan, derrière
    * Nino, plus haut à l'écran — donc plus loin.
    */
+  /**
+   * **La cour de l'école**, entre la place et la rivière. On n'y va pas pour l'école : on
+   * passe devant, et il y a du monde dans la cour un jour où il n'y a pas classe. Personne ne
+   * s'en étonne, la maîtresse non plus.
+   *
+   * Les trois copains n'ont pas encore de nom — ils sont dans le casting comme ça, et c'est
+   * volontaire : ce sont ceux de la vraie vie, ils se nommeront tout seuls.
+   */
+  ecole: {
+    id: 'ecole',
+    palette: 'ville',
+    theme: 'ville',
+    spawn: { x: 16, y: 104 },
+    tiles: [
+      INT.wall,
+      INT.wall,
+      INT.floor,
+      INT.floor,
+      INT.floor,
+      '#,,,,,,,,,,,,,,,,,,#',
+      INT.floor,
+      INT.floor,
+      INT.floor,
+      INT.floor,
+      INT.floor,
+      INT.floor,
+      '....................',
+      '....................',
+      INT.floor,
+      INT.floor,
+      '#,,,,,,,,,,,,,,,,,,#',
+      INT.wall,
+    ],
+    objects: [
+      { id: 'grille', x: 72, y: 16, sprite: 'porte', solid: true, dialogue: 'grille-ecole' },
+      { id: 'panneau-ecole', x: 32, y: 18, sprite: 'panneau', solid: true, dialogue: 'panneau-ecole' },
+      { id: 'maitresse', x: 76, y: 52, sprite: 'maitresse', priorite: 2, dialogue: 'maitresse' },
+      {
+        id: 'copain1',
+        x: 36,
+        y: 60,
+        sprite: 'copain',
+        priorite: 2,
+        dialogue: 'copain1',
+        errance: { rayon: 20, vitesse: 24 },
+      },
+      { id: 'copain2', x: 112, y: 40, sprite: 'copain', priorite: 2, dialogue: 'copain2' },
+      { id: 'copain3', x: 128, y: 88, sprite: 'copain', priorite: 2, dialogue: 'copain3' },
+      { id: 'ballon-ecole', x: 60, y: 96, sprite: 'ballon', dialogue: 'ballon-ecole' },
+      { id: 'plante', x: 20, y: 84, sprite: 'plante', solid: true },
+    ],
+    doors: [
+      { x: 0, y: 96, w: 8, h: 16, to: { room: 'nantes', x: 144, y: 104 } },
+      { x: 152, y: 96, w: 8, h: 16, to: { room: 'erdre', x: 24, y: 96 } },
+    ],
+  },
+
+  /**
+   * **Le pied de la Tour de Bretagne.** Un écran entier pour une seule information : c'est
+   * très haut. On arrive par la gauche, on marche longtemps le long du socle, on monte les
+   * marches, et la façade sort du cadre par le haut sans qu'on en voie jamais le sommet.
+   *
+   * De profil, comme l'Erdre : **déplacement horizontal seulement**. Il n'y a rien à faire
+   * d'autre que d'avancer, et c'est le but — ce plan-là est là pour qu'on lève la tête.
+   */
+  'tour-pied': {
+    id: 'tour-pied',
+    palette: 'ville',
+    theme: 'ville',
+    view: 'side',
+    heure: 'nuit',
+    spawn: { x: 16, y: 104 },
+    /**
+     * **La tour est faite de tuiles** (`T`, solide), colonne 30 et au-delà, du haut de l'écran
+     * jusqu'au sol : c'est ce qui la rend immense sans rien dessiner de géant, et elle sort du
+     * cadre par le haut. Une brèche d'une tuile à son pied, c'est l'entrée — et comme le reste
+     * du mur bloque, c'est le seul passage.
+     */
+    tiles: [
+      'eeeeEeeeeeeeeeeeeeeeeeeeeeeeeeTTTTTTTTTT',
+      'eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeTTTTTTTTTT',
+      'eeeeeeeeeeeEeeeeeeeeeeeeeeeeeeTTTTTTTTTT',
+      'eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeTTTTTTTTTT',
+      'eeEeeeeeeeeeeeeeeeeeeEeeeeeeeeTTTTTTTTTT',
+      'eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeTTTTTTTTTT',
+      'eeeeeeeeeeeeeeeeeEeeeeeeeeeeeeTTTTTTTTTT',
+      'eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeTTTTTTTTTT',
+      'eeeeeeeEeeeeeeeeeeeeeeeeeEeeeeTTTTTTTTTT',
+      'eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeTTTTTTTTTT',
+      'eeeeeeeeeeeeeeEeeeeeeeeeeeeeeeTTTTTTTTTT',
+      'eeeeeeeeeeeeeeeeeeeeeeeeeeeeee.TTTTTTTTT',
+      'eeeeeeeeeeeeeeeeeeeeeeeeeeeeee.TTTTTTTTT',
+      band('#'),
+      band('#'),
+      band('#'),
+      band('#'),
+      band('#'),
+    ],
+    objects: [
+      // Les marches du parvis, en grand : on les monte en marchant vers la droite, et c'est
+      // en s'arrêtant dessus qu'on lève la tête.
+      {
+        id: 'marches',
+        x: 208,
+        y: 70,
+        sprite: 'escalier',
+        scale: 2,
+        depth: -30,
+        portee: 24,
+        dialogue: 'tour-vue',
+      },
+      { id: 'porte-tour', x: 240, y: 88, sprite: 'porte', depth: -20, dialogue: 'porte-tour' },
+      { id: 'panneau-tour', x: 132, y: 88, sprite: 'panneau', dialogue: 'panneau-tour' },
+      { id: 'reverbere', x: 92, y: 76, sprite: 'reverbere', dialogue: 'reverbere' },
+      { id: 'bouee', x: 56, y: 96, sprite: 'carton', dialogue: 'carton-tour' },
+    ],
+    doors: [
+      { x: 0, y: 88, w: 8, h: 16, to: { room: 'terrasse', x: 144, y: 104 } },
+      { x: 240, y: 88, w: 8, h: 16, to: { room: 'tour-hall', x: 32, y: 128 } },
+    ],
+  },
+
   /**
    * **La rue des bars**, entre la place et la rivière. Rien à y faire : deux terrasses,
    * trois personnes qui ne vont nulle part, et une rue qui continue. C'est exprès — entre
@@ -1310,7 +1456,7 @@ export const ROOMS: Record<string, Room> = {
       // Deux devantures, dans le mur du haut. On n'entre pas : à sept ans, on n'entre pas.
       { id: 'bar-1', x: 24, y: 16, sprite: 'porte', solid: true, dialogue: 'bar-porte' },
       { id: 'enseigne-1', x: 48, y: 18, sprite: 'panneau', solid: true, dialogue: 'enseigne-bar' },
-      { id: 'bar-2', x: 112, y: 16, sprite: 'porte', solid: true, dialogue: 'bar-porte' },
+      { id: 'bar-2', x: 112, y: 16, sprite: 'porte', solid: true, dialogue: 'bar-porte-2' },
       // Les terrasses.
       { id: 'table-bar-1', x: 32, y: 44, sprite: 'table-bar', solid: true, dialogue: 'table-bar' },
       { id: 'table-bar-2', x: 96, y: 52, sprite: 'table-bar', solid: true, dialogue: 'table-bar' },
@@ -1334,8 +1480,8 @@ export const ROOMS: Record<string, Room> = {
       { id: 'reverbere', x: 136, y: 36, sprite: 'reverbere', solid: true, dialogue: 'reverbere' },
     ],
     doors: [
-      { x: 0, y: 96, w: 8, h: 16, to: { room: 'nantes', x: 144, y: 104 } },
-      { x: 152, y: 96, w: 8, h: 16, to: { room: 'erdre', x: 24, y: 96 } },
+      { x: 0, y: 96, w: 8, h: 16, to: { room: 'erdre', x: 296, y: 96 } },
+      { x: 152, y: 96, w: 8, h: 16, to: { room: 'terrasse', x: 16, y: 104 } },
     ],
   },
 
@@ -1407,8 +1553,8 @@ export const ROOMS: Record<string, Room> = {
       { id: 'reverbere', x: 132, y: 36, sprite: 'reverbere', solid: true, dialogue: 'reverbere' },
     ],
     doors: [
-      { x: 0, y: 96, w: 8, h: 16, to: { room: 'erdre', x: 300, y: 96 } },
-      { x: 152, y: 96, w: 8, h: 16, to: { room: 'tour-hall', x: 32, y: 128 } },
+      { x: 0, y: 96, w: 8, h: 16, to: { room: 'bars', x: 144, y: 104 } },
+      { x: 152, y: 96, w: 8, h: 16, to: { room: 'tour-pied', x: 16, y: 104 } },
     ],
   },
 
@@ -1437,8 +1583,8 @@ export const ROOMS: Record<string, Room> = {
         dialogue: 'poisson-erdre',
         showIfFlag: 'bouchon-retire',
       },
-      { id: 'roseaux', x: 40, y: 70, sprite: 'roseaux', depth: -15 },
-      { id: 'roseaux2', x: 196, y: 70, sprite: 'roseaux', depth: -15 },
+      { id: 'roseaux', x: 36, y: 76, sprite: 'roseaux', depth: -15 },
+      { id: 'roseaux2', x: 168, y: 76, sprite: 'roseaux', depth: -15 },
       // **Le bateau est déjà là**, tout au bout du quai, et il est énorme : on le voit en
       // arrivant, et c'est ce qui donne envie d'aller jusque là. La moitié basse de la coque
       // est sous l'eau (`flotte`), et c'est par là qu'il s'en va.
@@ -1490,16 +1636,17 @@ export const ROOMS: Record<string, Room> = {
         dialogue: 'papa-repeche',
         showIfFlag: 'papa-sauve',
       },
-      // L'écureuil revient, dans les roseaux, avec une nouvelle idée. Derrière eux :
-      // profondeur inférieure à celle des roseaux, donc à moitié caché.
+      // L'écureuil revient avec une nouvelle idée. **En pleine vue, au pied de la corde** :
+      // caché dans les roseaux, on ne le voyait pas, et c'est lui qui donne la clé du naufrage.
       {
         id: 'ecureuil-erdre',
-        x: 198,
-        y: 74,
+        x: 222,
+        y: 80,
         sprite: 'ecureuil',
         frame: 'queue-0',
         anim: 'ecureuil-queue',
-        depth: -16,
+        priorite: 2,
+        portee: 14,
         dialogue: 'ecureuil-erdre',
       },
       { id: 'bouee', x: 40, y: 88, sprite: 'bouee', dialogue: 'quai' },
@@ -1514,14 +1661,14 @@ export const ROOMS: Record<string, Room> = {
       },
       {
         id: 'reverbere',
-        x: 168,
+        x: 120,
         y: 76,
         sprite: 'reverbere',
         dialogue: 'reverbere',
       },
     ],
     doors: [
-      { x: 0, y: 88, w: 8, h: 16, to: { room: 'nantes', x: 144, y: 104 } },
+      { x: 0, y: 88, w: 8, h: 16, to: { room: 'ecole', x: 144, y: 104 } },
       // Vers l'est, la ville. C'est ce que le naufrage permet : papa ne regarde plus
       // par ici. C'était la promesse de toute la chaîne du poisson.
       {
@@ -1529,7 +1676,7 @@ export const ROOMS: Record<string, Room> = {
         y: 88,
         w: 8,
         h: 16,
-        to: { room: 'terrasse', x: 16, y: 104 },
+        to: { room: 'bars', x: 16, y: 104 },
         needsFlag: 'bateau-coule',
         blockedDialogue: ['quai-est'],
       },
