@@ -1529,13 +1529,8 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
       speaker: 'L’Éléphant',
       lines: ['« ... »', '« Tu veux voir quelque chose ? »'],
       choice: {
-        oui: {
-          lines: [
-            'L’éléphant aspire une trompe entière d’Erdre.',
-            'Il la renvoie très haut, au-dessus du quai.',
-            'Ça retombe partout.',
-          ],
-        },
+        // Une seule ligne : le reste se voit. La trompe se lève, le jet part, il pleut.
+        oui: { lines: ['L’éléphant aspire une trompe entière d’Erdre.'] },
         non: { lines: ['« Comme tu veux. »', 'Il continue de boire.'] },
       },
     },
@@ -1545,11 +1540,8 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
   'maman-pluie': [
     {
       speaker: 'Maman',
-      lines: [
-        'Maman lève la tête.',
-        '« Il pleut ! »',
-        'Elle part en courant vers la maison, Hermione sous le bras.',
-      ],
+      // On ne raconte pas qu'elle part en courant : on la regarde partir en courant.
+      lines: ['Maman lève la tête.', '« Il pleut ! »'],
     },
   ],
 

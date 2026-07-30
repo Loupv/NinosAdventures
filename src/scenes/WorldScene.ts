@@ -187,6 +187,8 @@ export class WorldScene extends Phaser.Scene {
   private pigeonneries = 0;
   /** Gouttes de pluie en vol : la pluie de l'éléphant est plafonnée. */
   private gouttes = 0;
+  /** Et les giclées du bout de la trompe. */
+  private jets = 0;
   /** Combien de fois on a arrosé l'écureuil de la tour : il ne râle pas deux fois pareil. */
   private mouillé = 0;
   /** La vanne affichée au-dessus de lui, s'il y en a une. */
@@ -991,23 +993,9 @@ export class WorldScene extends Phaser.Scene {
     (l.go as Phaser.GameObjects.Image).setFrame('trompe');
     jouer(this, 'plouf', { volume: 0.7 });
 
-    // Le jet : il sort du bout de la trompe, très haut, et se perd hors du cadre.
-    const bout = { x: Math.round(l.go.x + 6), y: Math.round(l.go.y) };
-    for (let i = 0; i < 5; i++) {
-      const j = this.add
-        .image(bout.x, bout.y, texKey('goutte', this.pal))
-        .setOrigin(0.5, 0.5)
-        .setDepth(1200);
-      this.tweens.add({
-        targets: j,
-        x: bout.x + 30 + i * 14,
-        y: bout.y - 34 - i * 4,
-        duration: 500,
-        delay: i * 70,
-        ease: 'Quad.easeOut',
-        onComplete: () => j.destroy(),
-      });
-    }
+    // **Le jet ne s'arrête pas non plus.** Il sort du bout de la trompe et monte hors du cadre,
+    // en continu : c'est lui qui explique la pluie. Tant qu'on est là, il envoie de l'eau.
+    this.time.addEvent({ delay: 110, loop: true, callback: () => this.unJet(l) });
 
     // Puis la pluie, **sans fin** : une goutte toutes les quarante millisecondes, et il ne
     // s'arrête pas. La trompe reste levée, il continue d'envoyer de l'eau, et ça ne cesse que
@@ -1018,6 +1006,28 @@ export class WorldScene extends Phaser.Scene {
     this.time.delayedCall(1200, () => {
       if (this.room.id !== 'erdre') return;
       this.mamanVoitLaPluie();
+    });
+  }
+
+  /** Une giclée qui part du bout de la trompe et monte hors du cadre. */
+  private unJet(l: Live): void {
+    if (this.jets >= 8) return;
+    this.jets += 1;
+    const bout = { x: Math.round(l.go.x + 6), y: Math.round(l.go.y + 4) };
+    const j = this.add
+      .image(bout.x, bout.y, texKey('goutte', this.pal))
+      .setOrigin(0.5, 0.5)
+      .setDepth(1200);
+    this.tweens.add({
+      targets: j,
+      x: bout.x + 26 + Math.random() * 26,
+      y: bout.y - 40 - Math.random() * 20,
+      duration: 620,
+      ease: 'Quad.easeOut',
+      onComplete: () => {
+        this.jets -= 1;
+        j.destroy();
+      },
     });
   }
 

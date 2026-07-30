@@ -350,13 +350,17 @@ voit** : sa trompe se lève au-dessus de son dos (c'est une image de l'éléphan
 jet part de son bout, et **il pleut sur tout l'écran** pendant cinq secondes — des gouttes lâchées
 partout au hasard de la largeur, qui tombent et éclaboussent le quai.
 
-**Et la caméra va la voir.** Elle quitte Nino, se déplace jusqu'au banc — toute la scène est
+**Et on ne raconte pas ce qui se voit.** L'éléphant dit une phrase — *« L'éléphant aspire une
+trompe entière d'Erdre. »* — et c'est tout : le jet qui monte, l'averse, Maman qui détale, ça se
+regarde. Une ligne de texte par-dessus une image qui parle déjà est une ligne de trop.
+
+**La caméra va la voir.** Elle quitte Nino, se déplace jusqu'au banc — toute la scène est
 là-bas — et **Maman lève la tête sous l'averse** : *« Il pleut ! »* La réplique se lit pendant
 qu'elle est à l'écran, et ce n'est qu'après qu'elle se met à courir vers la maison, Hermione sous
 le bras. Avant, elle partait avant qu'on ait eu le temps de la voir.
 
-**La pluie ne s'arrête pas.** La trompe reste levée, il continue d'envoyer de l'eau, et ça tombe
-jusqu'à ce qu'on quitte l'écran — le minuteur meurt avec la scène. Quarante gouttes en vol au
+**La pluie ne s'arrête pas.** La trompe reste levée, **le jet continue de partir de son bout** et
+ça tombe jusqu'à ce qu'on quitte l'écran — le minuteur meurt avec la scène. Quarante gouttes en vol au
 maximum, ce qui est déjà une averse. Revenir plus tard, c'est revenir au sec : le banc est vide,
 le quai est libre, et personne ne reviendra vérifier le temps.
 
