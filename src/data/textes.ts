@@ -335,6 +335,11 @@ export const PIGEON: string[][] = [
   ['Un pigeon.', 'Il regarde le sol comme s’il y avait quelque chose.', 'Il n’y a rien.'],
   ['Le pigeon se décale de trois pas.', 'Il n’a pas regardé Nino une seule fois.'],
   ['Nino s’approche du pigeon.', 'Le pigeon fait comme s’il n’y avait personne.'],
+  [
+    'Le pigeon tourne la tête vers le trottoir vide.',
+    'Il regarde exprès ailleurs.',
+    'Pour avoir l’air occupé.',
+  ],
   ['Le pigeon a autre chose à faire.', 'Il s’éloigne, sans se presser.'],
   ['Nino dit bonjour au pigeon.', 'Le pigeon continue de marcher.'],
 ];
