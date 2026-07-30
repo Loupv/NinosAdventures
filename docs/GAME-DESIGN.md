@@ -336,7 +336,11 @@ C'est la branche implémentée. Elle sert de gabarit à toutes les suivantes.
    Au second plan, **un éléphant de douze mètres boit dans la rivière** — en bois, et il bouge
    les oreilles. Il est **dans** l'eau : la surface passe à la cheville, les pattes plongent et le
    bout de la trompe trempe. Posé dessus, il avait l'air de marcher sur l'Erdre ; coupé sous le
-   ventre, ce n'était plus qu'une caisse — il faut que **tout ce qui fait l'éléphant reste dehors**. Personne sur le quai ne s'arrête. C'est cette première rencontre qui rend drôle
+   ventre, ce n'était plus qu'une caisse — il faut que **tout ce qui fait l'éléphant reste dehors**.
+
+   Sa **trompe part loin vers l'avant**, en diagonale : quatre colonnes de dessin ajoutées à sa
+   gauche rien que pour elle. Sans cette longueur, la partie émergée était trop courte pour qu'on
+   y voie passer un poisson — et c'est tout l'enjeu de la scène suivante. Personne sur le quai ne s'arrête. C'est cette première rencontre qui rend drôle
    la deuxième, trente-et-un étages plus haut : on ne demandera jamais comment il est monté,
    mais on saura qu'il était en bas. Et lui s'en souvient : *« On s'est déjà vus. » « En bas. »
    « Je bois beaucoup. »*
@@ -347,7 +351,7 @@ C'est la branche implémentée. Elle sert de gabarit à toutes les suivantes.
 par une porte fermée, par sa mère. Et ce n'est pas un mur : **une ligne invisible à cinquante
 pixels de son banc**, où **ce n'est pas elle qui le repère, c'est lui qui s'arrête** :
 
-> *« C'est Maman. » « Et papa est sur son bateau. » « Ils ne doivent pas le voir ici. »*
+> *« C'est Maman. » « Et papa est sur son bateau. » « Ils ne doivent pas nous voir. »*
 
 Il fait un pas en arrière, et c'est fini. Se faire attraper par sa mère ne laisse rien à
 résoudre — elle décide, on subit ; **la voir de loin, si** : le problème est posé, et il est à
@@ -378,8 +382,9 @@ Avant ça l'éléphant boit, le poisson saute, et c'est tout ce qu'ils font.
 presser. Dans l'ordre, sans un mot de commentaire :
 
 1. Le poisson **nage jusqu'au bout de la trompe** et disparaît sous la surface.
-2. Une **bosse** apparaît sur la diagonale de la trompe, entre la tête et l'eau. C'est lui.
-   Au pied du tuyau, elle se confondait avec le menton.
+2. Une **bosse** apparaît au milieu de la trompe, en plein ciel entre la tête et l'eau. C'est lui.
+   Au pied du tuyau, elle se confondait avec le menton ; sur une trompe courte, elle ne se voyait
+   pas du tout.
 3. La trompe **se lève à mi-hauteur**, puis tout en haut — quatre images de l'éléphant, une toutes
    les huit dixièmes de seconde. Rien n'est tweené : ce sont des dessins qui se succèdent.
 4. La bosse **remonte** à chaque image, jusqu'en haut du tuyau.
@@ -408,6 +413,10 @@ le bras. Avant, elle partait avant qu'on ait eu le temps de la voir.
 Le travelling attend **deux choses** : que la pluie ait commencé, et que le cri du poisson ait été
 lu. Un joueur rapide envoyait Maman lever la tête sous un ciel sec ; un joueur lent voyait deux
 boîtes de dialogue se marcher dessus. Un compte à deux règle les deux cas.
+
+Et quand la caméra est revenue sur lui, le quai vide, il conclut — *« Elle ne nous a pas vus… »*
+C'est le seul commentaire de toute la séquence, et il ne décrit rien de ce qu'on vient de voir :
+il dit ce que Nino en retient, c'est-à-dire qu'il l'a échappé belle.
 
 **La pluie ne s'arrête pas.** La trompe reste levée, **le jet continue de partir de son bout** et
 ça tombe jusqu'à ce qu'on quitte l'écran — le minuteur meurt avec la scène. Quarante gouttes en vol au

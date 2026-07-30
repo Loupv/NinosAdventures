@@ -12,6 +12,7 @@ import {
   ARAIGNEE_PARTIE,
   NAUFRAGE,
   AU_BORD_DE_LEAU,
+  MAMAN_PARTIE,
   POISSON_PART,
   PAPA_NAGE,
   ARROSES,
@@ -875,12 +876,13 @@ export class WorldScene extends Phaser.Scene {
     state.setFlag('poisson-parti');
     const img = elephant.go as Phaser.GameObjects.Sprite;
 
-    // Il nage jusqu'au bout de la trompe, sous la surface, et on ne le revoit qu'en l'air.
+    // Il nage jusqu'au bout de la trompe, sous la surface, et on ne le revoit qu'en l'air. Le bout
+    // est tout à gauche du dessin, là où la trompe plonge : deux pixels après le bord.
     if (poisson) {
       this.tweens.add({
         targets: poisson.go,
-        x: elephant.go.x + 12,
-        y: 62,
+        x: elephant.go.x + 2,
+        y: 60,
         duration: 800,
         ease: 'Sine.easeInOut',
         onComplete: () => {
@@ -1103,7 +1105,7 @@ export class WorldScene extends Phaser.Scene {
       if (poisson.go instanceof Phaser.GameObjects.Sprite) {
         poisson.go.play(animKey('poisson-saut', this.pal));
       }
-      poisson.go.setPosition(l.go.x + 6, l.go.y).setVisible(true);
+      poisson.go.setPosition(l.go.x + 14, l.go.y).setVisible(true);
       this.tweens.add({
         targets: poisson.go,
         x: this.roomW + 30,
@@ -1151,7 +1153,7 @@ export class WorldScene extends Phaser.Scene {
   private unJet(l: Live): void {
     if (this.jets >= 8) return;
     this.jets += 1;
-    const bout = { x: Math.round(l.go.x + 6), y: Math.round(l.go.y + 2) };
+    const bout = { x: Math.round(l.go.x + 14), y: Math.round(l.go.y + 2) };
     const j = this.add
       .image(bout.x, bout.y, texKey('goutte', this.pal))
       .setOrigin(0.5, 0.5)
@@ -1255,7 +1257,9 @@ export class WorldScene extends Phaser.Scene {
       cam.pan(this.player.sprite.x, cam.midPoint.y, 700, 'Sine.easeInOut');
       this.time.delayedCall(760, () => {
         cam.startFollow(this.player.sprite, true, 0.15, 0.15);
-        state.locked = false;
+        // Le seul commentaire de la scène, et il arrive quand le quai est vide : ce n'est pas une
+        // description de ce qu'on vient de voir, c'est ce que Nino en conclut.
+        say({ lines: MAMAN_PARTIE, focusY: 130 });
       });
     });
   }

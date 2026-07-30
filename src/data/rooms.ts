@@ -428,7 +428,7 @@ export const ROOMS: Record<string, Room> = {
       },
       {
         id: 'elephant',
-        x: 44,
+        x: 36,
         y: 34,
         sprite: 'elephant',
         frame: 'boit',
@@ -1675,7 +1675,7 @@ export const ROOMS: Record<string, Room> = {
       // boire. On le reverra trente-et-un étages plus haut, et personne ne demandera comment.
       {
         id: 'elephant-erdre',
-        x: 148,
+        x: 140,
         y: 26,
         sprite: 'elephant',
         frame: 'boit',

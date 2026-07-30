@@ -815,6 +815,13 @@ const DEVOIRS: Record<string, Devoir> = {
  * **Ce que dit un poisson qu'on envoie à la mer.** Une seule voyelle, tenue le temps du vol : il
  * n'a rien demandé de plus précis, et il avait dit d'accord.
  */
+/**
+ * **Ce qu'il se dit une fois le quai vide.** Trois mots, au moment où la caméra est revenue sur
+ * lui : c'est le seul commentaire de toute la scène, et il ne raconte rien qu'on ait vu — il dit
+ * ce que Nino en conclut, c'est-à-dire qu'il l'a échappé belle.
+ */
+export const MAMAN_PARTIE = ['Elle ne nous a pas vus…'];
+
 export const POISSON_PART = { qui: 'Le poisson', lignes: ['« Aaaaaaaaaaaaaah. »'] };
 
 export const BAREME: Bareme[] = [
@@ -1519,7 +1526,7 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
       lines: [
         'C’est Maman.',
         'Et papa est sur son bateau.',
-        'Ils ne doivent pas le voir ici.',
+        'Ils ne doivent pas nous voir.',
       ],
       effects: { flag: 'maman-quai-vue' },
     },
