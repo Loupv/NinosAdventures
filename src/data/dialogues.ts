@@ -41,15 +41,36 @@ export interface Enigme {
 }
 
 /**
- * **Un devoir noté.** Plusieurs réponses possibles, **aucune fausse** : chacune a sa
- * réplique et sa note sur vingt. C'est l'inverse d'une énigme — on ne cherche pas la bonne
+ * **Une étape de devoir** : une question, des réponses, et pour chacune ce que la maîtresse
+ * répond et ce que ça vaut en points.
+ */
+export interface EtapeDevoir {
+  /**
+   * La question. **Absente pour la première étape** : c'est la réplique d'accueil du beat qui
+   * la porte, et les choix s'ouvrent dessus — sinon il faudrait valider une boîte pour rien.
+   */
+  lines?: string[];
+  reponses: string[];
+  /** Une entrée par réponse, dans le même ordre. */
+  retours: Array<Branch & { points: number }>;
+}
+
+/**
+ * **Un devoir noté.** Une petite discussion : deux ou trois questions à la suite, **aucune
+ * mauvaise réponse**, et chaque choix ajoute des points. À la fin, le barème donne la note et
+ * ce que la maîtresse en dit. C'est l'inverse d'une énigme — on ne cherche pas la bonne
  * réponse, on choisit ce qu'on a envie de dire, et le résultat n'est pas un verrou mais une
  * note. Rien ne se bloque jamais derrière un devoir.
  */
 export interface Devoir {
-  reponses: string[];
-  /** Une entrée par réponse, dans le même ordre. */
-  retours: Array<Branch & { note: number }>;
+  etapes: EtapeDevoir[];
+}
+
+/** Une ligne du barème : à partir de `min` points, cette note et ce qu'elle dit. */
+export interface Bareme {
+  min: number;
+  note: number;
+  lines: string[];
 }
 
 export interface DialogueBeat {

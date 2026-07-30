@@ -76,11 +76,11 @@ salle de bain ──┤             │
         │        ┌ FENÊTRE ┐        │
         └────────┴────┬────┴────────┘
                       │ (une fois que le chat a parlé)
-                   NANTES   la place : un tram arrêté, un accordéon, un panneau
-                      │
-                  L'ÉCOLE   trois copains, la maîtresse, un ballon dégonflé
-                      │
-              LE BORD DE L'ERDRE   (papa, capitaine — puis papa, repêché)
+                   NANTES ─── (vers le haut) ─── L'ÉCOLE   la cour derrière une grille
+                 la place                            on parle à travers les barreaux
+       un tram arrêté, un accordéon
+                      │ (vers la droite)
+              LE BORD DE L'ERDRE   papa capitaine, l'éléphant qui boit, puis papa repêché
                       │ (une fois le bateau coulé)
               LA RUE DES BARS   deux terrasses, trois personnes très occupées
                       │
@@ -122,18 +122,34 @@ d'art de Nino : *« Rapporte-moi un objet, et explique-moi en quoi c'est de l'ar
 Chercher l'objet fait sortir de l'école et revenir : c'est la seule quête du jeu qui fait
 faire l'aller-retour, et elle passe par des écrans qu'on traverse de toute façon.
 
-Puis elle demande l'explication, et **c'est là que tout se joue** : ce qu'on apporte ne change
-que sa tête, ce qu'on en dit change la note. **Les trois réponses sont acceptées** — ce n'est
-pas une énigme, il n'y a rien à trouver :
+**Et on ne rentre pas dans l'école.** La cour est derrière une grille, en haut de l'écran ; Nino
+longe la rue en bas et parle **à travers les barreaux**. Un jour sans classe, la grille est
+fermée, et il y a quand même du monde dedans — personne ne vient ouvrir. Le ballon dégonflé, lui,
+est passé par-dessus il y a longtemps : il traîne dans la rue, du bon côté.
 
-| Ce que Nino répond | Ce qu'elle répond | Note |
+Puis vient **la discussion**, et c'est là que tout se joue : deux questions à la suite, propres
+à chaque objet, trois réponses chacune. *« À qui elle est, cette chaussure ? »*, *« Pourquoi ce
+bouchon-là ? »*, *« De quel oiseau ? »*, *« Elle est mâchée ? »* — puis, toujours, *« Et en quoi
+c'est de l'art ? »*
+
+**Aucune réponse n'est mauvaise.** Chacune vaut de zéro à trois points, et le total donne la
+note. Le principe d'écriture : ce qui rapporte le plus, c'est **de regarder l'objet pour ce
+qu'il est** — *« un bouchon qui ne bouche plus »*, *« un ticket qui ne va nulle part »*, *« un
+ballon qui ne rebondit plus »* — et *« je l'ai décidé »* gagne toujours, parce que c'est la
+réponse de Duchamp et que la maîtresse le sait.
+
+| Points | Note | Ce qu'elle dit |
 |---|---|---|
-| *« C'est un objet »* | *« Oui. Ça, je vois. »* | 8 |
-| *« Il a beaucoup vécu »* | *« Il a servi longtemps, et on ne sait pas à qui. »* | 16 |
-| *« Je l'ai décidé »* | *« ... »* — elle regarde l'objet très longtemps | 20 |
+| 6 | **20** | *« ... » « Vingt sur vingt. » « Ne le dis pas aux autres. »* |
+| 4–5 | **16** | *« C'est très joli, ce que tu dis. »* |
+| 2–3 | **12** | *« C'est un début. »* |
+| 0–1 | **8** | *« Tu as apporté quelque chose, c'est déjà ça. »* |
 
 On peut revenir avec autre chose autant qu'on veut : **la meilleure note est gardée**, jamais
 remplacée par une moins bonne. Un enfant qui a une meilleure idée ne doit pas pouvoir y perdre.
+
+Techniquement, `devoir` est une suite d'étapes — question, réponses, points — et un barème
+partagé. C'est le troisième type de réplique du jeu, à côté du choix Oui/Non et de l'énigme.
 
 La meilleure est celle que Duchamp aurait donnée, et c'est la maîtresse qui s'incline. La note
 s'affiche dans le journal et sur l'écran de fin, à côté des cachettes d'Hermione et des

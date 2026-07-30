@@ -14,6 +14,7 @@ import {
   REPECHAGE,
   ARROSES,
   ARROSE_DEFAUT,
+  BAREME,
   ECUREUIL_FUITE,
   ECUREUIL_MOUILLE,
   ECUREUIL_TREMPE,
@@ -2068,35 +2069,58 @@ export class WorldScene extends Phaser.Scene {
     if (!beat) return;
 
     /**
-     * **Un devoir noté.** Comme une énigme, sauf qu'aucune réponse n'est fausse : chacune a sa
-     * réplique et sa note. La note est un souvenir, pas un verrou — elle s'affiche dans le
-     * journal et sur l'écran de fin, et rien ne se ferme derrière elle.
+     * **Un devoir noté : une petite discussion.** Deux ou trois questions à la suite, aucune
+     * mauvaise réponse, et chaque choix ajoute des points. La première question est portée par
+     * la réplique d'accueil — les choix s'ouvrent dessus, sans boîte supplémentaire. À la fin,
+     * le barème donne la note et ce que la maîtresse en dit.
+     *
+     * La note est un souvenir, pas un verrou : elle s'affiche dans le journal et sur l'écran de
+     * fin, et rien ne se ferme derrière elle.
      */
     if (beat.devoir) {
-      const d = beat.devoir;
-      say({
-        speaker: beat.speaker,
-        lines: beat.lines,
-        choices: d.reponses,
-        focusY: l?.def.y,
-        onDone: (reponse) => {
-          const retour = d.retours[reponse ?? 0] ?? d.retours[0];
+      const etapes = beat.devoir.etapes;
+      let points = 0;
+      const suite = (i: number) => {
+        if (i >= etapes.length) {
+          const bareme = BAREME.find((b) => points >= b.min) ?? BAREME[BAREME.length - 1];
           // On garde la meilleure : un enfant qui revient avec une autre idée ne doit pas
           // pouvoir *perdre* sa note.
-          state.note = Math.max(state.note, retour.note);
-          jouer(this, retour.note >= 16 ? 'enigme-juste' : 'enigme-faux', { volume: 0.6 });
+          state.note = Math.max(state.note, bareme.note);
+          jouer(this, bareme.note >= 16 ? 'enigme-juste' : 'valider', { volume: 0.6 });
           say({
             speaker: beat.speaker,
-            lines: retour.lines,
+            lines: bareme.lines,
             focusY: l?.def.y,
             onDone: () => {
-              this.applyEffects(retour.effects, l);
               state.save();
               bus.emit(EV.hud);
             },
           });
-        },
-      });
+          return;
+        }
+        const e = etapes[i];
+        say({
+          speaker: beat.speaker,
+          // La première étape n'a pas de question : c'est l'accueil qui la pose.
+          lines: e.lines ?? (i === 0 ? beat.lines : []),
+          choices: e.reponses,
+          focusY: l?.def.y,
+          onDone: (reponse) => {
+            const retour = e.retours[reponse ?? 0] ?? e.retours[0];
+            points += retour.points;
+            say({
+              speaker: beat.speaker,
+              lines: retour.lines,
+              focusY: l?.def.y,
+              onDone: () => {
+                this.applyEffects(retour.effects, l);
+                suite(i + 1);
+              },
+            });
+          },
+        });
+      };
+      suite(0);
       return;
     }
 

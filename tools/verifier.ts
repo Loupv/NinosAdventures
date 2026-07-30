@@ -16,7 +16,7 @@ import { IMAGES, SHEETS } from '../src/art/sprites';
 import { CACHETTES, CACHETTES_MAISON } from '../src/data/hermione';
 import { DIALOGUES } from '../src/data/dialogues';
 
-const SOLID = new Set(['#', '~', 'X', 'T', 'V', 'Q', 'M']);
+const SOLID = new Set(['#', '~', 'X', 'T', 'V', 'Q', 'M', 'G']);
 
 /** Taille de chaque dessin, en pixels. */
 const dim: Record<string, [number, number]> = {};

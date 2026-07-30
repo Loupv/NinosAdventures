@@ -132,6 +132,22 @@ const VILLE: Record<string, Art> = {
     '00000000',
   ],
   /**
+   * **La grille de l'école** : barreaux sombres tous les quatre pixels, sur le ton du sol. Elle
+   * est opaque — un vrai vide laisserait voir le fond du canevas — mais assez ajourée pour
+   * qu'on voie la cour derrière, et c'est tout ce qu'on lui demande : Nino reste dans la rue et
+   * parle à travers.
+   */
+  G: [
+    '00000000',
+    '03330333',
+    '03330333',
+    '03330333',
+    '03330333',
+    '03330333',
+    '03330333',
+    '00000000',
+  ],
+  /**
    * Dalles de béton du parvis. Solide (`V`), et **claire** : au pied de la tour, de nuit, un
    * sol en pierre sombre donnait un écran noir où l'on ne voyait plus rien.
    */
@@ -314,4 +330,4 @@ export const THEMES: Record<ThemeId, Record<string, Art>> = {
 };
 
 /** Caractères qui bloquent le passage. */
-export const SOLID = new Set(['#', '~', 'X', 'T', 'V', 'Q', 'M']);
+export const SOLID = new Set(['#', '~', 'X', 'T', 'V', 'Q', 'M', 'G']);

@@ -1222,8 +1222,9 @@ export const ROOMS: Record<string, Room> = {
     theme: 'ville',
     spawn: { x: 80, y: 56 },
     tiles: [
-      INT.wall,
-      INT.wall,
+      // La rue de l'école part vers le haut, au milieu.
+      '########....########',
+      '########....########',
       INT.floor,
       INT.floor,
       '#,,,,,,,,,,,,,,,,,,#',
@@ -1318,29 +1319,31 @@ export const ROOMS: Record<string, Room> = {
       },
     ],
     doors: [
-      { x: 152, y: 96, w: 8, h: 16, to: { room: 'ecole', x: 16, y: 104 } },
+      // L'école est **en haut**, l'Erdre à droite, la maison en bas.
+      { x: 64, y: 0, w: 32, h: 8, to: { room: 'ecole', x: 80, y: 128 } },
+      { x: 152, y: 96, w: 8, h: 16, to: { room: 'erdre', x: 24, y: 96 } },
       { x: 48, y: 136, w: 16, h: 8, to: { room: 'cour', x: 48, y: 30 } },
     ],
   },
 
   /**
-   * Le bord de l'Erdre, **vu de profil** : deux écrans de long, on marche à
-   * l'horizontale et on saute. Le bateau de papa flotte au second plan, derrière
-   * Nino, plus haut à l'écran — donc plus loin.
-   */
-  /**
-   * **La cour de l'école**, entre la place et la rivière. On n'y va pas pour l'école : on
-   * passe devant, et il y a du monde dans la cour un jour où il n'y a pas classe. Personne ne
-   * s'en étonne, la maîtresse non plus.
+   * **L'école, au nord de la place.** On n'y entre pas : on longe la rue, et la cour est
+   * derrière une grille. Un jour sans classe, la grille est fermée, et il y a quand même du
+   * monde dedans — la maîtresse et trois enfants, à qui on parle à travers les barreaux.
    *
-   * Les trois copains n'ont pas encore de nom — ils sont dans le casting comme ça, et c'est
-   * volontaire : ce sont ceux de la vraie vie, ils se nommeront tout seuls.
+   * Les trois copains n'ont pas encore de nom : ils sont dans le casting comme ça, et c'est
+   * volontaire — ce sont ceux de la vraie vie, ils se nommeront tout seuls.
    */
   ecole: {
     id: 'ecole',
     palette: 'ville',
     theme: 'ville',
-    spawn: { x: 16, y: 104 },
+    spawn: { x: 80, y: 128 },
+    /**
+     * **La rue en bas, la cour derrière la grille.** Nino ne rentre pas dans l'école : il longe
+     * le trottoir, et il parle à travers les barreaux. C'est ce qui rend la scène juste — un
+     * jour sans classe, la grille est fermée, et il y a quand même du monde dedans.
+     */
     tiles: [
       INT.wall,
       INT.wall,
@@ -1351,41 +1354,42 @@ export const ROOMS: Record<string, Room> = {
       INT.floor,
       INT.floor,
       INT.floor,
+      '#GGGGGGGGGGGGGGGGGG#',
       INT.floor,
-      INT.floor,
-      INT.floor,
-      '....................',
-      '....................',
       INT.floor,
       INT.floor,
       '#,,,,,,,,,,,,,,,,,,#',
-      INT.wall,
+      INT.floor,
+      INT.floor,
+      INT.floor,
+      '######......########',
     ],
     objects: [
-      { id: 'grille', x: 72, y: 16, sprite: 'porte', solid: true, dialogue: 'grille-ecole' },
-      { id: 'panneau-ecole', x: 32, y: 18, sprite: 'panneau', solid: true, dialogue: 'panneau-ecole' },
-      { id: 'maitresse', x: 76, y: 52, sprite: 'maitresse', priorite: 2, dialogue: 'maitresse' },
+      // ── derrière la grille : la cour ──
+      { id: 'maitresse', x: 56, y: 54, sprite: 'maitresse', priorite: 2, portee: 22, dialogue: 'maitresse' },
       {
         id: 'copain1',
         x: 36,
-        y: 60,
+        y: 57,
         sprite: 'copain',
         priorite: 2,
+        portee: 20,
         dialogue: 'copain1',
-        errance: { rayon: 20, vitesse: 24 },
+        errance: { rayon: 16, vitesse: 22 },
       },
-      { id: 'copain2', x: 112, y: 40, sprite: 'copain', priorite: 2, dialogue: 'copain2' },
-      { id: 'copain3', x: 128, y: 88, sprite: 'copain', priorite: 2, dialogue: 'copain3' },
-      { id: 'ballon-ecole', x: 60, y: 96, sprite: 'ballon', dialogue: 'ballon-ecole', hideIfFlag: 'ballon-pris' },
-      // Le seul arbre du jeu, et toute l'ombre de la cour tient dessous.
-      { id: 'arbre', x: 128, y: 20, sprite: 'arbre', solid: [6, 18, 8, 6], dialogue: 'arbre' },
-      { id: 'banc', x: 36, y: 108, sprite: 'banc', solid: true, dialogue: 'banc' },
-      { id: 'plante', x: 20, y: 84, sprite: 'plante', solid: true },
+      { id: 'copain2', x: 112, y: 57, sprite: 'copain', priorite: 2, portee: 20, dialogue: 'copain2' },
+      { id: 'copain3', x: 132, y: 40, sprite: 'copain', priorite: 2, portee: 20, dialogue: 'copain3' },
+      // Le seul arbre du jeu, dans un coin de la cour.
+      { id: 'arbre', x: 16, y: 16, sprite: 'arbre', solid: [6, 18, 8, 6], dialogue: 'arbre' },
+      { id: 'banc', x: 96, y: 20, sprite: 'banc', solid: true, dialogue: 'banc' },
+      // ── dans la rue : la grille, le panneau, et le ballon passé par-dessus ──
+      { id: 'grille', x: 72, y: 66, sprite: 'porte', solid: true, dialogue: 'grille-ecole' },
+      { id: 'panneau-ecole', x: 28, y: 68, sprite: 'panneau', solid: true, dialogue: 'panneau-ecole' },
+      { id: 'ballon-ecole', x: 120, y: 100, sprite: 'ballon', dialogue: 'ballon-ecole', hideIfFlag: 'ballon-pris' },
+      { id: 'poubelle', x: 52, y: 92, sprite: 'poubelle', solid: true, dialogue: 'poubelle' },
+      { id: 'pigeon', x: 88, y: 120, sprite: 'pigeon', dialogue: 'pigeon' },
     ],
-    doors: [
-      { x: 0, y: 96, w: 8, h: 16, to: { room: 'nantes', x: 144, y: 104 } },
-      { x: 152, y: 96, w: 8, h: 16, to: { room: 'erdre', x: 24, y: 96 } },
-    ],
+    doors: [{ x: 48, y: 136, w: 48, h: 8, to: { room: 'nantes', x: 80, y: 26 } }],
   },
 
   /**
@@ -1601,6 +1605,10 @@ export const ROOMS: Record<string, Room> = {
     ],
   },
 
+  /**
+   * Le bord de l'Erdre, **vu de profil** : deux écrans de long, on marche à l'horizontale. Le
+   * bateau de papa est tout au bout du quai, et l'Éléphant des Machines boit au second plan.
+   */
   erdre: {
     id: 'erdre',
     palette: 'eau',
@@ -1740,7 +1748,7 @@ export const ROOMS: Record<string, Room> = {
       },
     ],
     doors: [
-      { x: 0, y: 88, w: 8, h: 16, to: { room: 'ecole', x: 144, y: 104 } },
+      { x: 0, y: 88, w: 8, h: 16, to: { room: 'nantes', x: 144, y: 104 } },
       // Vers l'est, la ville. C'est ce que le naufrage permet : papa ne regarde plus
       // par ici. C'était la promesse de toute la chaîne du poisson.
       {

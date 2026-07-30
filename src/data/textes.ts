@@ -22,7 +22,7 @@
  * phrases : rien ne casse.
  */
 import { state } from '../systems/state';
-import type { DialogueBeat } from './dialogues';
+import type { Bareme, DialogueBeat, Devoir } from './dialogues';
 import type { ItemId } from './items';
 
 // ═══════════════════════════════════════════════════════════════ 1. l'interface
@@ -552,74 +552,220 @@ const OFFRABLES: ItemId[] = [
 ];
 
 /**
- * **Ce que la maîtresse dit selon l'objet posé sur sa table.** Une entrée par objet offrable ;
- * ajouter un objet au projet d'art = une ligne ici et une dans `OFFRABLES`.
+ * **La discussion du projet d'art, objet par objet.**
+ *
+ * Chaque objet a son accueil (ce que la maîtresse dit en le voyant arriver sur sa table, la
+ * dernière ligne étant sa première question) puis **deux questions**, avec trois réponses
+ * chacune. Aucune n'est fausse ; elles valent de zéro à trois points, et le total donne la note
+ * par le barème plus bas.
+ *
+ * Le principe d'écriture : **la réponse qui rapporte le plus est celle qui regarde l'objet
+ * pour ce qu'il est**, pas celle qui cherche à faire joli. Et « je l'ai décidé » gagne toujours,
+ * parce que c'est la réponse de Duchamp et que la maîtresse le sait.
+ *
+ * Les réponses tiennent en vingt caractères : la fenêtre de choix fait cent seize pixels
+ * utiles, au-delà elles sont coupées en deux.
  */
 const ACCUEILS: Record<string, string[]> = {
   chaussure: [
     '« Ah ! Tu as apporté quelque chose. »',
     'Nino pose une vieille chaussure sur la table.',
-    '« Bien. Explique-moi en quoi c’est de l’art. »',
+    '« À qui elle est, cette chaussure ? »',
   ],
   bouchon: [
     'Nino pose un bouchon de baignoire sur la table.',
     '« Un bouchon. »',
-    '« Explique-moi en quoi c’est de l’art. »',
+    '« Pourquoi celui-là ? »',
   ],
   noisette: [
     'Nino pose une noisette sur la table.',
     'La maîtresse la regarde. La noisette ne bouge pas.',
-    '« Explique-moi en quoi c’est de l’art. »',
+    '« Tu l’as trouvée où ? »',
   ],
   ticket: [
     'Nino pose un ticket de tram sur la table.',
     '« Poinçonné, en plus. »',
-    '« Explique-moi en quoi c’est de l’art. »',
+    '« Il va où, ce ticket ? »',
   ],
   'ballon-degonfle': [
-    'Nino pose le ballon dégonflé de la cour sur la table.',
+    'Nino pose le ballon dégonflé de la rue sur la table.',
     '« Celui-là ? Il est à l’école, Nino. »',
-    '« Bon. Explique-moi en quoi c’est de l’art. »',
+    '« Tu l’as pris comment ? »',
   ],
   plume: [
-    'Nino pose une plume de héron sur la table.',
+    'Nino pose une plume sur la table.',
     '« Oh. »',
-    '« Explique-moi en quoi c’est de l’art. »',
+    '« De quel oiseau ? »',
   ],
   pizza: [
-    'Nino pose un bout de pizza mâché sur la table.',
+    'Nino pose un bout de pizza sur la table.',
     '« ... »',
-    '« Explique-moi en quoi c’est de l’art. »',
+    '« Elle est mâchée ? »',
   ],
 };
 
-/**
- * **Les trois explications, pour n'importe quel objet.** Aucune n'est fausse, elles ne valent
- * pas la même note, et la meilleure est celle de Duchamp. Les phrases restent courtes : la
- * fenêtre de choix fait cent seize pixels utiles, au-delà elles sont coupées en deux.
- */
-const EXPLICATIONS = {
-  reponses: ['C’est un objet', 'Il a beaucoup vécu', 'Je l’ai décidé'],
-  retours: [
-    { note: 8, lines: ['« Oui. Ça, je vois. »', '« Huit sur vingt, Nino. »'] },
-    {
-      note: 16,
-      lines: [
-        '« Ah. »',
-        '« Il a servi longtemps, et on ne sait pas à qui. »',
-        '« Seize sur vingt. C’est joli, ça. »',
-      ],
-    },
-    {
-      note: 20,
-      lines: [
-        '« ... »',
-        'La maîtresse regarde l’objet très longtemps.',
-        '« Vingt sur vingt. »',
-      ],
-    },
-  ],
+/** Une question, ses trois réponses, et ce que chacune vaut. */
+const DEVOIRS: Record<string, Devoir> = {
+  chaussure: {
+    etapes: [
+      {
+        reponses: ['À personne', 'À moi', 'Je ne sais pas'],
+        retours: [
+          { points: 2, lines: ['« Une chaussure à personne. »', '« Bon. »'] },
+          { points: 0, lines: ['« Elle est beaucoup trop grande. »'] },
+          { points: 3, lines: ['« Voilà. »', '« C’est déjà une réponse. »'] },
+        ],
+      },
+      {
+        lines: ['« Et en quoi c’est de l’art ? »'],
+        reponses: ['Elle a marché', 'Elle est sale', 'Je l’ai décidé'],
+        retours: [
+          { points: 2, lines: ['« Longtemps, et on ne sait pas où. »'] },
+          { points: 0, lines: ['« Ça, c’est vrai. »'] },
+          { points: 3, lines: ['La maîtresse repose la chaussure très doucement.'] },
+        ],
+      },
+    ],
+  },
+  bouchon: {
+    etapes: [
+      {
+        reponses: ['Il a sauvé un poisson', 'Il traînait', 'Il est joli'],
+        retours: [
+          { points: 3, lines: ['« Un bouchon qui sauve un poisson. »', '« Continue. »'] },
+          { points: 0, lines: ['« Ah. »'] },
+          { points: 1, lines: ['« Il est rond, c’est sûr. »'] },
+        ],
+      },
+      {
+        lines: ['« Et en quoi c’est de l’art ? »'],
+        reponses: ['Il ne bouche plus rien', 'Il a servi', 'C’est rond'],
+        retours: [
+          { points: 3, lines: ['« Un bouchon qui ne bouche plus. »', '« Oui. »'] },
+          { points: 2, lines: ['« À quelque chose d’important, même. »'] },
+          { points: 0, lines: ['« Oui. »', '« Bon. »'] },
+        ],
+      },
+    ],
+  },
+  noisette: {
+    etapes: [
+      {
+        reponses: ['Un écureuil', 'Dans ma cour', 'Je ne sais plus'],
+        retours: [
+          { points: 3, lines: ['« Un écureuil l’a oubliée. »', '« Évidemment. »'] },
+          { points: 1, lines: ['« Elle était là, comme ça. »'] },
+          { points: 2, lines: ['« Personne ne sait, alors. »'] },
+        ],
+      },
+      {
+        lines: ['« Et en quoi c’est de l’art ? »'],
+        reponses: ['Il y a un arbre dedans', 'C’est petit', 'Ça se mange'],
+        retours: [
+          { points: 3, lines: ['« ... »', '« Un arbre entier, là-dedans. »'] },
+          { points: 2, lines: ['« Petit, et personne ne la regarde. »'] },
+          { points: 0, lines: ['« Pas celle-là. Elle est vide. »'] },
+        ],
+      },
+    ],
+  },
+  ticket: {
+    etapes: [
+      {
+        reponses: ['Nulle part', 'Il a déjà servi', 'À l’Erdre'],
+        retours: [
+          { points: 3, lines: ['« Un ticket qui ne va nulle part. »', '« Bien. »'] },
+          { points: 2, lines: ['« Quelqu’un est monté avec, oui. »'] },
+          { points: 1, lines: ['« Le tram ne va pas jusqu’à l’eau. »'] },
+        ],
+      },
+      {
+        lines: ['« Et en quoi c’est de l’art ? »'],
+        reponses: ['Je l’ai décidé', 'Il a été gardé', 'C’est du papier'],
+        retours: [
+          { points: 3, lines: ['« Voilà. »', '« C’est exactement ça. »'] },
+          { points: 2, lines: ['« Par terre, ce n’est pas gardé. »', '« Mais presque. »'] },
+          { points: 0, lines: ['« Du papier, oui. »'] },
+        ],
+      },
+    ],
+  },
+  'ballon-degonfle': {
+    etapes: [
+      {
+        reponses: ['Il m’a suivi', 'Il était tout seul', 'Je l’ai pris'],
+        retours: [
+          { points: 3, lines: ['« Il t’a suivi. »', '« D’accord. »'] },
+          { points: 2, lines: ['« Depuis le mois dernier, oui. »'] },
+          { points: 1, lines: ['« Au moins tu le dis. »'] },
+        ],
+      },
+      {
+        lines: ['« Et en quoi c’est de l’art ? »'],
+        reponses: ['Il ne rebondit plus', 'On a joué avec', 'Il est rond'],
+        retours: [
+          { points: 3, lines: ['« Un ballon qui ne rebondit plus. »', '« C’est triste et c’est beau. »'] },
+          { points: 2, lines: ['« Toute l’école a joué avec. »'] },
+          { points: 0, lines: ['« Plus vraiment, justement. »'] },
+        ],
+      },
+    ],
+  },
+  plume: {
+    etapes: [
+      {
+        reponses: ['Un héron', 'Je ne sais pas', 'Un pigeon'],
+        retours: [
+          { points: 3, lines: ['« Un héron. »', '« Tu l’as vu ? »', '« Bien. »'] },
+          { points: 2, lines: ['« Un oiseau, en tout cas. »'] },
+          { points: 1, lines: ['« Les pigeons n’ont pas de plumes comme ça. »'] },
+        ],
+      },
+      {
+        lines: ['« Et en quoi c’est de l’art ? »'],
+        reponses: ['Elle volait', 'Je l’ai décidé', 'Elle est douce'],
+        retours: [
+          { points: 3, lines: ['« Elle volait, et maintenant elle est là. »'] },
+          { points: 3, lines: ['« Voilà. »', '« C’est ça. »'] },
+          { points: 1, lines: ['« Oui. »'] },
+        ],
+      },
+    ],
+  },
+  pizza: {
+    etapes: [
+      {
+        reponses: ['C’est le chat', 'Elle était comme ça', 'C’est moi'],
+        retours: [
+          { points: 3, lines: ['« Le chat. »', '« Bien sûr. »'] },
+          { points: 0, lines: ['« Mmh. »'] },
+          { points: 1, lines: ['« Au moins tu le dis. »'] },
+        ],
+      },
+      {
+        lines: ['« Et en quoi c’est de l’art ? »'],
+        reponses: ['Je l’ai décidé', 'Quelqu’un l’a commencée', 'Ça se mange'],
+        retours: [
+          { points: 3, lines: ['« ... »', '« Tu as gagné, Nino. »'] },
+          { points: 2, lines: ['« Un chat, mais quelqu’un. »'] },
+          { points: 0, lines: ['« Plus maintenant. »'] },
+        ],
+      },
+    ],
+  },
 };
+
+/**
+ * **Le barème.** Six points au maximum, quatre notes possibles, et **jamais de mauvaise
+ * note** : le pire qu'on puisse faire est huit sur vingt pour avoir apporté quelque chose. La
+ * première ligne dont `min` est atteint gagne, donc l'ordre est décroissant.
+ */
+export const BAREME: Bareme[] = [
+  { min: 6, note: 20, lines: ['« ... »', '« Vingt sur vingt. »', '« Ne le dis pas aux autres. »'] },
+  { min: 4, note: 16, lines: ['« Seize sur vingt. »', '« C’est très joli, ce que tu dis. »'] },
+  { min: 2, note: 12, lines: ['« Douze sur vingt. »', '« C’est un début. »'] },
+  { min: 0, note: 8, lines: ['« Huit sur vingt. »', '« Tu as apporté quelque chose, c’est déjà ça. »'] },
+];
 
 export const DIALOGUES: Record<string, DialogueBeat[]> = {
   // ------------------------------------------------------------- la chambre
@@ -1536,15 +1682,21 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
   'grille-ecole': [
     {
       lines: [
-        'La grille de l’école, grande ouverte.',
-        'Un jour sans classe, et il y a du monde dans la cour.',
-        'Personne ne trouve ça bizarre.',
+        'La grille de l’école est fermée.',
+        'Un jour sans classe, et il y a quand même du monde dans la cour.',
+        'Personne ne vient ouvrir.',
       ],
     },
   ],
 
   'panneau-ecole': [
-    { lines: ['Des dessins sont accrochés derrière la vitre.', 'Il y en a un de Nino.'] },
+    {
+      lines: [
+        'Le panneau d’affichage, accroché à la grille.',
+        'Des dessins derrière la vitre.',
+        'Il y en a un de Nino.',
+      ],
+    },
   ],
 
   /**
@@ -1564,7 +1716,7 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
       when: () => state.flag('devoir-donne') && state.has(id),
       speaker: 'La maîtresse',
       lines: ACCUEILS[id],
-      devoir: EXPLICATIONS,
+      devoir: DEVOIRS[id],
     })),
     {
       when: () => state.note > 0,
@@ -1678,8 +1830,8 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
   'ballon-ecole': [
     {
       lines: [
-        'Un ballon, dégonflé.',
-        'Il est là depuis le mois dernier.',
+        'Un ballon dégonflé, dans la rue.',
+        'Il est passé par-dessus la grille il y a longtemps.',
         'Nino le prend. Personne ne dit rien.',
       ],
       effects: { give: 'ballon-degonfle', flag: 'ballon-pris' },
