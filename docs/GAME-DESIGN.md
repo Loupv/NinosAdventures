@@ -1125,8 +1125,9 @@ Quatre remarques sur ces énigmes :
 
 Il est **inutilement gros, mais pas absurde** : trois fois le dessin, quatre-vingt-dix pixels de
 long dans un palier qui n'en fait que quatre-vingts entre ses murs. Il est donc **coincé entre les
-deux**, il dépasse de cinq pixels de chaque côté sans jamais sortir dans le noir, et il tient **la
-moitié haute** de la pièce. À cinq fois le dessin il remplissait l'écran entier : ça ne ressemblait
+deux**, il dépasse de cinq pixels de chaque côté, et il tient **toute la moitié haute** de la pièce
+— sa tête mange même le mur du fond et la bande noire au-dessus. Déborder par le haut ne se voit
+pas comme un défaut : il n'y a rien là-haut, et ça dégage tout le bas. À cinq fois le dessin il remplissait l'écran entier : ça ne ressemblait
 plus à un éléphant trop grand, ça ressemblait à un bug.
 
 C'est ce qui pose sans l'écrire la question qu'on ne pose jamais — sauf une fois, la première, et
@@ -1137,9 +1138,10 @@ enchaîne sur ses retrouvailles et son énigme.
 immobile qui remue une oreille est vivant ; le même qui trempe sa trompe dans un plancher est un
 décor mal réglé.
 
-Et **le second escalier s'ouvre juste à droite de celui d'arrivée**, en bas du palier : on débouche
-des marches, on lève la tête sur un éléphant qui occupe tout le fond, et les marches suivantes sont
-à deux pas — pas de l'autre côté d'un animal de douze mètres.
+Et **le second escalier s'ouvre en bas à droite, contre le mur** : du même côté que celui d'arrivée,
+mais à l'autre bout du palier. On débouche des marches, on lève la tête sur un éléphant qui occupe
+tout le fond, et il n'y a qu'à longer le bas de la pièce — pas à faire le tour d'un animal de douze
+mètres.
 
 ### Voler
 

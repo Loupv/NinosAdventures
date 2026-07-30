@@ -444,13 +444,14 @@ export const ROOMS: Record<string, Room> = {
     objects: [
       { id: 'escalier-bas', x: 44, y: 84, sprite: 'escalier', depth: 88 },
       /**
-       * **Le second escalier s'ouvre juste à droite de celui d'arrivée**, en bas du palier. On
-       * débouche des marches, on lève la tête sur un éléphant qui occupe tout le fond, et les
-       * marches suivantes sont à deux pas — pas de l'autre côté d'un animal de douze mètres.
+       * **Le second escalier s'ouvre en bas à droite**, contre le mur : du même côté que celui
+       * d'arrivée, mais à l'autre bout du palier. On débouche des marches, on lève la tête sur un
+       * éléphant qui occupe tout le fond, et il n'y a qu'à longer le bas de la pièce — pas à faire
+       * le tour d'un animal de douze mètres.
        */
       {
         id: 'escalier-haut',
-        x: 68,
+        x: 104,
         y: 84,
         sprite: 'escalier',
         depth: 88,
@@ -467,8 +468,10 @@ export const ROOMS: Record<string, Room> = {
        * quatre-vingt-dix, il est **coincé entre les deux**, et il dépasse d'autant de chaque côté
        * sans jamais sortir dans le noir. C'est précisément le bon effet — il ne rentre pas.
        *
-       * Il tient **la moitié haute du palier** : le bas reste dégagé pour les deux escaliers et
-       * pour Nino, qui marche devant lui sans avoir à en faire le tour.
+       * Il tient **la moitié haute du palier**, et il **dépasse par le haut** — sa tête mange le mur
+       * du fond et la bande noire au-dessus. Ce n'est pas un défaut : c'est le seul endroit où il
+       * pouvait déborder sans avoir l'air d'un bug, et ça dégage tout le bas pour les deux escaliers
+       * et pour Nino, qui marche devant lui sans avoir à en faire le tour.
        *
        * Il **ne boit pas** : il n'y a pas d'eau à cet étage. Seule l'oreille bat, très lentement, la trompe reste où elle est.
        * Et il est dessiné **derrière Nino** : à cette taille, sa profondeur naturelle l'aurait fait
@@ -477,7 +480,7 @@ export const ROOMS: Record<string, Room> = {
       {
         id: 'elephant',
         x: 35,
-        y: 34,
+        y: 22,
         sprite: 'elephant',
         frame: 'boit',
         anim: 'elephant-oreille',
@@ -490,7 +493,7 @@ export const ROOMS: Record<string, Room> = {
     doors: [
       { x: 44, y: 84, w: 16, h: 17, to: { room: 'tour-27', x: 108, y: 62 }, son: 'escalier' },
       {
-        x: 68,
+        x: 104,
         y: 84,
         w: 16,
         h: 17,
