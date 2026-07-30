@@ -1541,17 +1541,33 @@ const ELEPHANT_TROMPE: Art = [
 ];
 
 /**
- * **La même trompe, gonflée sur deux lignes** : le poisson dedans, en train de monter. On ne
- * recopie pas dix-neuf lignes d'éléphant pour déplacer une bosse — on remplace les lignes qui
- * changent, et elles restent lisibles telles quelles.
+ * **La même image, avec quelques lignes remplacées.** L'éléphant a huit variantes — la bosse du
+ * poisson qui monte dans la trompe, la trompe qui se lève, l'oreille qui bat — et on ne recopie
+ * pas dix-neuf lignes de dessin pour bouger deux pixels. Seules les lignes qui changent
+ * apparaissent, et elles restent lisibles telles quelles.
  */
-const bosse = (art: Art, lignes: Record<number, string>): Art => art.map((l, i) => lignes[i] ?? l);
+const retouche = (art: Art, lignes: Record<number, string>): Art => art.map((l, i) => lignes[i] ?? l);
+
+/**
+ * **L'oreille ouverte.** Elle gagne un pixel vers l'avant, soit deux à l'écran : en alternance
+ * avec l'image normale, ça suffit à la faire battre. C'est le même remplacement pour toutes les
+ * positions de trompe — l'oreille est haut sur la tête, la trompe est en bas, elles ne se
+ * croisent jamais.
+ */
+const OREILLE_OUVERTE: Record<number, string> = {
+  5: '.......00000002222222222222002',
+  6: '.......00111102222222222222002',
+  7: '.......00111102222222222222002',
+  8: '.......00111102222222222222002',
+  9: '.......001111022222222222220.0',
+  10: '.....00000000022222222222220..',
+};
 
 /**
  * Le poisson vient d'entrer : la bosse est **sur la diagonale de la trompe**, en plein ciel entre
  * la tête et l'eau. Au pied du tuyau elle se confondait avec le menton et on ne voyait rien.
  */
-const ELEPHANT_AVALE = bosse(ELEPHANT_BOIT, {
+const ELEPHANT_AVALE = retouche(ELEPHANT_BOIT, {
   13: '..022220.00...020..020.020....',
   14: '.022220.......020..020.020....',
 });
@@ -1561,13 +1577,19 @@ const ELEPHANT_AVALE = bosse(ELEPHANT_BOIT, {
  * alternance avec `boit`, toutes les deux secondes, ça fait un éléphant qui se sert de l'Erdre —
  * et un décor qui bouge un peu vaut mieux qu'un décor qui pose.
  */
-const ELEPHANT_BOUCHE = bosse(ELEPHANT_BOIT, {
+const ELEPHANT_BOUCHE = retouche(ELEPHANT_BOIT, {
   13: '....0220.00...020..020.020....',
   14: '.....0220.....020..020.020....',
   15: '......000.....020..020.020....',
   16: '..............020..020.020....',
   17: '..............020..000.020....',
 });
+
+/** Trompe dans l'eau, oreille ouverte. */
+const ELEPHANT_BOIT_OREILLE = retouche(ELEPHANT_BOIT, OREILLE_OUVERTE);
+
+/** Trompe à la bouche, oreille ouverte. */
+const ELEPHANT_BOUCHE_OREILLE = retouche(ELEPHANT_BOUCHE, OREILLE_OUVERTE);
 
 /** La trompe à mi-hauteur : elle se lève, et elle s'arrête là le temps d'une seconde. */
 const ELEPHANT_MI_TROMPE: Art = [
@@ -1577,13 +1599,13 @@ const ELEPHANT_MI_TROMPE: Art = [
 ];
 
 /** Trompe levée, la bosse à mi-tuyau. */
-const ELEPHANT_BOULE = bosse(ELEPHANT_TROMPE, {
+const ELEPHANT_BOULE = retouche(ELEPHANT_TROMPE, {
   7: '....02202011102222222222222002',
   8: '....02202011102222222222222002',
 });
 
 /** Trompe levée, la bosse tout en haut : il ne reste qu'à souffler. */
-const ELEPHANT_BOULE_HAUT = bosse(ELEPHANT_TROMPE, {
+const ELEPHANT_BOULE_HAUT = retouche(ELEPHANT_TROMPE, {
   3: '....022000000002222222222220..',
   4: '....02202222222222222222222000',
 });
@@ -1886,7 +1908,9 @@ export const SHEETS: Record<string, Record<string, Art>> = {
   poisson: { 'saut-0': POISSON_A, 'saut-1': POISSON_B },
   elephant: {
     boit: ELEPHANT_BOIT,
+    'boit-oreille': ELEPHANT_BOIT_OREILLE,
     bouche: ELEPHANT_BOUCHE,
+    'bouche-oreille': ELEPHANT_BOUCHE_OREILLE,
     trompe: ELEPHANT_TROMPE,
     avale: ELEPHANT_AVALE,
     'mi-trompe': ELEPHANT_MI_TROMPE,

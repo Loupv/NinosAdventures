@@ -347,11 +347,16 @@ C'est la branche implémentée. Elle sert de gabarit à toutes les suivantes.
    gauche rien que pour elle. Sans cette longueur, la partie émergée était trop courte pour qu'on
    y voie passer un poisson — et c'est tout l'enjeu de la scène suivante.
 
-   **Et il boit vraiment** : deux images en alternance, une toutes les deux secondes — la trompe
-   dans l'eau, puis repliée sous la bouche. À cette vitesse ce n'est pas une animation, c'est un
-   animal qui prend son temps ; et un décor qui bouge un peu vaut mieux qu'un décor qui pose. Il
-   s'arrête de boire dès que le poisson monte dans sa trompe, sinon son animation écraserait les
-   images de la scène une demi-seconde après qu'on les a posées. Personne sur le quai ne s'arrête. C'est cette première rencontre qui rend drôle
+   **Et il boit vraiment** : quatre images d'une seconde, avec **deux rythmes dans le même
+   cycle** — la trompe change toutes les deux images (l'eau, puis la bouche) et **l'oreille bat à
+   chacune**, un pixel vers l'avant. À cette vitesse ce n'est pas une animation, c'est un animal
+   qui prend son temps ; et deux cadences valent mieux qu'une, parce qu'on ne voit plus la boucle.
+   Il s'arrête de boire dès que le poisson monte dans sa trompe, sinon son animation écraserait
+   les images de la scène une demi-seconde après qu'on les a posées.
+
+   Ses huit variantes ne sont **pas huit dessins** : chacune est l'image de base avec deux à six
+   lignes remplacées, et seules ces lignes-là apparaissent dans le fichier. Bouger deux pixels ne
+   doit pas coûter dix-neuf lignes d'éléphant. Personne sur le quai ne s'arrête. C'est cette première rencontre qui rend drôle
    la deuxième, trente-et-un étages plus haut : on ne demandera jamais comment il est monté,
    mais on saura qu'il était en bas. Et lui s'en souvient : *« On s'est déjà vus. » « En bas. »
    « Je bois beaucoup. »*

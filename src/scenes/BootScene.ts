@@ -87,15 +87,19 @@ export class BootScene extends Phaser.Scene {
       repeat: -1,
     });
 
-    // **L'éléphant boit.** Deux images très lentes : la trompe dans l'eau, la trompe à la bouche.
-    // À cette vitesse ce n'est pas une animation, c'est un animal qui prend son temps.
+    /**
+     * **L'éléphant boit, et il bat de l'oreille.** Quatre images d'une seconde, et **deux rythmes
+     * dans le même cycle** : la trompe change toutes les deux images — l'eau, puis la bouche — et
+     * l'oreille à chacune. À cette vitesse ce n'est pas une animation, c'est un animal qui prend
+     * son temps ; et deux cadences valent mieux qu'une, parce qu'on ne voit plus la boucle.
+     */
     this.anims.create({
       key: animKey('elephant-boit', pal),
-      frames: [
-        { key: texKey('elephant', pal), frame: 'boit' },
-        { key: texKey('elephant', pal), frame: 'bouche' },
-      ],
-      frameRate: 0.5,
+      frames: ['boit', 'boit-oreille', 'bouche', 'bouche-oreille'].map((frame) => ({
+        key: texKey('elephant', pal),
+        frame,
+      })),
+      frameRate: 1,
       repeat: -1,
     });
 
