@@ -1104,8 +1104,9 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
       speaker: 'Le poisson',
       lines: ['« Voilà. »', '« Passe, maintenant. »'],
     },
+    // Le bateau est là depuis le début : cette réplique attendait un drapeau qui n'existe
+    // plus, et l'indice du bouchon ne sortait donc jamais.
     {
-      when: () => state.flag('bateau-arrive'),
       speaker: 'Le poisson',
       lines: ['« Le bateau, là-bas. »', '« Il a un bouchon, lui aussi. »'],
     },
