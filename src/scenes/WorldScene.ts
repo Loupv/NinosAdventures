@@ -950,32 +950,41 @@ export class WorldScene extends Phaser.Scene {
   }
 
   /**
-   * **Le pigeon se décale.** On ne le pousse pas d'un tween : on déplace **le point qu'il
-   * visait** et son ancre, et son errance l'y emmène de son propre pas. Il n'a donc pas l'air
-   * de fuir — il a l'air d'avoir décidé d'aller ailleurs, ce qui est très différent.
+   * **Le pigeon.** Une boîte de texte — le texte flottant se lisait mal sur les pavés — puis,
+   * **quand la boîte se ferme**, il s'écarte. On lit ce qu'il fait, ensuite il le fait, et on
+   * le voit le faire : dans l'autre ordre, il bougeait derrière la boîte.
    */
   private pigeonSeDecale(l: Live): void {
-    const e = this.errants.find((x) => x.live === l);
-    const dir = Math.sign(l.go.x - this.player.sprite.x) || 1;
-    if (e) {
-      e.attente = 0;
-      const nx = Phaser.Math.Clamp(
-        Math.round(l.go.x + dir * (14 + Math.random() * 10)),
-        8,
-        this.roomW - 8 - l.go.displayWidth,
-      );
-      const ny = Math.round(l.go.y + (Math.random() < 0.5 ? -5 : 5));
-      if (this.solLibre(nx, ny, l.go.displayWidth, l.go.displayHeight)) {
-        e.cibleX = nx;
-        e.cibleY = ny;
-        e.ancreX = nx;
-        e.ancreY = ny;
-      }
-      // Un peu plus vif le temps de s'écarter : un pigeon dérangé n'a pas le même pas.
-      e.vitesse = 26;
-    }
-    this.flotter(PIGEON[this.pigeonneries % PIGEON.length], l);
+    const boite = PIGEON[this.pigeonneries % PIGEON.length];
     this.pigeonneries += 1;
+    state.locked = true;
+    say({ lines: boite, focusY: l.def.y, onDone: () => this.pigeonSEcarte(l) });
+  }
+
+  /**
+   * Il s'écarte. On ne le pousse pas d'un tween : on déplace **le point qu'il visait** et son
+   * ancre, et son errance l'y emmène de son propre pas. Il n'a donc pas l'air de fuir — il a
+   * l'air d'avoir décidé d'aller ailleurs, ce qui est très différent.
+   */
+  private pigeonSEcarte(l: Live): void {
+    const e = this.errants.find((x) => x.live === l);
+    if (!e) return;
+    const dir = Math.sign(l.go.x - this.player.sprite.x) || 1;
+    e.attente = 0;
+    const nx = Phaser.Math.Clamp(
+      Math.round(l.go.x + dir * (14 + Math.random() * 10)),
+      8,
+      this.roomW - 8 - l.go.displayWidth,
+    );
+    const ny = Math.round(l.go.y + (Math.random() < 0.5 ? -5 : 5));
+    if (this.solLibre(nx, ny, l.go.displayWidth, l.go.displayHeight)) {
+      e.cibleX = nx;
+      e.cibleY = ny;
+      e.ancreX = nx;
+      e.ancreY = ny;
+    }
+    // Un peu plus vif le temps de s'écarter : un pigeon dérangé n'a pas le même pas.
+    e.vitesse = 26;
     jouer(this, 'pas', { volume: 0.3, rate: 2.8 });
   }
 

@@ -62,9 +62,7 @@ export const JOURNAL = {
   aucunePiece: [
     'Aucune pièce.',
     '',
-    'Nino n’en a encore trouvé aucune.',
-    'Il ne sait pas non plus ce que',
-    'ce serait.',
+    'La page est vide, pour l’instant.',
   ],
   lieuInconnu: '?  . . . . . . . .',
 };
@@ -329,15 +327,16 @@ export const ARROSES: Record<string, string[]> = {
 
 /**
  * **Le pigeon.** Il ne s'envole pas, il ne parle pas, il ne s'arrête pas : il se décale, et il
- * continue ce qu'il faisait. Ces phrases flottent au-dessus de lui, sans boîte et sans rien
- * bloquer — une boîte de dialogue supposerait qu'il s'intéresse à nous.
+ * continue ce qu'il faisait. Une boîte par visite, dans l'ordre, puis on recommence — et le
+ * pigeon s'écarte **quand la boîte se ferme**, pas avant : on lit ce qu'il fait, puis il le
+ * fait, et on le voit.
  */
-export const PIGEON = [
-  'Le pigeon se décale de trois pas.',
-  'Le pigeon ne regarde pas Nino.',
-  'Le pigeon fait comme s’il n’y avait personne.',
-  'Le pigeon a autre chose à faire.',
-  'Le pigeon s’éloigne, sans se presser.',
+export const PIGEON: string[][] = [
+  ['Un pigeon.', 'Il regarde le sol comme s’il y avait quelque chose.', 'Il n’y a rien.'],
+  ['Le pigeon se décale de trois pas.', 'Il n’a pas regardé Nino une seule fois.'],
+  ['Nino s’approche du pigeon.', 'Le pigeon fait comme s’il n’y avait personne.'],
+  ['Le pigeon a autre chose à faire.', 'Il s’éloigne, sans se presser.'],
+  ['Nino dit bonjour au pigeon.', 'Le pigeon continue de marcher.'],
 ];
 
 /** Et pour tous les autres. */
@@ -1169,7 +1168,7 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
       ],
       effects: { flag: 'bibliotheque-fouillee' },
     },
-    { lines: ['L’album n’est plus là.', 'Nino ne dira rien à personne.'] },
+    { lines: ['L’album n’est plus là.', 'Il reste un vide sur l’étagère.'] },
   ],
 
   'table-ronde': [
@@ -2076,7 +2075,7 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
     {
       lines: [
         'Un parapente, plié contre le parapet.',
-        'À qui il est, on ne sait pas.',
+        'Personne ne l’a réclamé.',
         'Il faut rentrer avant que ses parents se réveillent.',
       ],
     },
@@ -2101,13 +2100,51 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
   // ---------------------------------------------------------------- Nantes
   'velos-ville': [{ lines: ['Trois vélos.', 'Six pneus à plat.'] }],
 
+  /**
+   * **Le monsieur du thermomètre.** Il traverse la place en annonçant la température à qui
+   * veut, et elle monte à chaque fois qu'on le croise. Il ne répond jamais à Nino, il
+   * l'informe — et à la fin il n'a plus de chiffres, seulement l'ombre qui n'existe pas.
+   */
   passant: [
     {
+      when: () => state.flag('passant-4'),
+      speaker: 'Le monsieur',
+      lines: ['« Je ne dis plus rien. »', '« Ça ne sert à rien de le dire. »'],
+    },
+    {
+      when: () => state.flag('passant-3'),
+      speaker: 'Le monsieur',
       lines: [
-        'Un monsieur en chemise passe très vite.',
-        '« Il fait trente-quatre, hein ! »',
-        'Il est déjà loin.',
+        '« Trente-neuf à l’ombre. »',
+        '« Il n’y a pas d’ombre. »',
+        'Il repart, très droit.',
       ],
+      effects: { flag: 'passant-4' },
+    },
+    {
+      when: () => state.flag('passant-2'),
+      speaker: 'Le monsieur',
+      lines: [
+        '« Trente-sept. »',
+        '« J’ai un thermomètre dans la poche. »',
+        '« Il ne se trompe jamais. »',
+      ],
+      effects: { flag: 'passant-3' },
+    },
+    {
+      when: () => state.flag('passant-1'),
+      speaker: 'Le monsieur',
+      lines: ['« Trente-cinq, maintenant. »', '« Ça monte encore. »'],
+      effects: { flag: 'passant-2' },
+    },
+    {
+      speaker: 'Le monsieur',
+      lines: [
+        'Un monsieur en chemise s’arrête juste devant Nino.',
+        '« Il fait trente-quatre. »',
+        'Puis il repart, comme s’il avait fait sa commission.',
+      ],
+      effects: { flag: 'passant-1' },
     },
   ],
 
@@ -2120,7 +2157,7 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
       lines: [
         'ÉCOLE 200 m — QUAI DE L’ERDRE 400 m',
         'TOUR DE BRETAGNE 1 km',
-        'Nino ne sait pas ce que c’est, un kilomètre.',
+        'La flèche de la tour pointe vers le haut de la rue.',
       ],
     },
   ],

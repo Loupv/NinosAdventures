@@ -1220,7 +1220,7 @@ export const ROOMS: Record<string, Room> = {
     id: 'nantes',
     palette: 'ville',
     theme: 'ville',
-    spawn: { x: 80, y: 56 },
+    spawn: { x: 80, y: 84 },
     tiles: [
       // La rue de l'école part vers le haut, au milieu.
       '########....########',
@@ -1245,7 +1245,8 @@ export const ROOMS: Record<string, Room> = {
     objects: [
       {
         id: 'reverbere',
-        ...at(4, 5),
+        x: 8,
+        y: 64,
         sprite: 'reverbere',
         solid: true,
         dialogue: 'reverbere',
@@ -1253,19 +1254,19 @@ export const ROOMS: Record<string, Room> = {
       // **Un tramway arrêté.** Nantes en est pleine, et celui-là ne va nulle part : il fait
       // trop chaud. C'est la chose la plus grosse de l'écran, et elle ne sert à rien — c'est
       // exactement ce qu'on veut d'une place de ville.
-      { id: 'tram', x: 40, y: 30, sprite: 'tram', solid: true, dialogue: 'tram' },
+      { id: 'tram', x: 30, y: 20, sprite: 'tram', solid: [2, 8, 68, 20], dialogue: 'tram' },
       {
         id: 'ticket',
-        x: 60,
-        y: 56,
+        x: 44,
+        y: 60,
         sprite: 'ticket',
         dialogue: 'ticket',
         hideIfFlag: 'ticket-pris',
       },
       {
         id: 'conducteur',
-        x: 92,
-        y: 50,
+        x: 108,
+        y: 58,
         sprite: 'copain',
         priorite: 2,
         dialogue: 'conducteur-tram',
