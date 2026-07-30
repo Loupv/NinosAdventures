@@ -1240,22 +1240,24 @@ export class WorldScene extends Phaser.Scene {
   }
 
   /**
-   * **Maman surveille le bout du quai.** Ce n'est pas une porte : c'est une ligne invisible à
-   * quelques pas de son banc. Si Nino la franchit, elle tourne la tête, elle le renvoie jouer,
-   * et il se retrouve un peu plus loin. Tant qu'elle est là, il n'y a rien à tenter de ce côté —
-   * il faudra qu'elle s'en aille d'elle-même.
+   * **Nino s'arrête avant qu'on le voie.** Pas de porte, pas de mère qui gronde : une ligne
+   * invisible à cinquante pixels du banc, où **il les repère et comprend tout seul** qu'il ne
+   * faut pas aller plus loin. Se faire attraper ne donne rien à résoudre ; voir de loin, oui.
+   *
+   * Tant qu'ils sont là, il n'y a rien à tenter de ce côté — le quai, la corde, l'écureuil du
+   * bout : tout ça attend qu'ils s'en aillent d'eux-mêmes.
    */
   private mamanSurveille(): void {
     if (this.room.id !== 'erdre' || state.flag('maman-quai-partie')) return;
     const maman = this.live.find((l) => l.def.id === 'maman-quai');
     if (!maman) return;
-    const limite = maman.def.x - 32;
+    const limite = maman.def.x - 50;
     if (this.player.sprite.x < limite) return;
-    this.player.sprite.x = limite - 10;
+    this.player.sprite.x = limite - 12;
     this.player.freeze(this.mode);
     state.locked = true;
-    jouer(this, 'refus', { volume: 0.5 });
-    this.runDialogue('maman-voit', maman);
+    jouer(this, 'refus', { volume: 0.4 });
+    this.runDialogue('maman-voit');
   }
 
   /**
@@ -2355,14 +2357,15 @@ export class WorldScene extends Phaser.Scene {
      */
     /**
      * **La discussion au bord de l'eau**, déclenchée par l'éléphant ou par le poisson : les deux
-     * sont dedans. Elle n'existe qu'une fois qu'on a vu Maman sur son banc et papa dans sa
-     * coque — avant, il n'y a pas de problème, et une solution qui arrive avant l'énigme est un
-     * couloir.
+     * sont dedans. Elle n'existe qu'une fois que Nino **s'est arrêté devant ses parents** —
+     * avant, il n'y a pas de problème, et une solution qui arrive avant l'énigme est un couloir.
+     *
+     * Le seul verrou est `maman-quai-vue` : puisqu'il s'arrête assez loin pour ne pas être vu, il
+     * ne peut plus parler ni à Maman ni à papa, et c'est ce moment-là qui vaut les deux.
      */
     if (
       (l.def.id === 'elephant-erdre' || l.def.id === 'poisson-erdre') &&
       state.flag('elephant-vu') &&
-      state.flag('papa-capitaine-vu') &&
       state.flag('maman-quai-vue') &&
       !state.flag('poisson-parti')
     ) {

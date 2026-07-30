@@ -33,7 +33,7 @@ avec cynisme, et personne n'est méchant.
 | **Papa (capitaine)** | l'Erdre | Le même papa, sur un bateau, avec un chapeau de capitaine. Il est là dès qu'on arrive au quai. |
 | **L'araignée** | mezzanine, puis le 27e étage de la tour | Géante, et elle dit des haïkus — un nouveau à chaque visite, dix en réserve. Quand elle les a tous dits, elle chante, elle danse, et elle s'en va. |
 | **Gérard, le poisson** | baignoire, puis l'Erdre | Saute d'un bord à l'autre, visible seulement quand il est en l'air. Raconte sa vie en cinq boîtes de dialogue, et ne demande de l'aide qu'au moment où le chat s'assoit au bord de la baignoire. Rend ses dettes, plus tard, dans l'Erdre. |
-| **L'écureuil** | un coin de la cour, puis les roseaux de l'Erdre | À moitié caché, toujours. Pousse Nino à viser la fenêtre avec le ballon, puis à couler le bateau de papa — et nie tout, à chaque fois. Il ne gagne rien à ça. |
+| **L'écureuil** | un coin de la cour, puis la toute fin du quai de l'Erdre | À moitié caché, toujours. Pousse Nino à viser la fenêtre avec le ballon, puis à couler le bateau de papa — et nie tout, à chaque fois. Il ne gagne rien à ça. |
 | **L'Éléphant des Machines** | le bord de l'Erdre, puis le 31e étage de la tour | Douze mètres de bois et d'acier. On le voit d'abord boire dans la rivière, puis on le retrouve sur un palier. Personne ne demande comment il est monté ; lui se souvient de l'avoir croisé en bas. Il pose la seule énigme dont il ne connaît pas la réponse. |
 | **La maîtresse** | école *(à construire)* | Donnera des « devoirs » qui sont des quêtes déguisées. |
 | **Copains ×3** | école *(à construire)* | Un qui croit tout, un qui ne croit rien, un qui a déjà vu une dimension et n'en parle jamais. |
@@ -229,8 +229,12 @@ impossible.
 l'eau se disputent les mêmes pixels — donc un objet peut déclarer deux choses : sa
 **`priorite`** (2 = comme un personnage ; sans ça papa volait l'interaction de la corde, qui
 devenait injouable) et sa **`portee`** en pixels (celle de la corde est resserrée à 12). Le
-quai se lit alors comme des zones successives : la bouée, le panneau, **la corde**, **papa**,
-**le poisson**, puis **l'écureuil**.
+quai se lit alors comme des zones successives : la bouée, le panneau, **le poisson**, puis —
+seulement une fois le quai libre — **la corde**, **papa** et **l'écureuil du bout**.
+
+**Tout ce qui est à droite de la ligne de Maman attend qu'elle s'en aille.** La corde, papa dans
+sa coque, l'écureuil posté à la toute fin de l'écran : le naufrage est un chapitre d'après la
+pluie. On ne scie pas l'amarre du bateau de son père sous les yeux de sa mère.
 
 ## La chaîne d'ouverture : rien ne s'ouvre tout seul
 
@@ -324,10 +328,10 @@ C'est la branche implémentée. Elle sert de gabarit à toutes les suivantes.
    au sépia. Un panneau pointe vers l'eau, et **trois vélos affaissés** sont posés contre
    le mur : *« Trois vélos. Six pneus à plat. »* Le vélo de Nino, lui, reste dans la cour —
    c'est le sien, il n'y en a qu'un.
-9. **L'Erdre.** Palette cyan. Papa bricole dans la coque de son bateau — *« Deux minutes,
-   Nino ! J'ai un bouchon qui fuit. »* — et **Maman l'attend au bout du quai**, assise sur un
-   banc avec Hermione sur les genoux. Elle regarde le bateau, donc elle regarde aussi le
-   passage : *« Reste par là, je te vois. »*
+9. **L'Erdre.** Palette cyan. Papa bricole dans la coque de son bateau, et **Maman l'attend au
+   bout du quai**, assise sur un banc avec Hermione sur les genoux. On les voit de loin, tous les
+   deux, et **on ne leur parle pas** : Nino s'arrête bien avant leur portée. Papa redevient un
+   interlocuteur une fois le quai libre — *« Deux minutes, Nino ! J'ai un bouchon qui fuit. »*
 
    Au second plan, **un éléphant de douze mètres boit dans la rivière** — en bois, et il bouge
    les oreilles. Personne sur le quai ne s'arrête. C'est cette première rencontre qui rend drôle
@@ -338,9 +342,19 @@ C'est la branche implémentée. Elle sert de gabarit à toutes les suivantes.
 ### La pluie de l'éléphant
 
 **Le seul endroit du jeu où l'absurde sert à quelque chose.** Le bout du quai est gardé — pas
-par une porte fermée, par sa mère. Et ce n'est pas un mur : **une ligne invisible à quelques pas
-de son banc**. Si Nino la franchit, elle tourne la tête — *« Nino. » « Pas plus loin. »* — et il
-se retrouve un peu plus loin. Il n'y a rien à négocier tant qu'elle est là.
+par une porte fermée, par sa mère. Et ce n'est pas un mur : **une ligne invisible à cinquante
+pixels de son banc**, où **ce n'est pas elle qui le repère, c'est lui qui s'arrête** :
+
+> *« C'est Maman. » « Et papa est sur son bateau. » « Ils ne doivent pas le voir ici. »*
+
+Il fait un pas en arrière, et c'est fini. Se faire attraper par sa mère ne laisse rien à
+résoudre — elle décide, on subit ; **la voir de loin, si** : le problème est posé, et il est à
+lui. Les fois suivantes, une seule ligne — *« Ils sont toujours là. »* — parce que trois phrases
+répétées à chaque pas finissent par ressembler à un mur qui parle.
+
+C'est aussi pour ça que **ni Maman ni papa n'ont de dialogue sur ce quai** : ils sont à cinquante
+pixels, on ne leur parle pas de si loin. Ce sont deux silhouettes qui attendent, et **cet arrêt
+vaut les deux rencontres** — c'est lui, et lui seul, qui ouvre la scène de la pluie.
 
 Sauf tomber sur **une conversation entre le poisson et l'éléphant**. Personne ne s'adresse à
 Nino : il regarde.
@@ -353,9 +367,8 @@ Et l'éléphant envoie le poisson vers la mer. **C'est ce geste-là qui fait la 
 pas une solution qu'on demande, c'est deux animaux qui avaient une idée. Le poisson ne revient
 pas — l'Erdre est sans poisson après ça, et c'est très bien : il voulait voir la mer.
 
-La scène n'existe **qu'une fois qu'on a vu le problème** : il faut avoir parlé à papa dans sa
-coque et à Maman sur son banc, ou s'être fait prendre par elle. Avant ça l'éléphant boit, le
-poisson saute, et c'est tout ce qu'ils font. Alors, **et on le
+La scène n'existe **qu'une fois qu'on a vu le problème** : il faut s'être arrêté devant eux.
+Avant ça l'éléphant boit, le poisson saute, et c'est tout ce qu'ils font. Alors, **et on le
 voit** : sa trompe se lève au-dessus de son dos (c'est une image de l'éléphant, pas un effet), un
 jet part de son bout, et **il pleut sur tout l'écran** pendant cinq secondes — des gouttes lâchées
 partout au hasard de la largeur, qui tombent et éclaboussent le quai.

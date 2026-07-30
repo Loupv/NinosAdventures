@@ -1498,47 +1498,24 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
   ],
 
   /**
-   * **Quand on s'approche trop.** Ce n'est pas un mur : c'est sa mère qui tourne la tête. Elle
-   * ne se fâche pas, elle le renvoie jouer — et il n'y a rien à négocier tant qu'elle est là.
+   * **Ce n'est pas elle qui le repère : c'est lui qui s'arrête.** Il les voit avant d'être vu, il
+   * comprend le problème tout seul, et il ne va pas plus loin. Un enfant qui se fait attraper par
+   * sa mère n'a rien à résoudre ; un enfant qui la voit de loin, oui.
    */
   'maman-voit': [
+    // Les fois suivantes, une ligne : il le sait déjà, et relire les trois mêmes phrases à
+    // chaque pas vers la droite finirait par ressembler à un mur qui parle.
     {
-      speaker: 'Maman',
-      lines: ['Maman tourne la tête.', '« Nino. »', '« Pas plus loin. »'],
-      // Se faire prendre, c'est avoir vu le problème : ça compte autant que de lui parler.
-      effects: { flag: 'maman-quai-vue' },
-    },
-  ],
-
-  /** Elle attend papa. Elle a tout le temps. */
-  'maman-quai': [
-    {
-      when: () => state.flag('elephant-vu'),
-      speaker: 'Maman',
-      lines: [
-        '« Ton père a un bouchon qui fuit. »',
-        '« On attend. »',
-        '« Ne va pas plus loin, Nino. »',
-      ],
+      when: () => state.flag('maman-quai-vue'),
+      lines: ['Ils sont toujours là.'],
     },
     {
-      speaker: 'Maman',
       lines: [
-        'Maman est assise au bout du quai, Hermione sur les genoux.',
-        '« On attend ton père. »',
-        '« Reste par là, je te vois. »',
+        'C’est Maman.',
+        'Et papa est sur son bateau.',
+        'Ils ne doivent pas le voir ici.',
       ],
       effects: { flag: 'maman-quai-vue' },
-    },
-  ],
-
-  'hermione-bras': [
-    {
-      lines: [
-        'Hermione, sur les genoux de Maman.',
-        'Elle tend la main vers le bateau.',
-        'Puis vers l’éléphant. Puis vers le bateau.',
-      ],
     },
   ],
 

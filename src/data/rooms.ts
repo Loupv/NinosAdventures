@@ -1741,7 +1741,7 @@ export const ROOMS: Record<string, Room> = {
       // caché dans les roseaux, on ne le voyait pas, et c'est lui qui donne la clé du naufrage.
       {
         id: 'ecureuil-erdre',
-        x: 222,
+        x: 300,
         y: 80,
         sprite: 'ecureuil',
         frame: 'queue-0',
@@ -1762,8 +1762,8 @@ export const ROOMS: Record<string, Room> = {
         sprite: 'maman',
         depth: 97,
         priorite: 2,
-        portee: 18,
-        dialogue: 'maman-quai',
+        // **Pas de dialogue** : Nino s'arrête bien avant sa portée. On la voit, elle ne le voit
+        // pas, et il n'y a rien à lui dire de cinquante pixels.
         hideIfFlag: 'maman-quai-partie',
       },
       {
@@ -1775,8 +1775,6 @@ export const ROOMS: Record<string, Room> = {
         anim: 'hermione-idle',
         depth: 98,
         priorite: 2,
-        portee: 14,
-        dialogue: 'hermione-bras',
         hideIfFlag: 'maman-quai-partie',
       },
       { id: 'bouee', x: 40, y: 88, sprite: 'bouee', dialogue: 'quai' },
