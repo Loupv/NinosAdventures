@@ -185,6 +185,8 @@ export class WorldScene extends Phaser.Scene {
   private vannes = 0;
   /** Combien de fois on a dérangé un pigeon : il ne s'en va pas deux fois pareil. */
   private pigeonneries = 0;
+  /** Gouttes de pluie en vol : la pluie de l'éléphant est plafonnée. */
+  private gouttes = 0;
   /** Combien de fois on a arrosé l'écureuil de la tour : il ne râle pas deux fois pareil. */
   private mouillé = 0;
   /** La vanne affichée au-dessus de lui, s'il y en a une. */
@@ -1007,20 +1009,28 @@ export class WorldScene extends Phaser.Scene {
       });
     }
 
-    // Puis la pluie, sur toute la scène : une goutte toutes les soixante millisecondes.
-    this.time.addEvent({ delay: 60, repeat: 80, callback: () => this.uneGoutte() });
-    this.time.delayedCall(5200, () => {
-      (l.go as Phaser.GameObjects.Image).setFrame('boit');
-    });
+    // Puis la pluie, **sans fin** : une goutte toutes les quarante millisecondes, et il ne
+    // s'arrête pas. La trompe reste levée, il continue d'envoyer de l'eau, et ça ne cesse que
+    // quand on quitte l'écran — le minuteur meurt avec la scène. Revenir plus tard, c'est
+    // revenir au sec.
+    this.time.addEvent({ delay: 40, loop: true, callback: () => this.uneGoutte() });
 
-    this.time.delayedCall(1800, () => {
+    this.time.delayedCall(1200, () => {
       if (this.room.id !== 'erdre') return;
-      this.mamanFuitLaPluie();
+      this.mamanVoitLaPluie();
     });
   }
 
-  /** Une goutte de pluie, quelque part dans le champ, qui tombe jusqu'au quai. */
+  /**
+   * Une goutte de pluie, quelque part dans le champ, qui tombe jusqu'au quai.
+   *
+   * **Quarante gouttes au maximum en même temps.** La pluie ne s'arrête jamais : sans ce
+   * plafond, une image perdue ou un onglet en arrière-plan laisserait les gouttes s'empiler
+   * indéfiniment. Quarante, c'est déjà une averse.
+   */
   private uneGoutte(): void {
+    if (this.gouttes >= 40) return;
+    this.gouttes += 1;
     const cam = this.cameras.main;
     const x = Math.round(cam.scrollX + Math.random() * cam.width);
     const g = this.add
@@ -1034,6 +1044,7 @@ export class WorldScene extends Phaser.Scene {
       duration: 520 + Math.random() * 160,
       ease: 'Quad.easeIn',
       onComplete: () => {
+        this.gouttes -= 1;
         if (Math.random() < 0.35) splash(this, this.pal, Math.round(g.x), Math.round(sol));
         g.destroy();
       },
@@ -1041,28 +1052,57 @@ export class WorldScene extends Phaser.Scene {
   }
 
   /**
-   * Elle croit à l'orage et part en courant vers la maison, Hermione sous le bras. Le bout du
-   * quai est libre à partir de là — c'est ce que valait la pluie.
+   * **On va la voir.** La caméra quitte Nino et se déplace jusqu'au banc, parce que toute la
+   * scène est là-bas : Maman lève la tête sous l'averse. La réplique se lit **pendant qu'elle
+   * est à l'écran**, et ce n'est qu'après qu'elle se met à courir — avant, elle partait avant
+   * qu'on ait eu le temps de la voir.
    */
-  private mamanFuitLaPluie(): void {
+  private mamanVoitLaPluie(): void {
     const maman = this.live.find((x) => x.def.id === 'maman-quai');
-    const petite = this.live.find((x) => x.def.id === 'hermione-bras');
-    this.runDialogue('maman-pluie', maman);
     if (!maman) return;
+    const beat = pickBeat('maman-pluie');
+    const cam = this.cameras.main;
+    cam.stopFollow();
+    cam.pan(maman.go.x, cam.midPoint.y, 700, 'Sine.easeInOut');
+    state.locked = true;
+    this.time.delayedCall(800, () => {
+      if (!beat) {
+        this.mamanSEnfuit(maman);
+        return;
+      }
+      say({
+        speaker: beat.speaker,
+        lines: beat.lines,
+        focusY: 30,
+        onDone: () => this.mamanSEnfuit(maman),
+      });
+    });
+  }
+
+  /**
+   * Elle part en courant vers la maison, Hermione sous le bras, et la caméra la laisse filer
+   * avant de revenir à Nino. Le bout du quai est libre à partir de là — c'est ce que valait la
+   * pluie.
+   */
+  private mamanSEnfuit(maman: Live): void {
+    const petite = this.live.find((x) => x.def.id === 'hermione-bras');
+    state.locked = true;
     jouer(this, 'cri-maman', { volume: 0.5 });
     for (const qui of [maman, petite]) {
       if (!qui) continue;
       this.tweens.add({
         targets: qui.go,
-        x: qui.go.x - 260,
-        duration: 2200,
+        x: qui.go.x - 300,
+        duration: 2400,
         ease: 'Quad.easeIn',
       });
     }
-    this.time.delayedCall(2400, () => {
+    this.time.delayedCall(2600, () => {
       state.setFlag('maman-quai-partie');
       state.save();
       this.refreshObjects();
+      this.cameras.main.startFollow(this.player.sprite, true, 0.15, 0.15);
+      state.locked = false;
     });
   }
 

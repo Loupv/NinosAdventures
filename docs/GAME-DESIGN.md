@@ -350,8 +350,15 @@ voit** : sa trompe se lève au-dessus de son dos (c'est une image de l'éléphan
 jet part de son bout, et **il pleut sur tout l'écran** pendant cinq secondes — des gouttes lâchées
 partout au hasard de la largeur, qui tombent et éclaboussent le quai.
 
-**Maman lève la tête** — *« Il pleut ! »* — et elle part en courant vers la maison, Hermione sous
-le bras. Le banc reste, le quai est libre, et personne ne reviendra vérifier le temps.
+**Et la caméra va la voir.** Elle quitte Nino, se déplace jusqu'au banc — toute la scène est
+là-bas — et **Maman lève la tête sous l'averse** : *« Il pleut ! »* La réplique se lit pendant
+qu'elle est à l'écran, et ce n'est qu'après qu'elle se met à courir vers la maison, Hermione sous
+le bras. Avant, elle partait avant qu'on ait eu le temps de la voir.
+
+**La pluie ne s'arrête pas.** La trompe reste levée, il continue d'envoyer de l'eau, et ça tombe
+jusqu'à ce qu'on quitte l'écran — le minuteur meurt avec la scène. Quarante gouttes en vol au
+maximum, ce qui est déjà une averse. Revenir plus tard, c'est revenir au sec : le banc est vide,
+le quai est libre, et personne ne reviendra vérifier le temps.
 
 C'est aussi ce qui remet le naufrage à sa place : **couler le bateau n'ouvre plus rien**. C'est
 une bêtise qu'on fait parce que l'écureuil l'a proposée, et le poisson la répare parce qu'il a
