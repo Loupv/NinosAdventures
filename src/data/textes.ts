@@ -452,8 +452,8 @@ export const OBJETS: Record<string, { nom: string; desc: string }> = {
     desc: 'Ramassée sur le quai. Les hérons passent par là — Nino le vérifiera plus tard, en parapente.',
   },
   pizza: {
-    nom: 'Bout de pizza',
-    desc: 'Froid, un peu mou. Personne ne le réclamera. Certains animaux le trouvent négociable.',
+    nom: 'Bout de pizza mâché',
+    desc: 'Froid, un peu mou, et il manque un coin : Moon y a goûté sans même ouvrir les yeux. Personne ne le réclamera. Certains animaux le trouvent négociable quand même.',
   },
 };
 
@@ -579,7 +579,7 @@ const ACCUEILS: Record<string, string[]> = {
     '« Explique-moi en quoi c’est de l’art. »',
   ],
   pizza: [
-    'Nino pose un bout de pizza froide sur la table.',
+    'Nino pose un bout de pizza mâché sur la table.',
     '« ... »',
     '« Explique-moi en quoi c’est de l’art. »',
   ],
@@ -907,7 +907,7 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
       lines: [
         'Nino tend le bout de pizza au chat blanc.',
         'Moon dort.',
-        'Nino agite la pizza. Moon dort toujours.',
+        'Moon en mâche un coin, sans ouvrir les yeux. Puis il dort encore.',
         'Il faudrait quelque chose de plus intéressant qu’une pizza.',
       ],
     },
