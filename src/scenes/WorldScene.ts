@@ -11,7 +11,8 @@ import {
   ANNONCES,
   ARAIGNEE_PARTIE,
   NAUFRAGE,
-  REPECHAGE,
+  AU_BORD_DE_LEAU,
+  PAPA_NAGE,
   ARROSES,
   ARROSE_DEFAUT,
   BAREME,
@@ -764,14 +765,101 @@ export class WorldScene extends Phaser.Scene {
     this.time.delayedCall(DUREE + 900, () => {
       if (this.room.id !== 'erdre') return;
       state.setFlag('papa-dans-leau');
-      state.setFlag('papa-sauve');
       state.save();
-      this.refreshObjects();
-      say({
-        lines: state.flag('bouchon-retire') ? REPECHAGE.poisson : REPECHAGE.seul,
-        focusY: 30,
-      });
+      this.papaNage(papa);
     });
+  }
+
+  /**
+   * **Papa remonte et s'en va à la nage.** Vers la droite, sans se presser, jusqu'à sortir du
+   * cadre — et il dit sa phrase en passant. Le poisson n'y est plus pour rien : on le voyait
+   * flotter à côté de lui sans comprendre ce qu'il faisait là, et un poisson qui remorque un
+   * adulte ne se lit pas.
+   */
+  private papaNage(papa: Live): void {
+    const go = papa.go;
+    go.setPosition(go.x, 58);
+    this.couperALaFlottaison(papa);
+    // Il nage : la tête sort de l'eau, monte et descend, et il avance.
+    this.tweens.add({
+      targets: go,
+      y: 56,
+      duration: 700,
+      yoyo: true,
+      repeat: -1,
+      ease: 'Sine.easeInOut',
+      onUpdate: () => this.couperALaFlottaison(papa),
+    });
+    this.tweens.add({
+      targets: go,
+      x: this.roomW + 20,
+      duration: 6000,
+      ease: 'Linear',
+      onUpdate: () => this.couperALaFlottaison(papa),
+      onComplete: () => {
+        state.setFlag('papa-sauve');
+        state.save();
+        this.refreshObjects();
+      },
+    });
+    this.time.delayedCall(1200, () => {
+      const lui = this.live.find((x) => x.def.id === 'papa-capitaine');
+      if (lui) this.flotter(PAPA_NAGE, lui);
+    });
+  }
+
+  /**
+   * **La discussion au bord de l'eau.** Nino tombe sur une conversation entre le poisson et
+   * l'éléphant : le poisson se demande ce qu'il y a plus loin, l'éléphant répond « la mer », et
+   * ça finit par un poisson dans une trompe. Personne ne s'adresse à Nino, et c'est ce qui rend
+   * la scène drôle — il n'a rien demandé, il regarde.
+   *
+   * À la fin, l'éléphant lance le poisson vers la mer, et **c'est ce geste qui fait la pluie**.
+   */
+  private discussionAuBordDeLEau(elephant: Live): void {
+    const poisson = this.live.find((x) => x.def.id === 'poisson-erdre');
+    // Le poisson sort de l'eau et reste là le temps de la conversation.
+    if (poisson) {
+      const s = this.sauteurs.find((x) => x.live === poisson);
+      if (s) this.sauteurs = this.sauteurs.filter((x) => x !== s);
+      poisson.go.setPosition(elephant.go.x - 18, 52);
+      poisson.go.setVisible(true);
+    }
+    state.locked = true;
+    const suite = (i: number) => {
+      if (i >= AU_BORD_DE_LEAU.length) {
+        this.lancerLePoisson(elephant, poisson);
+        return;
+      }
+      const beat = AU_BORD_DE_LEAU[i];
+      say({
+        speaker: beat.qui,
+        lines: beat.lignes,
+        focusY: 30,
+        onDone: () => suite(i + 1),
+      });
+    };
+    suite(0);
+  }
+
+  /** La trompe se lève, le poisson part vers la mer, et l'eau retombe sur tout l'écran. */
+  private lancerLePoisson(elephant: Live, poisson?: Live): void {
+    state.locked = true;
+    state.setFlag('poisson-parti');
+    if (poisson) {
+      this.tweens.add({
+        targets: poisson.go,
+        x: this.roomW + 30,
+        y: -40,
+        duration: 1400,
+        ease: 'Quad.easeOut',
+        onComplete: () => {
+          poisson.go.destroy();
+          this.live = this.live.filter((x) => x !== poisson);
+        },
+      });
+    }
+    this.averse(elephant);
   }
 
   /**
@@ -955,35 +1043,6 @@ export class WorldScene extends Phaser.Scene {
   }
 
   /**
-   * La trompe se lève, l'Erdre retombe sur le quai, et Maman s'en va. Les gouttes sont dessinées
-   * une par une en arc : à cette taille, six gouttes suffisent à faire une averse.
-   */
-  private pluieDElephant(l: Live): void {
-    const beat = pickBeat('elephant-pluie');
-    if (!beat?.choice) return;
-    state.locked = true;
-    say({
-      speaker: beat.speaker,
-      lines: beat.lines,
-      choices: ['Oui', 'Non'],
-      focusY: l.def.y,
-      onDone: (reponse) => {
-        const branche = reponse === 0 ? beat.choice!.oui : beat.choice!.non;
-        say({
-          speaker: beat.speaker,
-          lines: branche.lines,
-          focusY: l.def.y,
-          onDone: () => {
-            if (reponse !== 0) return;
-            state.locked = true;
-            this.averse(l);
-          },
-        });
-      },
-    });
-  }
-
-  /**
    * **L'averse.** Trois temps, et il faut les voir tous les trois : la trompe **se lève**
    * au-dessus du dos (c'est une image de l'éléphant, pas un effet), un jet part de son bout,
    * puis **il pleut sur tout l'écran** pendant cinq secondes — des gouttes lâchées partout au
@@ -1111,8 +1170,14 @@ export class WorldScene extends Phaser.Scene {
       state.setFlag('maman-quai-partie');
       state.save();
       this.refreshObjects();
-      this.cameras.main.startFollow(this.player.sprite, true, 0.15, 0.15);
-      state.locked = false;
+      // **Et la caméra revient sur Nino**, en travelling elle aussi : elle est allée voir la
+      // scène, elle revient au personnage. Reprendre le suivi d'un coup ferait un saut.
+      const cam = this.cameras.main;
+      cam.pan(this.player.sprite.x, cam.midPoint.y, 700, 'Sine.easeInOut');
+      this.time.delayedCall(760, () => {
+        cam.startFollow(this.player.sprite, true, 0.15, 0.15);
+        state.locked = false;
+      });
     });
   }
 
@@ -2288,18 +2353,24 @@ export class WorldScene extends Phaser.Scene {
      * en courant avec Hermione. C'est le seul endroit du jeu où l'absurde **sert à quelque
      * chose** — sans cette pluie, le bout du quai reste gardé.
      */
+    /**
+     * **La discussion au bord de l'eau**, déclenchée par l'éléphant ou par le poisson : les deux
+     * sont dedans. Elle n'existe qu'une fois qu'on a vu Maman sur son banc et papa dans sa
+     * coque — avant, il n'y a pas de problème, et une solution qui arrive avant l'énigme est un
+     * couloir.
+     */
     if (
-      l.def.id === 'elephant-erdre' &&
+      (l.def.id === 'elephant-erdre' || l.def.id === 'poisson-erdre') &&
       state.flag('elephant-vu') &&
-      // **Il ne propose rien avant qu'on ait vu le problème.** Il faut avoir parlé à papa dans
-      // sa coque et à Maman sur son banc — ou s'être fait prendre par elle. Une solution
-      // offerte avant l'énigme n'est pas une solution, c'est un couloir.
       state.flag('papa-capitaine-vu') &&
       state.flag('maman-quai-vue') &&
-      !state.flag('maman-quai-partie')
+      !state.flag('poisson-parti')
     ) {
-      this.pluieDElephant(l);
-      return;
+      const elephant = this.live.find((x) => x.def.id === 'elephant-erdre');
+      if (elephant) {
+        this.discussionAuBordDeLEau(elephant);
+        return;
+      }
     }
     // **Le pigeon ignore Nino.** Pas de boîte de dialogue : une boîte supposerait qu'il
     // s'intéresse à nous. Il se décale, il emmène son point d'ancrage avec lui, et il continue.

@@ -1662,6 +1662,8 @@ export const ROOMS: Record<string, Room> = {
         // Dans la bande d'eau du bas, celle qui touche la berge : c'est le plan le plus
         // proche de Nino. Plus haut, il avait l'air d'être au milieu de la rivière.
         saute: { gauche: 124, droite: 168, hauteur: 16, eau: 64 },
+        // Il part pour la mer, dans la trompe de l'éléphant : après ça, l'Erdre est sans poisson.
+        hideIfFlag: 'poisson-parti',
         portee: 20,
         frame: 'saut-0',
         anim: 'poisson-saut',

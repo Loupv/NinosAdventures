@@ -267,11 +267,14 @@ export const NAUFRAGE = [
   '« Blublublub. »',
 ];
 
-/** Quand il remonte : avec un poisson si Nino l'a sauvé, tout seul sinon. */
-export const REPECHAGE = {
-  poisson: ['Le poisson remonte, papa accroché à lui.', 'Papa a gardé son chapeau.'],
-  seul: ['Papa remonte tout seul, en nageant.', 'Il a gardé son chapeau.'],
-};
+/**
+ * **Ce que papa dit en nageant.** Il remonte tout seul, il a gardé son chapeau, et il s'en va
+ * vers la droite en nage tranquille. Le poisson n'y est pour rien : on le voyait à côté de lui
+ * sans comprendre ce qu'il faisait là, et un poisson qui remorque un adulte ne se lit pas.
+ *
+ * Une phrase flottante pendant qu'il nage, et rien d'autre : ce qui se voit ne se raconte pas.
+ */
+export const PAPA_NAGE = '« Ne dis rien à ta mère. »';
 
 /**
  * Les vannes de l'écureuil quand un tir de ballon rate la fenêtre. Elles s'affichent
@@ -512,7 +515,7 @@ export const CASTING: Record<string, { nom: string; role: string }> = {
   },
   poisson: {
     nom: 'Gérard',
-    role: 'Le poisson de la baignoire. Raconte sa vie avant de demander de l’aide, et n’en demande que quand le chat s’assoit au bord. Rend ses dettes, plus tard, dans l’Erdre.',
+    role: 'Le poisson de la baignoire. Raconte sa vie avant de demander de l’aide, et n’en demande que quand le chat s’assoit au bord. Remercie plus tard, dans l’Erdre — puis part pour la mer, dans la trompe d’un éléphant.',
   },
   araignee: {
     nom: 'L’araignée',
@@ -814,6 +817,26 @@ export const BAREME: Bareme[] = [
   { min: 2, note: 12, lines: ['« Douze sur vingt. »', '« C’est un début. »'] },
   { min: 0, note: 8, lines: ['« Huit sur vingt. »', '« Tu as apporté quelque chose, c’est déjà ça. »'] },
 ];
+
+  /**
+ * **La discussion au bord de l'eau.** Nino n'est pas dans cette conversation : il tombe dessus.
+ * Le poisson se demande ce qu'il y a plus loin, l'éléphant répond « la mer », et ça finit par
+ * un poisson dans une trompe. C'est comme ça que la pluie arrive — pas parce qu'on l'a
+ * demandée, mais parce que deux animaux avaient une idée.
+ *
+ * Elle ne se déclenche qu'une fois qu'on a vu Maman sur son banc : avant, il n'y a pas de
+ * problème à résoudre, et une conversation qui donne la solution avant l'énigme est un couloir.
+ */
+export const AU_BORD_DE_LEAU: Array<{ qui: string; lignes: string[] }> = [
+  { qui: 'Le poisson', lignes: ['« Je me demande ce qu’il y a plus loin. »'] },
+  { qui: 'L’Éléphant', lignes: ['« La mer. »'] },
+  { qui: 'Le poisson', lignes: ['« C’est comment ? »'] },
+  { qui: 'L’Éléphant', lignes: ['« Salé. »'] },
+  { qui: 'Le poisson', lignes: ['« J’aimerais voir ça un jour. »'] },
+  { qui: 'L’Éléphant', lignes: ['« Je peux t’aider. »', '« Monte dans ma trompe. »'] },
+  { qui: 'Le poisson', lignes: ['« ... »', '« D’accord. »'] },
+];
+
 
 export const DIALOGUES: Record<string, DialogueBeat[]> = {
   // ------------------------------------------------------------- la chambre
@@ -1516,23 +1539,6 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
         'Elle tend la main vers le bateau.',
         'Puis vers l’éléphant. Puis vers le bateau.',
       ],
-    },
-  ],
-
-  /**
-   * **La pluie de l'éléphant.** Il aspire l'Erdre et l'envoie en l'air : ça retombe sur le
-   * quai, Maman croit à un orage et rentre en courant avec Hermione. C'est le seul endroit du
-   * jeu où l'absurde **sert** — sans ça, on ne passe pas.
-   */
-  'elephant-pluie': [
-    {
-      speaker: 'L’Éléphant',
-      lines: ['« ... »', '« Tu veux voir quelque chose ? »'],
-      choice: {
-        // Une seule ligne : le reste se voit. La trompe se lève, le jet part, il pleut.
-        oui: { lines: ['L’éléphant aspire une trompe entière d’Erdre.'] },
-        non: { lines: ['« Comme tu veux. »', 'Il continue de boire.'] },
-      },
     },
   ],
 

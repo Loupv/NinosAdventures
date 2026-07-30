@@ -342,10 +342,20 @@ par une porte fermée, par sa mère. Et ce n'est pas un mur : **une ligne invisi
 de son banc**. Si Nino la franchit, elle tourne la tête — *« Nino. » « Pas plus loin. »* — et il
 se retrouve un peu plus loin. Il n'y a rien à négocier tant qu'elle est là.
 
-Sauf revenir voir l'éléphant, qui propose : *« Tu veux voir quelque chose ? »* — mais **il ne
-propose rien avant qu'on ait vu le problème** : il faut avoir parlé à papa dans sa coque et à
-Maman sur son banc, ou s'être fait prendre par elle. Une solution offerte avant l'énigme n'est
-pas une solution, c'est un couloir. Avant ça, il boit, et c'est tout ce qu'il fait. Alors, **et on le
+Sauf tomber sur **une conversation entre le poisson et l'éléphant**. Personne ne s'adresse à
+Nino : il regarde.
+
+> *« Je me demande ce qu'il y a plus loin. »* — *« La mer. »* — *« C'est comment ? »* —
+> *« Salé. »* — *« J'aimerais voir ça un jour. »* — *« Je peux t'aider. Monte dans ma trompe. »*
+> — *« ... » « D'accord. »*
+
+Et l'éléphant envoie le poisson vers la mer. **C'est ce geste-là qui fait la pluie** : ce n'est
+pas une solution qu'on demande, c'est deux animaux qui avaient une idée. Le poisson ne revient
+pas — l'Erdre est sans poisson après ça, et c'est très bien : il voulait voir la mer.
+
+La scène n'existe **qu'une fois qu'on a vu le problème** : il faut avoir parlé à papa dans sa
+coque et à Maman sur son banc, ou s'être fait prendre par elle. Avant ça l'éléphant boit, le
+poisson saute, et c'est tout ce qu'ils font. Alors, **et on le
 voit** : sa trompe se lève au-dessus de son dos (c'est une image de l'éléphant, pas un effet), un
 jet part de son bout, et **il pleut sur tout l'écran** pendant cinq secondes — des gouttes lâchées
 partout au hasard de la largeur, qui tombent et éclaboussent le quai.
@@ -462,8 +472,7 @@ payée, et elle change vraiment quelque chose :
 
 | | Si Nino a sauvé le poisson (`bouchon-retire`) | S'il ne l'a pas fait |
 |---|---|---|
-| Le naufrage | *« Le poisson remonte, papa accroché à lui. »* | *« Papa remonte tout seul, en nageant. »* |
-| Papa, sur le quai | *« C'est un poisson qui m'a ramené. »* — *« Un poisson. »* | *« Ne dis rien à ta mère. »* |
+| Le naufrage | Papa remonte, remet son chapeau et **s'en va à la nage** vers la droite | *« Ne dis rien à ta mère. »*, lâché en passant |
 
 La chaîne de la baignoire ne donne donc pas un objet : elle donne **un sauveteur**. Et dans
 les deux cas personne ne se noie — l'absurde est constaté, jamais expliqué.

@@ -68,7 +68,19 @@ const NINO_SIDE: Art = [
   '..00.0..',
 ];
 
-const NINO_SIDE_A: Art = [...NINO_SIDE.slice(0, 12), '..0.0...', '.01..1..', '.00.00..'];
+/**
+ * **La marche de profil devait se voir.** Les deux images ne changeaient que les trois lignes
+ * des jambes : à cette taille, ça ne bougeait pas. La première descend maintenant **tout le
+ * corps d'un pixel** — c'est le rebond du pas, et c'est lui qu'on voit de loin — tandis que la
+ * seconde garde la hauteur et croise les jambes.
+ */
+const NINO_SIDE_A: Art = [
+  '........',
+  ...NINO_SIDE.slice(0, 11),
+  '..0.0...',
+  '.01..1..',
+  '.00.00..',
+];
 const NINO_SIDE_B: Art = [...NINO_SIDE.slice(0, 12), '...00...', '..1.10..', '..00.00.'];
 
 /** Moon, le chat blanc. Assis bien droit, la queue qui bat la mesure. */
@@ -615,19 +627,26 @@ const PLUME: Art = [
 ];
 
 /**
- * Une vieille chaussure. Trouvée sur le quai de l'Erdre, et c'est **le projet d'art** de Nino :
- * la maîtresse en attend une explication, pas une chaussure.
+ * Une vieille chaussure, de profil. La première version était une boîte à lacets où personne ne
+ * voyait de chaussure : celle-ci a **une tige qui monte à l'arrière, un col ouvert, une semelle
+ * qui dépasse devant et derrière**, et un bout arrondi. Ce sont la semelle et le col qui font la
+ * chaussure.
  */
 const CHAUSSURE: Art = [
-  '.....000000...',
-  '....03333300..',
-  '...0322222300.',
-  '..032222222300',
-  '.0322000022230',
-  '03220....02230',
-  '03220000002220',
-  '.032222222230.',
-  '..0000000000..',
+  '..............',
+  '....0000......',
+  '...033300.....',
+  '..03330300....',
+  '..0330.0300...',
+  '..0330..0300..',
+  '.03330...0300.',
+  '.03300000030..',
+  '.0333333330...',
+  '.03222222330..',
+  '.03222222233..',
+  '00000000000000',
+  '.000000000000.',
+  '..............',
 ];
 
 const GOUTTE: Art = [
