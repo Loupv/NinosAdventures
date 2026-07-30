@@ -550,9 +550,11 @@ export class WorldScene extends Phaser.Scene {
     if (def.animSaufFlag && state.flag(def.animSaufFlag)) anim = undefined;
 
     let go: Phaser.GameObjects.Image | Phaser.GameObjects.Sprite;
-    if (anim) {
+    // Une planche d'images s'il est animé — ou s'il **marche en patrouillant** : ses animations
+    // sont dans `patrouille`, parce que ce sont celles d'un aller-retour, pas d'un état.
+    if (anim || def.patrouille?.marche) {
       const s = this.add.sprite(def.x, def.y, key, frame);
-      s.play(animKey(anim, pal));
+      if (anim) s.play(animKey(anim, pal));
       go = s;
     } else {
       go = this.add.image(def.x, def.y, key, frame);
@@ -592,21 +594,12 @@ export class WorldScene extends Phaser.Scene {
     this.couperALaFlottaison(live);
 
     /**
-     * **Les cent pas.** Un aller-retour sans fin sur la largeur donnée. C'est pour papa sur son
-     * pont : de l'endroit où Nino s'arrête, la poupe est hors du cadre, et un père qu'on ne voit
-     * jamais ne sert à rien. Le naufrage tue ce va-et-vient — on ne fait pas les cent pas sur un
-     * bateau qui coule.
+     * **Les cent pas.** C'est pour papa sur son pont : de l'endroit où Nino s'arrête, la poupe est
+     * hors du cadre, et un père qu'on ne voit jamais ne sert à rien.
      */
     if (def.patrouille) {
       go.setPosition(def.patrouille.gauche, def.y);
-      this.tweens.add({
-        targets: go,
-        x: def.patrouille.droite,
-        duration: def.patrouille.duree,
-        ease: 'Sine.easeInOut',
-        yoyo: true,
-        repeat: -1,
-      });
+      this.patrouiller(live, def.patrouille, true);
     }
 
     if (def.saute) {
@@ -747,6 +740,39 @@ export class WorldScene extends Phaser.Scene {
   }
 
   /**
+   * **Un aller, une pause, un retour, une pause.** Il marche jusqu'au bout du pont, **se penche sur
+   * sa coque** le temps qu'il faut, et repart dans l'autre sens. Deux animations, deux états, et
+   * chaque étape rappelle la suivante — un va-et-vient qui ne s'arrête que quand le bateau coule.
+   *
+   * Le glissement seul ne suffisait pas : un dessin qui se déplace sans bouger les jambes n'est pas
+   * quelqu'un qui marche, c'est un objet qu'on pousse.
+   */
+  private patrouiller(l: Live, p: NonNullable<RoomObject['patrouille']>, versLaDroite: boolean): void {
+    const go = l.go;
+    if (p.marche && go instanceof Phaser.GameObjects.Sprite) {
+      go.play(animKey(p.marche, this.pal), true);
+    }
+    this.tweens.add({
+      targets: go,
+      x: versLaDroite ? p.droite : p.gauche,
+      duration: p.duree,
+      ease: 'Sine.easeInOut',
+      onComplete: () => {
+        // Arrivé au bout, il se baisse sur sa coque. On le retrouve par son identifiant :
+        // entre deux trajets, un rafraîchissement de la pièce peut avoir remplacé le sien.
+        if (!this.live.includes(l) || state.flag('bateau-coule')) return;
+        if (p.arret && go instanceof Phaser.GameObjects.Sprite) {
+          go.play(animKey(p.arret, this.pal), true);
+        }
+        this.time.delayedCall(p.pause ?? 0, () => {
+          if (!this.live.includes(l) || state.flag('bateau-coule')) return;
+          this.patrouiller(l, p, !versLaDroite);
+        });
+      },
+    });
+  }
+
+  /**
    * **Deux adultes parlent bateau, Nino écoute.** Le parrain s'enthousiasme, papa approuve au
    * conditionnel, et le « ahem » dit tout le reste. La dernière réplique change selon que sa coque
    * est au fond de l'Erdre ou juste percée : c'est la même gêne, à un naufrage près.
@@ -809,8 +835,13 @@ export class WorldScene extends Phaser.Scene {
     const papa = this.live.find((l) => l.def.id === 'papa-capitaine');
     if (!bateau || !papa) return;
     jouer(this, 'bateau-coule', { volume: 0.7 });
-    // Il s'arrête de faire les cent pas : à partir d'ici, il a autre chose à gérer.
+    // Il s'arrête de faire les cent pas et se redresse : à partir d'ici, il a autre chose à
+    // gérer, et un capitaine coule debout.
     this.tweens.killTweensOf(papa.go);
+    if (papa.go instanceof Phaser.GameObjects.Sprite) {
+      papa.go.anims.stop();
+      papa.go.setFrame('marche-0');
+    }
 
     const DUREE = 8000;
     const FOND = 32;

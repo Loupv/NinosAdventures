@@ -87,6 +87,27 @@ export class BootScene extends Phaser.Scene {
       repeat: -1,
     });
 
+    // **Papa sur son pont.** Il marche, et il se penche sur sa coque quand il s'arrête.
+    this.anims.create({
+      key: animKey('papa-marche', pal),
+      frames: ['marche-0', 'marche-1'].map((frame) => ({
+        key: texKey('papa-capitaine', pal),
+        frame,
+      })),
+      frameRate: 4,
+      repeat: -1,
+    });
+
+    this.anims.create({
+      key: animKey('papa-bricole', pal),
+      frames: ['penche-0', 'penche-1'].map((frame) => ({
+        key: texKey('papa-capitaine', pal),
+        frame,
+      })),
+      frameRate: 2.5,
+      repeat: -1,
+    });
+
     /**
      * **L'éléphant boit, et il bat de l'oreille.** Quatre images d'une seconde, et **deux rythmes
      * dans le même cycle** : la trompe change toutes les deux images — l'eau, puis la bouche — et

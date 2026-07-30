@@ -82,7 +82,17 @@ export interface RoomObject {
    *
    * La cible d'interaction suit sa vraie position, comme pour tout ce qui bouge.
    */
-  patrouille?: { gauche: number; droite: number; duree: number };
+  patrouille?: {
+    gauche: number;
+    droite: number;
+    /** Le temps d'un trajet, en ms. */
+    duree: number;
+    /** Le temps qu'il reste arrêté à chaque bout, en ms. */
+    pause?: number;
+    /** L'animation en marchant, et celle à l'arrêt. */
+    marche?: string;
+    arret?: string;
+  };
   /**
    * Le dessin sort du cadre de la pièce, et c'est voulu. Un seul cas : la Tour de Bretagne
    * vue d'en bas, dont on ne doit jamais voir le sommet.
@@ -1730,7 +1740,15 @@ export const ROOMS: Record<string, Room> = {
         portee: 44,
         // Il va et vient sur son pont, lentement : c'est ce qui le rend visible depuis l'endroit
         // où Nino s'arrête, et ça dit qu'il cherche quelque chose dans sa coque.
-        patrouille: { gauche: 250, droite: 288, duree: 5200 },
+        frame: 'marche-0',
+        patrouille: {
+          gauche: 250,
+          droite: 288,
+          duree: 5200,
+          pause: 2600,
+          marche: 'papa-marche',
+          arret: 'papa-bricole',
+        },
         dialogue: 'papa-capitaine',
         hideIfFlag: 'papa-sauve',
       },

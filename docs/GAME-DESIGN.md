@@ -444,8 +444,16 @@ le quai est libre, et personne ne reviendra vérifier le temps.
 **Il fait les cent pas sur son pont**, d'un bout à l'autre, cinq secondes par trajet. Ce n'est pas
 de la décoration : Nino s'arrête à cinquante pixels de sa mère, et de là le bateau est tout au bord
 du cadre — planté à la poupe, son père restait invisible pendant tout le chapitre. Qu'il aille et
-vienne suffit à le mettre à l'écran. Le naufrage tue ce va-et-vient : on ne fait pas les cent pas
-sur un bateau qui coule.
+vienne suffit à le mettre à l'écran.
+
+Et il **marche** vraiment : quatre images, deux états. Les jambes s'écartent et se rejoignent quand
+il avance, et **à chaque bout du bateau il s'arrête et se penche sur sa coque**, deux secondes et
+demie, le bras qui monte et descend. Un dessin qui glisse sans bouger les jambes n'est pas quelqu'un
+qui marche, c'est un objet qu'on pousse ; et accroupi, tout le personnage descend de deux lignes —
+à huit pixels de large, c'est la hauteur qui dit qu'on s'est baissé, pas le détail des bras.
+
+Le naufrage arrête tout ça : il se redresse et ne bouge plus. On ne fait pas les cent pas sur un
+bateau qui coule, et un capitaine coule debout.
 
 **Il ne voit pas Nino.** Toutes les six secondes, une phrase sort au-dessus de lui, sans boîte et
 sans verrou, pendant qu'il visse dans sa coque :

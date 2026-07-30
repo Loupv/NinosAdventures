@@ -168,7 +168,15 @@ const PAPA: Art = [
 ];
 
 /** Le même papa, mais sur un bateau, avec un chapeau de capitaine. */
-const PAPA_CAPITAINE: Art = [
+/**
+ * **Papa capitaine, quatre images.** Il ne pose pas sur son pont : il **marche** (les jambes
+ * s'écartent et se rejoignent) et il **se penche sur sa coque** à chaque bout du bateau, le bras
+ * qui monte et descend — il a un bouchon qui fuit, c'est son après-midi.
+ *
+ * Accroupi, tout le personnage descend de deux lignes : à huit pixels de large, c'est la hauteur
+ * qui dit qu'on s'est baissé, pas le détail des bras.
+ */
+const PAPA_CAPITAINE_MARCHE: Art = [
   '.000000.',
   '.033330.',
   '..0000..',
@@ -182,6 +190,60 @@ const PAPA_CAPITAINE: Art = [
   '21111112',
   '.111111.',
   '.011110.',
+  '..1..1..',
+  '.000.000',
+];
+
+const PAPA_CAPITAINE_MARCHE_2: Art = [
+  '.000000.',
+  '.033330.',
+  '..0000..',
+  '.011110.',
+  '.022220.',
+  '.020020.',
+  '.022220.',
+  '.011110.',
+  '.022220.',
+  '01111110',
+  '21111112',
+  '.111111.',
+  '.011110.',
+  '...11...',
+  '..0000..',
+];
+
+const PAPA_CAPITAINE_PENCHE: Art = [
+  '........',
+  '........',
+  '.000000.',
+  '.033330.',
+  '..0000..',
+  '.011110.',
+  '.022220.',
+  '022222..',
+  '.011110.',
+  '.111111.',
+  '.011110.',
+  '..1111..',
+  '..1..1..',
+  '..1..1..',
+  '.000.000',
+];
+
+const PAPA_CAPITAINE_PENCHE_2: Art = [
+  '........',
+  '........',
+  '.000000.',
+  '.033330.',
+  '..0000..',
+  '.011110.',
+  '022222..',
+  '.022220.',
+  '.011110.',
+  '.111111.',
+  '.011110.',
+  '..1111..',
+  '..1..1..',
   '..1..1..',
   '.000.000',
 ];
@@ -1906,6 +1968,12 @@ export const SHEETS: Record<string, Record<string, Art>> = {
   hermione4: { 'rampe-0': HERMIONE_RAMPE_A, 'rampe-1': HERMIONE_RAMPE_B },
   araignee: { 'pattes-0': ARAIGNEE_A, 'pattes-1': ARAIGNEE_B },
   poisson: { 'saut-0': POISSON_A, 'saut-1': POISSON_B },
+  'papa-capitaine': {
+    'marche-0': PAPA_CAPITAINE_MARCHE,
+    'marche-1': PAPA_CAPITAINE_MARCHE_2,
+    'penche-0': PAPA_CAPITAINE_PENCHE,
+    'penche-1': PAPA_CAPITAINE_PENCHE_2,
+  },
   elephant: {
     boit: ELEPHANT_BOIT,
     'boit-oreille': ELEPHANT_BOIT_OREILLE,
@@ -1929,7 +1997,6 @@ export const SHEETS: Record<string, Record<string, Art>> = {
 export const IMAGES: Record<string, Art> = {
   maman: MAMAN,
   papa: PAPA,
-  'papa-capitaine': PAPA_CAPITAINE,
   maitresse: MAITRESSE,
   copain: COPAIN,
   lit: LIT,
