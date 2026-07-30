@@ -515,7 +515,7 @@ export const CASTING: Record<string, { nom: string; role: string }> = {
   },
   papa: {
     nom: 'Papa',
-    role: 'Travaille dans la mezzanine, « cinq minutes » depuis quarante minutes. Et en même temps, chapeau de capitaine, il pilote un bateau sur l’Erdre. Ne trouve ça bizarre à aucun moment.',
+    role: 'Dans le salon, « cinq minutes » depuis quarante minutes. Et en même temps, chapeau de capitaine, il pilote un bateau sur l’Erdre. Ne trouve ça bizarre à aucun moment.',
   },
   maitresse: {
     nom: 'La maîtresse',
@@ -1886,7 +1886,7 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
         'Sur le bateau, il y a Papa.',
         'Il porte un chapeau de capitaine.',
         '« Ah, Nino ! Monte pas, ça bouge. »',
-        '« Tu diras à ta mère que je suis dans la mezzanine. »',
+        '« Tu diras à ta mère que je suis resté au salon. »',
       ],
       effects: { flag: 'papa-capitaine-vu' },
     },

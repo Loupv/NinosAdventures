@@ -78,7 +78,8 @@ export const ETAPES: Etape[] = [
     nom: 'Hermione suit',
     room: 'chambre',
     flags: ['reveil', 'bouchon-retire', 'maman-au-salon'],
-    hermione: 9,
+    // Les cinq de la maison trouvées : elle suit, dans la maison. Dehors, elle se recache.
+    hermione: 5,
   },
   { touche: 'b', nom: 'La rue des bars', room: 'bars', flags: DEHORS },
   {

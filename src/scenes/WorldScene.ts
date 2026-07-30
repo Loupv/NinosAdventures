@@ -1030,7 +1030,7 @@ export class WorldScene extends Phaser.Scene {
    * Une fois toutes les cachettes trouvées, elle ne se cache plus : elle suit.
    */
   private spawnHermione(): void {
-    if (hermioneSuit(state.hermione)) {
+    if (hermioneSuit(state.hermione, this.room.id)) {
       const p = this.player.sprite;
       this.trySpawn({
         id: 'hermione-suit',

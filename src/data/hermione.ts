@@ -58,10 +58,12 @@ export const CACHETTES: Cachette[] = [
   // chaîne du poisson obligatoire.
   { room: 'sdb', x: 18, y: 38, depth: 42, revele: 'bouchon-retire' },
 
-  // ── Les quatre du dehors, pour plus tard. Maman ne passe plus par la porte.
+  // ── Les deux du dehors. Maman ne passe plus par la porte.
+  //
+  // **Rien dans Nantes** : la ville est le moment où Nino est seul, et sa sœur n'a rien à y
+  // faire. Il reste la cour, qui touche la maison, et le bord de l'Erdre — assez loin pour que
+  // le sous-marin soit une vraie question.
   { room: 'cour', x: 32, y: 35, depth: 38, vehicule: 'maman-velo' }, // derrière le vélo
-  { room: 'nantes', x: 34, y: 54, depth: 56, vehicule: 'maman-helico' }, // derrière le réverbère
-  { room: 'nantes', x: 24, y: 112, depth: 115, vehicule: 'maman-jetpack' }, // derrière les vélos à plat
   { room: 'erdre', x: 70, y: 90, depth: 92, vehicule: 'maman-sousmarin' }, // derrière le panneau du quai
 ];
 
@@ -86,5 +88,20 @@ export const rappel = (trouvees: number): string[] =>
 /** Vrai quand Maman a renoncé pour la maison : elle monte au salon. */
 export const mamanRenonce = (trouvees: number) => trouvees >= CACHETTES_MAISON;
 
-/** Vrai quand toutes les cachettes ont été trouvées : Hermione suit Nino. */
-export const hermioneSuit = (trouvees: number) => trouvees >= CACHETTES.length;
+/**
+ * **Les pièces de la maison.** Hermione y suit son frère dès que Maman a renoncé, et elle n'en
+ * sort pas : dehors, elle redevient introuvable.
+ */
+const MAISON = ['chambre', 'couloir', 'chambre-parents', 'mezzanine', 'sdb', 'cuisine', 'salon'];
+
+/**
+ * **Vrai quand Hermione suit Nino.** Deux conditions : la chasse de la maison est finie — donc
+ * Maman a renoncé — et on est **dans la maison**. C'est toute la seconde moitié du chapitre 1
+ * qu'elle passe à quatre pattes derrière lui.
+ *
+ * Dès qu'il sort, elle reste dedans. Et dehors elle est de nouveau cachée, dans la cour puis au
+ * bord de l'Erdre, sans que personne n'explique comment elle y est arrivée — c'est le principe
+ * du personnage, et c'est la seule chose qu'on ne commente jamais.
+ */
+export const hermioneSuit = (trouvees: number, room: string) =>
+  trouvees >= CACHETTES_MAISON && MAISON.includes(room);

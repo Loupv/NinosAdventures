@@ -28,7 +28,7 @@ const FICHES: Record<string, { sprites: string[]; lieux: string[] }> = {
   ecureuil: { sprites: ['ecureuil'], lieux: ['cour', 'erdre', 'tour-13'] },
   elephant: { sprites: ['elephant'], lieux: ['tour-31'] },
   maman: { sprites: ['maman'], lieux: ['cuisine', 'salon'] },
-  papa: { sprites: ['papa', 'papa-capitaine'], lieux: ['mezzanine', 'erdre', 'terrasse'] },
+  papa: { sprites: ['papa', 'papa-capitaine'], lieux: ['salon', 'erdre', 'terrasse'] },
   parrain: { sprites: ['parrain'], lieux: ['terrasse'] },
   maitresse: { sprites: ['maitresse'], lieux: ['ecole'] },
   copain1: { sprites: ['copain'], lieux: ['ecole'] },

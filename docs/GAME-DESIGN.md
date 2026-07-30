@@ -14,8 +14,8 @@ avec cynisme, et personne n'est méchant.
 ## Ton
 
 - **Phrases courtes.** Le texte est écrit pour être lu à voix haute par un adulte.
-- **L'absurde est constaté, jamais expliqué.** Papa est sur un bateau sur l'Erdre
-  alors qu'il travaille dans la mezzanine. Personne ne relève. C'est ça, la blague.
+- **L'absurde est constaté, jamais expliqué.** Papa est sur un bateau sur l'Erdre alors
+  qu'il est assis dans le salon. Personne ne relève. C'est ça, la blague.
 - **Le décor répond.** Un reflet fait signe, un ballon revient tout seul, le fond de
   l'armoire est plus loin qu'il ne devrait. Aucune de ces choses n'est un piège.
 - **Pas de mort, pas de score, pas d'échec.** La récompense est le journal qui
@@ -29,8 +29,8 @@ avec cynisme, et personne n'est méchant.
 | **Hermione** | une cachette à la fois | La petite sœur, un an. Elle est cachée quelque part et **change de cachette dès qu'on l'a trouvée**. |
 | **Moon** | salon | Le chat blanc. Dort, jusqu'à ce qu'on le paie en pizza. Devient le guide du jeu. |
 | **Maman** | cuisine, puis salon | Elle cherche Hermione dans la cuisine, plantée devant le frigo, et ne monte au salon qu'une fois qu'elle a renoncé. Tient le réel. C'est elle qui envoie Nino au frigo sans savoir ce qu'elle déclenche. |
-| **Papa** | mezzanine | « Cinq minutes, Nino. » Depuis quarante minutes. |
-| **Papa (capitaine)** | l'Erdre | Le même papa, sur un bateau, avec un chapeau de capitaine. Il n'arrive que plus tard (flag `bateau-arrive`). |
+| **Papa** | salon | « Cinq minutes, Nino. » Depuis quarante minutes. |
+| **Papa (capitaine)** | l'Erdre | Le même papa, sur un bateau, avec un chapeau de capitaine. Il est là dès qu'on arrive au quai. |
 | **L'araignée** | mezzanine, puis le 27e étage de la tour | Géante, et elle dit des haïkus — un nouveau à chaque visite, dix en réserve. Quand elle les a tous dits, elle chante, elle danse, et elle s'en va. |
 | **Gérard, le poisson** | baignoire, puis l'Erdre | Saute d'un bord à l'autre, visible seulement quand il est en l'air. Raconte sa vie en cinq boîtes de dialogue, et ne demande de l'aide qu'au moment où le chat s'assoit au bord de la baignoire. Rend ses dettes, plus tard, dans l'Erdre. |
 | **L'écureuil** | un coin de la cour, puis les roseaux de l'Erdre | À moitié caché, toujours. Pousse Nino à viser la fenêtre avec le ballon, puis à couler le bateau de papa — et nie tout, à chaque fois. Il ne gagne rien à ça. |
@@ -301,9 +301,9 @@ C'est la branche implémentée. Elle sert de gabarit à toutes les suivantes.
    au sépia. Un panneau pointe vers l'eau, et **trois vélos affaissés** sont posés contre
    le mur : *« Trois vélos. Six pneus à plat. »* Le vélo de Nino, lui, reste dans la cour —
    c'est le sien, il n'y en a qu'un.
-9. **L'Erdre.** Palette cyan. Papa est sur un bateau, avec un chapeau de capitaine.
-   → **flag** `papa-capitaine-vu`, ce qui **modifie la réplique de papa dans la
-   mezzanine** : la boucle narrative se referme.
+9. **L'Erdre.** Palette cyan. Papa est sur un bateau, avec un chapeau de capitaine, et il
+   demande à Nino de dire à sa mère **qu'il est resté au salon** — ce qui est vrai, il y est
+   aussi. Personne ne relève.
 
 ### La chaîne du poisson
 
@@ -559,10 +559,15 @@ dernière exige le poisson.
 Maman y cherche Hermione pendant toute la chasse, et une petite sœur cachée dans la pièce
 où sa mère la cherche ne tient pas debout. Les cinq sont donc le couloir (derrière la
 plante), la chambre des parents (derrière l'armoire), la chambre de Nino (sous son lit), la
-mezzanine (derrière le carton) et la salle de bain (celle qui exige le poisson). Les quatre du dehors se trouvent après être sorti — c'est ce qui
-donne à Hermione une raison de continuer à apparaître dans le chapitre de la ville, au lieu
-de disparaître à mi-parcours. Au bout des neuf, Maman renonce pour de bon et Hermione suit
-Nino à quatre pattes.
+mezzanine (derrière le carton) et la salle de bain (celle qui exige le poisson). **Puis elle suit son frère, dans toute la maison.** Dès que Maman a renoncé — les cinq
+trouvées — Hermione se met à quatre pattes derrière lui et ne le quitte plus, tant qu'il reste
+dedans. C'est toute la seconde moitié du chapitre de la maison qu'elle passe accrochée à ses
+talons.
+
+**Dehors, elle redevient introuvable.** Deux cachettes seulement, et **rien dans Nantes** : la
+ville est le moment où Nino est seul. Il reste la cour, qui touche la maison, et le bord de
+l'Erdre — assez loin pour que le sous-marin de Maman soit une vraie question. Comment sa sœur
+est arrivée là, personne ne l'explique, et c'est le principe du personnage.
 
 **Et dehors, Maman n'entre plus par la porte.** Elle emploie ce qu'elle a sous la main, et
 personne ne relève jamais :
@@ -570,9 +575,10 @@ personne ne relève jamais :
 | Où | Comment elle arrive |
 |---|---|
 | La cour | **à vélo**, avec un panier |
-| Nantes, près du réverbère | **en hélicoptère** |
-| Nantes, près des vélos à plat | **en jetpack** |
 | Le bord de l'Erdre | **en sous-marin** |
+
+Les deux autres véhicules — l'hélicoptère et le jetpack — sont dessinés et attendent : ils
+serviront le jour où il y aura des cachettes ailleurs que dans Nantes.
 
 Elle crie « HERMIONE ! » dans les quatre cas, traverse l'écran, la ramasse et repart du même
 côté. Le sous-marin qui aborde un quai est le meilleur de la série, précisément parce que
