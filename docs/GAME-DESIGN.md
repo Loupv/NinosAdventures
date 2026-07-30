@@ -856,6 +856,13 @@ il recommence.
 > qu'il ouvre soit finie.** Ici, le parapente repart tant que `parapente-rentre` n'est pas
 > posé, c'est-à-dire tant que Nino n'est pas chez lui.
 
+**Les immeubles cognent.** Ils ne faisaient rien du tout, et la ville n'était donc qu'un
+papier peint qu'on traversait. Maintenant on rebondit dessus : un coup de caméra, le bruit du
+rebond, Nino est poussé du côté où il y a de la place et il perd un peu d'altitude — *« Boum. »*
+la première fois, *« Pardon ! »* les suivantes. Ça ne fait pas perdre, mais ça suffit largement
+à manquer la fenêtre. On ne teste que la façade, et seulement quand elle est tout près : de
+loin, un immeuble minuscule au milieu de l'écran n'a jamais gêné personne.
+
 **Et les hérons**, qui arrivent maintenant en face et grossissent : ce sont ceux de l'Erdre,
 et ils rentrent à la même heure que lui. Les toucher ne fait pas perdre non plus — le héron
 proteste et l'écarte d'un coup d'aile, ce qui suffit largement à faire manquer la fenêtre.

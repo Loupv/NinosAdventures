@@ -87,6 +87,9 @@ export const VOL = {
   heronTouche: 'Le héron n’a pas aimé.',
   /** Quand la maison apparaît au loin, après une bonne demi-minute de vol. */
   maison: 'La maison !',
+  /** Et quand il rentre dans un immeuble, ce qui arrive. */
+  immeuble: 'Boum.',
+  immeubleEncore: 'Pardon !',
   rate: 'Raté.',
   lumiere: 'Une lumière s’allume.',
   reussi: 'Pile dedans.',

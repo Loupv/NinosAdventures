@@ -45,6 +45,10 @@ const PILOTAGE = 62; // px/s à l'écran
 const RAFALE = 30; // poussée latérale du vent
 const RAFALE_TOUS = 2600; // ms entre deux rafales
 const HERON_POUSSE = 46; // le coup d'aile, en px/s
+/** Le rebond sur une façade : plus fort qu'un héron, c'est un immeuble. */
+const IMMEUBLE_POUSSE = 64;
+/** À partir de quelle distance une façade peut cogner. */
+const COGNE = 46;
 
 /** La ville : quatorze immeubles recyclés, espacés en profondeur. */
 const IMMEUBLES = 14;
@@ -84,6 +88,8 @@ interface Immeuble {
   z: number;
   w: number;
   h: number;
+  /** Déjà cogné : on ne rebondit qu'une fois par immeuble. */
+  cogne: boolean;
   mur: Phaser.GameObjects.Rectangle;
   toit: Phaser.GameObjects.Rectangle;
   fenetre: Phaser.GameObjects.Rectangle;
@@ -121,6 +127,8 @@ export class ParapenteScene extends Phaser.Scene {
   /** Compteurs : ils remplacent le hasard, pour que deux vols se ressemblent. */
   private nesImmeubles = 0;
   private nesHerons = 0;
+  /** Combien de façades il a déjà prises : la deuxième fois, il s'excuse. */
+  private cognes = 0;
 
   private keys!: Record<'action' | 'left' | 'right' | 'up' | 'down', Phaser.Input.Keyboard.Key[]>;
 
@@ -139,6 +147,7 @@ export class ParapenteScene extends Phaser.Scene {
     this.prochainHeron = HERON_TOUS;
     this.nesImmeubles = 0;
     this.nesHerons = 0;
+    this.cognes = 0;
     this.immeubles = [];
     this.lignes = [];
     this.herons = [];
@@ -180,6 +189,7 @@ export class ParapenteScene extends Phaser.Scene {
         z: 0,
         w: 0,
         h: 0,
+        cogne: false,
         mur: this.add.rectangle(0, 0, 1, 1, shade(PALETTE, 1)).setOrigin(0, 0),
         toit: this.add.rectangle(0, 0, 1, 1, shade(PALETTE, 2)).setOrigin(0, 0),
         fenetre: this.add.rectangle(0, 0, 1, 1, shade(PALETTE, 3)).setOrigin(0, 0),
@@ -284,17 +294,45 @@ export class ParapenteScene extends Phaser.Scene {
     // survole pas une ville, on survole des dalles.
     b.h = 44 + ((n * 29) % 60);
     b.z = z;
+    b.cogne = false;
   }
 
   private avancerLaVille(dt: number): void {
     for (const b of this.immeubles) {
       b.z -= AVANCE * dt;
+      if (b.z < COGNE && !b.cogne) this.cogner(b);
       if (b.z < PROCHE) this.neuf(b, b.z + IMMEUBLES * PAS_Z);
     }
     for (const l of this.lignes) {
       l.z -= AVANCE * dt;
       if (l.z < PROCHE) l.z += LIGNES * PAS_LIGNE;
     }
+  }
+
+  /**
+   * **Rentrer dans un immeuble.** Ça ne faisait rien du tout, et la ville n'était donc qu'un
+   * papier peint. Maintenant on rebondit : un coup de caméra, le bruit du rebond, Nino est
+   * poussé du côté où il y a de la place et il perd un peu d'altitude. Comme pour le héron,
+   * ça ne fait pas perdre — ça suffit largement à manquer la fenêtre.
+   *
+   * On ne teste que **la façade**, et seulement quand elle est tout près : de loin, un
+   * immeuble minuscule au milieu de l'écran n'a jamais gêné personne. Et une fois cogné, un
+   * immeuble ne cogne plus : il est déjà derrière.
+   */
+  private cogner(b: Immeuble): void {
+    const g = this.ecranX(b.x - b.w / 2, b.z);
+    const d = this.ecranX(b.x + b.w / 2, b.z);
+    const bas = this.ecranY(SOL, b.z);
+    const haut = this.ecranY(SOL - b.h, b.z);
+    // La boîte de Nino, resserrée sur son corps : la voile ne compte pas.
+    if (this.px + 6 < g || this.px - 6 > d || this.py + 8 < haut || this.py - 8 > bas) return;
+    b.cogne = true;
+    this.vx = (this.px < (g + d) / 2 ? -1 : 1) * IMMEUBLE_POUSSE;
+    this.py = Phaser.Math.Clamp(this.py + 12, 18, GB.H - 26);
+    this.cameras.main.shake(180, 0.01);
+    jouer(this, 'rebond', { volume: 0.7 });
+    this.cognes += 1;
+    this.dire(this.cognes > 1 ? VOL.immeubleEncore : VOL.immeuble);
   }
 
   // ────────────────────────────────────────────────────────────── les hérons
