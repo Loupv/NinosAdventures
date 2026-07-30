@@ -91,6 +91,11 @@ salle de bain ──┤             │
               LA TOUR DE BRETAGNE
 ```
 
+**Du mobilier partout.** Bancs brûlants, poubelles dans lesquelles Nino ne regarde pas, pigeons
+qui ne s'envolent pas mais se décalent de trois pas, et le seul arbre du jeu dans la cour de
+l'école. Rien de tout ça ne sert, tout répond quand on lui parle : c'est la règle du décor
+depuis le début.
+
 **Quatre écrans de ville qui ne servent à rien**, et c'est leur fonction : entre deux
 morceaux d'histoire, un écran où l'on ne fait que traverser en écoutant des gens dire
 n'importe quoi donne au trajet une longueur. La place et l'école sont en plein jour ; la rue
@@ -301,7 +306,11 @@ C'est la branche implémentée. Elle sert de gabarit à toutes les suivantes.
    au sépia. Un panneau pointe vers l'eau, et **trois vélos affaissés** sont posés contre
    le mur : *« Trois vélos. Six pneus à plat. »* Le vélo de Nino, lui, reste dans la cour —
    c'est le sien, il n'y en a qu'un.
-9. **L'Erdre.** Palette cyan. Papa est sur un bateau, avec un chapeau de capitaine, et il
+9. **L'Erdre.** Palette cyan. Au second plan, **un éléphant de douze mètres boit dans la
+   rivière** — en bois, et il bouge les oreilles. Personne sur le quai ne s'arrête. C'est cette
+   première rencontre qui rend drôle la deuxième, trente-et-un étages plus haut : on ne
+   demandera jamais comment il est monté, mais on saura qu'il était en bas. Et lui s'en
+   souvient : *« On s'est déjà vus. » « En bas. » « Je bois beaucoup. »* Papa est sur un bateau, avec un chapeau de capitaine, et il
    demande à Nino de dire à sa mère **qu'il est resté au salon** — ce qui est vrai, il y est
    aussi. Personne ne relève.
 

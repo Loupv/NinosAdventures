@@ -1283,6 +1283,8 @@ export const ROOMS: Record<string, Room> = {
         dialogue: 'passant',
         errance: { rayon: 30, vitesse: 26 },
       },
+      { id: 'poubelle', x: 132, y: 30, sprite: 'poubelle', solid: true, dialogue: 'poubelle' },
+      { id: 'pigeon', x: 108, y: 100, sprite: 'pigeon', dialogue: 'pigeon' },
       {
         id: 'panneau-directions',
         ...at(16, 11),
@@ -1375,6 +1377,9 @@ export const ROOMS: Record<string, Room> = {
       { id: 'copain2', x: 112, y: 40, sprite: 'copain', priorite: 2, dialogue: 'copain2' },
       { id: 'copain3', x: 128, y: 88, sprite: 'copain', priorite: 2, dialogue: 'copain3' },
       { id: 'ballon-ecole', x: 60, y: 96, sprite: 'ballon', dialogue: 'ballon-ecole', hideIfFlag: 'ballon-pris' },
+      // Le seul arbre du jeu, et toute l'ombre de la cour tient dessous.
+      { id: 'arbre', x: 128, y: 20, sprite: 'arbre', solid: [6, 18, 8, 6], dialogue: 'arbre' },
+      { id: 'banc', x: 36, y: 108, sprite: 'banc', solid: true, dialogue: 'banc' },
       { id: 'plante', x: 20, y: 84, sprite: 'plante', solid: true },
     ],
     doors: [
@@ -1446,6 +1451,8 @@ export const ROOMS: Record<string, Room> = {
       { id: 'reverbere-3', x: 164, y: 76, sprite: 'reverbere', dialogue: 'reverbere' },
       { id: 'reverbere-4', x: 196, y: 76, sprite: 'reverbere', dialogue: 'reverbere' },
       { id: 'carton-tour', x: 68, y: 96, sprite: 'carton', dialogue: 'carton-tour' },
+      { id: 'banc', x: 116, y: 92, sprite: 'banc', dialogue: 'banc' },
+      { id: 'pigeon', x: 152, y: 96, sprite: 'pigeon', dialogue: 'pigeon' },
     ],
     doors: [
       { x: 0, y: 88, w: 8, h: 16, to: { room: 'terrasse', x: 144, y: 104 } },
@@ -1510,6 +1517,8 @@ export const ROOMS: Record<string, Room> = {
       },
       { id: 'monsieur-immobile', x: 64, y: 104, sprite: 'copain', dialogue: 'monsieur-immobile' },
       { id: 'reverbere', x: 136, y: 36, sprite: 'reverbere', solid: true, dialogue: 'reverbere' },
+      { id: 'poubelle', x: 84, y: 16, sprite: 'poubelle', solid: true, dialogue: 'poubelle' },
+      { id: 'pigeon', x: 68, y: 116, sprite: 'pigeon', dialogue: 'pigeon' },
     ],
     doors: [
       { x: 0, y: 96, w: 8, h: 16, to: { room: 'erdre', x: 296, y: 96 } },
@@ -1583,6 +1592,8 @@ export const ROOMS: Record<string, Room> = {
         errance: { rayon: 26, vitesse: 24 },
       },
       { id: 'reverbere', x: 132, y: 36, sprite: 'reverbere', solid: true, dialogue: 'reverbere' },
+      { id: 'banc', x: 20, y: 60, sprite: 'banc', solid: true, dialogue: 'banc' },
+      { id: 'poubelle', x: 104, y: 16, sprite: 'poubelle', solid: true, dialogue: 'poubelle' },
     ],
     doors: [
       { x: 0, y: 96, w: 8, h: 16, to: { room: 'bars', x: 144, y: 104 } },
@@ -1614,6 +1625,18 @@ export const ROOMS: Record<string, Room> = {
         depth: -10,
         dialogue: 'poisson-erdre',
         showIfFlag: 'bouchon-retire',
+      },
+      // **L'Éléphant des Machines, la première fois.** Au second plan, dans l'eau, en train de
+      // boire. On le reverra trente-et-un étages plus haut, et personne ne demandera comment.
+      {
+        id: 'elephant-erdre',
+        x: 148,
+        y: 26,
+        sprite: 'elephant',
+        scale: 2,
+        depth: -25,
+        portee: 30,
+        dialogue: 'elephant-erdre',
       },
       { id: 'roseaux', x: 36, y: 76, sprite: 'roseaux', depth: -15 },
       { id: 'roseaux2', x: 168, y: 76, sprite: 'roseaux', depth: -15 },

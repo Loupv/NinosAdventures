@@ -413,6 +413,87 @@ const HERON_B: Art = [
   '.00..00.........',
 ];
 
+/** Un banc de rue. Il fait bien trop chaud pour s'y asseoir. */
+const BANC: Art = [
+  '.000000000000000000.',
+  '.033333333333333330.',
+  '.000000000000000000.',
+  '..0................0',
+  '.000000000000000000.',
+  '.032222222222222230.',
+  '.000000000000000000.',
+  '..00..............00',
+  '..02..............20',
+  '..02..............20',
+  '..00..............00',
+  '....................',
+];
+
+/** Une poubelle de ville, avec sa trappe. On ne regarde pas dedans. */
+const POUBELLE: Art = [
+  '.0000000000.',
+  '.0333333330.',
+  '.0000000000.',
+  '.0222222220.',
+  '.0222222220.',
+  '.0200000020.',
+  '.0202222020.',
+  '.0222222220.',
+  '.0222222220.',
+  '.0222222220.',
+  '.0222222220.',
+  '.0222222220.',
+  '.0222222220.',
+  '.0000000000.',
+  '..00......00',
+  '............',
+];
+
+/** Un pigeon. Il ne s'envole pas, il se décale. */
+const PIGEON: Art = [
+  '...000....',
+  '..03330...',
+  '..03330...',
+  '.0333300..',
+  '.03333330.',
+  '.0222330..',
+  '..00000...',
+  '...0.0....',
+];
+
+/**
+ * L'arbre de la cour d'école, le seul du jeu. **Feuillage en tons sombres** : la première
+ * version était claire et disparaissait purement et simplement sur les pavés clairs de la
+ * ville. Deux tons dedans pour que la lumière ait l'air de bouger, et un tronc mince — à vingt
+ * pixels de large, c'est le feuillage qui fait l'arbre.
+ */
+const ARBRE: Art = [
+  '.......000000.......',
+  '.....0011111100.....',
+  '...0011122111100....',
+  '..001111221111100...',
+  '.00111112211111100..',
+  '.01112211111221110..',
+  '00111221111112211100',
+  '01112211111112221110',
+  '01122111111122111110',
+  '00111211111122111100',
+  '.01111221111211110..',
+  '.00111122112111100..',
+  '..001111111111110...',
+  '...001111111100.....',
+  '.....00111100.......',
+  '.......0000.........',
+  '........010.........',
+  '........010.........',
+  '........010.........',
+  '........010.........',
+  '........010.........',
+  '.......00100........',
+  '......0011100.......',
+  '......0000000.......',
+];
+
 /** Le bouchon de la baignoire. Celui qui a sauvé un poisson. */
 const BOUCHON: Art = [
   '.0000.',
@@ -1296,32 +1377,33 @@ const CORDE: Art = [
 ];
 
 /**
- * L'Éléphant des Machines, de profil. **La trompe et l'oreille font l'éléphant** : la version
- * précédente était une masse grise où l'on cherchait la bête. Ici la trompe descend jusqu'au
- * sol sur la gauche, la grande oreille est plaquée derrière, la défense sort sous la trompe,
- * et il a quatre pattes bien séparées. Affiché au double (`scale: 2`), il remplit son palier.
+ * L'Éléphant des Machines, de profil, tourné vers la gauche. **Ce qui fait l'éléphant, c'est
+ * la trompe et les pattes** : la trompe descend en diagonale jusqu'au sol, bien détachée du
+ * corps pour qu'on voie le ciel autour, la défense sort dessous, la grande oreille est cernée
+ * dans la tête, et les quatre pattes sont séparées. Les versions précédentes étaient des
+ * masses grises où l'on cherchait la bête. Affiché au double (`scale: 2`), il fait douze
+ * mètres — au bord de l'Erdre comme sur son palier.
  */
 const ELEPHANT: Art = [
-  '.........0000000........',
-  '.......00333333300......',
-  '......03322222223300....',
-  '.....033222222222330....',
-  '....0332200222222233....',
-  '...03322002222222223300.',
-  '..033220000222222222330.',
-  '.0332200022222222222330.',
-  '.0332200002222222222330.',
-  '.03322000022222222233330',
-  '.033220000222222222233.0',
-  '.0332200002222222222330.',
-  '..0332200022222222330...',
-  '...033220002222223300...',
-  '....03322000222233000...',
-  '.....0330..0233000......',
-  '.....033...033..0330....',
-  '.....033...033..0330....',
-  '.....033...033..0330....',
-  '.....000...000..0000....',
+  '............0000000000....',
+  '...........022222222220...',
+  '.....0000000000000000000..',
+  '...000000002222222222220..',
+  '...02222222222222222222000',
+  '...02000002222222222222002',
+  '...02011102222222222222002',
+  '...02011102222222222222002',
+  '...02011102222222222222002',
+  '...020111022222222222220.0',
+  '.00020000022222222222220..',
+  '.02023222222222222222220..',
+  '.02003302220000000000000..',
+  '.020.00...020..020.020....',
+  '..020.....020..020.020....',
+  '...020....020..020.020....',
+  '....020...020..020.020....',
+  '.....000..020..000.020....',
+  '..........000......000....',
 ];
 
 /**
@@ -1663,6 +1745,10 @@ export const IMAGES: Record<string, Art> = {
   gateau: GATEAU,
   ascenseur: ASCENSEUR,
   reverbere: REVERBERE,
+  banc: BANC,
+  poubelle: POUBELLE,
+  pigeon: PIGEON,
+  arbre: ARBRE,
   tram: TRAM,
   bateau: BATEAU,
   panneau: PANNEAU,

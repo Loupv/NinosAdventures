@@ -1412,6 +1412,14 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
       lines: ['« ... »', 'Il crache un peu d’eau. Il fait très chaud, ici aussi.'],
     },
     {
+      // Il l'a vu boire dans l'Erdre, et l'éléphant le sait.
+      when: () => state.flag('elephant-vu') && !state.flag('elephant-salue'),
+      speaker: 'L’Éléphant',
+      lines: ['« On s’est déjà vus. »', '« En bas. »', '« Je bois beaucoup. »'],
+      effects: { flag: 'elephant-salue' },
+    },
+
+    {
       speaker: 'L’Éléphant',
       lines: ['« Combien de pas, d’ici jusqu’à la mer ? »'],
       enigme: {
@@ -1469,6 +1477,58 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
         'Toujours les six mêmes notes.',
         'Il recommence.',
       ],
+    },
+  ],
+
+  /** Le mobilier de la ville. Il ne sert à rien, et il répond quand on lui parle. */
+  banc: [
+    {
+      lines: ['Un banc.', 'La pierre est brûlante.', 'Personne ne s’assoit là aujourd’hui.'],
+    },
+  ],
+
+  poubelle: [
+    { lines: ['Une poubelle de ville.', 'Nino ne regarde pas dedans.', 'Il a bien réfléchi.'] },
+  ],
+
+  pigeon: [
+    {
+      lines: [
+        'Un pigeon.',
+        'Il ne s’envole pas. Il se décale de trois pas.',
+        'Il attend que Nino parte.',
+      ],
+    },
+  ],
+
+  arbre: [
+    {
+      lines: [
+        'Le seul arbre de la cour.',
+        'Toute l’ombre de l’école tient dessous.',
+        'Il n’y a personne dedans.',
+      ],
+    },
+  ],
+
+  /**
+   * **L'Éléphant des Machines, la première fois.** Douze mètres de bois et d'acier, en train
+   * de boire dans l'Erdre — et personne sur le quai ne s'arrête. C'est cette rencontre-là qui
+   * rend drôle la deuxième, trente-et-un étages plus haut : on ne demandera jamais comment il
+   * est monté, mais on saura qu'il était en bas.
+   */
+  'elephant-erdre': [
+    {
+      when: () => state.flag('elephant-vu'),
+      lines: ['L’éléphant boit toujours.', 'Ça doit faire beaucoup d’eau.'],
+    },
+    {
+      lines: [
+        'Un éléphant de douze mètres boit dans l’Erdre.',
+        'Il est en bois, et il bouge les oreilles.',
+        'Personne sur le quai ne s’arrête.',
+      ],
+      effects: { flag: 'elephant-vu' },
     },
   ],
 
