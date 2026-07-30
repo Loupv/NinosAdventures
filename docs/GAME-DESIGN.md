@@ -1106,18 +1106,22 @@ déjà rencontrés — sauf un, et personne ne demande comment il est monté :
 |---|---|---|---|
 | Hall | **Moon** | *« Qui dort seize heures par jour, et personne ne lui dit rien ? »* | Un chat |
 | 13e | **L'écureuil** | *« Qu'est-ce qui est mieux qu'une noisette ? »* | Deux noisettes |
-| 27e | **L'araignée** | *« Une aile, et pas d'oiseau. Un enfant dessous. »* | Un parapente |
+| 27e | **L'araignée** | *« Le fer blanc du mardi ne dort jamais deux fois sous la même chaussette. Qu'est-ce que ça veut dire ? »* | C'est un beau poème |
 | 31e | **L'Éléphant des Machines** | *« Combien de pas, d'ici jusqu'à la mer ? »* | Je ne sais pas |
 
 Quatre remarques sur ces énigmes :
 
-- **L'araignée annonce le mécanisme.** Sa réponse est *un parapente*, et il y en a un sur
-  le toit. Elle dit des poèmes depuis le début du jeu ; ici elle voit ce qui va se passer.
+- **L'araignée ne pose pas d'énigme, et c'est ça son énigme.** Elle récite un poème auquel
+  personne ne peut rien comprendre, et elle demande ce que ça veut dire. La bonne réponse est de
+  **ne rien chercher** : *« C'est un beau poème. »* — et elle confirme, *« Ça ne veut rien dire. »
+  « C'est un poème. »* Elle dit des haïkus depuis la mezzanine ; on ne pouvait pas lui donner une
+  charade. Chercher un sens, c'est se tromper : *« Tu cherches trop. »*
 - **L'éléphant récompense l'honnêteté** — la bonne réponse est « Je ne sais pas », et il
   répond *« Moi non plus. »* C'est le dernier verrou du jeu : il ne doit jamais bloquer.
 - **Aucune mauvaise réponse ne coûte quoi que ce soit.** On redemande autant qu'on veut, et
   chaque échec donne un indice, jamais la réponse : Moon dit *« Réfléchis à qui tu
-  parles »*, l'araignée dit *« Il n'y a pas de ficelle »* (ce qui élimine le cerf-volant).
+  parles »*, l'araignée dit *« Tu cherches trop »* (ce qui écarte les deux réponses qui cherchent
+  un sens).
 - **L'araignée était partie de la mezzanine** en dansant, très tôt dans le jeu. Voilà où
   elle était.
 

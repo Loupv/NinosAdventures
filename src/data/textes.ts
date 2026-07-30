@@ -1703,21 +1703,35 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
       speaker: 'L’araignée',
       lines: ['« Vas-y. »', '« Et tiens-toi bien. »'],
     },
+    /**
+     * **Son énigme n'en est pas une, et c'est ça l'énigme.** Elle récite un poème auquel personne ne
+     * peut rien comprendre — c'est un poème, pas une devinette — et elle demande ce que ça veut
+     * dire. La bonne réponse est de ne rien chercher : c'est beau, ça suffit.
+     *
+     * Elle est poétesse depuis dix haïkus dans une mezzanine. On ne pouvait pas lui donner une
+     * charade à la place.
+     */
     {
       speaker: 'L’araignée',
-      lines: ['« Une aile, et pas d’oiseau. »', '« Un enfant dessous. »', '« Qu’est-ce que c’est ? »'],
+      lines: [
+        '« Le fer blanc du mardi »',
+        '« ne dort jamais deux fois »',
+        '« sous la même chaussette. »',
+        '« Qu’est-ce que ça veut dire ? »',
+      ],
       enigme: {
-        reponses: ['Un parapente', 'Un cerf-volant', 'Un avion'],
+        reponses: ['C’est un beau poème', 'Que tu as perdu une chaussette', 'Rien du tout'],
         bonne: 0,
         juste: {
           lines: [
-            '« Oui. »',
+            '« Voilà. »',
+            '« Ça ne veut rien dire. »',
+            '« C’est un poème. »',
             'Elle tire un fil. Les marches suivantes apparaissent.',
-            '« Tu vas en avoir besoin. »',
           ],
           effects: { flag: 'enigme-araignee' },
         },
-        faux: { lines: ['« Non. »', '« Il n’y a pas de ficelle. »'] },
+        faux: { lines: ['« Non. »', '« Tu cherches trop. »', '« Écoute encore. »'] },
       },
     },
   ],
