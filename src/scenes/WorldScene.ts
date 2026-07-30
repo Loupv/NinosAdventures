@@ -13,7 +13,6 @@ import {
   NAUFRAGE,
   AU_BORD_DE_LEAU,
   LA_JOIE_DU_BATEAU,
-  LA_JOIE_PAPA,
   MAMAN_PARTIE,
   PAPA_BRICOLE,
   PAPA_GRAIN,
@@ -458,7 +457,9 @@ export class WorldScene extends Phaser.Scene {
     const door = this.doorUnderPlayer();
     if (door) {
       const fermee =
-        (door.blockedIfFlag && state.flag(door.blockedIfFlag)) ||
+        (door.blockedIfFlag &&
+          state.flag(door.blockedIfFlag) &&
+          !(door.blockedSaufFlag && state.flag(door.blockedSaufFlag))) ||
         (door.needsFlag && !state.flag(door.needsFlag));
       if (fermee) this.porteBloquee(door);
       else this.goThroughDoor(door);
@@ -781,19 +782,15 @@ export class WorldScene extends Phaser.Scene {
     state.locked = true;
     state.setFlag('joie-bateau');
     state.save();
-    const suite = (i: number) => {
-      if (i >= LA_JOIE_DU_BATEAU.length) {
-        say({
-          speaker: LA_JOIE_PAPA.qui,
-          lines: state.flag('bateau-coule') ? LA_JOIE_PAPA.coule : LA_JOIE_PAPA.flotte,
-          focusY: 48,
-        });
-        return;
-      }
-      const beat = LA_JOIE_DU_BATEAU[i];
-      say({ speaker: beat.qui, lines: beat.lignes, focusY: 48, onDone: () => suite(i + 1) });
+    // Deux conversations, pas deux fins de conversation : un père dont le bateau est au fond de
+    // l'Erdre ne parle pas de son bouchon comme s'il avait encore une coque à réparer.
+    const suite = LA_JOIE_DU_BATEAU[state.flag('bateau-coule') ? 'coule' : 'flotte'];
+    const dire = (i: number) => {
+      if (i >= suite.length) return;
+      const beat = suite[i];
+      say({ speaker: beat.qui, lines: beat.lignes, focusY: 48, onDone: () => dire(i + 1) });
     };
-    suite(0);
+    dire(0);
   }
 
   /**
@@ -2526,20 +2523,27 @@ export class WorldScene extends Phaser.Scene {
       this.usePortal(l);
       return;
     }
-    if (l.def.id === 'hermione') {
+    /**
+     * **Ce qui est joué par la scène se reconnaît à son dialogue, pas à son identifiant.** Un même
+     * personnage revient à plusieurs endroits avec le même nom d'objet — l'araignée de la mezzanine
+     * et celle du trentième étage, Moon sur son canapé et Moon sur son palier — et seul le nom du
+     * dialogue dit ce qu'il fait là. Sur l'identifiant, l'araignée de la tour récitait un haïku au
+     * lieu de poser son énigme.
+     */
+    if (l.def.dialogue === 'hermione') {
       jouer(this, 'hermione', { volume: 0.7 });
       this.trouveHermione(l);
       return;
     }
-    if (l.def.id === 'araignee') {
+    if (l.def.dialogue === 'araignee') {
       this.ditUnHaiku(l);
       return;
     }
-    if (l.def.id === 'poisson') {
+    if (l.def.dialogue === 'poisson') {
       this.histoireDuPoisson(l);
       return;
     }
-    if (l.def.id === 'moon' && state.flag('chat-parle') && !state.flag('parents-sortis')) {
+    if (l.def.dialogue === 'moon' && state.flag('chat-parle') && !state.flag('parents-sortis')) {
       this.diversion(l);
       return;
     }
@@ -2603,7 +2607,7 @@ export class WorldScene extends Phaser.Scene {
     }
     // **Le pigeon ignore Nino.** Pas de boîte de dialogue : une boîte supposerait qu'il
     // s'intéresse à nous. Il se décale, il emmène son point d'ancrage avec lui, et il continue.
-    if (l.def.id === 'pigeon') {
+    if (l.def.dialogue === 'pigeon') {
       this.pigeonSeDecale(l);
       return;
     }

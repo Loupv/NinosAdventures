@@ -298,6 +298,12 @@ C'est la branche implémentée. Elle sert de gabarit à toutes les suivantes.
    de caméra) → *« NON MAIS CE CHAT. »* (Papa) → *« Tu as environ deux minutes. »* (Moon)
    → **il sort en courant, les deux parents derrière lui.**
 
+   La porte du salon vers la cuisine est alors barrée — *Moon les retient*, et on entend très bien
+   comment ça se passe pour lui — mais **seulement le temps de sortir**. Dès que Nino a enjambé la
+   fenêtre, le blocage se lève : la maison est vide, et un chat qui retiendrait des parents partis
+   depuis une heure devient un mensonge. Un obstacle raconté par une réplique ne peut pas durer plus
+   longtemps que la réplique (`blockedSaufFlag`).
+
    → **flag** `parents-sortis`. Le bol reste par terre, pour toujours : il ne s'est même
    pas cassé. **Et Moon n'est plus là** : il est sorti avec eux, on ne le revoit pas dans
    le salon.
@@ -434,6 +440,13 @@ Et quand la caméra est revenue sur lui, le quai vide, il conclut — *« Elle n
 C'est le seul commentaire de toute la séquence, et il ne décrit rien de ce qu'on vient de voir :
 il dit ce que Nino en retient, c'est-à-dire qu'il l'a échappé belle.
 
+**Et la maison se referme.** Maman est rentrée s'abriter avec Hermione : à partir de là, les deux
+entrées de la cour — la porte de la cuisine et la fenêtre du salon — sont fermées. *« Maman est
+rentrée. » « Elle est là, derrière la porte. » « Ce n'est pas le moment. »* On ne raconte pas la
+punition : il suffit que Nino n'ait aucune envie d'ouvrir cette porte, et tout le reste du jeu tient
+sur le fait qu'il n'est pas rentré. Il reviendra par la fenêtre de sa chambre, au petit matin, en
+parapente.
+
 **La pluie ne s'arrête pas.** La trompe reste levée, **le jet continue de partir de son bout** et
 ça tombe jusqu'à ce qu'on quitte l'écran — le minuteur meurt avec la scène. Quarante gouttes en vol au
 maximum, ce qui est déjà une averse. Revenir plus tard, c'est revenir au sec : le banc est vide,
@@ -492,8 +505,18 @@ une dette. Une bêtise obligatoire n'est pas une bêtise.
 
 Papa approuve **au conditionnel** la joie de posséder ce qu'il possédait encore ce matin. Le
 « ahem » fait tout le travail, personne ne dit ce qui s'est passé, et **Nino est le seul à la table
-à savoir pourquoi**. Si le bateau flotte toujours, la même gêne à un naufrage près : *« Le mien
-fuit un peu. » « Ahem. »*
+à savoir pourquoi**.
+
+**Et si le bateau flotte encore, ce n'est pas la même conversation** — pas seulement la même avec
+une autre chute :
+
+> — *« Alors, ce bouchon ? »*
+> — **Papa :** *« Réglé. » « Enfin. » « Presque. »*
+> — *« Tu m'emmènes, un jour ? » « En mer. »*
+> — **Papa :** *« Bien sûr. » « Quand le bouchon tiendra. » « Ahem. »*
+
+Il promet une sortie en mer qu'il sait très bien ne pas pouvoir tenir. La même gêne, à un naufrage
+près.
 
 Ça n'arrive qu'une fois, et après la blague de papa : c'est elle qui installe la table, et un père
 doit avoir fait semblant de ne pas reconnaître son fils avant de discuter navigation devant lui.
@@ -839,6 +862,14 @@ ailleurs** : il suffira de la déclarer dans une autre pièce avec
 
 C'est le premier personnage qui quitte le jeu de lui-même. Ça vaut la peine d'en faire
 une règle : un personnage qu'on a épuisé s'en va, et réapparaît là où on ne l'attend pas.
+
+Et **elle réapparaît au vingt-septième étage**, où elle ne récite plus : elle pose l'énigme du
+parapente. Ce qui a coûté un bug : les scènes jouées (les haïkus, la petite sœur, le poisson de la
+baignoire, le pigeon, la diversion du chat) étaient reconnues **à l'identifiant de l'objet**, et
+comme les deux araignées s'appellent `araignee`, celle de la tour récitait un haïku au lieu de son
+énigme. C'est maintenant **le nom du dialogue** qui décide — un même personnage revient partout avec
+le même nom d'objet, seul son dialogue dit ce qu'il fait là. Moon, qui tient un canapé et un palier,
+tombait dans le même piège.
 
 ## Les personnages bougent
 

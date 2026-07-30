@@ -270,25 +270,33 @@ export const NAUFRAGE = [
 ];
 
 /**
- * **La joie d'avoir un bateau**, telle qu'on en parle à une terrasse. Le parrain s'enthousiasme
- * pour la liberté du marin, et papa — qui a un bateau, ou qui en avait un jusqu'à cet après-midi —
- * approuve **au conditionnel**. Le « ahem » fait tout le travail : personne ne dit ce qui s'est
+ * **La joie d'avoir un bateau**, telle qu'on en parle à une terrasse — et **ce n'est pas la même
+ * conversation** selon ce que Nino a fait de son après-midi.
+ *
+ * S'il a coulé le bateau, le parrain s'enthousiasme pour la liberté du marin sans savoir, et papa
+ * approuve **au conditionnel** : le « ahem » fait tout le travail, personne ne dit ce qui s'est
  * passé, et Nino est le seul à la table à savoir pourquoi.
+ *
+ * Si le bateau flotte encore, ils parlent du bouchon qui fuit — et papa promet une sortie en mer
+ * qu'il sait très bien ne pas pouvoir tenir. La même gêne, à un naufrage près.
  */
-export const LA_JOIE_DU_BATEAU: Array<{ qui: string; lignes: string[] }> = [
+export const LA_JOIE_DU_BATEAU: Record<'coule' | 'flotte', Array<{ qui: string; lignes: string[] }>> =
   {
-    qui: 'Le parrain',
-    lignes: ['« Ce qui est bien, avec un bateau… »', '« C’est qu’on part quand on veut. »'],
-  },
-  { qui: 'Le parrain', lignes: ['« Personne ne te demande rien. »', '« Moi, j’en rêve. »'] },
-];
-
-/** Ce que papa répond — selon qu'il a encore un bateau, ou qu'il est au fond de l'Erdre. */
-export const LA_JOIE_PAPA = {
-  qui: 'Papa',
-  coule: ['« Oh oui. »', '« Ça doit être bien… »', '« Ahem. »'],
-  flotte: ['« Oh oui. »', '« Le mien fuit un peu. »', '« Ahem. »'],
-};
+    coule: [
+      {
+        qui: 'Le parrain',
+        lignes: ['« Ce qui est bien, avec un bateau… »', '« C’est qu’on part quand on veut. »'],
+      },
+      { qui: 'Le parrain', lignes: ['« Personne ne te demande rien. »', '« Moi, j’en rêve. »'] },
+      { qui: 'Papa', lignes: ['« Oh oui. »', '« Ça doit être bien… »', '« Ahem. »'] },
+    ],
+    flotte: [
+      { qui: 'Le parrain', lignes: ['« Alors, ce bouchon ? »'] },
+      { qui: 'Papa', lignes: ['« Réglé. »', '« Enfin. »', '« Presque. »'] },
+      { qui: 'Le parrain', lignes: ['« Tu m’emmènes, un jour ? »', '« En mer. »'] },
+      { qui: 'Papa', lignes: ['« Bien sûr. »', '« Quand le bouchon tiendra. »', '« Ahem. »'] },
+    ],
+  };
 
 /**
  * **Papa bricole tout haut.** Il ne voit pas Nino : il a un bouchon qui fuit, et il commente son
@@ -1532,6 +1540,17 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
    * bateau, donc elle regarde aussi le passage. Il faudra qu'elle s'en aille d'elle-même — et
    * elle ne s'en ira que s'il se met à pleuvoir.
    */
+  /**
+   * **La maison est fermée.** Maman est rentrée se mettre à l'abri de la pluie qu'un éléphant a
+   * fabriquée, et Nino est dehors à une heure où il devrait dormir. On ne raconte pas la punition :
+   * il suffit qu'il n'ait aucune envie d'ouvrir cette porte.
+   */
+  'maison-fermee': [
+    {
+      lines: ['Maman est rentrée.', 'Elle est là, derrière la porte.', 'Ce n’est pas le moment.'],
+    },
+  ],
+
   'quai-est': [
     {
       lines: [

@@ -247,7 +247,11 @@ const joignables = (flags: Set<string>) => {
         .filter(
           (d) =>
             (!d.needsFlag || flags.has(d.needsFlag)) &&
-            !(d.blockedIfFlag && flags.has(d.blockedIfFlag)),
+            !(
+              d.blockedIfFlag &&
+              flags.has(d.blockedIfFlag) &&
+              !(d.blockedSaufFlag && flags.has(d.blockedSaufFlag))
+            ),
         )
         .map((d) => d.to.room),
       ...r.objects

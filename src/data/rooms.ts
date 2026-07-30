@@ -118,6 +118,12 @@ export interface Door {
   to: { room: string; x: number; y: number };
   /** Tant que ce flag est posé, on ne passe pas : on se fait renvoyer. */
   blockedIfFlag?: string;
+  /**
+   * **Sauf si celui-là est posé** : le blocage se lève. Un obstacle raconté par une réplique
+   * (« le chat les retient dans la cuisine ») ne peut pas durer tout le jeu — quand les gens dont
+   * il parle sont deux kilomètres plus loin, il devient un mensonge.
+   */
+  blockedSaufFlag?: string;
   /** Et tant que celui-là manque, non plus. */
   needsFlag?: string;
   /** Les répliques jouées à la place du passage, dans l'ordre. */
@@ -1140,9 +1146,12 @@ export const ROOMS: Record<string, Room> = {
         w: 8,
         h: 16,
         to: { room: 'cuisine', x: 146, y: 36 },
-        // Une fois les parents lancés, on ne repart pas en arrière : Moon les retient
-        // dans la cuisine, et on entend très bien comment ça se passe pour lui.
+        // Une fois les parents lancés, on ne repart pas en arrière : Moon les retient dans la
+        // cuisine, et on entend très bien comment ça se passe pour lui. **Mais seulement le temps
+        // de sortir** : dès que Nino a enjambé la fenêtre, la maison est vide, et un chat qui
+        // retiendrait des parents partis depuis une heure n'a plus aucun sens.
         blockedIfFlag: 'parents-sortis',
+        blockedSaufFlag: 'fenetre-ouverte',
         blockedDialogue: ['moon-retient', 'papa-attrape'],
       },
     ],
@@ -1230,8 +1239,30 @@ export const ROOMS: Record<string, Room> = {
     ],
     doors: [
       { x: 40, y: 8, w: 16, h: 8, to: { room: 'nantes', x: 48, y: 128 } },
-      { x: 88, y: 8, w: 16, h: 8, to: { room: 'cuisine', x: 80, y: 118 } },
-      { x: 120, y: 8, w: 16, h: 8, to: { room: 'salon', x: 80, y: 124 } },
+      /**
+       * **Les deux entrées de la maison se ferment quand Maman rentre.** L'éléphant a fait pleuvoir,
+       * elle est repartie s'abriter avec Hermione : à partir de là, il y a quelqu'un derrière ces
+       * murs, et Nino est dehors à une heure où il devrait être couché. Rentrer, c'est se faire
+       * prendre — et tout le reste du jeu tient sur le fait qu'il n'est pas rentré.
+       */
+      {
+        x: 88,
+        y: 8,
+        w: 16,
+        h: 8,
+        to: { room: 'cuisine', x: 80, y: 118 },
+        blockedIfFlag: 'maman-quai-partie',
+        blockedDialogue: ['maison-fermee'],
+      },
+      {
+        x: 120,
+        y: 8,
+        w: 16,
+        h: 8,
+        to: { room: 'salon', x: 80, y: 124 },
+        blockedIfFlag: 'maman-quai-partie',
+        blockedDialogue: ['maison-fermee'],
+      },
     ],
   },
 
