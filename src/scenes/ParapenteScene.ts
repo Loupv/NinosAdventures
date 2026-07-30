@@ -42,13 +42,27 @@ const SOL = 46;
 
 const AVANCE = 58; // unités de z par seconde
 const PILOTAGE = 62; // px/s à l'écran
-const RAFALE = 30; // poussée latérale du vent
-const RAFALE_TOUS = 2600; // ms entre deux rafales
+/**
+ * **La rafale.** C'était une impulsion d'un coup sur la vitesse latérale : amortie en deux
+ * dixièmes de seconde et complètement noyée dès qu'on tenait une flèche, elle ne faisait rien
+ * du tout. C'est maintenant **un vent qui souffle pendant une seconde** — il pousse de côté et
+ * il soulève, et il faut corriger pendant qu'il dure. On peut lutter contre : le pilotage est
+ * plus fort que le vent, mais il faut s'en occuper.
+ */
+const RAFALE_X = 42; // px/s de côté, pendant toute la rafale
+const RAFALE_Y = 24; // px/s de haut en bas
+const RAFALE_DUREE = 1100; // ms
+const RAFALE_TOUS = 3600; // ms entre deux rafales
 const HERON_POUSSE = 46; // le coup d'aile, en px/s
 /** Le rebond sur une façade : plus fort qu'un héron, c'est un immeuble. */
 const IMMEUBLE_POUSSE = 64;
-/** À partir de quelle distance une façade peut cogner. */
-const COGNE = 46;
+/**
+ * À partir de quelle distance une façade peut cogner. **Large exprès** : le rebond doit partir
+ * à la première image où le mur touche Nino à l'écran, pas plus tard. C'était réglé si serré
+ * que la façade lui passait dessus pendant un bon moment avant que quoi que ce soit n'arrive —
+ * on avait déjà l'impression de s'être écrasé, et le jeu ne réagissait qu'après.
+ */
+const COGNE = 96;
 
 /** La ville : quatorze immeubles recyclés, espacés en profondeur. */
 const IMMEUBLES = 14;
@@ -123,12 +137,17 @@ export class ParapenteScene extends Phaser.Scene {
   private annoncee = false;
 
   private prochaineRafale = RAFALE_TOUS;
+  /** Le vent en cours : direction, et ce qu'il lui reste à souffler. */
+  private vent = { x: 0, y: 0 };
+  private ventReste = 0;
   private prochainHeron = HERON_TOUS;
   /** Compteurs : ils remplacent le hasard, pour que deux vols se ressemblent. */
   private nesImmeubles = 0;
   private nesHerons = 0;
   /** Combien de façades il a déjà prises : la deuxième fois, il s'excuse. */
   private cognes = 0;
+  /** Combien de rafales ont soufflé : elles alternent de côté. */
+  private rafales = 0;
 
   private keys!: Record<'action' | 'left' | 'right' | 'up' | 'down', Phaser.Input.Keyboard.Key[]>;
 
@@ -144,10 +163,13 @@ export class ParapenteScene extends Phaser.Scene {
     this.maisonZ = MAISON_Z;
     this.annoncee = false;
     this.prochaineRafale = RAFALE_TOUS;
+    this.vent = { x: 0, y: 0 };
+    this.ventReste = 0;
     this.prochainHeron = HERON_TOUS;
     this.nesImmeubles = 0;
     this.nesHerons = 0;
     this.cognes = 0;
+    this.rafales = 0;
     this.immeubles = [];
     this.lignes = [];
     this.herons = [];
@@ -216,12 +238,15 @@ export class ParapenteScene extends Phaser.Scene {
     this.vol = this.add
       .image(this.px, this.py, texKey('parapente-vol', PALETTE))
       .setOrigin(0.5, 0.5)
-      .setDepth(1000);
+      // **Toujours devant tout.** C'est lui qu'on regarde, et un immeuble qui lui passe par
+      // dessus se lit comme un choc — alors que dans cette perspective, rien ne peut jamais
+      // passer devant le point de vue.
+      .setDepth(2000);
 
     this.titre = new PixelText(this, 'pp-titre', 0, 44, GB.W, 12);
     this.sous = new PixelText(this, 'pp-sous', 0, 58, GB.W, 12);
     this.message = new PixelText(this, 'pp-msg', 0, 4, GB.W, 12);
-    for (const t of [this.titre, this.sous, this.message]) t.image.setDepth(1100);
+    for (const t of [this.titre, this.sous, this.message]) t.image.setDepth(2100);
 
     const kb = this.input.keyboard!;
     this.keys = {
@@ -268,18 +293,28 @@ export class ParapenteScene extends Phaser.Scene {
     const bas = this.keys.down.some((k) => k.isDown);
 
     this.vx = (gauche ? -PILOTAGE : 0) + (droite ? PILOTAGE : 0) + this.vx * 0.86;
+
     this.prochaineRafale -= delta;
     if (this.prochaineRafale <= 0) {
       this.prochaineRafale = RAFALE_TOUS;
-      this.vx += this.nesHerons % 2 === 0 ? -RAFALE : RAFALE;
+      this.ventReste = RAFALE_DUREE;
+      // Un compteur plutôt que le hasard : les rafales alternent, et elles soulèvent une fois
+      // sur deux. Deux vols se ressemblent, c'est la règle de tout ce mini-jeu.
+      const n = this.rafales++;
+      this.vent = {
+        x: n % 2 === 0 ? -RAFALE_X : RAFALE_X,
+        y: n % 4 < 2 ? -RAFALE_Y : RAFALE_Y,
+      };
       jouer(this, 'rafale', { volume: 0.6 });
       this.dire(VOL.rafale);
     }
+    if (this.ventReste > 0) this.ventReste -= delta;
 
-    this.px = Phaser.Math.Clamp(this.px + this.vx * dt, 14, GB.W - 14);
+    const souffle = this.ventReste > 0 ? this.vent : { x: 0, y: 0 };
+    this.px = Phaser.Math.Clamp(this.px + (this.vx + souffle.x) * dt, 14, GB.W - 14);
     // En hauteur, pas d'inertie : à sept ans, on veut que la flèche du haut fasse monter.
     const vy = (haut ? -PILOTAGE * 0.8 : 0) + (bas ? PILOTAGE * 0.8 : 0);
-    this.py = Phaser.Math.Clamp(this.py + vy * dt, 18, GB.H - 26);
+    this.py = Phaser.Math.Clamp(this.py + (vy + souffle.y) * dt, 18, GB.H - 26);
   }
 
   // ─────────────────────────────────────────────────────────────── la ville
@@ -401,6 +436,7 @@ export class ParapenteScene extends Phaser.Scene {
     this.px = GB.W / 2;
     this.py = 60;
     this.vx = 0;
+    this.ventReste = 0;
     this.prochaineRafale = RAFALE_TOUS;
   }
 

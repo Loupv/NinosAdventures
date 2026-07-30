@@ -860,8 +860,22 @@ il recommence.
 papier peint qu'on traversait. Maintenant on rebondit dessus : un coup de caméra, le bruit du
 rebond, Nino est poussé du côté où il y a de la place et il perd un peu d'altitude — *« Boum. »*
 la première fois, *« Pardon ! »* les suivantes. Ça ne fait pas perdre, mais ça suffit largement
-à manquer la fenêtre. On ne teste que la façade, et seulement quand elle est tout près : de
-loin, un immeuble minuscule au milieu de l'écran n'a jamais gêné personne.
+à manquer la fenêtre.
+
+Deux réglages qui décident si ça se sent juste ou pas :
+
+- **Nino est dessiné devant tout le reste.** Dans cette perspective, rien ne peut passer devant
+  le point de vue ; un immeuble qui lui passait par-dessus se lisait comme un choc, alors qu'il
+  ne se passait rien.
+- **Le rebond part à la première image où le mur le touche à l'écran**, tant que la façade est
+  plus près que `COGNE`. C'était réglé si serré qu'on avait le temps de croire s'être écrasé
+  avant que le jeu ne réagisse.
+
+**Et la rafale souffle vraiment.** C'était une impulsion d'un coup sur la vitesse latérale :
+amortie en deux dixièmes de seconde, complètement noyée dès qu'on tenait une flèche, elle ne
+faisait rien. C'est maintenant **un vent d'une seconde** qui pousse de côté *et* qui soulève —
+une quarantaine de pixels de dérive, à corriger pendant qu'il dure. Le pilotage reste plus fort
+que le vent : on peut lutter, mais il faut s'en occuper.
 
 **Et les hérons**, qui arrivent maintenant en face et grossissent : ce sont ceux de l'Erdre,
 et ils rentrent à la même heure que lui. Les toucher ne fait pas perdre non plus — le héron
