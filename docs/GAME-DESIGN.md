@@ -1306,7 +1306,8 @@ De retour dans sa chambre, parapente sous le bras, il suffit d'aller au lit :
 6. *« Souffle ! »* — *« Nino prend une très grande respiration. »* — *« ... »*
 7. **Six bougies éteintes. La septième repart toute seule.** *« Celle-là, c'est une farce. »* —
    *« Ce n'est pas moi. »* — *« Ce n'est pas moi non plus. »* — **« Moon regarde ailleurs. »**
-8. *« Nino souffle une deuxième fois. »* — *« Voilà. »* — **« Nino dort. »**
+8. *« Nino souffle une deuxième fois. »* — *« Voilà. »* — et **il s'endort sur la table**, la tête
+   dans les bras, au milieu de sa propre fête : *« Nino s'endort sur la table. »*
 
 Et c'est tout. **Rien n'explique la révélation** : les parents n'étaient pas distraits
 depuis ce matin, ils préparaient. Le joueur le comprend en voyant le gâteau, pas en le
@@ -1321,6 +1322,40 @@ souffle et le noir**, sinon le jeu s'arrête au milieu d'une respiration.
 
 L'écran de fin est dans la palette du jour — c'est le matin de son anniversaire — et il
 compte ce qui a été **trouvé**, pas ce qui a été réussi : les cachettes d'Hermione, les pièces. Il n'y a pas de score dans ce jeu.
+
+## Le générique
+
+**Fondu, et le jeu repasse par ses propres écrans.** Onze pièces, une par carton, avec une ligne de
+remerciement en bas — et à chaque fois **celui qu'on remercie est reposé là où on l'a rencontré** :
+Moon sur son canapé, Gérard dans la baignoire, l'araignée dans la mezzanine, l'écureuil dans la cour,
+Hermione sous le lit. À la fin du jeu presque aucun n'est encore chez lui — le chat est sorti avec les
+parents, le poisson est parti à la mer, l'araignée a dansé et s'en est allée — et remercier une pièce
+vide n'a pas le même effet.
+
+> *Merci à Moon, qui a tout déclenché pour un bout de pizza.*
+> *Merci à Gérard, qui voulait juste voir la mer.*
+> *Merci à l'araignée, dix haïkus et une danse.*
+> *Merci à l'écureuil, qui n'a jamais rien proposé à personne.*
+> *Merci au jardinier, qui n'y était pour rien.*
+> *Merci à la maîtresse, qui a mis une note à une croûte de pizza.*
+> *Merci à l'Éléphant des Machines, qui boit beaucoup.*
+> *Merci à Papa, qui a un fils qui lui ressemble beaucoup.*
+> *Merci à la Tour de Bretagne, qui n'a pas bougé de la nuit.*
+> *Merci à Maman, qui préparait un gâteau depuis ce matin.*
+> *Merci à Hermione, où qu'elle soit.*
+> **Et merci à Nino, qui a fait tout ça un mardi.**
+
+**Ce ne sont pas des crédits, c'est la liste de ceux à qui il doit sa journée**, et aucun d'eux
+n'existe. Personne n'est remercié pour son travail : ils sont remerciés pour ce qu'ils ont fait dans
+l'histoire.
+
+Techniquement, c'est **le jeu lui-même qui joue le générique** : le mode cinéma est une variante de
+la scène de jeu (`cinema` dans l'arrivée), donc les décors, les animations et les personnages sont
+les vrais. Ce mode ne visite rien, ne sauvegarde rien, ne pose aucun drapeau d'heure et coupe
+l'interface — sinon un générique laisserait des traces dans la partie qu'il conclut. La caméra
+traverse lentement les pièces plus larges que l'écran, chaque carton tient quatre secondes, les
+lignes se replient toutes seules, et **ESPACE saute tout** : un enfant de sept ans qui vient de finir
+un jeu a le droit d'être pressé.
 
 ## L'écran de fin, en deux pages
 

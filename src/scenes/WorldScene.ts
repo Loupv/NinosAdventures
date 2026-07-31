@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import { GB, GRAVITY, KEYS } from '../config';
 import { THEMES, SOLID } from '../art/tiles';
-import { paletteAube, paletteNocturne, shadeHex, type PaletteId } from '../art/palette';
+import { paletteAube, paletteNocturne, shade, shadeHex, type PaletteId } from '../art/palette';
 import { animKey, blankCanvas, paintArt, texKey } from '../art/pixels';
 import { ROOMS, nomDuLieu, type Door, type Room, type RoomObject } from '../data/rooms';
 import { ARROSABLES, CHARACTER_SPRITES } from '../data/characters';
@@ -29,6 +29,8 @@ import {
   ECUREUIL_VANNES,
   JARDINIER_MERCI,
   JARDINIER_PART,
+  CREDITS,
+  GENERIQUE,
   PLANTE,
   PLANTES,
   PLANTES_TOUTES,
@@ -146,6 +148,9 @@ const BALLON_PORTEE = 13;
 /** Ce qui dépasse de l'eau quand le poisson parle, en pixels. Le reste est sous la surface. */
 const EMERGE = 5;
 
+/** Le temps qu'une pièce reste à l'écran pendant le générique, en ms. */
+const GENERIQUE_ETAPE = 4000;
+
 /** Le temps que met la bosse à passer d'une étape à la suivante, dans la trompe. En ms. */
 const MONTEE = 800;
 
@@ -175,6 +180,12 @@ interface Arrival {
   room?: string;
   x?: number;
   y?: number;
+  /**
+   * **Étape du générique.** Quand ce champ est là, la pièce est rejouée en mode cinéma : pas de
+   * Nino, pas de clavier, pas de bandeau de lieu, rien de sauvegardé — juste le décor, ses
+   * personnages qui bougent, et une ligne de remerciement en bas de l'écran.
+   */
+  cinema?: number;
 }
 
 /**
@@ -224,6 +235,8 @@ export class WorldScene extends Phaser.Scene {
   private vanne?: PixelText;
   private errants: Errant[] = [];
   private transitioning = false;
+  /** Vrai pendant le générique : la pièce se regarde, elle ne se joue pas. */
+  private cinema = false;
   private keys!: Record<keyof typeof KEYS, Phaser.Input.Keyboard.Key[]>;
 
   constructor() {
@@ -247,7 +260,10 @@ export class WorldScene extends Phaser.Scene {
 
   create(): void {
     this.bindKeys();
-    if (!this.scene.isActive('Ui')) this.scene.launch('Ui');
+    // **Le générique n'a pas d'interface** : ni jauge, ni boîte de dialogue, ni bandeau de lieu.
+    this.cinema = this.arrival.cinema !== undefined;
+    if (this.cinema) this.scene.stop('Ui');
+    else if (!this.scene.isActive('Ui')) this.scene.launch('Ui');
 
     // Une sauvegarde peut pointer vers une pièce qui n'existe plus : on rentre.
     const wanted = this.arrival.room ?? state.room;
@@ -257,7 +273,7 @@ export class WorldScene extends Phaser.Scene {
     // L'heure du jour, en deux drapeaux. On se lève vers midi ; la nuit tombe en entrant
     // dans la tour ; sur le toit le ciel pâlit déjà — et une fois rentré par la fenêtre
     // c'est le matin, donc les couleurs du jour à nouveau.
-    if (this.room.heure) state.setFlag(this.room.heure);
+    if (this.room.heure && !this.cinema) state.setFlag(this.room.heure);
     this.pal =
       state.flag('aube') && !state.flag('parapente-rentre')
         ? paletteAube(paletteNocturne(this.room.palette))
@@ -270,9 +286,12 @@ export class WorldScene extends Phaser.Scene {
     this.roomH = this.room.tiles.length * GB.TILE;
     this.physics.world.gravity.y = this.mode === 'side' ? GRAVITY : 0;
     const known = state.vu(id);
-    state.visit(id);
-    state.ecrans += 1;
-    this.chosesQuiArrivent();
+    // Le générique ne visite rien et ne fait rien arriver : il regarde.
+    if (!this.cinema) {
+      state.visit(id);
+      state.ecrans += 1;
+      this.chosesQuiArrivent();
+    }
     // On note la première visite de l'Erdre après coup : le bateau ne peut pas être
     // déjà là au moment où on découvre l'endroit.
 
@@ -297,11 +316,13 @@ export class WorldScene extends Phaser.Scene {
       });
     }
 
-    // Une pièce plus large que l'écran : la caméra suit Nino.
+    // Une pièce plus large que l'écran : la caméra suit Nino. Pendant le générique elle
+    // traverse la pièce toute seule, et Nino n'est pas là.
     this.cameras.main.setBounds(0, 0, this.roomW, this.roomH);
-    if (this.roomW > GB.W || this.roomH > GB.H) {
+    if (!this.cinema && (this.roomW > GB.W || this.roomH > GB.H)) {
       this.cameras.main.startFollow(this.player.sprite, true, 0.15, 0.15);
     }
+    if (this.cinema) this.player.sprite.setVisible(false);
     if (this.mode === 'side') this.player.sprite.setDepth(10);
 
     // Après le joueur : quand Hermione le suit, elle a besoin de sa position.
@@ -314,6 +335,10 @@ export class WorldScene extends Phaser.Scene {
       .setVisible(false);
 
     state.locked = true;
+    if (this.cinema) {
+      gbFade(this, this.pal, 'in', () => this.etapeDuGenerique(this.arrival.cinema ?? 0));
+      return;
+    }
     gbFade(this, this.pal, 'in', () => {
       // Le tout début du jeu : Nino se réveille dans son lit.
       if (id === 'chambre' && !state.flag('reveil')) {
@@ -349,6 +374,7 @@ export class WorldScene extends Phaser.Scene {
       // commente son propre travail : c'est ce qui le rend occupé.
       if (id === 'erdre') this.papaBricole();
     });
+    if (this.cinema) return;
     bus.emit(EV.hud);
     bus.emit(EV.room, { name: nomDuLieu(id), isNew: !known });
     state.save();
@@ -2453,10 +2479,7 @@ export class WorldScene extends Phaser.Scene {
      */
     const dire = (i: number) => {
       if (i >= FETE.length) {
-        state.setFlag('fin');
-        state.save();
-        this.scene.stop('Ui');
-        this.scene.start('Fin');
+        this.endormiSurLaTable();
         return;
       }
       // La boîte passe en haut : toute la scène du gâteau reste visible en dessous.
@@ -2473,6 +2496,121 @@ export class WorldScene extends Phaser.Scene {
       say({ speaker: FETE[i].qui, lines: FETE[i].lignes, focusY: 110, onDone: suite });
     };
     dire(0);
+  }
+
+  /**
+   * **Une étape du générique.** La pièce est déjà là, avec ses personnages et leurs animations : il
+   * ne reste qu'à la regarder. On pose la ligne de remerciement en bas, on traverse lentement la
+   * pièce si elle est plus large que l'écran, et au bout de quatre secondes on enchaîne sur la
+   * suivante — jusqu'à la dernière, qui rend la main à l'écran de fin.
+   *
+   * **ESPACE saute tout.** Un enfant de sept ans qui vient de finir un jeu a le droit d'être pressé,
+   * et un générique dont on ne peut pas sortir est une punition.
+   */
+  private etapeDuGenerique(i: number): void {
+    state.locked = true;
+    const etape = CREDITS[i];
+    const dernier = i + 1 >= CREDITS.length;
+    this.carton(dernier ? [...etape.lignes, '', ...GENERIQUE.fin] : etape.lignes);
+
+    // Celui qu'on remercie, reposé là où on l'a rencontré : à la fin du jeu, presque aucun n'est
+    // encore dans sa pièce, et remercier une pièce vide n'a pas le même effet.
+    // Et pas deux fois : si la pièce l'a encore chez elle, on ne le double pas.
+    const q = etape.qui && !this.live.some((l) => l.def.sprite === etape.qui?.sprite) ? etape.qui : undefined;
+    if (q) {
+      const go = q.anim
+        ? this.add.sprite(q.x, q.y, texKey(q.sprite, this.pal), q.frame)
+        : this.add.image(q.x, q.y, texKey(q.sprite, this.pal), q.frame);
+      go.setOrigin(0, 0).setScale(q.scale ?? 1);
+      go.setDepth(q.y + go.displayHeight);
+      if (q.anim && go instanceof Phaser.GameObjects.Sprite) go.play(animKey(q.anim, this.pal));
+    }
+
+    // Un travelling lent d'un bord à l'autre, quand il y a de quoi traverser.
+    const cam = this.cameras.main;
+    cam.stopFollow();
+    if (this.roomW > GB.W) {
+      cam.setScroll(0, 0);
+      cam.pan(this.roomW - GB.W / 2, cam.midPoint.y, GENERIQUE_ETAPE, 'Sine.easeInOut');
+    }
+
+    const suite = () => {
+      if (this.transitioning) return;
+      this.transitioning = true;
+      gbFade(this, this.pal, 'out', () => {
+        if (dernier) {
+          this.scene.start('Fin');
+          return;
+        }
+        this.scene.restart({ room: CREDITS[i + 1].room, cinema: i + 1 });
+      });
+    };
+
+    // Sauter : n'importe quelle touche d'action, et on va droit à l'écran de fin.
+    for (const k of this.keys.action) {
+      k.once('down', () => {
+        if (this.transitioning) return;
+        this.transitioning = true;
+        this.scene.start('Fin');
+      });
+    }
+    this.time.delayedCall(GENERIQUE_ETAPE + 600, suite);
+  }
+
+  /**
+   * **Le carton du générique** : deux lignes en bas de l'écran, sur un fond plein, plus le rappel
+   * qu'on peut passer. Ce n'est pas une boîte de dialogue — elle attendrait un appui, et ici c'est
+   * le temps qui décide.
+   */
+  private carton(brutes: string[]): void {
+    // **Les lignes se replient toutes seules.** Un remerciement un peu long sortait de l'écran par
+    // la droite, exactement comme les lignes trop longues de l'écran de fin : on ne compte plus les
+    // caractères à la main, on laisse le retour à la ligne faire son travail.
+    const lignes = brutes.flatMap((l) => (l ? wrap(l, GB.W - 10) : ['']));
+    const haut = GB.H - 8 - lignes.length * LINE_H;
+    this.add
+      .rectangle(0, haut - 4, GB.W, GB.H - haut + 4, shade(this.pal, 0))
+      .setOrigin(0, 0)
+      .setScrollFactor(0)
+      .setDepth(1900);
+    const texte = new PixelText(this, 'gen-carton', 0, haut, GB.W, lignes.length * LINE_H + 2);
+    texte.image.setScrollFactor(0).setDepth(1910);
+    texte.setLines(lignes, shadeHex(this.pal, 3));
+    const saut = new PixelText(this, 'gen-saut', GB.W - 40, 4, 40, 12);
+    saut.image.setScrollFactor(0).setDepth(1910);
+    saut.setLines([GENERIQUE.saut], shadeHex(this.pal, 3));
+  }
+
+  /**
+   * **Il s'endort sur la table, la tête dans les bras.** C'est la dernière image du jeu jouable :
+   * les bougies soufflées, le gâteau devant lui, et il tombe de sommeil au milieu de sa propre
+   * fête. Personne ne sait ce qu'il a fait cette nuit, et c'est ce qui rend la scène drôle plutôt
+   * que triste.
+   *
+   * Puis le fondu, et **le générique traverse les écrans du jeu**.
+   */
+  private endormiSurLaTable(): void {
+    state.setFlag('fin');
+    state.save();
+    const table = this.room.objects.find((o) => o.id === 'table');
+    this.montrer({
+      sprite: 'nino-couche',
+      x: (table?.x ?? 88) - 4,
+      y: (table?.y ?? 72) - 6,
+      depth: 200,
+      cacheNino: true,
+    });
+    say({
+      lines: GENERIQUE.endormi,
+      focusY: 20,
+      onDone: () => {
+        this.transitioning = true;
+        gbFade(this, this.pal, 'out', () => {
+          this.scene.stop('Ui');
+          this.scene.restart({ room: CREDITS[0].room, cinema: 0 });
+        });
+      },
+    });
   }
 
   private entrees(): { x: number; y: number }[] {

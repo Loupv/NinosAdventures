@@ -632,6 +632,69 @@ export const FETE: Array<{ qui?: string; lignes: string[]; son?: string; pause?:
   { lignes: ['Nino dort.'] },
 ];
 
+/**
+ * **Le générique.** Nino s'endort sur la table, et le jeu repasse par ses propres écrans, un par
+ * un, avec une ligne de remerciement en bas. Ce ne sont pas des crédits : c'est **la liste de ceux
+ * à qui il doit sa journée**, et aucun d'eux n'est une personne réelle.
+ *
+ * Chaque entrée est une pièce du jeu et deux lignes. La pièce est rejouée telle quelle — ses
+ * décors, ses personnages, ses animations — parce qu'un générique qui montre le jeu vaut mieux
+ * qu'un générique qui déroule des noms sur du noir. On peut passer avec ESPACE : un enfant de sept
+ * ans qui a fini un jeu a le droit d'être pressé.
+ */
+export const CREDITS: Array<{
+  room: string;
+  lignes: string[];
+  /**
+   * **Celui qu'on remercie, remis à sa place le temps du carton.** À la fin du jeu, la plupart
+   * d'entre eux ne sont plus là : le chat est sorti avec les parents, le poisson est parti à la
+   * mer, l'araignée a dansé et s'en est allée. Un générique qui remercie une pièce vide, c'est
+   * triste ; on les repose donc là où on les a rencontrés, juste pour la photo — et **au-dessus de
+   * la bande de texte**, qui mange le bas de l'écran.
+   */
+  qui?: { sprite: string; x: number; y: number; frame?: string; anim?: string; scale?: number };
+}> = [
+  {
+    room: 'salon',
+    lignes: ['Merci à Moon,', 'qui a tout déclenché pour un bout de pizza.'],
+    qui: { sprite: 'moon', x: 16, y: 86, frame: 'idle-0', anim: 'moon-idle' },
+  },
+  {
+    room: 'sdb',
+    lignes: ['Merci à Gérard,', 'qui voulait juste voir la mer.'],
+    qui: { sprite: 'poisson', x: 24, y: 44, frame: 'saut-0', anim: 'poisson-saut' },
+  },
+  {
+    room: 'mezzanine',
+    lignes: ['Merci à l’araignée,', 'dix haïkus et une danse.'],
+    qui: { sprite: 'araignee', x: 60, y: 74, frame: 'pattes-0', anim: 'araignee-pattes', scale: 2 },
+  },
+  {
+    room: 'cour',
+    lignes: ['Merci à l’écureuil,', 'qui n’a jamais rien proposé à personne.'],
+    qui: { sprite: 'ecureuil', x: 124, y: 72, frame: 'queue-0', anim: 'ecureuil-queue' },
+  },
+  { room: 'nantes', lignes: ['Merci au jardinier,', 'qui n’y était pour rien.'] },
+  { room: 'ecole', lignes: ['Merci à la maîtresse,', 'qui a mis une note à une croûte de pizza.'] },
+  { room: 'erdre', lignes: ['Merci à l’Éléphant des Machines,', 'qui boit beaucoup.'] },
+  { room: 'terrasse', lignes: ['Merci à Papa,', 'qui a un fils qui lui ressemble beaucoup.'] },
+  { room: 'tour-toit', lignes: ['Merci à la Tour de Bretagne,', 'qui n’a pas bougé de la nuit.'] },
+  { room: 'cuisine', lignes: ['Merci à Maman,', 'qui préparait un gâteau depuis ce matin.'] },
+  {
+    room: 'chambre',
+    lignes: ['Merci à Hermione,', 'où qu’elle soit.'],
+    qui: { sprite: 'hermione', x: 20, y: 40, frame: 'idle-0', anim: 'hermione-idle' },
+  },
+];
+
+/** Ce qu'on lit en bas de l'écran pendant le générique, et la toute dernière ligne. */
+export const GENERIQUE = {
+  saut: 'ESPACE',
+  fin: ['Et merci à Nino,', 'qui a fait tout ça un mardi.'],
+  /** Sur la table de la cuisine, la tête dans les bras. */
+  endormi: ['Nino s’endort sur la table.'],
+};
+
 // ═══════════════════════════════════════════════════════ 10. le sac et les pièces
 
 /** Ce que le journal raconte des objets ramassés. */
