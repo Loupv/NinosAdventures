@@ -52,7 +52,13 @@ export interface RoomObject {
    * Un personnage qui ne reste pas planté : il va et vient autour de sa position de
    * départ, avec des pauses. `rayon` en pixels, `vitesse` en px/s (lente par défaut).
    */
-  errance?: { rayon: number; vitesse?: number };
+  /**
+   * Il ne tient pas en place : il vise un point au hasard dans son rayon, il y va, il attend.
+   *
+   * `apres` **retarde l'errance** jusqu'à ce que le drapeau soit posé : Moon dort sur son canapé,
+   * et un chat qui dort ne fait pas les cent pas. Il ne se met à bouger qu'une fois réveillé.
+   */
+  errance?: { rayon: number; vitesse?: number; apres?: string };
   dialogue?: string;
   /**
    * Priorité d'interaction quand deux choses sont à portée : **2 = comme un personnage**,
@@ -1206,7 +1212,8 @@ export const ROOMS: Record<string, Room> = {
         frame: 'dort',
         animIfFlag: ['chat-parle', 'moon-idle'],
         dialogue: 'moon',
-        errance: { rayon: 8, vitesse: 11 },
+        // Il dort : il ne bouge qu'une fois réveillé, c'est-à-dire payé en pizza.
+        errance: { rayon: 8, vitesse: 11, apres: 'chat-parle' },
         // Il est sorti en courant avec les parents : il n'est plus là.
         hideIfFlag: 'parents-sortis',
       },

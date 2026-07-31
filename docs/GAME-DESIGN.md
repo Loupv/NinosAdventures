@@ -301,7 +301,8 @@ C'est la branche implémentée. Elle sert de gabarit à toutes les suivantes.
 4. **Salon.** **Papa et Maman tiennent le salon.** C'est là qu'est le vrai obstacle, et
    il n'est pas magique : on n'enjambe pas une fenêtre devant ses parents. Tout le monde
    sait ça.
-5. Moon dort sur le canapé. Avec la pizza en poche, l'interaction change complètement :
+5. Moon dort sur le canapé — **et il ne bouge pas** : tous les personnages du jeu errent, sauf
+   celui qui dort. Il ne se met à faire les cent pas qu'une fois réveillé, c'est-à-dire payé. Avec la pizza en poche, l'interaction change complètement :
    Moon mange, s'assoit, **et se met à parler**. → **flag** `chat-parle`, la pizza est
    consommée, Moon passe de la frame « dort » à son animation assise. Il promet de
    « s'occuper des adultes ».
@@ -679,6 +680,17 @@ est la seule chose à faire dans cette chambre, donc personne ne cherche longtem
 réplique du réveil ne parle que du rêve — *« Quel drôle de rêve. Il y avait une fusée, et
 ça sentait bizarre. »* — et jamais de sa sœur : elle est là, à l'écran, ça suffit.
 
+### S'allonger sur le carrelage
+
+Nino se couche de tout son long sur le carrelage de la cuisine, la joue contre le sol : *« C'est le
+meilleur endroit de la maison. Tout le monde le sait. »* C'était la plus jolie interaction du jeu et
+la plus inutile — alors **de tout en bas, il voit sous le frigo** :
+
+> *« D'ici, on voit sous le frigo. » « Il y a quelque chose dessous. »*
+
+**La deuxième pièce du jeu**, et on ne peut la trouver qu'en se couchant par terre sans raison. C'est
+la meilleure récompense possible pour un geste qui n'en demandait aucune.
+
 ### Le coffre à jouets
 
 Il ne contient plus seulement un dinosaure vexé : tout au fond, il y a le **pistolet à
@@ -760,8 +772,14 @@ coffre dit simplement *« Son pistolet à eau n'y est plus. »*
 
 C'est **Maman qui le rend**, au moment où elle renonce à la chasse à Hermione — le seul jalon de la
 maison qui se mérite, et une capitulation : elle a maintenant autre chose à faire que de surveiller
-un jouet. *« Nino. » « Ton pistolet à eau. » « Je te le rends. » « Dehors, hein. »* Il retourne au
-fond du coffre sans un mot de plus : il faut aller le chercher.
+un jouet :
+
+> *« Merci de m'avoir aidée, Nino. » « Exceptionnellement, je te rends ton pistolet à eau. » « Il est
+> au fond du coffre. » « Et tu ne t'en sers pas sur ta maîtresse. »*
+
+Elle dit **pourquoi** elle le rend, **où** il est, et **la seule chose qu'il ne faut pas en faire** —
+c'est-à-dire la première chose qu'un enfant de sept ans va essayer. Ça coûte un point au projet
+d'art, et personne ne l'aura prévenu deux fois.
 
 ### Les copains savent, ou pas
 
@@ -1125,10 +1143,14 @@ chaleur monte d'un cran à chaque fois :
 
 Au troisième refus, **la chaleur le met dehors tout seul** : *« Nino sort du lit. Il
 dégouline de sueur. »* Et il laisse **trois flaques au pied du lit** — un œuf de Pâques
-qui ne se déclenche que si on a traîné. **Elles sèchent dès qu'il quitte la chambre** — le code
-qui les faisait sécher au bout de trois écrans est parti avec la quête de la température, et
-trois flaques qui restent au pied du lit toute la partie ne sont plus une blague, c'est une tache.
-Si on croise Maman avant : *« Nino, tu mets de l'eau partout !! »*
+qui ne se déclenche que si on a traîné. **Elles sèchent dès qu'il quitte la chambre** : trois
+flaques définitives dans sa propre chambre, ce n'est plus une blague, c'est une tache.
+
+**Mais lui reste trempé, et il en met partout.** Une goutte tous les quatorze pixels, dans toutes
+les pièces qu'il traverse, jusqu'à ce que **Maman le voie** — *« Nino, tu mets de l'eau partout !! »*
+C'est elle qui clôt la blague ; avant elle, la traînée le suit dans toute la maison et s'efface
+derrière lui au bout de trois secondes. Sécher au bout d'une pièce vidait la réplique de son sens :
+il ne mettait plus d'eau que dans sa chambre.
 
 Ça ne se joue qu'une fois.
 
@@ -1476,6 +1498,17 @@ qui marche, qu'on peut suivre, et sur lequel on peut monter.
 « Monte pas, ça bouge. » Il faut donc un autre bateau. L'île de Versailles, son jardin
 japonais, et un héron qui exige des papiers.
 *Coût : un bateau qui avance (plateforme mobile), de l'eau franchissable.*
+
+## Les raccourcis de développement
+
+**Cinq touches, et seulement des chiffres** : `1` le réveil, `2` la cour, `3` Nantes, `4` l'Erdre,
+`5` la tour. Les lettres étaient branchées elles aussi — et un enfant qui cherche la touche du
+pistolet à eau se retrouvait téléporté au pied de la Tour de Bretagne sans comprendre pourquoi. Les
+autres étapes restent accessibles depuis la console : `nino.etape('f')`, et `nino.etapes()` en donne
+la liste.
+
+Chaque saut **repart de zéro** et ne pose que ce que l'étape déclare, sinon les états s'empilent. Et
+ça écrase la partie en cours : c'est un outil de développement, pas un menu.
 
 ## Ce qui reste à faire
 

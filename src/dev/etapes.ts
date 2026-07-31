@@ -16,7 +16,11 @@ import type { ItemId } from '../data/items';
  * Absent du jeu construit : ces touches ne répondent qu'en développement.
  */
 export interface Etape {
-  /** La touche, de « 1 » à « 9 ». */
+  /**
+   * L'identifiant du raccourci. **Seuls « 1 » à « 5 » répondent au clavier** : les lettres étaient
+   * branchées elles aussi, et un enfant qui cherche la touche du pistolet à eau se retrouvait
+   * téléporté au pied de la tour. Les autres se lancent depuis la console : `nino.etape('f')`.
+   */
   touche: string;
   nom: string;
   room: string;
@@ -58,12 +62,15 @@ const APRES_LE_NAUFRAGE = [...DEHORS, 'bateau-coule', 'papa-dans-leau', 'papa-sa
 const ENIGMES = ['enigme-moon', 'enigme-ecureuil', 'enigme-araignee', 'enigme-elephant'];
 
 export const ETAPES: Etape[] = [
+  // ── Les cinq du clavier : les cinq moments qu'on rejoue tout le temps ──
   { touche: '1', nom: 'Le réveil', room: 'chambre' },
   { touche: '2', nom: 'La cour', room: 'cour', flags: DEHORS },
   { touche: '3', nom: 'Nantes', room: 'nantes', flags: DEHORS },
-  { touche: 'c', nom: 'La cour de l’école', room: 'ecole', flags: DEHORS },
   { touche: '4', nom: 'L’Erdre', room: 'erdre', flags: [...DEHORS, 'bouchon-retire'] },
-  { touche: '5', nom: 'L’araignée', room: 'mezzanine', flags: ['reveil'], haiku: 0 },
+  { touche: '5', nom: 'La tour', room: 'tour-hall', flags: APRES_LE_NAUFRAGE },
+  // ── Les suivantes, depuis la console : nino.etape('c') ──
+  { touche: 'c', nom: 'La cour de l’école', room: 'ecole', flags: DEHORS },
+  { touche: 'a', nom: 'L’araignée', room: 'mezzanine', flags: ['reveil'], haiku: 0 },
   { touche: '6', nom: 'La danse', room: 'mezzanine', flags: ['reveil'], haiku: 10 },
   {
     touche: '7',
@@ -89,7 +96,7 @@ export const ETAPES: Etape[] = [
     flags: APRES_LE_NAUFRAGE,
   },
   { touche: 'v', nom: 'Au pied de la tour', room: 'tour-pied', flags: APRES_LE_NAUFRAGE },
-  { touche: '0', nom: 'La tour', room: 'tour-hall', flags: APRES_LE_NAUFRAGE },
+  { touche: '0', nom: 'Le hall de la tour', room: 'tour-hall', flags: APRES_LE_NAUFRAGE },
   {
     touche: 'p',
     nom: 'Le toit, le parapente',
@@ -102,7 +109,7 @@ export const ETAPES: Etape[] = [
     room: 'chambre',
     x: 80,
     y: 108,
-    flags: [...APRES_LE_NAUFRAGE, ...ENIGMES, 'parapente-pris', 'parapente-rentre'],
+    flags: [...APRES_LE_NAUFRAGE, ...ENIGMES, 'parapente-rentre'],
     items: ['parapente'],
   },
 ];

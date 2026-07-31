@@ -83,6 +83,7 @@ export const JOURNAL = {
 export const ANNONCES = {
   hermioneTrouvee: (n: number, total: number) => `Hermione retrouvée !  ${n}/${total}`,
   objetRecu: (nom: string) => `${nom} !`,
+  pieceTrouvee: (nom: string) => `${nom} !`,
 };
 
 /** Le rêve de la fusée, dans le grand lit. */
@@ -232,7 +233,12 @@ export const RAPPELS: string[][] = [
  */
 export const PISTOLET_RENDU = {
   qui: 'Maman',
-  lignes: ['« Nino. »', '« Ton pistolet à eau. »', '« Je te le rends. »', '« Dehors, hein. »'],
+  lignes: [
+    '« Merci de m’avoir aidée, Nino. »',
+    '« Exceptionnellement, je te rends ton pistolet à eau. »',
+    '« Il est au fond du coffre. »',
+    '« Et tu ne t’en sers pas sur ta maîtresse. »',
+  ],
 };
 
 export const RAPPEL_FINAL: string[] = [
@@ -806,6 +812,10 @@ export const PIECES_TEXTE: Record<string, { nom: string; provenance: string }> =
   reve: {
     nom: 'Pièce du rêve',
     provenance: 'Gagnée sur une fusée, dans le rêve du grand lit.',
+  },
+  frigo: {
+    nom: 'Pièce du frigo',
+    provenance: 'Sous le frigo. Visible seulement allongé par terre.',
   },
 };
 
@@ -1394,7 +1404,11 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
     {
       when: () => !state.flag('maman-au-salon'),
       speaker: 'Maman',
-      lines: ['« Pas maintenant, Nino. »', '« Je cherche ta sœur. »'],
+      lines: [
+        '« Nino, ce n’est pas l’heure de manger ! »',
+        '« Et je cherche ta sœur. »',
+        '« Alors non. »',
+      ],
     },
     {
       when: () => !state.flag('pizza-prise'),
@@ -1420,7 +1434,23 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
     },
   ],
 
+  /**
+   * **S'allonger par terre sert à quelque chose.** C'était la plus jolie interaction du jeu et la
+   * plus inutile : Nino se couche sur le carrelage parce qu'il fait frais, et voilà. De tout en
+   * bas, **on voit sous le frigo** — et il y a une pièce dessous, que personne ne pouvait voir
+   * debout. C'est la récompense d'un geste qui n'avait aucune raison d'en avoir une.
+   */
   carrelage: [
+    {
+      when: () => !state.pieces.has('frigo'),
+      lines: [
+        'Nino s’allonge de tout son long sur le carrelage.',
+        'Joue contre le sol. C’est le meilleur endroit de la maison.',
+        'D’ici, on voit sous le frigo.',
+        'Il y a quelque chose dessous.',
+      ],
+      effects: { piece: 'frigo' },
+    },
     {
       when: () => !state.flag('carrelage-teste'),
       lines: [

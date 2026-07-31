@@ -60,6 +60,7 @@ import {
   VIE,
 } from '../data/textes';
 import { CACHETTES, cachetteActuelle, hermioneSuit, mamanRenonce, rappel } from '../data/hermione';
+import { piece } from '../data/pieces';
 import { state } from '../systems/state';
 import { EV, bus, say, toast, type Buttons } from '../systems/bus';
 import { gbFade, portalWarp, sparkle, splash } from '../systems/fx';
@@ -426,12 +427,24 @@ export class WorldScene extends Phaser.Scene {
           bus.emit(EV.hud);
           return [...state.items];
         },
-        /** La liste des raccourcis chiffrés, pour la retrouver sans lire le code. */
+        /** La liste des étapes, pour la retrouver sans lire le code. */
         etapes: () => ETAPES.map((e) => `${e.touche} · ${e.nom}`),
+        /** Sauter à une étape depuis la console : celles qui n'ont plus de touche. */
+        etape: (touche: string) => {
+          const e = ETAPES.find((x) => x.touche === touche);
+          if (e) this.allerEtape(e);
+          return e?.nom ?? '?';
+        },
       };
 
-      // Les chiffres sautent directement à un moment du jeu.
+      /**
+       * **Seuls les chiffres 1 à 5 sautent dans le jeu.** Les lettres étaient aussi branchées, et
+       * un enfant qui cherche la touche du pistolet à eau se retrouvait téléporté au pied de la
+       * Tour de Bretagne sans comprendre pourquoi. Les autres étapes restent accessibles depuis la
+       * console : `nino.etape('f')`.
+       */
       this.input.keyboard!.on('keydown', (ev: KeyboardEvent) => {
+        if (!/^[1-5]$/.test(ev.key)) return;
         const etape = ETAPES.find((e) => e.touche === ev.key);
         if (etape) this.allerEtape(etape);
       });
@@ -665,7 +678,7 @@ export class WorldScene extends Phaser.Scene {
 
     // Les personnages ne restent pas plantés. Pas en vue de profil : le quai est
     // une corniche étroite, on n'y flâne pas.
-    if (def.errance && this.mode !== 'side') {
+    if (def.errance && this.mode !== 'side' && (!def.errance.apres || state.flag(def.errance.apres))) {
       this.errants.push({
         live,
         ancreX: def.x,
@@ -1723,6 +1736,32 @@ export class WorldScene extends Phaser.Scene {
     if (this.depuisLePas < 14) return;
     this.depuisLePas = 0;
     jouer(this, 'pas', { volume: 0.35 });
+    this.goutteQuiTombe();
+  }
+
+  /**
+   * **Il dégouline, et il le fait partout.** S'il a traîné au lit, Nino sort du lit trempé — et il
+   * laisse une goutte tous les quatorze pixels, dans toutes les pièces qu'il traverse, jusqu'à ce
+   * que **Maman le voie** : c'est ce qui donne son sens à sa seule réplique là-dessus, « Nino, tu
+   * mets de l'eau partout !! »
+   *
+   * Les flaques du pied du lit, elles, sèchent en quittant la chambre : trois taches définitives
+   * dans sa propre chambre, ce n'était plus une blague. La traînée, elle, se nettoie toute seule —
+   * chaque goutte s'efface au bout de quelques secondes, et il n'en reste rien quand Maman a parlé.
+   */
+  private goutteQuiTombe(): void {
+    if (!state.flag('sueur') || state.flag('maman-sueur')) return;
+    const g = this.add
+      .image(Math.round(this.player.sprite.x), Math.round(this.player.sprite.y + 4), texKey('goutte', this.pal))
+      .setOrigin(0.5, 0.5)
+      .setDepth(2);
+    this.tweens.add({
+      targets: g,
+      alpha: 0,
+      delay: 2600,
+      duration: 900,
+      onComplete: () => g.destroy(),
+    });
   }
 
   /** Fait vivre les personnages : un pas, une pause, un autre pas. */
@@ -3176,6 +3215,14 @@ export class WorldScene extends Phaser.Scene {
     }
     // Le bouchon a sauté : le bateau commence à descendre, tout de suite et tout seul.
     if (e.flag === 'bateau-coule') this.coulerLeBateau();
+    if (e.piece) {
+      const neuve = !state.pieces.has(e.piece);
+      state.pieces.add(e.piece);
+      if (neuve) {
+        jouer(this, 'piece', { volume: 0.8 });
+        toast(ANNONCES.pieceTrouvee(piece(e.piece)?.name ?? e.piece));
+      }
+    }
     if (e.take) state.take(e.take);
     if (e.give) {
       state.give(e.give);

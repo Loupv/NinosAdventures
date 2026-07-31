@@ -4,6 +4,8 @@ export interface Effects {
   give?: ItemId;
   take?: ItemId;
   flag?: string;
+  /** Une pièce à collectionner. La deuxième du jeu se trouve sous le frigo. */
+  piece?: string;
 }
 
 /**
