@@ -28,14 +28,15 @@ avec cynisme, et personne n'est méchant.
 | **Nino** | partout | Le héros. Prend l'absurde au sérieux. |
 | **Hermione** | une cachette à la fois | La petite sœur, un an. Elle est cachée quelque part et **change de cachette dès qu'on l'a trouvée**. |
 | **Moon** | salon | Le chat blanc. Dort, jusqu'à ce qu'on le paie en pizza. Devient le guide du jeu. |
-| **Maman** | cuisine, puis salon | Elle cherche Hermione dans la cuisine, plantée devant le frigo, et ne monte au salon qu'une fois qu'elle a renoncé. Tient le réel. C'est elle qui envoie Nino au frigo sans savoir ce qu'elle déclenche. |
+| **Maman** | cuisine, puis salon, puis le bout du quai de l'Erdre | Elle cherche Hermione dans la cuisine, plantée devant le frigo, et ne monte au salon qu'une fois qu'elle a renoncé. Tient le réel. C'est elle qui envoie Nino au frigo sans savoir ce qu'elle déclenche. |
 | **Papa** | salon | « Cinq minutes, Nino. » Depuis quarante minutes. |
 | **Papa (capitaine)** | l'Erdre | Le même papa, sur un bateau, avec un chapeau de capitaine. Il est là dès qu'on arrive au quai. |
 | **L'araignée** | mezzanine, puis le 27e étage de la tour | Géante, et elle dit des haïkus — un nouveau à chaque visite, dix en réserve. Quand elle les a tous dits, elle chante, elle danse, et elle s'en va. |
 | **Gérard, le poisson** | baignoire, puis l'Erdre | Saute d'un bord à l'autre, visible seulement quand il est en l'air. Raconte sa vie en cinq boîtes de dialogue, et ne demande de l'aide qu'au moment où le chat s'assoit au bord de la baignoire. Rend ses dettes, plus tard, dans l'Erdre. |
 | **L'écureuil** | un coin de la cour, puis la toute fin du quai de l'Erdre | À moitié caché, toujours. Pousse Nino à viser la fenêtre avec le ballon, puis à couler le bateau de papa — et nie tout, à chaque fois. Il ne gagne rien à ça. |
 | **L'Éléphant des Machines** | le bord de l'Erdre, puis le 31e étage de la tour | Douze mètres de bois et d'acier. On le voit d'abord boire dans la rivière, puis on le retrouve sur un palier. Personne ne demande comment il est monté ; lui se souvient de l'avoir croisé en bas. Il pose la seule énigme dont il ne connaît pas la réponse. |
-| **La maîtresse** | école *(à construire)* | Donnera des « devoirs » qui sont des quêtes déguisées. |
+| **Le jardinier** | la place, près du tram | Chapeau, tablier, et il se plaint de la chaleur — le sport local. Il n'arrive pas à suivre, il ne demande jamais rien, et il dit merci si les sept plantes ont été arrosées sans lui. |
+| **La maîtresse** | derrière les grilles de l'école | Réclame le projet d'art de Nino. N'importe quel objet fait l'affaire ; ce qu'elle note, c'est ce qu'on en dit — et elle garde la meilleure note. |
 | **Copains ×3** | école *(à construire)* | Un qui croit tout, un qui ne croit rien, un qui a déjà vu une dimension et n'en parle jamais. |
 
 Les copains attendent leurs noms — ils sont déjà déclarés dans
@@ -112,7 +113,7 @@ chercher ; un père qu'on va voir de son plein gré, c'est un enfant qui décide
 **Le seul devoir du jeu, et il n'a pas de bonne réponse.** La maîtresse réclame le projet
 d'art de Nino : *« Rapporte-moi un objet, et explique-moi en quoi c'est de l'art. »*
 
-**N'importe quel objet fait l'affaire**, et il y en a sept à ramasser un peu partout :
+**N'importe quel objet fait l'affaire**, et il y en a huit à ramasser un peu partout :
 
 | L'objet | Où | Ce qu'elle en dit |
 |---|---|---|
@@ -122,10 +123,18 @@ d'art de Nino : *« Rapporte-moi un objet, et explique-moi en quoi c'est de l'ar
 | Un **ticket de tram** | sous le tram, sur la place | *« Poinçonné, en plus. »* |
 | Le **ballon dégonflé** | la cour de l'école elle-même | *« Celui-là ? Il est à l'école, Nino. »* |
 | Une **plume de héron** | le quai de l'Erdre | *« Oh. »* |
-| Un **bout de pizza froide** | le frigo | *« ... »* |
+| La **croûte de pizza** | ce que Moon laisse du bout de pizza | *« Elle est mâchée ? »* |
 
 Chercher l'objet fait sortir de l'école et revenir : c'est la seule quête du jeu qui fait
 faire l'aller-retour, et elle passe par des écrans qu'on traverse de toute façon.
+
+**Le huitième objet est un déchet du chat.** Le bout de pizza sert à payer Moon, il est donc
+consommé — mais **il en laisse la croûte**, et c'est elle qu'on garde : le seul objet du jeu qui
+change de nom en changeant de main. Sans ça, la liste promettait huit objets dont un impossible.
+
+**Et elle se souvient de la note.** Revenir avec un autre objet ne remplace jamais la précédente —
+*« Mieux que la dernière fois. »*, *« Pareil que la dernière fois. »*, *« Tu avais fait mieux. Je
+garde la meilleure. »* Un enfant qui ne sait pas qu'il ne risque rien n'essaie pas deux fois.
 
 **Et on ne rentre pas dans l'école.** Au fond, **le bâtiment** : quatre-vingt-seize pixels de
 façade, un fronton avec son horloge qui dépasse du haut de l'écran, deux rangées de fenêtres à
@@ -678,15 +687,46 @@ vraiment, tout le monde a déjà eu une journée. Il a **deux effets réels** : 
 la cour détale pour de bon, celui de la tour change de coin en râlant et garde son énigme entière —
 et **la plante du couloir**.
 
-**La plante du couloir est la seule chose que l'eau améliore.** Le couloir était le dernier écran
-où rien ne répondait : cinq portes, un escalier, une plante muette. Elle a maintenant trois états —
-*« La terre est sèche, sèche, sèche. »*, la même chose plus *« Nino a ce qu'il faut. »* quand il a
-le pistolet (sans nommer la touche : un pistolet à eau se devine), et arrosée. Le dessin change
-**pour de bon** : deux pousses neuves, quatre fleurs, une ligne de feuillage en plus, le pot et la
-tige au pixel près — et une ligne, *« Elle se redresse. »*
+### Les sept plantes qui ont soif
 
-C'est le seul changement d'apparence définitif du jeu qui ne soit pas une bêtise. Tout le reste de
-ce que fait le pistolet est une phrase blasée.
+**Les plantes sont la seule chose que l'eau améliore**, et il y en a **sept**, en pleine vue, dans
+des pièces qu'on traverse de toute façon : la chambre, le couloir, le salon, la cuisine, la rue des
+bars, devant l'école, le hall de la tour. Chacune a trois états — *« La terre est sèche, sèche,
+sèche. »*, la même chose plus *« Nino a ce qu'il faut. »* quand il a le pistolet (sans jamais nommer
+la touche : un pistolet à eau se devine), et arrosée.
+
+Le dessin change **pour de bon** : deux pousses neuves, quatre fleurs, une ligne de feuillage en
+plus, le pot et la tige au pixel près — et une ligne, *« Elle se redresse. »* C'est le seul
+changement d'apparence définitif du jeu qui ne soit pas une bêtise ; tout le reste de ce que fait le
+pistolet est une phrase blasée. Le couloir, au passage, cesse d'être le dernier écran où rien ne
+répondait.
+
+**La huitième plante est en plastique.** Elle est au treizième étage de la tour, elle est là depuis
+1976, et elle ne compte pas : *« L'eau glisse sur le plastique. » « La plante ne bougera plus
+jamais. »* C'est la seule fausse piste du jeu, et elle se dit elle-même.
+
+**Personne ne donne cette quête.** Le jardinier de la place se plaint de la chaleur — *« Il fait
+trop chaud. » « Tout crève. » « J'arrose, j'arrose... » « Et le lendemain, à refaire. »* — et c'est
+tout ce qu'il fait. Il ne demande rien, il ne dit pas où sont les plantes, il ne compte pas devant
+nous. Mais il remarque :
+
+| Ce qu'il voit | Ce qu'il dit |
+|---|---|
+| aucune arrosée | *« Il fait trop chaud. » « Tout crève. »* |
+| quelques-unes | *« Il y en a qui vont mieux. » « Ce n'est pas moi. »* |
+| **les sept** | *« C'est toi qui les as arrosées ? » « Toutes ? » « Elles vont mieux que moi. » « Merci, petit. »* |
+
+C'est **le seul merci du jeu qu'on ait à mériter**, et il vient d'un adulte qui n'avait rien demandé.
+
+Le journal les compte sur sa propre page (`PLANTES`) : le total, puis celles qui vont mieux, les
+autres en pointillés — on sait combien il en reste, jamais où elles sont. Et quand la septième boit,
+le jeu le constate une fois, sans fanfare : *« Plus une seule plante n'a soif. »* L'écran de fin s'en
+souvient.
+
+**Le vérificateur tient la quête** : toute plante posée dans une pièce doit être déclarée dans
+`PLANTES` et savoir fleurir (`arrosee-<id>` → `radieuse`), et toute plante déclarée doit exister
+quelque part. Sans ça, on en pose une de plus, elle s'arrose, elle fleurit — et la quête devient
+infinissable sans que rien ne le dise.
 
 **Il arrose plus loin qu'on ne parle** : quarante pixels devant soi, pas seulement la personne
 qu'on pourrait toucher du doigt. Un pistolet à eau qui exige d'être collé à sa cible n'est pas un
@@ -696,9 +736,14 @@ pistolet, c'est une poignée de main.
 banc et un tram ont un dialogue comme tout le monde, mais un vélo arrosé n'a rien à répondre : on
 mouille des gens, pas du mobilier (`ARROSABLES`).
 
-> **À décider.** Le pistolet est trouvé trop facilement pour ce qu'il permet : il devrait
-> **récompenser une quête de la maison** plutôt que d'être au fond d'un coffre qu'on ouvre
-> en passant. Laquelle, et à quel moment, reste à discuter.
+**Il n'est plus dans le coffre au début : il est confisqué.** On l'y trouvait dans les trente
+premières secondes, alors que c'est le seul objet du jeu qui change vraiment quelque chose. Le
+coffre dit simplement *« Son pistolet à eau n'y est plus. »*
+
+C'est **Maman qui le rend**, au moment où elle renonce à la chasse à Hermione — le seul jalon de la
+maison qui se mérite, et une capitulation : elle a maintenant autre chose à faire que de surveiller
+un jouet. *« Nino. » « Ton pistolet à eau. » « Je te le rends. » « Dehors, hein. »* Il retourne au
+fond du coffre sans un mot de plus : il faut aller le chercher.
 
 ### Qui gronde quand la vitre casse
 
@@ -1261,8 +1306,8 @@ lieu :
 
 > CETTE NUIT-LÀ — *Un ventilateur achevé. Un chat qui parle. Un poisson sauvé. Dix haïkus, et une
 > danse. Un rêve de fusée. Une vitre cassée. (le chat) Un éléphant, deux fois. Un poisson parti
-> pour la mer. Un bateau au fond de l'Erdre. Un mensonge à la terrasse. Un vol au-dessus de
-> Nantes.*
+> pour la mer. Un bateau au fond de l'Erdre. Un mensonge à la terrasse. Sept plantes sauvées. Un
+> vol au-dessus de Nantes.*
 
 **Rien n'y est obligatoire** : les lignes sans leur drapeau n'existent pas, deux parties ne
 donnent pas la même page, et aucune ne reproche l'absence d'une autre. Deux chiffres ne disaient
