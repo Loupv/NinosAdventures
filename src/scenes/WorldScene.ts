@@ -38,6 +38,7 @@ import {
   arrosee,
   plantesSauvees,
   PIGEON,
+  PIGEON_PERCHOIR,
   PISTOLET_RENDU,
   CHALEUR,
   CHANSON,
@@ -1234,7 +1235,12 @@ export class WorldScene extends Phaser.Scene {
           } else if (PLANTES.some((pl) => pl.id === vise.def.id)) {
             this.arroserUnePlante(vise);
           } else {
-            // Tous les autres : une phrase blasée au-dessus de la tête, et on continue.
+            // Tous les autres : une phrase blasée au-dessus de la tête, et on continue. Sauf la
+            // maîtresse, qui retient — et qui le fera payer d'un point à la notation.
+            if (vise.def.id === 'maitresse') {
+              state.setFlag('maitresse-arrosee');
+              state.save();
+            }
             const quoi = ARROSES[vise.def.id] ?? ARROSES[vise.def.sprite ?? ''] ?? ARROSE_DEFAUT;
             this.flotter(quoi[this.mouillé % quoi.length], vise);
             this.mouillé += 1;
@@ -1609,10 +1615,29 @@ export class WorldScene extends Phaser.Scene {
    * le voit le faire : dans l'autre ordre, il bougeait derrière la boîte.
    */
   private pigeonSeDecale(l: Live): void {
-    const boite = PIGEON[this.pigeonneries % PIGEON.length];
+    /**
+     * **Au septième dérangement, il change de quartier.** Six boîtes à se décaler d'un pas et à
+     * regarder ailleurs, et puis il monte : sur le toit du tram, sur le mur de l'école, sur la table
+     * où boivent deux adultes. Il n'explique rien, il ne redescend pas.
+     */
+    const monte = this.pigeonneries >= PIGEON.length && l.def.perchoir;
+    const boite = monte ? PIGEON_PERCHOIR : PIGEON[this.pigeonneries % PIGEON.length];
     this.pigeonneries += 1;
     state.locked = true;
-    say({ lines: boite, focusY: l.def.y, onDone: () => this.pigeonSEcarte(l) });
+    say({
+      lines: boite,
+      focusY: l.def.y,
+      onDone: () => (monte ? this.pigeonMonte(l) : this.pigeonSEcarte(l)),
+    });
+  }
+
+  /** Il se pose là-haut, et il y reste : plus d'errance, plus de commentaire. */
+  private pigeonMonte(l: Live): void {
+    const p = l.def.perchoir;
+    if (!p) return;
+    this.errants = this.errants.filter((e) => e.live !== l);
+    l.go.setPosition(p.x, p.y).setDepth(p.y + l.go.displayHeight);
+    jouer(this, 'pas', { volume: 0.3, rate: 3.2 });
   }
 
   /**
@@ -3022,7 +3047,13 @@ export class WorldScene extends Phaser.Scene {
      */
     if (beat.devoir) {
       const etapes = beat.devoir.etapes;
-      let points = 0;
+      /**
+       * **Arroser la maîtresse coûte un point.** Elle l'a dit sur le moment — « Et j'ai tout vu. » —
+       * et elle s'en souvient à la notation. Ce n'est pas une punition : c'est la seule conséquence
+       * du jeu qui vienne d'une bêtise gratuite, et un enfant de sept ans doit pouvoir la découvrir
+       * sans qu'on l'ait prévenu.
+       */
+      let points = state.flag('maitresse-arrosee') ? -1 : 0;
       const suite = (i: number) => {
         if (i >= etapes.length) {
           const bareme = BAREME.find((b) => points >= b.min) ?? BAREME[BAREME.length - 1];
@@ -3046,6 +3077,9 @@ export class WorldScene extends Phaser.Scene {
             lines: [...bareme.lines, ...rappel],
             focusY: l?.def.y,
             onDone: () => {
+              // Les effets du beat comptent aussi ici : c'est eux qui retiennent quel objet a été
+              // rendu, et donc ce qu'elle dira au troisième, au cinquième et au huitième.
+              this.applyEffects(beat.effects, l);
               state.save();
               bus.emit(EV.hud);
             },

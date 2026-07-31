@@ -132,6 +132,11 @@ faire l'aller-retour, et elle passe par des écrans qu'on traverse de toute faç
 consommé — mais **il en laisse la croûte**, et c'est elle qu'on garde : le seul objet du jeu qui
 change de nom en changeant de main. Sans ça, la liste promettait huit objets dont un impossible.
 
+**Elle compte ce qu'on lui apporte.** Au troisième objet elle s'étonne — *« Encore un ? »* —, au
+cinquième elle constate — *« Tu as vidé la rue, Nino. »* — et au huitième elle capitule : *« Bon. »
+« Je vais chercher une boîte. »* C'est le seul endroit du jeu qui récompense un enfant qui ramasse
+tout ce qu'il trouve, et ça ne coûte qu'un drapeau par objet rendu.
+
 **Et elle se souvient de la note.** Revenir avec un autre objet ne remplace jamais la précédente —
 *« Mieux que la dernière fois. »*, *« Pareil que la dernière fois. »*, *« Tu avais fait mieux. Je
 garde la meilleure. »* Un enfant qui ne sait pas qu'il ne risque rien n'essaie pas deux fois.
@@ -758,6 +763,48 @@ maison qui se mérite, et une capitulation : elle a maintenant autre chose à fa
 un jouet. *« Nino. » « Ton pistolet à eau. » « Je te le rends. » « Dehors, hein. »* Il retourne au
 fond du coffre sans un mot de plus : il faut aller le chercher.
 
+### Les copains savent, ou pas
+
+**Nino arrive à l'école après avoir coulé un bateau et traversé Nantes en parapente**, et jusqu'ici
+ses copains lui parlaient de la récré. Maintenant ils réagissent à ce qu'il a vraiment fait :
+
+| | |
+|---|---|
+| **Le premier croit tout, et surenchérit** | *« Tu as coulé le bateau de ton père ?! » « Moi mon père il a même pas de bateau. »* — *« Tu as volé ? » « En vrai ? » « Moi aussi, une fois. » « Presque. »* |
+| **Le deuxième nie tout, au nom de la physique** | *« Les bateaux, ça coule pas. » « C'est de la physique. »* — *« On peut pas voler. » « Sinon tout le monde le ferait. »* |
+| **Le troisième ne dit rien** | *« Il regarde Nino un long moment. » « Il sait. » « Il fait oui de la tête, une fois. »* |
+
+Le troisième est la blague : il hoche la tête **sur la seule chose qui est vraie**, et comme tout
+est vrai, il hoche à chaque fois.
+
+### On peut arroser à peu près tout le monde
+
+Le pistolet à eau avait huit réactions et il manquait exactement les gens qu'un enfant de sept ans
+vise en premier. Il y en a maintenant une par personne : la dame aux douze baguettes (*« Mes
+baguettes ! » « Elles étaient déjà molles. »*), le conducteur du tram (*« Ah. » « Merci. »*), le
+serveur (*« Ça sera sur l'addition. »*), le compteur de fenêtres (*« Quarante-hui... » « Zut. » « Je
+recommence. »*), les trois copains, le monsieur immobile qui ne bouge pas davantage.
+
+**Et la maîtresse.** *« Nino. » « Repose ça. » « Et j'ai tout vu. »* — et elle **retient** : à la
+notation suivante, le projet d'art perd un point, ce qui fait tomber un vingt sur vingt à seize. On
+ne descend jamais sous huit, la règle du barème tient. C'est la seule conséquence du jeu qui vienne
+d'une bêtise entièrement gratuite, et personne ne prévient.
+
+### Le miroir prend de l'avance
+
+Quatre visites au lavabo, et le reflet dérive : il est *« un tout petit peu en retard »*, puis *« il
+attend que le vrai Nino commence »*, puis **il se lave la figure avant lui**, puis *« Le miroir est
+vide. » « Il reviendra. »* — et il revient, *« comme si de rien n'était »*. Rien ne se passe si on n'y
+retourne pas : c'est une blague pour ceux qui se relavent la figure quatre fois, et ceux-là la
+méritent.
+
+### Le pigeon finit par monter
+
+Six boîtes à se décaler d'un pas et à regarder exprès ailleurs, et **au septième dérangement il
+change de quartier** : *« Le pigeon a changé d'avis. » « Il est monté. »* Il se pose sur la chose la
+plus haute et la plus mal choisie de l'écran — le toit du tram, le mur de l'école, la table où
+boivent papa et le parrain — et il n'en redescend pas. Il n'explique rien, évidemment.
+
 ### Qui gronde quand la vitre casse
 
 Le ballon dans la fenêtre de la cour ne réveille pas toujours la même personne, et c'est une
@@ -1353,7 +1400,7 @@ sans rire. Tout le comique est dans le poste — et jamais dans une vanne ajout�
 Puis **les mentions de fin**, celles que personne ne lit dans les vrais films :
 
 > *Aucun animal n'a été maltraité. L'écureuil a un avis différent.*
-> *Ce couloir a cinq portes. Il n'a jamais servi à rien. Merci à lui quand même.*
+> *Ce couloir a quatre portes et un escalier. Il n'a jamais servi à rien.*
 > *Toute ressemblance avec des personnes réelles est parfaitement assumée.*
 
 Personne n'est remercié pour son travail : ils sont crédités pour **ce qu'ils ont fait dans

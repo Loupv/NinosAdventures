@@ -394,6 +394,14 @@ export const PLANTES: Array<{ id: string; ou: string }> = [
   { id: 'plante-hall', ou: 'Le hall de la tour' },
 ];
 
+/**
+ * **Ce qui a déjà été rendu à la maîtresse.** Un drapeau par objet — `rendu-<id>` — et elle compte :
+ * au troisième elle s'étonne, au cinquième elle constate, au huitième elle va chercher une boîte.
+ * Sans ça, elle réagissait au cinquième objet comme au premier.
+ */
+export const rendu = (id: string) => `rendu-${id}`;
+export const rendus = () => OFFRABLES.filter((id) => state.flag(rendu(id))).length;
+
 /** Le drapeau qui dit qu'une plante a été arrosée. */
 export const arrosee = (id: string) => `arrosee-${id}`;
 
@@ -505,7 +513,28 @@ export const ARROSES: Record<string, string[]> = {
   // La plante du treizième étage. Elle ne compte pas dans les sept : elle ne boit pas.
   'plante-13': ['L’eau glisse sur le plastique.', 'La plante ne bougera plus jamais.'],
   jardinier: ['« Hé ! »', '« Sur les plantes, pas sur moi. »'],
+  // **Les gens qu'un enfant de sept ans visera en premier.** Chacun sa réaction, et personne ne se
+  // fâche vraiment : tout le monde a déjà eu une journée.
+  maitresse: ['« Nino. »', '« Repose ça. »', '« Et j’ai tout vu. »'],
+  copain1: ['« ENCORE ! »'],
+  copain2: ['« Ça compte pas. »'],
+  copain3: ['Le troisième copain ne dit rien.', 'Il ferme les yeux, et il attend la suite.'],
+  'dame-baguettes': ['« Mes baguettes ! »', '« Elles étaient déjà molles. »'],
+  conducteur: ['« Ah. »', '« Merci. »'],
+  serveur: ['« C’est noté. »', '« Ça sera sur l’addition. »'],
+  'monsieur-immobile': ['Le monsieur ne bouge pas.', 'Il attend toujours quelqu’un.'],
+  accordeon: ['Il continue.', 'Toujours les six mêmes notes.'],
+  'compteur-de-fenetres': ['« Quarante-hui... »', '« Zut. »', '« Je recommence. »'],
+  passant: ['« Merci. »', '« Trente-quatre. »'],
 };
+
+/**
+ * **Où finit un pigeon qu'on a dérangé six fois.** Il ne s'enfuit pas, il ne s'envole pas : il
+ * **change de quartier**, et il se pose sur la chose la plus haute et la plus mal choisie de
+ * l'écran — le toit du tram, la table où boivent papa et le parrain, le mur de l'école. Sans un
+ * mot, comme d'habitude.
+ */
+export const PIGEON_PERCHOIR = ['Le pigeon a changé d’avis.', 'Il est monté.'];
 
 /**
  * **Le pigeon.** Il ne s'envole pas, il ne parle pas, il ne s'arrête pas : il se décale, et il
@@ -706,7 +735,7 @@ export const CREDITS: Array<{
   { room: 'bars', lignes: ['Aucun animal n’a été maltraité.', 'L’écureuil a un avis différent.'] },
   {
     room: 'couloir',
-    lignes: ['Ce couloir a cinq portes.', 'Il n’a jamais servi à rien.', 'Merci à lui quand même.'],
+    lignes: ['Ce couloir a quatre portes', 'et un escalier.', 'Il n’a jamais servi à rien.'],
   },
   {
     room: 'tour-pied',
@@ -1636,6 +1665,12 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
   ],
 
   // --------------------------------------------------------- la salle de bain
+  /**
+   * **Le miroir prend de l'avance.** Quatre visites, et le reflet dérive : il est en retard, il
+   * attend, il commence avant, puis il n'est plus là. Rien ne se passe si on n'y retourne pas —
+   * c'est une blague pour ceux qui se relavent la figure quatre fois, et ceux-là méritent une
+   * blague.
+   */
   lavabo: [
     {
       when: () => !state.flag('miroir-retard'),
@@ -1646,7 +1681,25 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
       ],
       effects: { flag: 'miroir-retard' },
     },
-    { lines: ['Le Nino du miroir attend que le vrai Nino commence.'] },
+    {
+      when: () => !state.flag('miroir-attend'),
+      lines: ['Le Nino du miroir attend que le vrai Nino commence.'],
+      effects: { flag: 'miroir-attend' },
+    },
+    {
+      when: () => !state.flag('miroir-avance'),
+      lines: [
+        'Le Nino du miroir se passe de l’eau sur la figure.',
+        'Nino n’a pas encore bougé.',
+      ],
+      effects: { flag: 'miroir-avance' },
+    },
+    {
+      when: () => !state.flag('miroir-vide'),
+      lines: ['Le miroir est vide.', 'Il reviendra.'],
+      effects: { flag: 'miroir-vide' },
+    },
+    { lines: ['Le Nino du miroir est revenu.', 'Il fait comme si de rien n’était.'] },
   ],
 
   /**
@@ -2229,7 +2282,27 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
       speaker: 'La maîtresse',
       lines: ACCUEILS[id],
       devoir: DEVOIRS[id],
+      // Elle se souvient de ce qu'on lui a déjà apporté : c'est ce qui lui fait dire « encore un ? »
+      effects: { flag: rendu(id) },
     })),
+    // **Elle compte ce qu'on lui apporte.** Au troisième objet elle s'étonne, au cinquième elle
+    // constate, au huitième elle capitule — et c'est le seul endroit du jeu qui récompense un
+    // enfant qui rapporte tout ce qu'il trouve.
+    {
+      when: () => rendus() >= 8,
+      speaker: 'La maîtresse',
+      lines: ['« Bon. »', '« Je vais chercher une boîte. »'],
+    },
+    {
+      when: () => rendus() >= 5,
+      speaker: 'La maîtresse',
+      lines: ['« Tu as vidé la rue, Nino. »', '« Rapporte-moi autre chose si tu veux. »'],
+    },
+    {
+      when: () => rendus() >= 3,
+      speaker: 'La maîtresse',
+      lines: ['« Encore un ? »', '« Rapporte-moi autre chose si tu veux. »'],
+    },
     {
       when: () => state.note > 0,
       speaker: 'La maîtresse',
@@ -2251,7 +2324,34 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
     },
   ],
 
+  /**
+   * **Les trois copains, et ce que Nino a fait cette nuit.** Le premier croit tout et surenchérit,
+   * le deuxième nie tout au nom de la physique, et le troisième ne dit rien — il fait oui de la
+   * tête, une fois, **sur la seule chose qui est vraie**. Comme tout est vrai, il hoche à chaque
+   * fois, et c'est ça la blague.
+   *
+   * Sans ces répliques, Nino arrivait à l'école après avoir coulé un bateau et traversé Nantes en
+   * parapente, et ses copains lui parlaient de la récré.
+   */
   copain1: [
+    {
+      when: () => state.flag('bateau-coule'),
+      speaker: 'Un copain',
+      lines: [
+        '« Tu as coulé le bateau de ton père ?! »',
+        '« Moi mon père il a même pas de bateau. »',
+      ],
+    },
+    {
+      when: () => state.flag('parapente-rentre'),
+      speaker: 'Un copain',
+      lines: ['« Tu as volé ? »', '« En vrai ? »', '« Moi aussi, une fois. »', '« Presque. »'],
+    },
+    {
+      when: () => state.flag('poisson-parti'),
+      speaker: 'Un copain',
+      lines: ['« Un éléphant a envoyé un poisson à la mer ? »', '« Ah. »', '« Normal. »'],
+    },
     {
       when: () => state.flag('copains-vus'),
       speaker: 'Un copain',
@@ -2270,6 +2370,16 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
 
   copain2: [
     {
+      when: () => state.flag('bateau-coule'),
+      speaker: 'Un autre copain',
+      lines: ['« Les bateaux, ça coule pas. »', '« C’est de la physique. »'],
+    },
+    {
+      when: () => state.flag('parapente-rentre'),
+      speaker: 'Un autre copain',
+      lines: ['« On peut pas voler. »', '« Sinon tout le monde le ferait. »'],
+    },
+    {
       speaker: 'Un autre copain',
       lines: [
         '« Il raconte n’importe quoi. »',
@@ -2281,6 +2391,16 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
 
   /** Celui qui a déjà vu une dimension, et qui n'en parle jamais. */
   copain3: [
+    {
+      when: () =>
+        state.flag('bateau-coule') || state.flag('parapente-rentre') || state.flag('poisson-parti'),
+      lines: [
+        'Le troisième copain ne dit rien.',
+        'Il regarde Nino un long moment.',
+        'Il sait.',
+        'Il fait oui de la tête, une fois.',
+      ],
+    },
     {
       lines: [
         'Le troisième copain ne dit rien.',

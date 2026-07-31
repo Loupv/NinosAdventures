@@ -82,6 +82,11 @@ export interface RoomObject {
    *
    * La cible d'interaction suit sa vraie position, comme pour tout ce qui bouge.
    */
+  /**
+   * **Où se perche un pigeon qu'on a dérangé six fois.** La chose la plus haute et la plus mal
+   * choisie de l'écran. Il y va une fois, et il y reste.
+   */
+  perchoir?: { x: number; y: number };
   patrouille?: {
     gauche: number;
     droite: number;
@@ -1424,6 +1429,8 @@ export const ROOMS: Record<string, Room> = {
         id: 'pigeon',
         x: 108,
         y: 100,
+        // Le toit du tram : la chose la plus haute et la plus mal choisie de la place.
+        perchoir: { x: 46, y: 12 },
         sprite: 'pigeon',
         dialogue: 'pigeon',
         // Il marche tout le temps, tout seul, sans jamais nous regarder.
@@ -1561,6 +1568,8 @@ export const ROOMS: Record<string, Room> = {
         id: 'pigeon',
         x: 88,
         y: 120,
+        // Le mur de l'école, au-dessus des grilles. Personne ne lui demande comment.
+        perchoir: { x: 96, y: 44 },
         sprite: 'pigeon',
         dialogue: 'pigeon',
         // Il marche tout le temps, tout seul, sans jamais nous regarder.
@@ -1638,6 +1647,8 @@ export const ROOMS: Record<string, Room> = {
         id: 'pigeon',
         x: 152,
         y: 96,
+        // La table où boivent deux adultes. Il ne les regarde pas.
+        perchoir: { x: 100, y: 44 },
         sprite: 'pigeon',
         dialogue: 'pigeon',
         // Il marche tout le temps, tout seul, sans jamais nous regarder.
@@ -1722,6 +1733,8 @@ export const ROOMS: Record<string, Room> = {
         id: 'pigeon',
         x: 68,
         y: 116,
+        // La table du bar, entre les deux verres.
+        perchoir: { x: 40, y: 40 },
         sprite: 'pigeon',
         dialogue: 'pigeon',
         // Il marche tout le temps, tout seul, sans jamais nous regarder.
