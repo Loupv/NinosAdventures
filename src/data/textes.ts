@@ -48,6 +48,16 @@ export const JOURNAL = {
   pageLieux: 'LIEUX',
   pageSac: 'SAC',
   pagePieces: 'PIÈCES',
+  pagePlantes: 'PLANTES',
+  /** Le compte des plantes arrosées, en haut de sa page. */
+  plantesComptees: (n: number, total: number) => `Plantes sauvées : ${n} sur ${total}.`,
+  aucunePlante: [
+    'Aucune plante arrosée.',
+    '',
+    'Il fait chaud pour tout',
+    'le monde, même pour ce',
+    'qui ne parle pas.',
+  ],
   pied: 'ESPACE : fermer',
   soeurComptee: (n: number, total: number) => `Hermione retrouvée ${n} fois sur ${total}.`,
   /** Le projet d'art, une fois rendu. Avant, on n'en parle pas. */
@@ -62,7 +72,9 @@ export const JOURNAL = {
   aucunePiece: [
     'Aucune pièce.',
     '',
-    'La page est vide, pour l’instant.',
+    // Trente caractères par ligne : au-delà, le journal coupe au bord du cadre.
+    'La page est vide.',
+    'Pour l’instant.',
   ],
   lieuInconnu: '?  . . . . . . . .',
 };
@@ -145,6 +157,7 @@ export const CETTE_NUIT: Array<{ flag: string; ligne: string }> = [
   { flag: 'poisson-parti', ligne: 'Un poisson parti pour la mer.' },
   { flag: 'bateau-coule', ligne: 'Un bateau au fond de l’Erdre.' },
   { flag: 'joie-bateau', ligne: 'Un mensonge à la terrasse.' },
+  { flag: 'plantes-toutes', ligne: 'Sept plantes sauvées.' },
   { flag: 'parapente-rentre', ligne: 'Un vol au-dessus de Nantes.' },
 ];
 
@@ -334,8 +347,52 @@ export const LA_JOIE_DU_BATEAU: Record<'coule' | 'flotte', Array<{ qui: string; 
     ],
   };
 
-/** Ce qu'on voit quand la plante du couloir reçoit enfin de l'eau. Elle ne dit rien : elle pousse. */
+/**
+ * **Les sept plantes du jeu, et la quête d'à-côté.** Chacune a soif, chacune se souvient d'avoir
+ * été arrosée (drapeau `arrosee-<id>`), et le journal les compte. Ce n'est pas une collection
+ * cachée : elles sont toutes en pleine vue, dans des pièces qu'on traverse de toute façon.
+ *
+ * **La liste vit ici et pas dans `rooms.ts`** pour la même raison qu'`OFFRABLES` : le journal, le
+ * jardinier et l'écran de fin en ont besoin, et `rooms.ts` importe déjà ce fichier — l'inverse
+ * ferait un cycle.
+ *
+ * La huitième plante du jeu, celle du treizième étage, **est en plastique** : elle ne compte pas,
+ * et arroser du plastique ne donne rien d'autre qu'une réplique.
+ */
+export const PLANTES: Array<{ id: string; ou: string }> = [
+  { id: 'plante-chambre', ou: 'La chambre' },
+  { id: 'plante-couloir', ou: 'Le couloir' },
+  { id: 'plante-salon', ou: 'Le salon' },
+  { id: 'plante-cuisine', ou: 'La cuisine' },
+  { id: 'plante-bars', ou: 'La rue des bars' },
+  { id: 'plante-ecole', ou: 'Devant l’école' },
+  { id: 'plante-hall', ou: 'Le hall de la tour' },
+];
+
+/** Le drapeau qui dit qu'une plante a été arrosée. */
+export const arrosee = (id: string) => `arrosee-${id}`;
+
+/** Combien sont sauvées. */
+export const plantesSauvees = () => PLANTES.filter((p) => state.flag(arrosee(p.id))).length;
+
+/**
+ * **Ce que dit une plante.** Trois états, et c'est la scène qui choisit : un dialogue ne sait pas
+ * de quel objet il parle, et les sept plantes partagent le même texte.
+ *
+ * L'indice n'est pas un tutoriel : une plante qui a soif devant un enfant qui a un pistolet à eau,
+ * ça suffit. On ne nomme jamais la touche.
+ */
+export const PLANTE = {
+  seche: ['Une plante.', 'La terre est sèche, sèche, sèche.'],
+  sechePistolet: ['Une plante.', 'La terre est sèche, sèche, sèche.', 'Nino a ce qu’il faut.'],
+  arrosee: ['Une plante.', 'Elle a l’air beaucoup plus contente.'],
+};
+
+/** Ce qu'on voit quand une plante reçoit enfin de l'eau. Elle ne dit rien : elle pousse. */
 export const PLANTE_ARROSEE = 'Elle se redresse.';
+
+/** Et quand c'était la dernière. Personne ne félicite : le jeu constate, et c'est mieux. */
+export const PLANTES_TOUTES = ['Plus une seule plante n’a soif.'];
 
 /**
  * **Ce qu'il dit quand la vitre casse et que personne ne gronde.** Rien d'utile : il rit. C'est sa
@@ -420,6 +477,9 @@ export const ARROSES: Record<string, string[]> = {
   elephant: ['« Enfin. »', '« Il fait tellement chaud. »'],
   hermione: ['Hermione rit très fort.', 'Hermione en veut encore.'],
   parrain: ['« Il pleut ? »', '« Dedans ? »'],
+  // La plante du treizième étage. Elle ne compte pas dans les sept : elle ne boit pas.
+  'plante-13': ['L’eau glisse sur le plastique.', 'La plante ne bougera plus jamais.'],
+  jardinier: ['« Hé ! »', '« Sur les plantes, pas sur moi. »'],
 };
 
 /**
@@ -638,6 +698,10 @@ export const CASTING: Record<string, { nom: string; role: string }> = {
   papa: {
     nom: 'Papa',
     role: 'Dans le salon, « cinq minutes » depuis quarante minutes. Et en même temps, chapeau de capitaine, il pilote un bateau sur l’Erdre. Ne trouve ça bizarre à aucun moment.',
+  },
+  jardinier: {
+    nom: 'Le jardinier',
+    role: 'Sur la place, avec son chapeau et son tablier. Se plaint de la chaleur, n’arrive pas à suivre, et ne demande jamais rien à personne. Dit merci si les sept plantes du jeu ont été arrosées sans lui.',
   },
   maitresse: {
     nom: 'La maîtresse',
@@ -1711,6 +1775,46 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
       lines: ['La plante du couloir.', 'La terre est sèche, sèche, sèche.', 'Nino a ce qu’il faut.'],
     },
     { lines: ['La plante du couloir.', 'La terre est sèche, sèche, sèche.'] },
+  ],
+
+  /**
+   * **Le jardinier de la place.** Il se plaint de la chaleur, ce qui est le sport local, et il
+   * n'arrive pas à suivre. Trois états : rien d'arrosé, quelques-unes, et **les sept** — là il
+   * remercie, et c'est le seul merci du jeu qu'on ait à mériter.
+   *
+   * Il ne demande jamais rien. Personne ne donne de quête ici : il se plaint, et un enfant avec un
+   * pistolet à eau en tire ses propres conclusions.
+   */
+  jardinier: [
+    {
+      when: () => plantesSauvees() >= PLANTES.length,
+      speaker: 'Le jardinier',
+      lines: [
+        '« Ah. »',
+        '« C’est toi qui les as arrosées ? »',
+        '« Toutes ? »',
+        '« Elles vont mieux que moi. »',
+        '« Merci, petit. »',
+      ],
+    },
+    {
+      when: () => plantesSauvees() > 0,
+      speaker: 'Le jardinier',
+      lines: [
+        '« Il y en a qui vont mieux. »',
+        '« Ce n’est pas moi. »',
+        '« Je n’ai pas le temps, avec cette chaleur. »',
+      ],
+    },
+    {
+      speaker: 'Le jardinier',
+      lines: [
+        '« Il fait trop chaud. »',
+        '« Tout crève. »',
+        '« J’arrose, j’arrose... »',
+        '« Et le lendemain, à refaire. »',
+      ],
+    },
   ],
 
   'plante-tour': [

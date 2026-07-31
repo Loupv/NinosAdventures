@@ -7,7 +7,7 @@ import { ITEMS } from '../data/items';
 import { CACHETTES } from '../data/hermione';
 import { PIECES } from '../data/pieces';
 import { LIEUX_ORDER, nomDuLieu } from '../data/rooms';
-import { JOURNAL } from '../data/textes';
+import { JOURNAL, PLANTES, arrosee } from '../data/textes';
 import { EV, bus, type Buttons } from '../systems/bus';
 import { state } from '../systems/state';
 import { PixelText, measure } from '../ui/PixelText';
@@ -23,6 +23,7 @@ const PAGES = [
   ...Array.from({ length: PAGES_LIEUX }, () => JOURNAL.pageLieux),
   JOURNAL.pageSac,
   JOURNAL.pagePieces,
+  JOURNAL.pagePlantes,
 ];
 
 /**
@@ -97,7 +98,9 @@ export class JournalScene extends Phaser.Scene {
         ? this.lieuxLines(this.page)
         : this.page === PAGES_LIEUX
           ? this.sacLines()
-          : this.piecesLines();
+          : this.page === PAGES_LIEUX + 1
+            ? this.piecesLines()
+            : this.plantesLines();
     this.bodyText.setLines(lines.slice(0, 8), ink);
 
     const foot = `< >  ${this.page + 1}/${PAGES.length}   ${JOURNAL.pied}`;
@@ -109,6 +112,22 @@ export class JournalScene extends Phaser.Scene {
     return LIEUX_ORDER.slice(page * PER_PAGE, (page + 1) * PER_PAGE).map((id) =>
       state.vu(id) ? `* ${nomDuLieu(id)}` : JOURNAL.lieuInconnu,
     );
+  }
+
+  /**
+   * **Les plantes arrosées.** Le compte d'abord, puis celles qui vont mieux ; les autres restent
+   * des pointillés — on sait combien il en reste, pas où elles sont. C'est la seule collection du
+   * jeu qui se voie dans le décor, et la seule qu'un jardinier remarque.
+   */
+  private plantesLines(): string[] {
+    const sauvees = PLANTES.filter((p) => state.flag(arrosee(p.id)));
+    if (sauvees.length === 0) return [...JOURNAL.aucunePlante];
+    // Huit lignes maximum sur une page : le compte plus les sept plantes, sans ligne vide entre
+    // les deux. Avec le blanc, la septième plante tombait hors de la page.
+    return [
+      JOURNAL.plantesComptees(sauvees.length, PLANTES.length),
+      ...PLANTES.map((p) => (state.flag(arrosee(p.id)) ? `* ${p.ou}` : JOURNAL.lieuInconnu)),
+    ];
   }
 
   /** Les pièces ramassées. On ne sait pas encore ce qu'elles veulent dire. */

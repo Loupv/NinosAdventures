@@ -1698,6 +1698,29 @@ const ELEPHANT_BOULE_HAUT = retouche(ELEPHANT_TROMPE, {
 });
 
 /**
+ * **Le jardinier de la place.** Chapeau large et tablier : deux aplats de la couleur d'accent, et
+ * on sait tout de suite ce qu'il fait. Il se plaint de la chaleur toute la journée, et il ne dira
+ * merci qu'à quelqu'un qui aura arrosé les sept plantes du jeu à sa place.
+ */
+const JARDINIER: Art = [
+  '.000000.',
+  '03333330',
+  '..0000..',
+  '.011110.',
+  '.022220.',
+  '.020020.',
+  '.022220.',
+  '.033330.',
+  '.033330.',
+  '01333310',
+  '21333312',
+  '.111111.',
+  '.011110.',
+  '..1..1..',
+  '.000.000',
+];
+
+/**
  * Les arrivées de Maman **dehors**. Dans la maison elle entre par une porte ; à
  * l'extérieur elle emploie ce qu'elle a sous la main, et personne ne relève jamais.
  * Elle crie « HERMIONE ! » dans tous les cas.
@@ -1999,7 +2022,7 @@ export const SHEETS: Record<string, Record<string, Art>> = {
     'penche-0': PAPA_CAPITAINE_PENCHE,
     'penche-1': PAPA_CAPITAINE_PENCHE_2,
   },
-  'plante-couloir': { normale: PLANTE, radieuse: PLANTE_RADIEUSE },
+  plante: { normale: PLANTE, radieuse: PLANTE_RADIEUSE },
   elephant: {
     boit: ELEPHANT_BOIT,
     'boit-oreille': ELEPHANT_BOIT_OREILLE,
@@ -2024,6 +2047,7 @@ export const IMAGES: Record<string, Art> = {
   maman: MAMAN,
   papa: PAPA,
   maitresse: MAITRESSE,
+  jardinier: JARDINIER,
   copain: COPAIN,
   lit: LIT,
   'grand-lit': GRAND_LIT,
@@ -2036,7 +2060,6 @@ export const IMAGES: Record<string, Art> = {
   wc: WC,
   table: TABLE,
   'table-bar': TABLE_BAR,
-  plante: PLANTE,
   ventilo: VENTILO,
   armoire: ARMOIRE,
   carton: CARTON,

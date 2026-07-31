@@ -257,7 +257,15 @@ export const ROOMS: Record<string, Room> = {
         errance: { rayon: 12 },
         dialogue: 'moon-tour',
       },
-      { id: 'plante', ...at(17, 14), sprite: 'plante', solid: true },
+      {
+        id: 'plante-hall',
+        ...at(17, 14),
+        sprite: 'plante',
+        frame: 'normale',
+        frameIfFlag: [['arrosee-plante-hall', 'radieuse']],
+        solid: true,
+        dialogue: 'plante',
+      },
     ],
     doors: [
       { x: 24, y: 136, w: 16, h: 8, to: { room: 'tour-pied', x: 228, y: 104 } },
@@ -322,7 +330,17 @@ export const ROOMS: Record<string, Room> = {
         dialogue: 'ecureuil-tour',
       },
       { id: 'porte-cabinet', x: 56, y: 32, sprite: 'porte', solid: true, dialogue: 'porte-cabinet' },
-      { id: 'plante', x: 108, y: 88, sprite: 'plante', solid: true, dialogue: 'plante-tour' },
+      // **En plastique**, et elle ne compte pas dans les sept : elle ne boit pas. Arroser du
+      // plastique donne une réplique, pas une fleur.
+      {
+        id: 'plante-13',
+        x: 108,
+        y: 88,
+        sprite: 'plante',
+        frame: 'normale',
+        solid: true,
+        dialogue: 'plante-tour',
+      },
     ],
     doors: [
       { x: 44, y: 84, w: 16, h: 17, to: { room: 'tour-hall', x: 128, y: 44 }, son: 'escalier' },
@@ -606,7 +624,15 @@ export const ROOMS: Record<string, Room> = {
         solid: true,
         dialogue: 'ventilo',
       },
-      { id: 'plante', ...at(1, 15), sprite: 'plante', solid: true },
+      {
+        id: 'plante-chambre',
+        ...at(1, 15),
+        sprite: 'plante',
+        frame: 'normale',
+        frameIfFlag: [['arrosee-plante-chambre', 'radieuse']],
+        solid: true,
+        dialogue: 'plante',
+      },
       // L'œuf de Pâques : s'il a traîné au lit, il dégouline en sortant. Trois flaques
       // au pied du lit, et ça sèche au bout de trois écrans.
       {
@@ -685,11 +711,11 @@ export const ROOMS: Record<string, Room> = {
        * et un enfant avec un pistolet à eau finit toujours par comprendre ce qu'il a à faire.
        */
       {
-        id: 'plante',
+        id: 'plante-couloir',
         ...at(12, 12),
-        sprite: 'plante-couloir',
+        sprite: 'plante',
         frame: 'normale',
-        frameIfFlag: [['plante-arrosee', 'radieuse']],
+        frameIfFlag: [['arrosee-plante-couloir', 'radieuse']],
         solid: true,
         dialogue: 'plante',
       },
@@ -1028,6 +1054,16 @@ export const ROOMS: Record<string, Room> = {
         showIfFlag: 'anniversaire',
       },
       {
+        id: 'plante-cuisine',
+        x: 140,
+        y: 110,
+        sprite: 'plante',
+        frame: 'normale',
+        frameIfFlag: [['arrosee-plante-cuisine', 'radieuse']],
+        solid: true,
+        dialogue: 'plante',
+      },
+      {
         id: 'panneau-sortie',
         ...at(11, 15),
         sprite: 'panneau',
@@ -1177,7 +1213,15 @@ export const ROOMS: Record<string, Room> = {
         solid: true,
         dialogue: 'videoprojecteur',
       },
-      { id: 'plante', ...at(17, 13), sprite: 'plante', solid: true },
+      {
+        id: 'plante-salon',
+        ...at(17, 13),
+        sprite: 'plante',
+        frame: 'normale',
+        frameIfFlag: [['arrosee-plante-salon', 'radieuse']],
+        solid: true,
+        dialogue: 'plante',
+      },
     ],
     doors: [
       {
@@ -1385,6 +1429,20 @@ export const ROOMS: Record<string, Room> = {
         // Il marche tout le temps, tout seul, sans jamais nous regarder.
         errance: { rayon: 26, vitesse: 14 },
       },
+      /**
+       * **Le jardinier.** Il se plaint de la chaleur et n'arrive pas à suivre — c'est tout ce qu'il
+       * fait, et c'est ce qui donne leur sens aux sept plantes qui ont soif ailleurs. Il ne demande
+       * rien : personne ne distribue de quête dans ce jeu.
+       */
+      {
+        id: 'jardinier',
+        x: 96,
+        y: 92,
+        sprite: 'jardinier',
+        priorite: 2,
+        errance: { rayon: 10, vitesse: 12 },
+        dialogue: 'jardinier',
+      },
       {
         id: 'panneau-directions',
         ...at(16, 11),
@@ -1486,6 +1544,16 @@ export const ROOMS: Record<string, Room> = {
       { id: 'banc', x: 108, y: 46, sprite: 'banc', dialogue: 'banc' },
       // ── dans la rue : le panneau, et le ballon passé par-dessus la grille ──
       { id: 'panneau-ecole', x: 28, y: 68, sprite: 'panneau', solid: true, dialogue: 'panneau-ecole' },
+      {
+        id: 'plante-ecole',
+        x: 142,
+        y: 92,
+        sprite: 'plante',
+        frame: 'normale',
+        frameIfFlag: [['arrosee-plante-ecole', 'radieuse']],
+        solid: true,
+        dialogue: 'plante',
+      },
       { id: 'ballon-ecole', x: 120, y: 100, sprite: 'ballon', dialogue: 'ballon-ecole', hideIfFlag: 'ballon-pris' },
       // Celle-ci a quelque chose dedans : le dessin froissé.
       { id: 'poubelle', x: 52, y: 92, sprite: 'poubelle', solid: true, dialogue: 'poubelle-ecole' },
@@ -1636,6 +1704,16 @@ export const ROOMS: Record<string, Room> = {
         sprite: 'copain',
         dialogue: 'dame-baguettes',
         errance: { rayon: 30, vitesse: 22 },
+      },
+      {
+        id: 'plante-bars',
+        x: 108,
+        y: 96,
+        sprite: 'plante',
+        frame: 'normale',
+        frameIfFlag: [['arrosee-plante-bars', 'radieuse']],
+        solid: true,
+        dialogue: 'plante',
       },
       { id: 'monsieur-immobile', x: 64, y: 104, sprite: 'copain', dialogue: 'monsieur-immobile' },
       { id: 'reverbere', x: 136, y: 36, sprite: 'reverbere', solid: true },

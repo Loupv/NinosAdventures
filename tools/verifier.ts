@@ -15,6 +15,7 @@ import { LIEUX_ORDER, ROOMS } from '../src/data/rooms';
 import { IMAGES, SHEETS } from '../src/art/sprites';
 import { CACHETTES, CACHETTES_MAISON } from '../src/data/hermione';
 import { DIALOGUES } from '../src/data/dialogues';
+import { PLANTES } from '../src/data/textes';
 
 const SOLID = new Set(['#', '~', 'X', 'T', 'V', 'Q', 'M', 'G']);
 
@@ -223,7 +224,37 @@ CACHETTES.forEach((c, i) => {
 
 // Aucun dialogue manquant. Trois objets sont pris en charge par la scène elle-même
 // (WorldScene.interagir) : leur champ `dialogue` n'est qu'un marqueur « on peut parler ».
-const JOUES_PAR_LA_SCENE = new Set(['araignee', 'hermione', 'hermione-suit', 'poisson', 'pigeon']);
+const JOUES_PAR_LA_SCENE = new Set([
+  'araignee',
+  'hermione',
+  'hermione-suit',
+  'poisson',
+  'pigeon',
+  'plante',
+]);
+
+/**
+ * **Les plantes de la quête doivent être déclarées dans `PLANTES`.** Sinon on en pose une dans une
+ * pièce, elle s'arrose, elle fleurit — et le journal comme le jardinier l'ignorent : la quête
+ * devient infinissable sans que rien ne le dise. Celle du treizième étage est en plastique et ne
+ * compte pas, d'où l'exception.
+ */
+const PLASTIQUE = 'plante-13';
+const declarees = new Set(PLANTES.map((p) => p.id));
+for (const r of Object.values(ROOMS)) {
+  for (const o of r.objects) {
+    if (o.sprite !== 'plante' || o.id === PLASTIQUE) continue;
+    if (!declarees.has(o.id)) dit('PLANTE HORS QUÊTE', `${r.id} ${o.id}`);
+    const attendu = `arrosee-${o.id}`;
+    if (!o.frameIfFlag?.some(([f, img]) => f === attendu && img === 'radieuse')) {
+      dit('PLANTE QUI NE FLEURIT PAS', `${r.id} ${o.id}`);
+    }
+  }
+}
+for (const p of PLANTES) {
+  const trouvee = Object.values(ROOMS).some((r) => r.objects.some((o) => o.id === p.id));
+  if (!trouvee) dit('PLANTE DÉCLARÉE MAIS ABSENTE', p.id);
+}
 const appeles = new Set<string>();
 for (const r of Object.values(ROOMS)) {
   for (const o of r.objects) {

@@ -30,6 +30,7 @@ const FICHES: Record<string, { sprites: string[]; lieux: string[] }> = {
   maman: { sprites: ['maman'], lieux: ['cuisine', 'salon', 'erdre'] },
   papa: { sprites: ['papa', 'papa-capitaine'], lieux: ['salon', 'erdre', 'terrasse'] },
   parrain: { sprites: ['parrain'], lieux: ['terrasse'] },
+  jardinier: { sprites: ['jardinier'], lieux: ['nantes'] },
   maitresse: { sprites: ['maitresse'], lieux: ['ecole'] },
   copain1: { sprites: ['copain'], lieux: ['ecole'] },
   copain2: { sprites: ['copain'], lieux: ['ecole'] },
@@ -59,4 +60,4 @@ export const CHARACTER_SPRITES = new Set(
  * dialogue, et arroser un vélo ne peut pas lui arracher une réplique blasée. On mouille ce qui
  * boit, pas du mobilier.
  */
-export const ARROSABLES = new Set([...CHARACTER_SPRITES, 'pigeon', 'plante-couloir']);
+export const ARROSABLES = new Set([...CHARACTER_SPRITES, 'pigeon', 'plante']);

@@ -27,7 +27,12 @@ import {
   ECUREUIL_RIT,
   ECUREUIL_TREMPE,
   ECUREUIL_VANNES,
+  PLANTE,
+  PLANTES,
+  PLANTES_TOUTES,
   PLANTE_ARROSEE,
+  arrosee,
+  plantesSauvees,
   PIGEON,
   PISTOLET_RENDU,
   CHALEUR,
@@ -1198,17 +1203,8 @@ export class WorldScene extends Phaser.Scene {
             });
           } else if (vise.def.sprite === 'ecureuil') {
             this.ecureuilChangeDeCoin(vise);
-          } else if (vise.def.sprite === 'plante-couloir') {
-            /**
-             * **La seule chose du jeu que l'eau améliore.** Elle se redresse, elle fleurit, et elle
-             * reste comme ça pour toujours : c'est un dessin de plus, pas un effet. Tout le reste du
-             * pistolet ne produit que des phrases blasées.
-             */
-            state.setFlag('plante-arrosee');
-            state.save();
-            (vise.go as Phaser.GameObjects.Image).setFrame('radieuse');
-            jouer(this, 'objet-trouve', { volume: 0.4 });
-            this.flotter(PLANTE_ARROSEE, vise);
+          } else if (PLANTES.some((pl) => pl.id === vise.def.id)) {
+            this.arroserUnePlante(vise);
           } else {
             // Tous les autres : une phrase blasée au-dessus de la tête, et on continue.
             const quoi = ARROSES[vise.def.id] ?? ARROSES[vise.def.sprite ?? ''] ?? ARROSE_DEFAUT;
@@ -1218,6 +1214,44 @@ export class WorldScene extends Phaser.Scene {
         },
       });
     }
+  }
+
+  /**
+   * **La seule chose du jeu que l'eau améliore.** La plante se redresse, elle fleurit, et elle reste
+   * comme ça pour toujours : c'est un dessin de plus, pas un effet. Tout le reste de ce que fait le
+   * pistolet est une phrase blasée.
+   *
+   * **Et la septième compte double** : quand plus aucune n'a soif, le jeu le dit une fois — sans
+   * félicitations, sans fanfare — et l'écran de fin s'en souviendra. Le jardinier de la place, lui,
+   * s'en apercevra tout seul.
+   */
+  private arroserUnePlante(l: Live): void {
+    state.setFlag(arrosee(l.def.id));
+    (l.go as Phaser.GameObjects.Image).setFrame('radieuse');
+    jouer(this, 'objet-trouve', { volume: 0.4 });
+    const toutes = plantesSauvees() >= PLANTES.length;
+    if (toutes) state.setFlag('plantes-toutes');
+    state.save();
+    if (!toutes) {
+      this.flotter(PLANTE_ARROSEE, l);
+      return;
+    }
+    state.locked = true;
+    say({ lines: PLANTES_TOUTES, focusY: l.def.y });
+  }
+
+  /**
+   * **Ce que dit une plante**, choisi ici parce qu'un dialogue ne sait pas de quel objet il parle :
+   * les sept partagent le même texte, et seule la scène sait laquelle a déjà bu.
+   */
+  private parlerALaPlante(l: Live): void {
+    const lignes = state.flag(arrosee(l.def.id))
+      ? PLANTE.arrosee
+      : state.has('pistolet-eau')
+        ? PLANTE.sechePistolet
+        : PLANTE.seche;
+    state.locked = true;
+    say({ lines: lignes, focusY: l.def.y });
   }
 
   /**
@@ -2699,6 +2733,11 @@ export class WorldScene extends Phaser.Scene {
     }
     // **Le pigeon ignore Nino.** Pas de boîte de dialogue : une boîte supposerait qu'il
     // s'intéresse à nous. Il se décale, il emmène son point d'ancrage avec lui, et il continue.
+    // Les sept plantes partagent un texte : c'est la scène qui sait laquelle a bu.
+    if (l.def.dialogue === 'plante') {
+      this.parlerALaPlante(l);
+      return;
+    }
     if (l.def.dialogue === 'pigeon') {
       this.pigeonSeDecale(l);
       return;
