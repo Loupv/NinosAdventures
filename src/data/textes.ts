@@ -637,7 +637,11 @@ export const FETE: Array<{ qui?: string; lignes: string[]; son?: string; pause?:
  * un, avec une ligne de remerciement en bas. Ce ne sont pas des crédits : c'est **la liste de ceux
  * à qui il doit sa journée**, et aucun d'eux n'est une personne réelle.
  *
- * Chaque entrée est une pièce du jeu et deux lignes. La pièce est rejouée telle quelle — ses
+ * Chaque entrée est une pièce du jeu et **trois lignes à la manière d'un générique** : le nom en
+ * capitales, le poste, puis un détail dit sans rire. Le comique est dans le poste — « effets
+ * spéciaux : pluie » pour un éléphant qui a fait tomber une trompe d'Erdre sur un quai — jamais
+ * dans une vanne ajoutée par-dessus. Les trois derniers cartons sont les **mentions de fin** que
+ * personne ne lit dans les vrais films. La pièce est rejouée telle quelle — ses
  * décors, ses personnages, ses animations — parce qu'un générique qui montre le jeu vaut mieux
  * qu'un générique qui déroule des noms sur du noir. On peut passer avec ESPACE : un enfant de sept
  * ans qui a fini un jeu a le droit d'être pressé.
@@ -656,41 +660,64 @@ export const CREDITS: Array<{
 }> = [
   {
     room: 'salon',
-    lignes: ['Merci à Moon,', 'qui a tout déclenché pour un bout de pizza.'],
+    lignes: ['MOON', 'dans son propre rôle.', 'Cachet : un bout de pizza.'],
     qui: { sprite: 'moon', x: 16, y: 86, frame: 'idle-0', anim: 'moon-idle' },
   },
   {
     room: 'sdb',
-    lignes: ['Merci à Gérard,', 'qui voulait juste voir la mer.'],
+    lignes: ['GÉRARD', 'rôle du poisson.', 'A quitté le tournage avant la fin.'],
     qui: { sprite: 'poisson', x: 24, y: 44, frame: 'saut-0', anim: 'poisson-saut' },
   },
   {
     room: 'mezzanine',
-    lignes: ['Merci à l’araignée,', 'dix haïkus et une danse.'],
+    lignes: ['L’ARAIGNÉE', 'poèmes et chorégraphie.', 'Dix haïkus, une danse, aucun rappel.'],
     qui: { sprite: 'araignee', x: 60, y: 74, frame: 'pattes-0', anim: 'araignee-pattes', scale: 2 },
   },
   {
     room: 'cour',
-    lignes: ['Merci à l’écureuil,', 'qui n’a jamais rien proposé à personne.'],
+    lignes: ['L’ÉCUREUIL', 'mauvaises idées.', 'Nie toute participation.'],
     qui: { sprite: 'ecureuil', x: 124, y: 72, frame: 'queue-0', anim: 'ecureuil-queue' },
   },
-  { room: 'nantes', lignes: ['Merci au jardinier,', 'qui n’y était pour rien.'] },
-  { room: 'ecole', lignes: ['Merci à la maîtresse,', 'qui a mis une note à une croûte de pizza.'] },
-  { room: 'erdre', lignes: ['Merci à l’Éléphant des Machines,', 'qui boit beaucoup.'] },
-  { room: 'terrasse', lignes: ['Merci à Papa,', 'qui a un fils qui lui ressemble beaucoup.'] },
-  { room: 'tour-toit', lignes: ['Merci à la Tour de Bretagne,', 'qui n’a pas bougé de la nuit.'] },
-  { room: 'cuisine', lignes: ['Merci à Maman,', 'qui préparait un gâteau depuis ce matin.'] },
+  { room: 'nantes', lignes: ['LE JARDINIER', 'arrosage.', 'N’a pas arrosé.'] },
+  { room: 'ecole', lignes: ['LA MAÎTRESSE', 'notation.', 'A noté une croûte de pizza.'] },
+  {
+    room: 'erdre',
+    lignes: [
+      'L’ÉLÉPHANT DES MACHINES',
+      'effets spéciaux : pluie.',
+      'Douze mètres, aucune doublure.',
+    ],
+  },
+  {
+    room: 'terrasse',
+    lignes: ['PAPA', 'bateau, chapeau, alibis.', 'Cascades exécutées par lui-même.'],
+  },
+  { room: 'tour-toit', lignes: ['LA TOUR DE BRETAGNE', 'décors.', 'N’a pas bougé de la nuit.'] },
+  {
+    room: 'cuisine',
+    lignes: ['MAMAN', 'production, gâteau, sept bougies.', 'Savait depuis ce matin.'],
+  },
   {
     room: 'chambre',
-    lignes: ['Merci à Hermione,', 'où qu’elle soit.'],
+    lignes: ['HERMIONE', 'cachettes.', 'Aucune n’a jamais été expliquée.'],
     qui: { sprite: 'hermione', x: 20, y: 40, frame: 'idle-0', anim: 'hermione-idle' },
+  },
+  // ── Et les mentions de fin, celles que personne ne lit jamais dans les vrais films ──
+  { room: 'bars', lignes: ['Aucun animal n’a été maltraité.', 'L’écureuil a un avis différent.'] },
+  {
+    room: 'couloir',
+    lignes: ['Ce couloir a cinq portes.', 'Il n’a jamais servi à rien.', 'Merci à lui quand même.'],
+  },
+  {
+    room: 'tour-pied',
+    lignes: ['Toute ressemblance avec des personnes', 'réelles est parfaitement assumée.'],
   },
 ];
 
 /** Ce qu'on lit en bas de l'écran pendant le générique, et la toute dernière ligne. */
 export const GENERIQUE = {
   saut: 'ESPACE',
-  fin: ['Et merci à Nino,', 'qui a fait tout ça un mardi.'],
+  fin: ['NINO', 'tout le reste.', 'Sept ans depuis ce matin.'],
   /** Sur la table de la cuisine, la tête dans les bras. */
   endormi: ['Nino s’endort sur la table.'],
 };

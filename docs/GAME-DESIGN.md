@@ -1332,22 +1332,32 @@ Hermione sous le lit. À la fin du jeu presque aucun n'est encore chez lui — l
 parents, le poisson est parti à la mer, l'araignée a dansé et s'en est allée — et remercier une pièce
 vide n'a pas le même effet.
 
-> *Merci à Moon, qui a tout déclenché pour un bout de pizza.*
-> *Merci à Gérard, qui voulait juste voir la mer.*
-> *Merci à l'araignée, dix haïkus et une danse.*
-> *Merci à l'écureuil, qui n'a jamais rien proposé à personne.*
-> *Merci au jardinier, qui n'y était pour rien.*
-> *Merci à la maîtresse, qui a mis une note à une croûte de pizza.*
-> *Merci à l'Éléphant des Machines, qui boit beaucoup.*
-> *Merci à Papa, qui a un fils qui lui ressemble beaucoup.*
-> *Merci à la Tour de Bretagne, qui n'a pas bougé de la nuit.*
-> *Merci à Maman, qui préparait un gâteau depuis ce matin.*
-> *Merci à Hermione, où qu'elle soit.*
-> **Et merci à Nino, qui a fait tout ça un mardi.**
+**La forme est celle d'un générique de film** : le nom en capitales, le poste, puis un détail dit
+sans rire. Tout le comique est dans le poste — et jamais dans une vanne ajoutée par-dessus.
 
-**Ce ne sont pas des crédits, c'est la liste de ceux à qui il doit sa journée**, et aucun d'eux
-n'existe. Personne n'est remercié pour son travail : ils sont remerciés pour ce qu'ils ont fait dans
-l'histoire.
+| | |
+|---|---|
+| **MOON** | dans son propre rôle. Cachet : un bout de pizza. |
+| **GÉRARD** | rôle du poisson. A quitté le tournage avant la fin. |
+| **L'ARAIGNÉE** | poèmes et chorégraphie. Dix haïkus, une danse, aucun rappel. |
+| **L'ÉCUREUIL** | mauvaises idées. Nie toute participation. |
+| **LE JARDINIER** | arrosage. N'a pas arrosé. |
+| **LA MAÎTRESSE** | notation. A noté une croûte de pizza. |
+| **L'ÉLÉPHANT DES MACHINES** | effets spéciaux : pluie. Douze mètres, aucune doublure. |
+| **PAPA** | bateau, chapeau, alibis. Cascades exécutées par lui-même. |
+| **LA TOUR DE BRETAGNE** | décors. N'a pas bougé de la nuit. |
+| **MAMAN** | production, gâteau, sept bougies. Savait depuis ce matin. |
+| **HERMIONE** | cachettes. Aucune n'a jamais été expliquée. |
+| **NINO** | tout le reste. Sept ans depuis ce matin. |
+
+Puis **les mentions de fin**, celles que personne ne lit dans les vrais films :
+
+> *Aucun animal n'a été maltraité. L'écureuil a un avis différent.*
+> *Ce couloir a cinq portes. Il n'a jamais servi à rien. Merci à lui quand même.*
+> *Toute ressemblance avec des personnes réelles est parfaitement assumée.*
+
+Personne n'est remercié pour son travail : ils sont crédités pour **ce qu'ils ont fait dans
+l'histoire**, avec le sérieux d'une fiche technique.
 
 Techniquement, c'est **le jeu lui-même qui joue le générique** : le mode cinéma est une variante de
 la scène de jeu (`cinema` dans l'arrivée), donc les décors, les animations et les personnages sont

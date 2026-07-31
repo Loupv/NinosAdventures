@@ -2576,7 +2576,15 @@ export class WorldScene extends Phaser.Scene {
     const texte = new PixelText(this, 'gen-carton', 0, haut, GB.W, lignes.length * LINE_H + 2);
     texte.image.setScrollFactor(0).setDepth(1910);
     texte.setLines(lignes, shadeHex(this.pal, 3));
-    const saut = new PixelText(this, 'gen-saut', GB.W - 40, 4, 40, 12);
+    // **Le rappel « ESPACE » a son propre fond.** En encre claire sur le ciel de l'Erdre, il était
+    // invisible : un texte posé sur le décor doit emporter son cadre avec lui.
+    const large = measure(GENERIQUE.saut) + 6;
+    this.add
+      .rectangle(GB.W - large - 2, 2, large, LINE_H + 3, shade(this.pal, 0))
+      .setOrigin(0, 0)
+      .setScrollFactor(0)
+      .setDepth(1900);
+    const saut = new PixelText(this, 'gen-saut', GB.W - large + 1, 4, large, LINE_H + 2);
     saut.image.setScrollFactor(0).setDepth(1910);
     saut.setLines([GENERIQUE.saut], shadeHex(this.pal, 3));
   }
