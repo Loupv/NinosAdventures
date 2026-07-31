@@ -348,6 +348,31 @@ export const LA_JOIE_DU_BATEAU: Record<'coule' | 'flotte', Array<{ qui: string; 
   };
 
 /**
+ * **Le jardinier arrive dans la pièce où la septième plante a bu.** N'importe laquelle — une
+ * chambre, une salle de bain, le hall d'une tour de trente-deux étages : il pousse la porte la plus
+ * proche, il traverse, il remercie.
+ *
+ * Puis il se rend compte d'où il est. C'est le seul personnage du jeu qui **relève l'absurde** —
+ * tous les autres l'avalent sans broncher — et c'est drôle pour cette raison exacte : il aura fallu
+ * arroser sept plantes pour qu'un adulte se demande enfin ce qu'il fait là.
+ */
+export const JARDINIER_MERCI = {
+  qui: 'Le jardinier',
+  lignes: [
+    '« Ah. »',
+    '« C’est toi qui les as arrosées ? »',
+    '« Toutes ? »',
+    '« Elles vont mieux que moi. »',
+    '« Merci, petit. »',
+  ],
+};
+
+export const JARDINIER_PART = {
+  qui: 'Le jardinier',
+  lignes: ['« ... »', '« Qu’est-ce que je fais là, moi ? »', '« Bon. »', '« Je m’en vais. »'],
+};
+
+/**
  * **Les sept plantes du jeu, et la quête d'à-côté.** Chacune a soif, chacune se souvient d'avoir
  * été arrosée (drapeau `arrosee-<id>`), et le journal les compte. Ce n'est pas une collection
  * cachée : elles sont toutes en pleine vue, dans des pièces qu'on traverse de toute façon.
@@ -586,14 +611,24 @@ export const PARENTS: Array<{ qui?: string; lignes: string[] }> = [
  * `son` déclenche un bruitage sur la réplique : c'est ici et pas dans le code, pour qu'on
  * puisse réécrire les phrases sans faire taire le souffle des bougies.
  */
-export const FETE: Array<{ qui?: string; lignes: string[]; son?: string }> = [
+export const FETE: Array<{ qui?: string; lignes: string[]; son?: string; pause?: number }> = [
   { lignes: ['Il fait jour dans la cuisine.', 'Ça sent le gâteau.'] },
   { qui: 'Maman', lignes: ['« JOYEUX ANNIVERSAIRE ! »'] },
   { qui: 'Papa', lignes: ['« JOYEUX ANNIVERSAIRE ! »'] },
   { lignes: ['Sept bougies.', 'Hermione tape sur la table.'] },
+  { qui: 'Maman', lignes: ['« Tu as bien dormi ? »'], pause: 700 },
+  { lignes: ['« ... »'], pause: 900 },
+  { qui: 'Nino', lignes: ['« Oui. »'] },
   { qui: 'Papa', lignes: ['« Souffle ! »'] },
-  { lignes: ['Nino prend une très grande respiration.'], son: 'bougies' },
-  { lignes: ['...'] },
+  { lignes: ['Nino prend une très grande respiration.'], son: 'bougies', pause: 900 },
+  { lignes: ['...'], pause: 1200 },
+  { lignes: ['Six bougies éteintes.', 'La septième repart toute seule.'], pause: 700 },
+  { qui: 'Papa', lignes: ['« Ah. »', '« Celle-là, c’est une farce. »'] },
+  { qui: 'Maman', lignes: ['« Ce n’est pas moi. »'] },
+  { qui: 'Papa', lignes: ['« Ce n’est pas moi non plus. »'], pause: 800 },
+  { lignes: ['Moon regarde ailleurs.'], pause: 1000 },
+  { lignes: ['Nino souffle une deuxième fois.'], son: 'bougies', pause: 1100 },
+  { lignes: ['Voilà.'], pause: 900 },
   { lignes: ['Nino dort.'] },
 ];
 
@@ -1786,16 +1821,12 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
    * pistolet à eau en tire ses propres conclusions.
    */
   jardinier: [
+    // Il a déjà dit merci en personne, dans la pièce de la septième plante : ici il ne recommence
+    // pas, il constate. Un merci qui se répète n'est plus un merci.
     {
       when: () => plantesSauvees() >= PLANTES.length,
       speaker: 'Le jardinier',
-      lines: [
-        '« Ah. »',
-        '« C’est toi qui les as arrosées ? »',
-        '« Toutes ? »',
-        '« Elles vont mieux que moi. »',
-        '« Merci, petit. »',
-      ],
+      lines: ['« Ah, c’est toi. »', '« Elles vont toutes bien. »', '« Je n’y suis pour rien. »'],
     },
     {
       when: () => plantesSauvees() > 0,

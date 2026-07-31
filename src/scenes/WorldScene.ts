@@ -27,6 +27,8 @@ import {
   ECUREUIL_RIT,
   ECUREUIL_TREMPE,
   ECUREUIL_VANNES,
+  JARDINIER_MERCI,
+  JARDINIER_PART,
   PLANTE,
   PLANTES,
   PLANTES_TOUTES,
@@ -1237,7 +1239,81 @@ export class WorldScene extends Phaser.Scene {
       return;
     }
     state.locked = true;
-    say({ lines: PLANTES_TOUTES, focusY: l.def.y });
+    say({ lines: PLANTES_TOUTES, focusY: l.def.y, onDone: () => this.jardinierArrive(l) });
+  }
+
+  /**
+   * **Le jardinier arrive dans la pièce où la septième plante a bu.** N'importe laquelle : une
+   * chambre, une cuisine, le hall d'une tour de trente-deux étages. Il pousse la porte la plus
+   * proche, il traverse, il remercie — puis **il se rend compte d'où il est** et il repart par où
+   * il est venu.
+   *
+   * C'est le seul personnage du jeu qui relève l'absurde. Tous les autres l'avalent sans broncher :
+   * Maman arrive en sous-marin sur un quai et personne ne dit rien. Lui, il aura fallu sept plantes
+   * pour qu'il se demande ce qu'il fait là — et c'est ce décalage qui fait la blague.
+   *
+   * Rien ne dépend de cette scène : elle se joue une fois, elle ne donne rien, et le merci est déjà
+   * acquis quand elle commence.
+   */
+  private jardinierArrive(l: Live): void {
+    state.locked = true;
+    state.setFlag('jardinier-merci');
+    state.save();
+    // Par la porte la plus proche de la plante, comme Maman quand elle vient chercher Hermione.
+    const porte = this.entrees().reduce((a, b) =>
+      Phaser.Math.Distance.Between(a.x, a.y, l.def.x, l.def.y) <
+      Phaser.Math.Distance.Between(b.x, b.y, l.def.x, l.def.y)
+        ? a
+        : b,
+    );
+    const depart = { x: Math.round(porte.x - 4), y: Math.round(porte.y - 15) };
+    const lui = this.add
+      .image(depart.x, depart.y, texKey('jardinier', this.pal))
+      .setOrigin(0, 0)
+      .setDepth(depart.y + 16);
+    const profondeur = () => lui.setDepth(lui.y + lui.displayHeight);
+
+    // À côté de la plante, du côté où il reste de la place.
+    const cote = l.def.x > this.roomW / 2 ? -12 : 12;
+    const vers = { x: Math.round(l.def.x + cote), y: Math.round(l.def.y + 4) };
+
+    const repartir = () => {
+      this.tweens.add({
+        targets: lui,
+        x: depart.x,
+        y: depart.y,
+        duration: this.duree(lui.x, lui.y, depart.x, depart.y),
+        onUpdate: profondeur,
+        onComplete: () => {
+          lui.destroy();
+          state.locked = false;
+        },
+      });
+    };
+
+    const parler = () => {
+      say({
+        speaker: JARDINIER_MERCI.qui,
+        lines: JARDINIER_MERCI.lignes,
+        focusY: vers.y,
+        onDone: () =>
+          say({
+            speaker: JARDINIER_PART.qui,
+            lines: JARDINIER_PART.lignes,
+            focusY: vers.y,
+            onDone: repartir,
+          }),
+      });
+    };
+
+    this.tweens.add({
+      targets: lui,
+      x: vers.x,
+      y: vers.y,
+      duration: this.duree(depart.x, depart.y, vers.x, vers.y),
+      onUpdate: profondeur,
+      onComplete: parler,
+    });
   }
 
   /**
@@ -2334,9 +2410,15 @@ export class WorldScene extends Phaser.Scene {
     const entrer = () => {
       state.locked = true;
       acteurs.forEach((a) => a.setVisible(true));
+      /**
+       * **Chacun sa place au pied du lit.** Ils arrivaient tous les deux sur le même pixel : deux
+       * parents parfaitement superposés, dont on ne voyait qu'un. Quatorze pixels d'écart, c'est-à-dire
+       * une largeur de personnage et demie — on les voit tous les deux, et ils ont l'air de se tenir
+       * côte à côte plutôt que de se marcher dessus.
+       */
       this.tweens.add({
         targets: acteurs,
-        x: l.def.x + 24,
+        x: (_cible: unknown, _clef: string, _valeur: number, i: number) => l.def.x + 18 + i * 14,
         y: l.def.y + 20,
         duration: this.duree(seuil.x, seuil.y, l.def.x + 24, l.def.y + 20),
         ease: 'Sine.easeInOut',
@@ -2363,6 +2445,12 @@ export class WorldScene extends Phaser.Scene {
   /** Dans la cuisine, tout le monde attend depuis ce matin. */
   private anniversaire(): void {
     state.locked = true;
+    /**
+     * **La scène des bougies prend son temps.** Certaines répliques portent une `pause` : après
+     * elles, le jeu attend avant d'ouvrir la boîte suivante, écran vide. C'est tout ce qu'il faut
+     * pour qu'un silence soit un silence — sans ça, la dernière scène du jeu défilait aussi vite
+     * qu'un dialogue de couloir, et la fin tombait comme un couperet.
+     */
     const dire = (i: number) => {
       if (i >= FETE.length) {
         state.setFlag('fin');
@@ -2372,9 +2460,17 @@ export class WorldScene extends Phaser.Scene {
         return;
       }
       // La boîte passe en haut : toute la scène du gâteau reste visible en dessous.
-      // La réplique dit elle-même si un son l'accompagne.
+      // La réplique dit elle-même si un son l'accompagne, et le temps qu'on lui laisse après.
       if (FETE[i].son) jouer(this, FETE[i].son, { volume: 0.9 });
-      say({ speaker: FETE[i].qui, lines: FETE[i].lignes, focusY: 110, onDone: () => dire(i + 1) });
+      const suite = () => {
+        const pause = FETE[i].pause;
+        if (!pause) {
+          dire(i + 1);
+          return;
+        }
+        this.time.delayedCall(pause, () => dire(i + 1));
+      };
+      say({ speaker: FETE[i].qui, lines: FETE[i].lignes, focusY: 110, onDone: suite });
     };
     dire(0);
   }

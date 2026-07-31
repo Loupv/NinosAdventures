@@ -718,6 +718,19 @@ nous. Mais il remarque :
 
 C'est **le seul merci du jeu qu'on ait à mériter**, et il vient d'un adulte qui n'avait rien demandé.
 
+**Et il vient le dire en personne.** Quand la septième plante boit, le jardinier **arrive dans la
+pièce** — n'importe laquelle : une chambre, une cuisine, le hall d'une tour de trente-deux étages.
+Il pousse la porte la plus proche, il traverse, il remercie. Puis il se rend compte d'où il est :
+
+> *« ... » « Qu'est-ce que je fais là, moi ? » « Bon. » « Je m'en vais. »*
+
+Et il repart par où il est venu. **C'est le seul personnage du jeu qui relève l'absurde** — tous les
+autres l'avalent sans broncher, Maman arrive en sous-marin sur un quai et personne ne dit rien. Il
+aura fallu arroser sept plantes pour qu'un adulte se demande enfin ce qu'il fait là.
+
+Sur sa place, ensuite, il ne recommence pas : *« Ah, c'est toi. » « Elles vont toutes bien. » « Je
+n'y suis pour rien. »* Un merci qui se répète n'est plus un merci.
+
 Le journal les compte sur sa propre page (`PLANTES`) : le total, puis celles qui vont mieux, les
 autres en pointillés — on sait combien il en reste, jamais où elles sont. Et quand la septième boit,
 le jeu le constate une fois, sans fanfare : *« Plus une seule plante n'a soif. »* L'écran de fin s'en
@@ -1283,15 +1296,28 @@ De retour dans sa chambre, parapente sous le bras, il suffit d'aller au lit :
 2. *« Il se glisse sous la couette. Il ferme les yeux très fort. »* — et on **le voit dans
    son lit**, comme au tout début du jeu.
 3. **Les parents entrent.** Ils ne parlent ni de la fenêtre ouverte, ni du parapente.
-   *« Il dort. »* — *« À sept heures du matin ? »* — *« Nino. Nino, viens. »*
+   *« Il dort. »* — *« À sept heures du matin ? »* — *« Nino. Nino, viens. »* Ils s'arrêtent au
+   pied du lit **côte à côte**, à quatorze pixels l'un de l'autre : ils visaient le même pixel, et
+   on ne voyait qu'un seul parent.
 4. **La cuisine.** La lumière est allumée. Un gâteau, **sept bougies**, Hermione qui tape
-   sur la table. *« JOYEUX ANNIVERSAIRE ! »* — *« Souffle ! »*
-5. *« Nino prend une très grande respiration. »* — *« ... »* — **« Nino dort. »**
+   sur la table. *« JOYEUX ANNIVERSAIRE ! »*
+5. *« Tu as bien dormi ? »* — *« ... »* — *« Oui. »* C'est le seul mensonge de Nino dans tout le
+   jeu, et il tient en un mot.
+6. *« Souffle ! »* — *« Nino prend une très grande respiration. »* — *« ... »*
+7. **Six bougies éteintes. La septième repart toute seule.** *« Celle-là, c'est une farce. »* —
+   *« Ce n'est pas moi. »* — *« Ce n'est pas moi non plus. »* — **« Moon regarde ailleurs. »**
+8. *« Nino souffle une deuxième fois. »* — *« Voilà. »* — **« Nino dort. »**
 
 Et c'est tout. **Rien n'explique la révélation** : les parents n'étaient pas distraits
 depuis ce matin, ils préparaient. Le joueur le comprend en voyant le gâteau, pas en le
 lisant. Et Nino s'endort au moment de souffler, parce qu'il a fait tout ça aujourd'hui et
 que personne ne le sait.
+
+**La scène prend son temps**, et c'est réglé dans le texte : certaines répliques portent une
+`pause` en millisecondes, et le jeu attend, écran vide, avant d'ouvrir la boîte suivante. Sans ces
+silences, la dernière scène du jeu défilait aussi vite qu'un dialogue de couloir et la fin tombait
+comme un couperet. La bougie farceuse est là pour la même raison : **il faut une blague entre le
+souffle et le noir**, sinon le jeu s'arrête au milieu d'une respiration.
 
 L'écran de fin est dans la palette du jour — c'est le matin de son anniversaire — et il
 compte ce qui a été **trouvé**, pas ce qui a été réussi : les cachettes d'Hermione, les pièces. Il n'y a pas de score dans ce jeu.
