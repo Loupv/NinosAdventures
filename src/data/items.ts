@@ -6,6 +6,8 @@ import { OBJETS } from './textes';
  */
 export type ItemId =
   | 'pizza'
+  /** Ce que le chat laisse du bout de pizza. Le seul objet du jeu qui en remplace un autre. */
+  | 'croute'
   | 'pistolet-eau'
   | 'parapente'
   | 'chaussure'
@@ -29,6 +31,7 @@ const SPRITES: Record<ItemId, string> = {
   'pistolet-eau': 'pistolet',
   parapente: 'parapente',
   pizza: 'pizza',
+  croute: 'pizza',
   chaussure: 'chaussure',
   bouchon: 'bouchon',
   noisette: 'noisette',
@@ -49,6 +52,7 @@ export const ITEMS: Record<ItemId, ItemDef> = {
   'pistolet-eau': fiche('pistolet-eau'),
   parapente: fiche('parapente'),
   pizza: fiche('pizza'),
+  croute: fiche('croute'),
   chaussure: fiche('chaussure'),
   bouchon: fiche('bouchon'),
   noisette: fiche('noisette'),

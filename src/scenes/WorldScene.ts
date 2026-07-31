@@ -21,12 +21,14 @@ import {
   ARROSES,
   ARROSE_DEFAUT,
   BAREME,
+  RENOTE,
   ECUREUIL_FUITE,
   ECUREUIL_MOUILLE,
   ECUREUIL_RIT,
   ECUREUIL_TREMPE,
   ECUREUIL_VANNES,
   PIGEON,
+  PISTOLET_RENDU,
   CHALEUR,
   CHANSON,
   COUPLETS,
@@ -407,6 +409,13 @@ export class WorldScene extends Phaser.Scene {
    * portes.
    */
   private chosesQuiArrivent(): void {
+    /**
+     * **La sueur sèche dès qu'on sort de la chambre.** Elle dégouline sur le sol si Nino a traîné
+     * au lit, et trois flaques au pied du lit pour toute la partie, c'est une tache, pas une
+     * blague. Le temps de traverser une pièce et c'est sec.
+     */
+    if (state.flag('sueur') && this.room.id !== 'chambre') state.setFlag('sueur-sechee');
+
     const ECRANS = 3;
     if (
       state.flag('eau-coule') &&
@@ -2240,7 +2249,6 @@ export class WorldScene extends Phaser.Scene {
   private faireSemblant(l: Live): void {
     state.locked = true;
     state.take('parapente');
-    state.setFlag('parapente-cache');
     const couche = { sprite: 'nino-couche', x: l.def.x + 4, y: l.def.y + 10, cacheNino: true };
 
     // Les parents entrent par la porte de la chambre et vont jusqu'au lit.
@@ -2389,7 +2397,8 @@ export class WorldScene extends Phaser.Scene {
       maman.destroy();
       state.hermione += 1;
       // Les cinq de la maison faites : elle renonce, monte au salon, et le frigo est
-      // libre. Les quatre du dehors se trouveront plus tard.
+      // libre. Les deux du dehors se trouveront plus tard.
+      const renonce = mamanRenonce(state.hermione) && !state.flag('maman-au-salon');
       if (mamanRenonce(state.hermione)) state.setFlag('maman-au-salon');
       toast(ANNONCES.hermioneTrouvee(state.hermione, CACHETTES.length));
       state.save();
@@ -2399,6 +2408,25 @@ export class WorldScene extends Phaser.Scene {
       }
       this.target = undefined;
       bus.emit(EV.hud);
+      /**
+       * **En renonçant, elle rend le pistolet à eau.** C'est la seule récompense de la maison, et
+       * elle arrive d'une capitulation : cinq cachettes, elle a compris, et elle a maintenant autre
+       * chose à faire que de surveiller un jouet confisqué. Il retourne au fond du coffre sans un
+       * mot de plus — il faut aller le chercher.
+       */
+      if (renonce) {
+        state.setFlag('pistolet-rendu');
+        state.save();
+        say({
+          speaker: PISTOLET_RENDU.qui,
+          lines: PISTOLET_RENDU.lignes,
+          focusY: l.def.y,
+          onDone: () => {
+            if (derniere) this.scene.restart({ room: this.room.id });
+          },
+        });
+        return;
+      }
       state.locked = false;
       // Dernière cachette : on reconstruit la pièce, elle y sera en suiveuse.
       if (derniere) this.scene.restart({ room: this.room.id });
@@ -2705,13 +2733,24 @@ export class WorldScene extends Phaser.Scene {
       const suite = (i: number) => {
         if (i >= etapes.length) {
           const bareme = BAREME.find((b) => points >= b.min) ?? BAREME[BAREME.length - 1];
-          // On garde la meilleure : un enfant qui revient avec une autre idée ne doit pas
-          // pouvoir *perdre* sa note.
+          /**
+           * **Elle garde la meilleure, et elle le dit.** Sans cette ligne, revenir avec un autre
+           * objet donnait une note qui semblait remplacer l'autre : un enfant n'ose plus essayer
+           * moins bien. Trois cas, une phrase chacun, et rien n'est jamais perdu.
+           */
+          const avant = state.note;
+          const rappel = !avant
+            ? []
+            : bareme.note > avant
+              ? RENOTE.mieux
+              : bareme.note === avant
+                ? RENOTE.pareil
+                : RENOTE.moins;
           state.note = Math.max(state.note, bareme.note);
           jouer(this, bareme.note >= 16 ? 'enigme-juste' : 'valider', { volume: 0.6 });
           say({
             speaker: beat.speaker,
-            lines: bareme.lines,
+            lines: [...bareme.lines, ...rappel],
             focusY: l?.def.y,
             onDone: () => {
               state.save();

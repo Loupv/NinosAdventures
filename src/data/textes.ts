@@ -121,7 +121,32 @@ export const FIN = {
   /** Et la note du projet d'art, si Nino l'a rendu. */
   note: (n: number) => `Projet d’art ${n}/20`,
   suite: 'ESPACE',
+  /** Le titre de la seconde page. */
+  titre2: 'CETTE NUIT-LÀ',
 };
+
+/**
+ * **Ce qu'il a fait cette nuit-là.** Seconde page de l'écran de fin : une ligne par chose qui a
+ * réellement eu lieu, dans l'ordre où on les a faites. Compter deux chiffres — la petite sœur et les
+ * pièces — ne dit rien d'une nuit où on a coulé le bateau de son père et envoyé un poisson à la mer.
+ *
+ * **Rien n'est obligatoire ici**, et c'est le principe : deux parties donnent deux listes
+ * différentes, et aucune ligne ne reproche l'absence d'une autre. Une ligne sans son drapeau
+ * n'existe pas.
+ */
+export const CETTE_NUIT: Array<{ flag: string; ligne: string }> = [
+  { flag: 'ventilo-casse', ligne: 'Un ventilateur achevé.' },
+  { flag: 'chat-parle', ligne: 'Un chat qui parle.' },
+  { flag: 'bouchon-retire', ligne: 'Un poisson sauvé.' },
+  { flag: 'araignee-partie', ligne: 'Dix haïkus, et une danse.' },
+  { flag: 'reve-fait', ligne: 'Un rêve de fusée.' },
+  { flag: 'fenetre-cassee', ligne: 'Une vitre cassée. (le chat)' },
+  { flag: 'elephant-salue', ligne: 'Un éléphant, deux fois.' },
+  { flag: 'poisson-parti', ligne: 'Un poisson parti pour la mer.' },
+  { flag: 'bateau-coule', ligne: 'Un bateau au fond de l’Erdre.' },
+  { flag: 'joie-bateau', ligne: 'Un mensonge à la terrasse.' },
+  { flag: 'parapente-rentre', ligne: 'Un vol au-dessus de Nantes.' },
+];
 
 // ═══════════════════════════════════════════════════════════════ 2. les lieux
 
@@ -186,6 +211,17 @@ export const RAPPELS: string[][] = [
 ];
 
 /** La dernière fois : Maman renonce, et Hermione reste. */
+/**
+ * **Ce qu'elle dit en renonçant à la chasse.** Cinq cachettes dans la maison, elle a compris qu'elle
+ * n'y arrivera pas — et au moment de repartir avec Hermione, elle rend le pistolet à eau confisqué.
+ * C'est la seule récompense de la maison, et elle vient d'une capitulation : elle a autre chose à
+ * faire que de surveiller un pistolet à eau.
+ */
+export const PISTOLET_RENDU = {
+  qui: 'Maman',
+  lignes: ['« Nino. »', '« Ton pistolet à eau. »', '« Je te le rends. »', '« Dehors, hein. »'],
+};
+
 export const RAPPEL_FINAL: string[] = [
   '« HERMIONE ! »',
   '...',
@@ -392,14 +428,14 @@ export const ARROSES: Record<string, string[]> = {
 export const PIGEON: string[][] = [
   ['Un pigeon.', 'Il regarde le sol comme s’il y avait quelque chose.', 'Il n’y a rien.'],
   ['Le pigeon se décale de trois pas.', 'Il n’a pas regardé Nino une seule fois.'],
-  ['Nino s’approche du pigeon.', 'Le pigeon fait comme s’il n’y avait personne.'],
+  ['Le pigeon fait comme s’il n’y avait personne.', 'Personne du tout.'],
   [
     'Le pigeon tourne la tête vers le trottoir vide.',
     'Il regarde exprès ailleurs.',
     'Pour avoir l’air occupé.',
   ],
   ['Le pigeon a autre chose à faire.', 'Il s’éloigne, sans se presser.'],
-  ['Nino dit bonjour au pigeon.', 'Le pigeon continue de marcher.'],
+  ['Le pigeon continue de marcher.', 'Il connaît le chemin.'],
 ];
 
 /** Et pour tous les autres. */
@@ -539,8 +575,12 @@ export const OBJETS: Record<string, { nom: string; desc: string }> = {
     desc: 'Ramassée sur le quai. Les hérons passent par là — Nino le vérifiera plus tard, en parapente.',
   },
   pizza: {
-    nom: 'Bout de pizza mâché',
-    desc: 'Froid, un peu mou, et il manque un coin : Moon y a goûté sans même ouvrir les yeux. Personne ne le réclamera. Certains animaux le trouvent négociable quand même.',
+    nom: 'Bout de pizza',
+    desc: 'Froid, un peu mou, d’hier. Personne ne le réclamera. Certains animaux le trouvent négociable.',
+  },
+  croute: {
+    nom: 'Croûte de pizza',
+    desc: 'Ce que Moon a laissé : il a mangé tout le reste sans ouvrir les yeux. Une croûte mâchée n’a plus aucune valeur, sauf comme œuvre.',
   },
 };
 
@@ -582,11 +622,11 @@ export const CASTING: Record<string, { nom: string; role: string }> = {
   },
   parrain: {
     nom: 'Le parrain',
-    role: 'Attablé avec papa sur une terrasse, la nuit. Ne s’étonne de rien, pas même d’un papa trempé, pas même d’un enfant de sept ans qui passe à cette heure-ci.',
+    role: 'Attablé avec papa à une terrasse, un verre devant lui. Ne s’étonne de rien : ni d’un papa trempé, ni d’un enfant de sept ans qui passe tout seul, ni d’un bateau qui aurait coulé.',
   },
   elephant: {
     nom: 'L’Éléphant des Machines',
-    role: 'Douze mètres de bois et d’acier, sur un palier du 31e étage. Personne ne demande comment il est monté. Pose la seule énigme dont il ne connaît pas la réponse.',
+    role: 'Douze mètres de bois et d’acier. Il boit dans l’Erdre, puis il est sur un palier du 31e étage. Personne ne demande comment il est monté — sauf Nino, une fois, tout bas. Pose la seule énigme dont il ne connaît pas la réponse.',
   },
   maman: {
     nom: 'Maman',
@@ -598,7 +638,7 @@ export const CASTING: Record<string, { nom: string; role: string }> = {
   },
   maitresse: {
     nom: 'La maîtresse',
-    role: 'Donnera des « devoirs » qui sont en fait des quêtes. Chapitre école, pas encore construit.',
+    role: 'Réclame le projet d’art de Nino, derrière les grilles de l’école. N’importe quel objet fait l’affaire ; ce qu’elle note, c’est ce qu’on en dit.',
   },
   copain1: { nom: 'Copain nº1 (à nommer)', role: 'Échange des objets. Croit Nino sur parole.' },
   copain2: { nom: 'Copain nº2 (à nommer)', role: 'Ne croit rien. Contre-poids comique.' },
@@ -628,7 +668,7 @@ const OFFRABLES: ItemId[] = [
   'ticket',
   'ballon-degonfle',
   'plume',
-  'pizza',
+  'croute',
 ];
 
 /**
@@ -677,8 +717,8 @@ const ACCUEILS: Record<string, string[]> = {
     '« Oh. »',
     '« De quel oiseau ? »',
   ],
-  pizza: [
-    'Nino pose un bout de pizza sur la table.',
+  croute: [
+    'Nino pose une croûte de pizza mâchée sur la table.',
     '« ... »',
     '« Elle est mâchée ? »',
   ],
@@ -768,7 +808,7 @@ const DEVOIRS: Record<string, Devoir> = {
         lines: ['« Et en quoi c’est de l’art ? »'],
         reponses: ['Je l’ai décidé', 'Il a été gardé', 'C’est du papier'],
         retours: [
-          { points: 3, lines: ['« Voilà. »', '« C’est exactement ça. »'] },
+          { points: 3, lines: ['« Exactement ça. »'] },
           { points: 2, lines: ['« Par terre, ce n’est pas gardé. »', '« Mais presque. »'] },
           { points: 0, lines: ['« Du papier, oui. »'] },
         ],
@@ -811,7 +851,7 @@ const DEVOIRS: Record<string, Devoir> = {
         reponses: ['Elle volait', 'Je l’ai décidé', 'Elle est douce'],
         retours: [
           { points: 3, lines: ['« Elle volait, et maintenant elle est là. »'] },
-          { points: 3, lines: ['« Voilà. »', '« C’est ça. »'] },
+          { points: 3, lines: ['« C’est ça. »', '« Tu as bien regardé. »'] },
           { points: 1, lines: ['« Oui. »'] },
         ],
       },
@@ -838,7 +878,7 @@ const DEVOIRS: Record<string, Devoir> = {
       },
     ],
   },
-  pizza: {
+  croute: {
     etapes: [
       {
         reponses: ['C’est le chat', 'Elle était comme ça', 'C’est moi'],
@@ -859,6 +899,17 @@ const DEVOIRS: Record<string, Devoir> = {
       },
     ],
   },
+};
+
+/**
+ * **Ce qu'elle dit quand ce n'est pas la première fois.** Elle garde la meilleure note, et elle le
+ * dit : un enfant qui revient avec un autre objet doit savoir que rien n'est perdu, et qu'il n'a
+ * rien à craindre d'essayer moins bien.
+ */
+export const RENOTE = {
+  mieux: ['« Mieux que la dernière fois. »'],
+  pareil: ['« Pareil que la dernière fois. »'],
+  moins: ['« Tu avais fait mieux. »', '« Je garde la meilleure. »'],
 };
 
 /**
@@ -963,7 +1014,6 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
             'C’est encore plus long qu’il pensait.',
             'Il se relève.',
           ],
-          effects: { flag: 'recouche' },
           // On le voit dans le lit : sa tête sur l'oreiller, la bosse sous la couverture.
           montre: {
             sprite: 'nino-couche',
@@ -1000,18 +1050,32 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
     },
   ],
 
+  /**
+   * **Le pistolet à eau n'est plus dans le coffre : il est confisqué.** C'était le seul objet du jeu
+   * qui change vraiment quelque chose, et on le trouvait dans les trente premières secondes en
+   * ouvrant un coffre au passage. Maintenant il faut que Maman le rende — ce qu'elle fait quand elle
+   * renonce à la chasse à Hermione, c'est-à-dire au seul moment de la maison qui se mérite.
+   */
   coffre: [
     {
       when: () => !state.flag('coffre-ouvert'),
       lines: [
         'Nino ouvre le coffre à jouets.',
         'Des briques, une trottinette cassée, un dinosaure.',
-        'Et, tout au fond, son pistolet à eau.',
+        'Son pistolet à eau n’y est plus.',
       ],
-      effects: { give: 'pistolet-eau', flag: 'coffre-ouvert' },
+      effects: { flag: 'coffre-ouvert' },
     },
     {
-      when: () => !state.flag('pistolet-teste'),
+      when: () => state.flag('pistolet-rendu') && !state.has('pistolet-eau'),
+      lines: [
+        'Le pistolet à eau est revenu tout au fond du coffre.',
+        'Elle l’a remis là sans rien dire.',
+      ],
+      effects: { give: 'pistolet-eau' },
+    },
+    {
+      when: () => !state.flag('pistolet-teste') && state.has('pistolet-eau'),
       lines: [
         'Nino essaie le pistolet à eau.',
         'Sur lui-même, d’abord. Pour vérifier.',
@@ -1084,7 +1148,6 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
         '« Tu n’as pas vu ta sœur ? »',
         '« Cherche-la, tu veux ? Je n’avance pas. »',
       ],
-      effects: { flag: 'indice-hermione' },
     },
     {
       when: () => !state.flag('maman-au-salon'),
@@ -1180,7 +1243,9 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
         '« S’il fait chaud comme ça, c’est parce que le monde est trop petit aujourd’hui. »',
         '« Sors par la fenêtre du salon. Je m’occupe des adultes. »',
       ],
-      effects: { take: 'pizza', flag: 'chat-parle' },
+      // **Il en laisse la croûte**, et c'est elle qu'on garde : le seul objet du jeu qui change
+      // de nom en changeant de main.
+      effects: { take: 'pizza', give: 'croute', flag: 'chat-parle' },
     },
     {
       when: () => state.has('pizza') && !state.flag('poisson-vu'),
@@ -1363,7 +1428,6 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
             'Il ferme les yeux une seconde.',
             'Une seconde, pas...',
           ],
-          effects: { flag: 'reve-ouvert' },
           montre: {
             sprite: 'nino-couche',
             x: 62,
@@ -1469,7 +1533,7 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
     {
       when: () => state.flag('bateau-coule'),
       speaker: 'Le poisson',
-      lines: ['« Voilà. »', '« Passe, maintenant. »'],
+      lines: ['« Bon. »', '« Passe, maintenant. »'],
     },
     // Le bateau est là depuis le début : cette réplique attendait un drapeau qui n'existe
     // plus, et l'indice du bouchon ne sortait donc jamais.
@@ -1664,7 +1728,7 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
         reponses: ['Un chat', 'Un bébé', 'Papa'],
         bonne: 0,
         juste: {
-          lines: ['« Voilà. »', 'Moon regarde le mur. Il y a un escalier, maintenant.', '« Monte. »'],
+          lines: ['« Mmh. »', 'Moon regarde le mur. Il y a un escalier, maintenant.', '« Monte. »'],
           effects: { flag: 'enigme-moon' },
         },
         faux: { lines: ['« Non. »', '« Réfléchis à qui tu parles. »'] },
@@ -2245,7 +2309,7 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
         'Sauter ?',
       ],
       choice: {
-        oui: { lines: ['Nino saute.'], effects: { flag: 'parapente-pris' } },
+        oui: { lines: ['Nino saute.'] },
         non: {
           lines: ['Nino replie le parapente.', 'Il reste un moment à regarder la ville.'],
         },

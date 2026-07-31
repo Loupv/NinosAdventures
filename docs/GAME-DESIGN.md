@@ -1010,8 +1010,10 @@ chaleur monte d'un cran à chaque fois :
 
 Au troisième refus, **la chaleur le met dehors tout seul** : *« Nino sort du lit. Il
 dégouline de sueur. »* Et il laisse **trois flaques au pied du lit** — un œuf de Pâques
-qui ne se déclenche que si on a traîné. Elles sèchent au bout de trois écrans, et si on
-croise Maman entre-temps : *« Nino, tu mets de l'eau partout !! »*
+qui ne se déclenche que si on a traîné. **Elles sèchent dès qu'il quitte la chambre** — le code
+qui les faisait sécher au bout de trois écrans est parti avec la quête de la température, et
+trois flaques qui restent au pied du lit toute la partie ne sont plus une blague, c'est une tache.
+Si on croise Maman avant : *« Nino, tu mets de l'eau partout !! »*
 
 Ça ne se joue qu'une fois.
 
@@ -1238,6 +1240,26 @@ que personne ne le sait.
 
 L'écran de fin est dans la palette du jour — c'est le matin de son anniversaire — et il
 compte ce qui a été **trouvé**, pas ce qui a été réussi : les cachettes d'Hermione, les pièces. Il n'y a pas de score dans ce jeu.
+
+## L'écran de fin, en deux pages
+
+La première compte ce que Nino a **trouvé** — Hermione, les pièces, la note du projet d'art — et
+rien de plus : il n'y a pas de score dans ce jeu.
+
+La seconde raconte **ce qu'il a fait cette nuit-là**, une ligne par chose qui a réellement eu
+lieu :
+
+> CETTE NUIT-LÀ — *Un ventilateur achevé. Un chat qui parle. Un poisson sauvé. Dix haïkus, et une
+> danse. Un rêve de fusée. Une vitre cassée. (le chat) Un éléphant, deux fois. Un poisson parti
+> pour la mer. Un bateau au fond de l'Erdre. Un mensonge à la terrasse. Un vol au-dessus de
+> Nantes.*
+
+**Rien n'y est obligatoire** : les lignes sans leur drapeau n'existent pas, deux parties ne
+donnent pas la même page, et aucune ne reproche l'absence d'une autre. Deux chiffres ne disaient
+rien d'une nuit où l'on a coulé le bateau de son père et envoyé un poisson à la mer.
+
+Contrainte de la page : **vingt-neuf caractères par ligne** (au-delà, ça sort des cent soixante
+pixels) et neuf pixels d'interligne, pour que onze lignes tiennent sans toucher le « ESPACE ».
 
 ## Branches proposées
 

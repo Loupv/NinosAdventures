@@ -21,13 +21,13 @@ export interface CharacterDef {
 /** Dessins et lieux, par personnage. Le reste est du texte. */
 const FICHES: Record<string, { sprites: string[]; lieux: string[] }> = {
   nino: { sprites: ['nino'], lieux: ['partout'] },
-  moon: { sprites: ['moon'], lieux: ['salon', 'sdb', 'tour-hall'] },
+  moon: { sprites: ['moon'], lieux: ['salon', 'tour-hall'] },
   hermione: { sprites: ['hermione'], lieux: ['partout, une à la fois'] },
   poisson: { sprites: ['poisson'], lieux: ['sdb', 'erdre'] },
   araignee: { sprites: ['araignee'], lieux: ['mezzanine', 'tour-27'] },
   ecureuil: { sprites: ['ecureuil'], lieux: ['cour', 'erdre', 'tour-13'] },
-  elephant: { sprites: ['elephant'], lieux: ['tour-31'] },
-  maman: { sprites: ['maman'], lieux: ['cuisine', 'salon'] },
+  elephant: { sprites: ['elephant'], lieux: ['erdre', 'tour-31'] },
+  maman: { sprites: ['maman'], lieux: ['cuisine', 'salon', 'erdre'] },
   papa: { sprites: ['papa', 'papa-capitaine'], lieux: ['salon', 'erdre', 'terrasse'] },
   parrain: { sprites: ['parrain'], lieux: ['terrasse'] },
   maitresse: { sprites: ['maitresse'], lieux: ['ecole'] },
