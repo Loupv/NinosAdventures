@@ -1260,6 +1260,31 @@ const PLANTE: Art = [
   '..000000..',
 ];
 
+/**
+ * **La même plante, arrosée.** Deux pousses neuves qui dépassent du feuillage, quatre fleurs, et
+ * une ligne de touffe en plus : elle s'est redressée. Le pot et la tige ne bougent pas d'un pixel —
+ * ce qui change, c'est ce qui pousse.
+ *
+ * Elle ne sert qu'au couloir, le seul écran du jeu où il n'y avait rien à faire.
+ */
+const PLANTE_RADIEUSE: Art = [
+  '.0.0000.0.',
+  '.03222230.',
+  '0322222230',
+  '0223223220',
+  '0222222220',
+  '0222222220',
+  '0222222220',
+  '.02222220.',
+  '...0000...',
+  '....00....',
+  '....11....',
+  '....11....',
+  '...0110...',
+  '..011110..',
+  '..000000..',
+];
+
 const VENTILO: Art = [
   '..000000..',
   '.03300330.',
@@ -1974,6 +1999,7 @@ export const SHEETS: Record<string, Record<string, Art>> = {
     'penche-0': PAPA_CAPITAINE_PENCHE,
     'penche-1': PAPA_CAPITAINE_PENCHE_2,
   },
+  'plante-couloir': { normale: PLANTE, radieuse: PLANTE_RADIEUSE },
   elephant: {
     boit: ELEPHANT_BOIT,
     'boit-oreille': ELEPHANT_BOIT_OREILLE,

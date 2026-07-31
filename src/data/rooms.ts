@@ -679,7 +679,20 @@ export const ROOMS: Record<string, Room> = {
         sprite: 'escalier',
         depth: 28,
       },
-      { id: 'plante', ...at(12, 12), sprite: 'plante', solid: true },
+      /**
+       * **La plante du couloir**, la seule qu'on peut arroser. Le couloir était le dernier écran
+       * du jeu où rien ne répondait : cinq portes, un escalier et une plante muette. Elle a soif,
+       * et un enfant avec un pistolet à eau finit toujours par comprendre ce qu'il a à faire.
+       */
+      {
+        id: 'plante',
+        ...at(12, 12),
+        sprite: 'plante-couloir',
+        frame: 'normale',
+        frameIfFlag: [['plante-arrosee', 'radieuse']],
+        solid: true,
+        dialogue: 'plante',
+      },
     ],
     doors: [
       { x: 88, y: 8, w: 16, h: 8, to: { room: 'chambre', x: 32, y: 128 } },

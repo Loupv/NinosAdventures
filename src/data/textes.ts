@@ -334,6 +334,9 @@ export const LA_JOIE_DU_BATEAU: Record<'coule' | 'flotte', Array<{ qui: string; 
     ],
   };
 
+/** Ce qu'on voit quand la plante du couloir reçoit enfin de l'eau. Elle ne dit rien : elle pousse. */
+export const PLANTE_ARROSEE = 'Elle se redresse.';
+
 /**
  * **Ce qu'il dit quand la vitre casse et que personne ne gronde.** Rien d'utile : il rit. C'est sa
  * seule contribution, et il n'a jamais rien proposé à personne.
@@ -1691,6 +1694,24 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
   ],
 
   'porte-cabinet': [{ lines: ['« CABINET DENTAIRE »', 'Fermé.', 'Tant mieux.'] }],
+
+  /**
+   * **La plante du couloir.** Trois états : elle a soif, elle a soif et Nino a de quoi (sans lui
+   * dire lequel — un pistolet à eau se devine), et elle est arrosée. C'est la seule interaction du
+   * couloir, et la seule chose du jeu qui **change d'apparence pour de bon** sans que ce soit une
+   * bêtise.
+   */
+  plante: [
+    {
+      when: () => state.flag('plante-arrosee'),
+      lines: ['La plante du couloir.', 'Elle a l’air beaucoup plus contente.'],
+    },
+    {
+      when: () => state.has('pistolet-eau'),
+      lines: ['La plante du couloir.', 'La terre est sèche, sèche, sèche.', 'Nino a ce qu’il faut.'],
+    },
+    { lines: ['La plante du couloir.', 'La terre est sèche, sèche, sèche.'] },
+  ],
 
   'plante-tour': [
     { lines: ['Une plante en plastique.', 'Elle est là depuis 1976, elle aussi.'] },

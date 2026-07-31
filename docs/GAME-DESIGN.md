@@ -674,9 +674,19 @@ Le pistolet s'utilise avec **X**, sa propre touche — ESPACE devait rester la p
 que l'écureuil de la tour a une énigme à poser et qu'une interaction ne peut pas être les
 deux à la fois. Il arrose ce qu'on a en face, et si ce n'est personne, il arrose le vide.
 Chacun a sa phrase quand il le reçoit, flottante et sans boîte : personne ne se fâche
-vraiment, tout le monde a déjà eu une journée. Le seul effet réel du jeu est sur
-l'écureuil : celui de la cour détale pour de bon, celui de la tour change de coin en
-râlant et garde son énigme entière.
+vraiment, tout le monde a déjà eu une journée. Il a **deux effets réels** : l'écureuil — celui de
+la cour détale pour de bon, celui de la tour change de coin en râlant et garde son énigme entière —
+et **la plante du couloir**.
+
+**La plante du couloir est la seule chose que l'eau améliore.** Le couloir était le dernier écran
+où rien ne répondait : cinq portes, un escalier, une plante muette. Elle a maintenant trois états —
+*« La terre est sèche, sèche, sèche. »*, la même chose plus *« Nino a ce qu'il faut. »* quand il a
+le pistolet (sans nommer la touche : un pistolet à eau se devine), et arrosée. Le dessin change
+**pour de bon** : deux pousses neuves, quatre fleurs, une ligne de feuillage en plus, le pot et la
+tige au pixel près — et une ligne, *« Elle se redresse. »*
+
+C'est le seul changement d'apparence définitif du jeu qui ne soit pas une bêtise. Tout le reste de
+ce que fait le pistolet est une phrase blasée.
 
 **Il arrose plus loin qu'on ne parle** : quarante pixels devant soi, pas seulement la personne
 qu'on pourrait toucher du doigt. Un pistolet à eau qui exige d'être collé à sa cible n'est pas un

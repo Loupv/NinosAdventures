@@ -27,6 +27,7 @@ import {
   ECUREUIL_RIT,
   ECUREUIL_TREMPE,
   ECUREUIL_VANNES,
+  PLANTE_ARROSEE,
   PIGEON,
   PISTOLET_RENDU,
   CHALEUR,
@@ -1197,6 +1198,17 @@ export class WorldScene extends Phaser.Scene {
             });
           } else if (vise.def.sprite === 'ecureuil') {
             this.ecureuilChangeDeCoin(vise);
+          } else if (vise.def.sprite === 'plante-couloir') {
+            /**
+             * **La seule chose du jeu que l'eau améliore.** Elle se redresse, elle fleurit, et elle
+             * reste comme ça pour toujours : c'est un dessin de plus, pas un effet. Tout le reste du
+             * pistolet ne produit que des phrases blasées.
+             */
+            state.setFlag('plante-arrosee');
+            state.save();
+            (vise.go as Phaser.GameObjects.Image).setFrame('radieuse');
+            jouer(this, 'objet-trouve', { volume: 0.4 });
+            this.flotter(PLANTE_ARROSEE, vise);
           } else {
             // Tous les autres : une phrase blasée au-dessus de la tête, et on continue.
             const quoi = ARROSES[vise.def.id] ?? ARROSES[vise.def.sprite ?? ''] ?? ARROSE_DEFAUT;

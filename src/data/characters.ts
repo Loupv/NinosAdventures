@@ -53,9 +53,10 @@ export const CHARACTER_SPRITES = new Set(
 );
 
 /**
- * **Ce qui réagit au pistolet à eau : ce qui est vivant.** Les personnages, plus les pigeons — qui
- * n'en sont pas tout à fait, mais qui ont un avis. Tout le reste s'en fiche : dans ce jeu, un vélo,
- * un banc et un tram ont un dialogue, et arroser un vélo ne peut pas lui arracher une réplique
- * blasée. On mouille des gens, pas du mobilier.
+ * **Ce qui réagit au pistolet à eau : ce qui est vivant.** Les personnages, les pigeons — qui n'en
+ * sont pas tout à fait, mais qui ont un avis — et **la plante du couloir**, qui est le seul décor du
+ * jeu à avoir soif. Tout le reste s'en fiche : dans ce jeu un vélo, un banc et un tram ont un
+ * dialogue, et arroser un vélo ne peut pas lui arracher une réplique blasée. On mouille ce qui
+ * boit, pas du mobilier.
  */
-export const ARROSABLES = new Set([...CHARACTER_SPRITES, 'pigeon']);
+export const ARROSABLES = new Set([...CHARACTER_SPRITES, 'pigeon', 'plante-couloir']);
