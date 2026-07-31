@@ -239,6 +239,23 @@ const JOUES_PAR_LA_SCENE = new Set([
  * devient infinissable sans que rien ne le dise. Celle du treizième étage est en plastique et ne
  * compte pas, d'où l'exception.
  */
+/**
+ * **La fenêtre de choix ne fait que cent trente pixels de large.** Au-delà de vingt et un
+ * caractères, la réponse est coupée net au bord du cadre — c'est arrivé à l'énigme de l'araignée
+ * (« Que tu as perdu une chaussette ») et à une explication du projet d'art. La fenêtre ne replie
+ * pas les lignes : elle tronque, sans le dire.
+ */
+const CHOIX_MAX = 21;
+for (const [id, beats] of Object.entries(DIALOGUES)) {
+  for (const b of beats) {
+    const choix = [...(b.choices ?? []), ...(b.enigme?.reponses ?? [])];
+    for (const e of b.devoir?.etapes ?? []) choix.push(...e.reponses);
+    for (const c of choix) {
+      if (c.length > CHOIX_MAX) dit('CHOIX TROP LONG', `${id} « ${c} » (${c.length})`);
+    }
+  }
+}
+
 const PLASTIQUE = 'plante-13';
 const declarees = new Set(PLANTES.map((p) => p.id));
 for (const r of Object.values(ROOMS)) {

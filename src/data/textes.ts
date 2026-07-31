@@ -363,7 +363,7 @@ export const LA_JOIE_DU_BATEAU: Record<'coule' | 'flotte', Array<{ qui: string; 
  * arroser sept plantes pour qu'un adulte se demande enfin ce qu'il fait là.
  */
 export const JARDINIER_MERCI = {
-  qui: 'Le jardinier',
+  qui: 'Gilbert',
   lignes: [
     '« Ah. »',
     '« C’est toi qui les as arrosées ? »',
@@ -374,7 +374,7 @@ export const JARDINIER_MERCI = {
 };
 
 export const JARDINIER_PART = {
-  qui: 'Le jardinier',
+  qui: 'Gilbert',
   lignes: ['« ... »', '« Qu’est-ce que je fais là, moi ? »', '« Bon. »', '« Je m’en vais. »'],
 };
 
@@ -749,9 +749,8 @@ export const CREDITS: Array<{
   },
 ];
 
-/** Ce qu'on lit en bas de l'écran pendant le générique, et la toute dernière ligne. */
+/** La toute dernière ligne du générique, et ce qu'on lit avant qu'il commence. */
 export const GENERIQUE = {
-  saut: 'ESPACE',
   fin: ['NINO', 'tout le reste.', 'Sept ans depuis ce matin.'],
   /** Sur la table de la cuisine, la tête dans les bras. */
   endormi: ['Nino s’endort sur la table.'],
@@ -864,7 +863,7 @@ export const CASTING: Record<string, { nom: string; role: string }> = {
     role: 'Dans le salon, « cinq minutes » depuis quarante minutes. Et en même temps, chapeau de capitaine, il pilote un bateau sur l’Erdre. Ne trouve ça bizarre à aucun moment.',
   },
   jardinier: {
-    nom: 'Le jardinier',
+    nom: 'Gilbert, le jardinier',
     role: 'Sur la place, avec son chapeau et son tablier. Se plaint de la chaleur, n’arrive pas à suivre, et ne demande jamais rien à personne. Dit merci si les sept plantes du jeu ont été arrosées sans lui.',
   },
   maitresse: {
@@ -993,12 +992,21 @@ const DEVOIRS: Record<string, Devoir> = {
           { points: 1, lines: ['« Il est rond, c’est sûr. »'] },
         ],
       },
+      /**
+       * **Le bouchon ne peut pas valoir vingt.** C'est le premier objet qu'on peut avoir, dès la
+       * salle de bain : décrocher la meilleure note dessus vidait les sept autres de tout intérêt.
+       * Cinq points au maximum, donc seize sur vingt — une bonne note, pas la meilleure, et la
+       * maîtresse le dit à sa façon : *« C'est un bouchon, Nino. »*
+       */
       {
         lines: ['« Et en quoi c’est de l’art ? »'],
-        reponses: ['Il ne bouche plus rien', 'Il a servi', 'C’est rond'],
+        reponses: ['Il ne bouche plus', 'Il a servi', 'C’est rond'],
         retours: [
-          { points: 3, lines: ['« Un bouchon qui ne bouche plus. »', '« Oui. »'] },
-          { points: 2, lines: ['« À quelque chose d’important, même. »'] },
+          {
+            points: 2,
+            lines: ['« Un bouchon qui ne bouche plus. »', '« C’est joliment dit. »', '« C’est un bouchon, Nino. »'],
+          },
+          { points: 1, lines: ['« À quelque chose d’important, même. »'] },
           { points: 0, lines: ['« Oui. »', '« Bon. »'] },
         ],
       },
@@ -1016,7 +1024,7 @@ const DEVOIRS: Record<string, Devoir> = {
       },
       {
         lines: ['« Et en quoi c’est de l’art ? »'],
-        reponses: ['Il y a un arbre dedans', 'C’est petit', 'Ça se mange'],
+        reponses: ['Un arbre est dedans', 'C’est petit', 'Ça se mange'],
         retours: [
           { points: 3, lines: ['« ... »', '« Un arbre entier, là-dedans. »'] },
           { points: 2, lines: ['« Petit, et personne ne la regarde. »'] },
@@ -1121,7 +1129,7 @@ const DEVOIRS: Record<string, Devoir> = {
       },
       {
         lines: ['« Et en quoi c’est de l’art ? »'],
-        reponses: ['Je l’ai décidé', 'Quelqu’un l’a commencée', 'Ça se mange'],
+        reponses: ['Je l’ai décidé', 'Quelqu’un a commencé', 'Ça se mange'],
         retours: [
           { points: 3, lines: ['« ... »', '« Tu as gagné, Nino. »'] },
           { points: 2, lines: ['« Un chat, mais quelqu’un. »'] },
@@ -1288,6 +1296,18 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
    * renonce à la chasse à Hermione, c'est-à-dire au seul moment de la maison qui se mérite.
    */
   coffre: [
+    // **Le pistolet d'abord.** Quand Maman vient de dire où il est, ouvrir le coffre doit le
+    // donner — même si c'est la première fois qu'on l'ouvre. Dans l'autre ordre, un enfant qui
+    // venait exprès le chercher s'entendait répondre qu'il n'y est plus.
+    {
+      when: () => state.flag('pistolet-rendu') && !state.has('pistolet-eau'),
+      lines: [
+        'Nino ouvre le coffre à jouets.',
+        'Des briques, une trottinette cassée, un dinosaure.',
+        'Et, tout au fond, son pistolet à eau.',
+      ],
+      effects: { give: 'pistolet-eau', flag: 'coffre-ouvert' },
+    },
     {
       when: () => !state.flag('coffre-ouvert'),
       lines: [
@@ -1296,14 +1316,6 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
         'Son pistolet à eau n’y est plus.',
       ],
       effects: { flag: 'coffre-ouvert' },
-    },
-    {
-      when: () => state.flag('pistolet-rendu') && !state.has('pistolet-eau'),
-      lines: [
-        'Le pistolet à eau est revenu tout au fond du coffre.',
-        'Elle l’a remis là sans rien dire.',
-      ],
-      effects: { give: 'pistolet-eau' },
     },
     {
       when: () => !state.flag('pistolet-teste') && state.has('pistolet-eau'),
@@ -1998,12 +2010,12 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
     // pas, il constate. Un merci qui se répète n'est plus un merci.
     {
       when: () => plantesSauvees() >= PLANTES.length,
-      speaker: 'Le jardinier',
+      speaker: 'Gilbert',
       lines: ['« Ah, c’est toi. »', '« Elles vont toutes bien. »', '« Je n’y suis pour rien. »'],
     },
     {
       when: () => plantesSauvees() > 0,
-      speaker: 'Le jardinier',
+      speaker: 'Gilbert',
       lines: [
         '« Il y en a qui vont mieux. »',
         '« Ce n’est pas moi. »',
@@ -2011,13 +2023,26 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
       ],
     },
     {
-      speaker: 'Le jardinier',
+      when: () => state.flag('gilbert-vu'),
+      speaker: 'Gilbert',
       lines: [
         '« Il fait trop chaud. »',
         '« Tout crève. »',
         '« J’arrose, j’arrose... »',
         '« Et le lendemain, à refaire. »',
       ],
+    },
+    // La première fois, il dit qui il est : sans ça, on écoutait un monsieur au chapeau se
+    // plaindre du temps sans comprendre que c'était son métier.
+    {
+      speaker: 'Gilbert',
+      lines: [
+        '« Moi c’est Gilbert. »',
+        '« Je m’occupe des plantes de la ville. »',
+        '« Enfin. J’essaie. »',
+        '« Il fait trop chaud, tout crève. »',
+      ],
+      effects: { flag: 'gilbert-vu' },
     },
   ],
 
@@ -2113,7 +2138,7 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
         '« Qu’est-ce que ça veut dire ? »',
       ],
       enigme: {
-        reponses: ['C’est un beau poème', 'Que tu as perdu une chaussette', 'Rien du tout'],
+        reponses: ['C’est un beau poème', 'Une chaussette perdue', 'Rien du tout'],
         bonne: 0,
         juste: {
           lines: [
@@ -2308,7 +2333,9 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
     ...OFFRABLES.map((id) => ({
       // Il faut qu'elle ait demandé : sinon Nino qui passe avec sa pizza dans la poche se
       // faisait noter avant même d'avoir entendu parler du devoir.
-      when: () => state.flag('devoir-donne') && state.has(id),
+      // **Un objet ne se rend qu'une fois** : sinon on repassait le même bouchon jusqu'à tomber
+      // sur la bonne réponse, et la note ne voulait plus rien dire.
+      when: () => state.flag('devoir-donne') && state.has(id) && !state.flag(rendu(id)),
       speaker: 'La maîtresse',
       lines: ACCUEILS[id],
       devoir: DEVOIRS[id],

@@ -58,20 +58,24 @@ export const CACHETTES: Cachette[] = [
   // chaîne du poisson obligatoire.
   { room: 'sdb', x: 18, y: 38, depth: 42, revele: 'bouchon-retire' },
 
-  // ── Les deux du dehors. Maman ne passe plus par la porte.
+  // ── Et c'est tout : **la chasse s'arrête à la porte de la maison.**
   //
-  // **Rien dans Nantes** : la ville est le moment où Nino est seul, et sa sœur n'a rien à y
-  // faire. Il reste la cour, qui touche la maison, et le bord de l'Erdre — assez loin pour que
-  // le sous-marin soit une vraie question.
-  { room: 'cour', x: 32, y: 35, depth: 38, vehicule: 'maman-velo' }, // derrière le vélo
-  { room: 'erdre', x: 70, y: 90, depth: 92, vehicule: 'maman-sousmarin' }, // derrière le panneau du quai
+  // Il y avait deux cachettes dehors, dans la cour et au bord de l'Erdre, avec Maman qui arrivait
+  // à vélo puis en sous-marin. C'était drôle une fois, et ça cassait le chapitre : dehors, Nino
+  // est seul, et sa sœur n'a rien à y faire. Cinq cachettes dans la maison suffisent — la chasse
+  // se termine là où elle a commencé, et Hermione suit son frère jusqu'à ce qu'il sorte.
+  //
+  // Les dessins de Maman à vélo et en sous-marin restent dans le jeu, prêts à resservir : il
+  // suffirait de déclarer une cachette dehors avec son `vehicule`.
 ];
 
 /**
- * Combien de cachettes sont **dans la maison**. C'est le seuil qui compte pour l'ouverture
- * du jeu : au-delà, Maman renonce, monte au salon et libère le frigo. Les suivantes sont
- * dehors, et se trouvent après être sorti — sans elles on ne pourrait pas sortir, et sans
- * être sorti on ne pourrait pas les trouver.
+ * Combien de cachettes sont **dans la maison** — c'est-à-dire toutes. C'est le seuil de
+ * l'ouverture du jeu : à la cinquième, Maman renonce, monte au salon, libère le frigo et rend
+ * le pistolet à eau confisqué.
+ *
+ * La constante reste séparée de `CACHETTES.length` : le jour où une cachette se rajoute dehors,
+ * c'est ce chiffre-là qui décide de la capitulation, pas la longueur de la liste.
  */
 export const CACHETTES_MAISON = 5;
 

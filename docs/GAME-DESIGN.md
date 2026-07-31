@@ -110,6 +110,14 @@ chercher ; un père qu'on va voir de son plein gré, c'est un enfant qui décide
 
 ### Le projet d'art
 
+**Un objet ne se rend qu'une fois.** On repassait le même bouchon jusqu'à tomber sur la bonne
+réponse, et la note ne voulait plus rien dire.
+
+**Et le bouchon ne peut pas valoir vingt** : c'est le premier objet qu'on peut avoir, dès la salle
+de bain, et décrocher la meilleure note dessus vidait les sept autres de tout intérêt. Cinq points
+au maximum, donc seize sur vingt — la maîtresse le dit à sa façon : *« C'est joliment dit. » « C'est
+un bouchon, Nino. »* (La vieille chaussure est dans le même cas, pour la même raison.)
+
 **Le seul devoir du jeu, et il n'a pas de bonne réponse.** La maîtresse réclame le projet
 d'art de Nino : *« Rapporte-moi un objet, et explique-moi en quoi c'est de l'art. »*
 
@@ -907,7 +915,7 @@ du jeu : **rien ne réagit tout seul**, quelqu'un doit être là.
 ## Hermione : la chasse au trésor
 
 Nino a une petite sœur d'un an. Elle est cachée **quelque part**, une seule à la fois,
-et elle change de cachette dès qu'on l'a trouvée. Dix-neuf cachettes, deux par pièce.
+et elle change de cachette dès qu'on l'a trouvée. Cinq cachettes, une par pièce de la maison.
 
 ### Le rythme, pas le commentaire
 
@@ -927,11 +935,10 @@ montent en exaspération — de « Viens ici ! » à « Comment tu es montée l�
 À la dix-neuvième, Maman renonce : *« Bon. » « Elle reste avec toi. »* Hermione ne
 repart pas, et **elle suit Nino à quatre pattes** à partir de là.
 
-### Cinq dans la maison, quatre dehors
+### Cinq cachettes, toutes dans la maison
 
-**Neuf cachettes, et deux moitiés qui ne servent pas à la même chose.** Les cinq de la
-maison sont la quête d'ouverture : elles sont obligatoires, elles gardent le frigo, et la
-dernière exige le poisson.
+**Cinq cachettes, toutes dans la maison.** Elles sont la quête d'ouverture : obligatoires, elles
+gardent le frigo, et la dernière exige le poisson.
 
 **Aucune n'est dans la cuisine**, et c'est une contrainte de l'histoire, pas du dessin :
 Maman y cherche Hermione pendant toute la chasse, et une petite sœur cachée dans la pièce
@@ -942,10 +949,10 @@ trouvées — Hermione se met à quatre pattes derrière lui et ne le quitte plu
 dedans. C'est toute la seconde moitié du chapitre de la maison qu'elle passe accrochée à ses
 talons.
 
-**Dehors, elle redevient introuvable.** Deux cachettes seulement, et **rien dans Nantes** : la
-ville est le moment où Nino est seul. Il reste la cour, qui touche la maison, et le bord de
-l'Erdre — assez loin pour que le sous-marin de Maman soit une vraie question. Comment sa sœur
-est arrivée là, personne ne l'explique, et c'est le principe du personnage.
+**Et dehors, on ne la cherche plus.** Il y avait deux cachettes de plus, dans la cour et au bord de
+l'Erdre, avec Maman qui arrivait à vélo puis en sous-marin. C'était drôle une fois, et ça cassait le
+chapitre : **dehors est le moment où Nino est seul**, et sa sœur n'a rien à y faire. La chasse se
+termine là où elle a commencé, à la porte de la maison.
 
 **Et dehors, Maman n'entre plus par la porte.** Elle emploie ce qu'elle a sous la main, et
 personne ne relève jamais :
@@ -972,7 +979,7 @@ mouvement attire l'œil et donne envie d'aller voir.
 
 Le vérificateur mesure donc deux choses, pixel par pixel, en tenant compte de **qui est
 dessiné devant qui** : la part d'elle recouverte (entre 15 et 55 %) et le nombre de pixels
-**animés** restés visibles (au moins douze). Les neuf cachettes sont entre 20 et 50 %.
+**animés** restés visibles (au moins douze). Les cinq cachettes sont entre 20 et 50 %.
 
 Ce n'est pas un défi — on la trouve tout de suite quand on entre dans la bonne pièce. C'est
 une invitation.
@@ -982,7 +989,7 @@ une invitation.
 Une règle dure : **Hermione n'est jamais plantée seule au milieu d'une pièce.** Chaque
 cachette chevauche un meuble et lui passe dessous en profondeur, de sorte qu'il ne reste
 qu'un tiers d'elle visible — deux pieds sous le coffre à jouets, une épaule derrière le
-canapé. Un script vérifie les dix-neuf : chevauchement suffisant sur les deux axes,
+canapé. Le vérificateur les contrôle toutes : chevauchement suffisant sur les deux axes,
 profondeur inférieure à celle du meuble, et sol accessible dessous.
 
 Cachée, elle **respire sur place** (deux frames) : animée, mais elle ne quitte jamais sa
@@ -1126,6 +1133,10 @@ seul coup, sans un seul asset supplémentaire.
   (`focusY`), et la boîte se place à l'opposé : si Maman entre par la porte du bas, le
   texte monte en haut de l'écran. L'étiquette du nom et la fenêtre de choix suivent, et
   la jauge de température s'efface le temps de la réplique.
+- **Vingt et un caractères par réponse.** La fenêtre de choix fait cent trente pixels de large et
+**ne replie pas les lignes : elle tronque, sans le dire.** Trois réponses du jeu passaient par-dessus
+le bord, dont celle de l'énigme de l'araignée. Le vérificateur refuse maintenant toute réponse plus
+longue.
 - **Bulle d'interaction** au-dessus de ce qui est actionnable : indispensable pour un
   enfant, qui ne devine pas qu'un décor est actionnable. La zone d'interaction est
   volontairement large (6 px de marge), et un **personnage passe toujours devant un
@@ -1432,9 +1443,12 @@ Techniquement, c'est **le jeu lui-même qui joue le générique** : le mode cin�
 la scène de jeu (`cinema` dans l'arrivée), donc les décors, les animations et les personnages sont
 les vrais. Ce mode ne visite rien, ne sauvegarde rien, ne pose aucun drapeau d'heure et coupe
 l'interface — sinon un générique laisserait des traces dans la partie qu'il conclut. La caméra
-traverse lentement les pièces plus larges que l'écran, chaque carton tient quatre secondes, les
-lignes se replient toutes seules, et **ESPACE saute tout** : un enfant de sept ans qui vient de finir
-un jeu a le droit d'être pressé.
+traverse lentement les pièces plus larges que l'écran, chaque carton tient quatre secondes et les
+lignes se replient toutes seules.
+
+**On ne peut pas le sauter.** Il y avait ESPACE pour passer, et le premier joueur l'a sauté sans le
+vouloir — la même touche venait de fermer la boîte précédente. Un générique de quarante secondes à
+la fin d'un jeu qu'on vient de finir n'est pas une punition ; le rater par accident, si.
 
 ## L'écran de fin, en deux pages
 
