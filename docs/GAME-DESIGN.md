@@ -1581,6 +1581,14 @@ japonais, et un héron qui exige des papiers.
 
 ## Repartir à zéro
 
+**En pleine partie, ÉCHAP ramène à l'écran-titre** — après une question, parce qu'un enfant qui
+cherche la touche du pistolet à eau ne veut pas se retrouver au menu :
+
+> *Revenir à l'écran-titre ?* — **Oui / Non**
+
+Rien n'est perdu : le jeu sauvegarde à chaque porte et à chaque objet ramassé, et le titre proposera
+de continuer. C'est **le chemin pour tout recommencer** : ÉCHAP, puis R.
+
 L'écran-titre propose **« R : REPARTIR À ZÉRO »** dès qu'une partie existe — et il pose la question
 avant d'obéir :
 

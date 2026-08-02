@@ -31,6 +31,7 @@ import {
   JARDINIER_PART,
   CREDITS,
   GENERIQUE,
+  QUITTER,
   PLANTE,
   PLANTES,
   PLANTES_TOUTES,
@@ -568,6 +569,8 @@ export class WorldScene extends Phaser.Scene {
       state.locked = true;
       this.scene.launch('Journal');
     }
+    // ÉCHAP : on quitte la partie et on revient au titre — d'où l'on peut repartir à zéro.
+    if (btn.cancel) this.quitter();
   }
 
   // ────────────────────────────────────────────────────────── construction
@@ -2778,6 +2781,26 @@ export class WorldScene extends Phaser.Scene {
           this.scene.stop('Ui');
           this.scene.restart({ room: CREDITS[0].room, cinema: 0 });
         });
+      },
+    });
+  }
+
+  /**
+   * **Revenir à l'écran-titre**, avec ÉCHAP, depuis n'importe quelle pièce. La partie est sauvegardée
+   * en continu : on ne perd rien, et c'est de là qu'on peut repartir à zéro. On demande quand même,
+   * parce qu'un enfant qui cherche la touche du pistolet à eau ne veut pas se retrouver au menu.
+   */
+  private quitter(): void {
+    state.locked = true;
+    state.save();
+    say({
+      lines: [QUITTER.question],
+      choices: QUITTER.choix,
+      focusY: 20,
+      onDone: (reponse) => {
+        if (reponse !== 0) return;
+        this.scene.stop('Ui');
+        this.scene.start('Title');
       },
     });
   }

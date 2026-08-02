@@ -212,6 +212,16 @@ export const CHALEUR = [
 /** La question posée à chaque fois. */
 export const SORTIR_DU_LIT = 'Sortir du lit ?';
 
+/**
+ * **Sortir de la partie**, avec ÉCHAP, depuis n'importe où dans le jeu. Rien n'est perdu — le jeu
+ * sauvegarde à chaque porte et à chaque objet — mais on demande quand même : revenir au titre en
+ * plein milieu d'une chasse à Hermione parce qu'on a cherché la touche du pistolet à eau, c'est
+ * agaçant.
+ *
+ * C'est de là qu'on repart à zéro : l'écran-titre a la touche R, et lui aussi pose la question.
+ */
+export const QUITTER = { question: 'Revenir à l’écran-titre ?', choix: ['Oui', 'Non'] };
+
 // ═══════════════════════════════════════════════════════════════ 4. Hermione
 
 /** Ce qu'elle répond, quoi qu'il arrive et où qu'elle soit. */
