@@ -818,7 +818,7 @@ export const PIECES_TEXTE: Record<string, { nom: string; provenance: string }> =
   },
   frigo: {
     nom: 'Pièce du frigo',
-    provenance: 'Sous le frigo. Visible seulement allongé par terre.',
+    provenance: 'Sous le frigo. Attrapée par le côté.',
   },
 };
 
@@ -1452,21 +1452,46 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
   ],
 
   /**
+   * **Le côté du frigo.** Il n'y a rien à voir tant qu'on ne s'est pas allongé par terre : c'est le
+   * renseignement qui crée l'objet. Ensuite, il suffit d'aller chercher — et ce qu'on ramène n'est
+   * pas seul, parce que sous un frigo il n'y a jamais qu'une chose.
+   */
+  'cote-frigo': [
+    {
+      when: () => state.pieces.has('frigo'),
+      lines: ['Le côté du frigo.', 'Il y reste de la poussière et un bouchon de stylo.'],
+    },
+    {
+      lines: [
+        'Nino passe le bras sur le côté du frigo.',
+        'De la poussière, un bouchon de stylo, et quelque chose de dur.',
+        'Une pièce.',
+      ],
+      effects: { piece: 'frigo', flag: 'piece-frigo-prise' },
+    },
+  ],
+
+  /**
    * **S'allonger par terre sert à quelque chose.** C'était la plus jolie interaction du jeu et la
    * plus inutile : Nino se couche sur le carrelage parce qu'il fait frais, et voilà. De tout en
-   * bas, **on voit sous le frigo** — et il y a une pièce dessous, que personne ne pouvait voir
-   * debout. C'est la récompense d'un geste qui n'avait aucune raison d'en avoir une.
+   * bas, **on voit sous le frigo** — et quelque chose brille au fond, que personne ne pouvait voir
+   * debout.
+   *
+   * **Mais on ne l'attrape pas de là** : se coucher par terre ne donne que le renseignement. Il
+   * faut ensuite aller passer la main **sur le côté du frigo**, ce qui fait deux gestes au lieu
+   * d'un — et le second n'existe que parce qu'on a fait le premier.
    */
   carrelage: [
     {
-      when: () => !state.pieces.has('frigo'),
+      when: () => !state.flag('sous-le-frigo'),
       lines: [
         'Nino s’allonge de tout son long sur le carrelage.',
         'Joue contre le sol. C’est le meilleur endroit de la maison.',
         'D’ici, on voit sous le frigo.',
-        'Il y a quelque chose dessous.',
+        'Quelque chose brille, tout au fond.',
+        'De loin, on ne l’attrapera pas.',
       ],
-      effects: { piece: 'frigo' },
+      effects: { flag: 'sous-le-frigo' },
     },
     {
       when: () => !state.flag('carrelage-teste'),

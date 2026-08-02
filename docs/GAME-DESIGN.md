@@ -708,10 +708,16 @@ Nino se couche de tout son long sur le carrelage de la cuisine, la joue contre l
 meilleur endroit de la maison. Tout le monde le sait. »* C'était la plus jolie interaction du jeu et
 la plus inutile — alors **de tout en bas, il voit sous le frigo** :
 
-> *« D'ici, on voit sous le frigo. » « Il y a quelque chose dessous. »*
+> *« Quelque chose brille, tout au fond. » « De loin, on ne l'attrapera pas. »*
 
-**La deuxième pièce du jeu**, et on ne peut la trouver qu'en se couchant par terre sans raison. C'est
-la meilleure récompense possible pour un geste qui n'en demandait aucune.
+**Mais se coucher par terre ne donne que le renseignement.** Ce qui brille devient alors visible
+**sur le côté du frigo**, et il faut aller y passer le bras :
+
+> *« Nino passe le bras sur le côté du frigo. » « De la poussière, un bouchon de stylo, et quelque
+> chose de dur. » « Une pièce. »*
+
+Deux gestes au lieu d'un, et le second n'existe que parce qu'on a fait le premier : c'est **la
+deuxième pièce du jeu**, et elle récompense une idée, pas une case cochée.
 
 ### Le coffre à jouets
 

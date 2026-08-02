@@ -1024,6 +1024,22 @@ export const ROOMS: Record<string, Room> = {
           lockedDialogue: 'porte-cour',
         },
       },
+      /**
+       * **Ce qui brille sous le frigo**, et qu'on n'attrape qu'en venant par le côté. L'objet
+       * n'existe pas tant qu'on ne s'est pas allongé sur le carrelage : c'est le renseignement qui
+       * le fait apparaître, et il disparaît une fois la pièce dans la poche.
+       */
+      {
+        id: 'cote-frigo',
+        x: 84,
+        y: 30,
+        sprite: 'piece',
+        depth: 40,
+        portee: 12,
+        showIfFlag: 'sous-le-frigo',
+        hideIfFlag: 'piece-frigo-prise',
+        dialogue: 'cote-frigo',
+      },
       {
         id: 'frigo',
         ...at(8, 1),
