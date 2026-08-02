@@ -2036,7 +2036,7 @@ export const ROOMS: Record<string, Room> = {
        */
       {
         id: 'baigneur',
-        x: 176,
+        x: 24,
         y: 84,
         sprite: 'copain',
         priorite: 2,

@@ -404,6 +404,20 @@ export class WorldScene extends Phaser.Scene {
       // **Papa bricole tout haut.** Il ne voit pas Nino, il a un bouchon qui fuit, et il
       // commente son propre travail : c'est ce qui le rend occupé.
       if (id === 'erdre') this.papaBricole();
+      /**
+       * **La nuit tombe au pied de la tour**, et le jeu le dit une fois. C'est la seule narration
+       * d'ambiance qui se déclenche toute seule : elle ne demande rien, elle ne bloque rien, elle
+       * donne l'heure — et elle rappelle qu'on est attendu à la maison.
+       */
+      if (id === 'tour-pied' && !state.flag('nuit-dite')) {
+        state.setFlag('nuit-dite');
+        state.save();
+        this.time.delayedCall(700, () => {
+          if (this.room.id === 'tour-pied' && !state.locked && !this.transitioning) {
+            this.runDialogue('nuit-tombe');
+          }
+        });
+      }
     });
     if (this.cinema) return;
     bus.emit(EV.hud);
@@ -1171,7 +1185,7 @@ export class WorldScene extends Phaser.Scene {
     const texte = new PixelText(this, 'wl-vanne', 0, 0, large, LINE_H * lignes.length + 1);
     texte.image.setDepth(1300);
     texte.image.setScrollFactor(1);
-    texte.setLines(lignes, shadeHex(this.pal, 0));
+    texte.setLines(lignes, shadeHex(this.pal, 3));
     const cam = this.cameras.main;
     texte.image.setPosition(
       Phaser.Math.Clamp(
@@ -1181,9 +1195,27 @@ export class WorldScene extends Phaser.Scene {
       ),
       Math.round(sur.go.y - 12 - LINE_H * (lignes.length - 1)),
     );
+    /**
+     * **Le texte flottant emporte son fond.** En encre sombre à même le décor, il devenait illisible
+     * dès que le sol était foncé — les pavés de la ville, l'eau de l'Erdre, la nuit de la tour. Un
+     * rectangle plein derrière, et il se lit partout, sans devenir une boîte de dialogue pour
+     * autant : on continue de jouer pendant qu'il s'affiche.
+     */
+    const fond = this.add
+      .rectangle(
+        texte.image.x - 2,
+        texte.image.y - 1,
+        large + 4,
+        LINE_H * lignes.length + 3,
+        shade(this.pal, 0),
+      )
+      .setOrigin(0, 0)
+      .setScrollFactor(1)
+      .setDepth(1299);
     this.vanne = texte;
     this.time.delayedCall(1700, () => {
       if (this.vanne === texte) this.vanne = undefined;
+      fond.destroy();
       texte.destroy();
     });
   }
@@ -1488,9 +1520,11 @@ export class WorldScene extends Phaser.Scene {
         poisson.go.play(animKey('poisson-saut', this.pal));
       }
       poisson.go.setPosition(l.go.x + 14, l.go.y).setVisible(true);
+      // **Droit en l'air, avec le jet.** En diagonale il avait l'air lancé à la main ; à la
+      // verticale, il part comme ce qui l'envoie — et la mer, il la trouvera tout seul.
       this.tweens.add({
         targets: poisson.go,
-        x: this.roomW + 30,
+        x: l.go.x + 14 + Math.round(Math.random() * 8 - 4),
         y: -40,
         duration: 1600,
         ease: 'Quad.easeOut',

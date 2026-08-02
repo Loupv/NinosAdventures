@@ -40,7 +40,8 @@ export interface Cachette {
 export const CACHETTES: Cachette[] = [
   // ── Les cinq de la maison. Ce sont elles qui comptent : quand Maman a renoncé
   // ── sur celles-là, elle monte au salon et le frigo est libre.
-  { room: 'couloir', x: 91, y: 100, depth: 104 }, // derrière la plante, un côté qui dépasse
+  // derrière la plante, un côté qui dépasse
+  { room: 'couloir', x: 91, y: 100, depth: 104 },
   // **Pas dans la cuisine** : Maman y cherche justement Hermione jusqu'au bout de la
   // chasse, et une petite sœur cachée dans la pièce où sa mère la cherche, ça ne tient pas
   // debout. Elle est donc chez les parents — et elle n'y est **qu'au sortir du rêve de la
@@ -51,12 +52,31 @@ export const CACHETTES: Cachette[] = [
   // Le grand lit est la seule chose à faire dans cette chambre : personne ne peut rester
   // bloqué longtemps. Et se réveiller sans avoir gagné suffit — le rêve ne demande aucune
   // adresse, seulement d'y être allé.
-  { room: 'chambre-parents', x: 85, y: 24, depth: 28, revele: 'reve-fait' },
-  { room: 'chambre', x: 20, y: 40, depth: 42 }, // sous le lit de Nino
-  { room: 'mezzanine', x: 46, y: 28, depth: 30 }, // derrière le carton
+  {
+    room: 'chambre-parents',
+    x: 85,
+    y: 24,
+    depth: 28,
+    revele: 'reve-fait'
+  },
+  // sous le lit de Nino
+  { room: 'chambre', x: 20, y: 40, depth: 42 },
+  // derrière le carton
+  {
+    room: 'mezzanine',
+    x: 46,
+    y: 28,
+    depth: 30
+  },
   // La cinquième ne se voit qu'une fois la baignoire vidée : c'est elle qui rend toute la
   // chaîne du poisson obligatoire.
-  { room: 'sdb', x: 18, y: 38, depth: 42, revele: 'bouchon-retire' },
+  {
+    room: 'sdb',
+    x: 18,
+    y: 38,
+    depth: 42,
+    revele: 'bouchon-retire'
+  },
 
   // ── Et c'est tout : **la chasse s'arrête à la porte de la maison.**
   //
@@ -79,15 +99,22 @@ export const CACHETTES: Cachette[] = [
  */
 export const CACHETTES_MAISON = 5;
 
-import { RAPPELS, RAPPEL_FINAL } from './textes';
+
+
+import { CRIS } from './textes';
 
 /** Où elle se cache maintenant, selon le nombre de fois où on l'a déjà trouvée. */
 export const cachetteActuelle = (trouvees: number): Cachette | undefined =>
   CACHETTES[trouvees];
 
-/** Ce que Maman crie à la nième trouvaille. */
-export const rappel = (trouvees: number): string[] =>
-  trouvees + 1 >= CACHETTES.length ? RAPPEL_FINAL : RAPPELS[trouvees % RAPPELS.length];
+/**
+ * **Ce que Maman crie, selon l'endroit où la petite était.** C'est le lieu qui fait la réplique, pas
+ * le compteur : les mots sont dans [textes.ts](./textes.ts), rangés par pièce.
+ */
+export const rappel = (trouvees: number): string[] => {
+  const ou = CACHETTES[trouvees]?.room ?? CACHETTES[CACHETTES.length - 1].room;
+  return CRIS[ou] ?? CRIS[CACHETTES[CACHETTES.length - 1].room];
+};
 
 /** Vrai quand Maman a renoncé pour la maison : elle monte au salon. */
 export const mamanRenonce = (trouvees: number) => trouvees >= CACHETTES_MAISON;

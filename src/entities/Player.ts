@@ -100,18 +100,26 @@ export class Player {
       this.sprite.setFrame('side-0');
     } else if (body.velocity.x !== 0) {
       const key = animKey('nino-walk-side', this.pal);
-      if (this.sprite.anims.currentAnim?.key !== key) this.sprite.play(key);
+      const anims = this.sprite.anims;
+      if (anims.currentAnim?.key !== key || !anims.isPlaying) this.sprite.play(key);
     } else {
       this.sprite.anims.stop();
       this.sprite.setFrame('side-0');
     }
   }
 
+  /**
+   * **Il faut aussi relancer une animation à l'arrêt.** `stand()` coupe l'animation mais laisse
+   * `currentAnim` en place : repartir dans **la même direction** ne rappelait donc jamais `play`, et
+   * Nino glissait sans bouger les jambes jusqu'à ce qu'on change de sens. C'est le bug le plus visible
+   * du jeu, et il tient dans la condition ci-dessous.
+   */
   private playWalk(): void {
     const set = this.facing === 'up' ? 'up' : this.facing === 'down' ? 'down' : 'side';
     this.sprite.setFlipX(this.facing === 'left');
     const key = animKey(`nino-walk-${set}`, this.pal);
-    if (this.sprite.anims.currentAnim?.key !== key) this.sprite.play(key);
+    const anims = this.sprite.anims;
+    if (anims.currentAnim?.key !== key || !anims.isPlaying) this.sprite.play(key);
   }
 
   private stand(): void {

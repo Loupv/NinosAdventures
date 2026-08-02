@@ -228,28 +228,10 @@ export const QUITTER = { question: 'Revenir à l’écran-titre ?', choix: ['Oui
 export const RENCONTRE = ['...'];
 
 /**
- * Ce que crie Maman. Une variation par trouvaille : l'exaspération monte, puis elle
- * renonce à comprendre. Court, toujours.
- */
-export const RAPPELS: string[][] = [
-  ['« HERMIONE ! Viens ici ! »'],
-  ['« HERMIONE ! Tu ne peux pas être là ! »'],
-  ['« HERMIONE ! Comment tu es montée là ?! »'],
-  ['« HERMIONE ! Non. Non non non. »'],
-  ['« HERMIONE ! »'],
-  ['« HERMIONE ! Nino, tu la surveilles ? »'],
-  ['« HERMIONE ! Mais comment... »'],
-  ['« HERMIONE. »'],
-  ['« HERMIONE ! Bon. D’accord. »'],
-  ['« ... HERMIONE. »'],
-];
-
-/** La dernière fois : Maman renonce, et Hermione reste. */
-/**
  * **Ce qu'elle dit en renonçant à la chasse.** Cinq cachettes dans la maison, elle a compris qu'elle
  * n'y arrivera pas — et au moment de repartir avec Hermione, elle rend le pistolet à eau confisqué.
- * C'est la seule récompense de la maison, et elle vient d'une capitulation : elle a autre chose à
- * faire que de surveiller un pistolet à eau.
+ * C'est la seule récompense de la maison, et elle vient d'une capitulation : elle a maintenant autre
+ * chose à faire que de surveiller un jouet.
  */
 export const PISTOLET_RENDU = {
   qui: 'Maman',
@@ -261,12 +243,22 @@ export const PISTOLET_RENDU = {
   ],
 };
 
-export const RAPPEL_FINAL: string[] = [
-  '« HERMIONE ! »',
-  '...',
-  '« Bon. »',
-  '« Elle reste avec toi. »',
-];
+/**
+ * **Ce que Maman crie, cachette par cachette.** Le cri est écrit pour l'endroit : « Comment tu es
+ * montée là ?! » n'a aucun sens sous un lit, et c'est pourtant ce qu'elle disait — les cris étaient
+ * tirés d'une liste dans l'ordre des trouvailles, pas dans celui des cachettes.
+ *
+ * Une pièce, une cachette, un cri. Le dernier est aussi la capitulation.
+ */
+export const CRIS: Record<string, string[]> = {
+  couloir: ['« HERMIONE ! »', '« Viens ici. »'],
+  'chambre-parents': ['« HERMIONE ! »', '« Comment tu es montée là ?! »'],
+  chambre: ['« HERMIONE ! »', '« Sors de là-dessous. »'],
+  mezzanine: ['« HERMIONE ! »', '« Tu ne peux pas être là. »', '« Personne ne monte ici. »'],
+  sdb: ['« HERMIONE ! »', '...', '« Bon. »', '« Elle reste avec toi. »'],
+};
+
+/** La dernière fois : Maman renonce, et Hermione reste. */
 
 // ═══════════════════════════════════════════════════════════════ 5. l'araignée
 
@@ -363,7 +355,10 @@ export const LA_JOIE_DU_BATEAU: Record<'coule' | 'flotte', Array<{ qui: string; 
         lignes: ['« Ce qui est bien, avec un bateau… »', '« C’est qu’on part quand on veut. »'],
       },
       { qui: 'Le parrain', lignes: ['« Personne ne te demande rien. »', '« Moi, j’en rêve. »'] },
-      { qui: 'Papa', lignes: ['« Oh oui. »', '« Ça doit être bien… »', '« Ahem. »'] },
+      { qui: 'Papa', lignes: ['« Oh oui. »'] },
+      { qui: 'Le parrain', lignes: ['« Et le tien, il va bien ? »'] },
+      // La meilleure réplique du jeu : son bateau est au fond de l'Erdre depuis cet après-midi.
+      { qui: 'Papa', lignes: ['« Il fuit un tout petit peu. »', '« Ahem. »'] },
     ],
     flotte: [
       { qui: 'Le parrain', lignes: ['« Alors, ce bouchon ? »'] },
@@ -1941,8 +1936,11 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
    * Dans les deux cas où il y a quelqu'un, c'est le chat qui prend : c'est toujours le chat.
    */
   'fenetre-cassee': [
+    // **Tant que Nino n'est pas sorti, il y a du monde derrière ce mur.** Les parents courent après
+    // le chat dans la cuisine, mais ils sont là : casser une vitre juste après la diversion doit
+    // encore faire réagir quelqu'un. C'est la fenêtre enjambée qui vide la maison, pas la diversion.
     {
-      when: () => !state.flag('parents-sortis'),
+      when: () => !state.flag('fenetre-ouverte'),
       speaker: 'Papa',
       lines: ['« NON MAIS CE CHAT. »'],
     },
@@ -2075,6 +2073,19 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
    * pistolet à eau en tire ses propres conclusions.
    */
   jardinier: [
+    // **La présentation d'abord.** Sans elle, on écoutait un monsieur au chapeau dire « il y en a
+    // qui vont mieux » sans savoir de quoi il parlait, ni que c'était son métier.
+    {
+      when: () => !state.flag('gilbert-vu'),
+      speaker: 'Gilbert',
+      lines: [
+        '« Moi c’est Gilbert. »',
+        '« Je m’occupe des plantes de la ville. »',
+        '« Enfin. J’essaie. »',
+        '« Il fait trop chaud, tout crève. »',
+      ],
+      effects: { flag: 'gilbert-vu' },
+    },
     // Il a déjà dit merci en personne, dans la pièce de la septième plante : ici il ne recommence
     // pas, il constate. Un merci qui se répète n'est plus un merci.
     {
@@ -2092,7 +2103,6 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
       ],
     },
     {
-      when: () => state.flag('gilbert-vu'),
       speaker: 'Gilbert',
       lines: [
         '« Il fait trop chaud. »',
@@ -2101,17 +2111,20 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
         '« Et le lendemain, à refaire. »',
       ],
     },
-    // La première fois, il dit qui il est : sans ça, on écoutait un monsieur au chapeau se
-    // plaindre du temps sans comprendre que c'était son métier.
+  ],
+
+  /**
+   * **La nuit tombe ici, et nulle part ailleurs.** Personne ne la voit tomber : on lève la tête sur
+   * une tour qui bouche le ciel, et il fait déjà sombre. C'est la seule narration d'ambiance du jeu
+   * qui se déclenche toute seule — elle ne demande rien, elle ne bloque rien, elle dit l'heure.
+   */
+  'nuit-tombe': [
     {
-      speaker: 'Gilbert',
       lines: [
-        '« Moi c’est Gilbert. »',
-        '« Je m’occupe des plantes de la ville. »',
-        '« Enfin. J’essaie. »',
-        '« Il fait trop chaud, tout crève. »',
+        'Le ciel a changé pendant qu’on marchait.',
+        'La tour est noire, et elle ne finit pas.',
+        'Il faudrait rentrer avant que les parents s’inquiètent.',
       ],
-      effects: { flag: 'gilbert-vu' },
     },
   ],
 
@@ -2774,7 +2787,7 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
     },
     {
       speaker: 'Le parrain',
-      lines: ['« Tiens. »', '« Un client. »', '« Assieds-toi si tu veux. »'],
+      lines: ['« Tiens. »', '« Le fils de quelqu’un. »', '« Il y en a partout, ce soir. »'],
     },
   ],
 
