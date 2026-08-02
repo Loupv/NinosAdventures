@@ -651,6 +651,8 @@ export class WorldScene extends Phaser.Scene {
       go = this.add.image(def.x, def.y, key, frame);
     }
     go.setOrigin(0, 0);
+    // Une zone d'interaction n'a pas de dessin : elle a une taille, une portée, et c'est tout.
+    if (def.zone) go.setVisible(false);
     if (def.scale) go.setScale(def.scale);
     // Profondeur = base du sprite : ce qui est plus bas passe devant.
     go.setDepth(def.depth ?? def.y + go.displayHeight);

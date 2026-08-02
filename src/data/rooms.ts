@@ -75,6 +75,13 @@ export interface RoomObject {
   /** On peut taper dedans : il part dans la direction où regarde Nino et rebondit. */
   ballon?: boolean;
   /**
+   * **Une zone d'interaction sans dessin.** L'objet existe, on peut s'en approcher et lui parler —
+   * la bulle apparaît au-dessus — mais **on ne voit rien** : ce qu'on va chercher est censé être
+   * hors de vue, sous un meuble ou derrière. Le `sprite` ne sert plus qu'à donner sa taille à la
+   * zone.
+   */
+  zone?: boolean;
+  /**
    * Un poisson : il saute d'un bord à l'autre et **disparaît sous l'eau entre deux
    * sauts**. `eau` est la ligne de flottaison en pixels — au-dessus il est visible,
    * en dessous il n'est plus là.
@@ -1025,15 +1032,20 @@ export const ROOMS: Record<string, Room> = {
         },
       },
       /**
-       * **Ce qui brille sous le frigo**, et qu'on n'attrape qu'en venant par le côté. L'objet
-       * n'existe pas tant qu'on ne s'est pas allongé sur le carrelage : c'est le renseignement qui
-       * le fait apparaître, et il disparaît une fois la pièce dans la poche.
+       * **Ce qui brille sous le frigo**, et qu'on n'attrape qu'en venant par le côté. C'est une
+       * **zone invisible** : la pièce est sous le frigo, on ne la voit pas depuis la cuisine, et la
+       * faire apparaître sur le carrelage aurait tout gâché — on l'aurait vue arriver. Seule la
+       * bulle d'interaction dit qu'il y a quelque chose à tenter là.
+       *
+       * La zone n'existe pas tant qu'on ne s'est pas allongé : c'est le renseignement qui la crée,
+       * et elle disparaît une fois la pièce dans la poche.
        */
       {
         id: 'cote-frigo',
         x: 84,
         y: 30,
         sprite: 'piece',
+        zone: true,
         depth: 40,
         portee: 12,
         showIfFlag: 'sous-le-frigo',

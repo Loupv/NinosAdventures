@@ -708,10 +708,14 @@ Nino se couche de tout son long sur le carrelage de la cuisine, la joue contre l
 meilleur endroit de la maison. Tout le monde le sait. »* C'était la plus jolie interaction du jeu et
 la plus inutile — alors **de tout en bas, il voit sous le frigo** :
 
-> *« Quelque chose brille, tout au fond. » « De loin, on ne l'attrapera pas. »*
+> *« Quelque chose brille, tout au fond. » « Le bras ne passe pas. » « Il faudrait essayer par le
+> côté. »*
 
-**Mais se coucher par terre ne donne que le renseignement.** Ce qui brille devient alors visible
-**sur le côté du frigo**, et il faut aller y passer le bras :
+**Mais se coucher par terre ne donne que le renseignement**, et **on ne voit toujours rien** : la
+pièce est sous le frigo, elle y reste. Ce qui apparaît est une **zone d'interaction sans dessin** sur
+le côté de l'appareil — seule la bulle dit qu'il y a quelque chose à tenter là. Faire surgir une
+pièce sur le carrelage aurait tout gâché : on l'aurait vue arriver, au lieu d'aller la chercher.
+Il ne reste qu'à passer le bras :
 
 > *« Nino passe le bras sur le côté du frigo. » « De la poussière, un bouchon de stylo, et quelque
 > chose de dur. » « Une pièce. »*
