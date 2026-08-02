@@ -1023,15 +1023,22 @@ profondeur inférieure à celle du meuble, et sol accessible dessous.
 Cachée, elle **respire sur place** (deux frames) : animée, mais elle ne quitte jamais sa
 couverture.
 
-**Quand elle suit, elle remonte le chemin de Nino** — point par point, ce qui lui fait contourner
-ce qu'il a contourné — à une allure un peu plus lente que la sienne : elle traîne quand il court, et
-**elle le rejoint dès qu'il s'arrête**, à quatorze pixels derrière.
+**Quand elle suit, elle ne copie pas son chemin : elle a le sien.** Une seule règle, la distance.
+Au-delà de trente-quatre pixels elle revient vers lui, en ligne droite et d'un bon pas. En deçà,
+**elle vaque** : un point au hasard autour de Nino, elle y va sans se presser, elle s'arrête une
+seconde ou deux, elle recommence. Elle reste donc toujours dans ses pattes sans jamais lui coller au
+train — **et elle bouge encore quand il ne bouge plus**, ce qui est exactement ce que fait un enfant
+d'un an dans une pièce où il y a son frère.
 
-> Elle visait auparavant *la position de Nino trente-quatre images plus tôt*. Dès qu'il
-> s'immobilisait, cette position devenait la sienne, la condition « assez près » passait à vrai — et
-> **la petite se figeait là où elle en était**, souvent à la porte par laquelle on venait d'entrer.
-> Elle ne suivait donc que tant qu'on marchait sans jamais s'arrêter, c'est-à-dire jamais. La règle
-> qui compte est **la distance à Nino**, pas l'ancienneté du chemin.
+Elle bute sur les murs **et sur les meubles** comme tout le monde : la diagonale d'abord, un pas de
+côté si ça ne passe pas. Quand elle suivait la trace de Nino, la question ne se posait pas — il
+contournait pour deux.
+
+> Deux versions ont précédé celle-ci, et la première était un vrai bug : Hermione visait *la
+> position de Nino trente-quatre images plus tôt*. Dès qu'il s'immobilisait, cette position devenait
+> la sienne, la condition « assez près » passait à vrai — et **la petite se figeait là où elle en
+> était**, le plus souvent à la porte par laquelle on venait d'entrer. Elle ne suivait donc que tant
+> qu'on marchait sans jamais s'arrêter, c'est-à-dire jamais.
 
 ### Ce que ça donne pour la quête
 
