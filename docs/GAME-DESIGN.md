@@ -1021,8 +1021,17 @@ canapé. Le vérificateur les contrôle toutes : chevauchement suffisant sur les
 profondeur inférieure à celle du meuble, et sol accessible dessous.
 
 Cachée, elle **respire sur place** (deux frames) : animée, mais elle ne quitte jamais sa
-couverture. Quand elle suit Nino, elle avance sur ses traces avec un vrai retard et
-s'arrête à bonne distance — elle ne lui colle pas aux talons.
+couverture.
+
+**Quand elle suit, elle remonte le chemin de Nino** — point par point, ce qui lui fait contourner
+ce qu'il a contourné — à une allure un peu plus lente que la sienne : elle traîne quand il court, et
+**elle le rejoint dès qu'il s'arrête**, à quatorze pixels derrière.
+
+> Elle visait auparavant *la position de Nino trente-quatre images plus tôt*. Dès qu'il
+> s'immobilisait, cette position devenait la sienne, la condition « assez près » passait à vrai — et
+> **la petite se figeait là où elle en était**, souvent à la porte par laquelle on venait d'entrer.
+> Elle ne suivait donc que tant qu'on marchait sans jamais s'arrêter, c'est-à-dire jamais. La règle
+> qui compte est **la distance à Nino**, pas l'ancienneté du chemin.
 
 ### Ce que ça donne pour la quête
 

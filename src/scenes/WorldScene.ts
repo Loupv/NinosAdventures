@@ -78,12 +78,23 @@ import { PixelText, measure } from '../ui/PixelText';
 import { LINE_H, wrap } from '../art/font';
 
 /**
- * Hermione suit Nino sur ses traces : on garde ses positions passées, et elle avance
- * dessus. `TRACE` est la longueur de cette mémoire, `ECART` la distance en dessous de
- * laquelle elle s'arrête — sans ça, dès que Nino s'immobilise, elle lui monte dessus.
+ * **Hermione suit Nino sur ses traces.** On garde le chemin qu'il a parcouru, point par point, et
+ * elle le remonte à son rythme : elle passe où il est passé, elle contourne ce qu'il a contourné,
+ * et elle arrive après lui.
+ *
+ * `ECART` est la distance à laquelle elle se contente d'être — en dessous, elle s'arrête, sinon
+ * elle lui monterait dessus. `TRACE` borne la mémoire du chemin, et `SUIT_VITESSE` est son allure :
+ * un peu moins vive que celle de Nino, pour qu'elle traîne quand il court et qu'elle le rattrape
+ * quand il s'arrête.
+ *
+ * **Elle visait auparavant la position de Nino trente-quatre images plus tôt.** Dès qu'il
+ * s'immobilisait, cette position devenait la sienne, la condition « assez près » passait à vrai, et
+ * la petite se figeait là où elle en était — souvent au milieu de la pièce, parfois à la porte par
+ * laquelle on venait d'entrer. Elle ne suivait donc que tant qu'on marchait sans jamais s'arrêter.
  */
-const TRACE = 34;
-const ECART = 16;
+const TRACE = 240;
+const ECART = 14;
+const SUIT_VITESSE = 44;
 
 interface Live {
   def: RoomObject;
@@ -229,6 +240,11 @@ export class WorldScene extends Phaser.Scene {
   /** Les poissons de la pièce, avec où ils en sont de leur saut. */
   private sauteurs: Sauteur[] = [];
   private trace: { x: number; y: number }[] = [];
+  /**
+   * La position d'Hermione **en flottant**. Arrondir à chaque image ferait avancer d'un pixel
+   * entier par frame quelle que soit sa vitesse : elle irait plus vite que son frère.
+   */
+  private suitPos?: { x: number; y: number };
   /** Distance parcourue depuis le dernier bruit de pas, en pixels. */
   private depuisLePas = 0;
   /** Vrai quand le ballon a été frappé fort et n'est pas encore retombé au calme. */
@@ -263,6 +279,7 @@ export class WorldScene extends Phaser.Scene {
     this.solids = [];
     this.target = undefined;
     this.suiveuse = undefined;
+    this.suitPos = undefined;
     this.ballon = undefined;
     this.ballonEnVol = false;
     this.vanne = undefined;
@@ -543,7 +560,7 @@ export class WorldScene extends Phaser.Scene {
     this.jouerAuBallon();
     this.sauter(delta);
     this.errer(delta);
-    this.suivreNino();
+    this.suivreNino(delta);
     this.target = this.findTarget();
     this.showBulle();
 
@@ -1852,7 +1869,9 @@ export class WorldScene extends Phaser.Scene {
         dialogue: 'hermione-suit',
       });
       this.suiveuse = this.live.find((l) => l.def.id === 'hermione-suit');
-      this.trace = Array.from({ length: TRACE }, () => ({ x: p.x, y: p.y }));
+      this.suitPos = this.suiveuse ? { x: this.suiveuse.go.x, y: this.suiveuse.go.y } : undefined;
+      // Le chemin repart de zéro dans chaque pièce : celui de la précédente n'y mène nulle part.
+      this.trace = [{ x: p.x, y: p.y }];
       return;
     }
     const cachette = cachetteActuelle(state.hermione);
@@ -1877,19 +1896,46 @@ export class WorldScene extends Phaser.Scene {
    * Hermione avance sur les traces de Nino, avec un vrai retard : elle ne lui colle
    * pas aux talons, elle arrive après. Elle ne rampe que quand elle se déplace.
    */
-  private suivreNino(): void {
+  private suivreNino(dt: number): void {
     if (!this.suiveuse) return;
     const p = this.player.sprite;
-    this.trace.push({ x: p.x, y: p.y });
-    while (this.trace.length > TRACE) this.trace.shift();
-
-    const cible = this.trace[0];
     const go = this.suiveuse.go as Phaser.GameObjects.Sprite;
-    // Assez près : elle attend là où elle est.
-    const proche = Phaser.Math.Distance.Between(cible.x, cible.y, p.x, p.y) < ECART;
-    const nx = proche ? go.x : Math.round(cible.x - 4);
-    const ny = proche ? go.y : Math.round(cible.y - 8);
-    const bouge = nx !== go.x || ny !== go.y;
+    if (!this.suitPos) this.suitPos = { x: go.x, y: go.y };
+    // Le point d'où elle regarde le monde : son milieu, pas son coin haut-gauche.
+    const elle = { x: this.suitPos.x + 4, y: this.suitPos.y + 8 };
+
+    // On n'enregistre le chemin que quand Nino avance : immobile, il n'a rien à faire suivre.
+    const dernier = this.trace[this.trace.length - 1];
+    if (!dernier || Phaser.Math.Distance.Between(dernier.x, dernier.y, p.x, p.y) > 2) {
+      this.trace.push({ x: p.x, y: p.y });
+      while (this.trace.length > TRACE) this.trace.shift();
+    }
+
+    /**
+     * **Elle avance tant qu'elle est trop loin de lui**, et c'est la distance à *Nino* qui décide,
+     * pas l'ancienneté du chemin : il peut s'arrêter, elle finit toujours par arriver derrière lui.
+     * Elle remonte le chemin point par point, ce qui lui fait contourner ce qu'il a contourné.
+     */
+    let nx = go.x;
+    let ny = go.y;
+    let bouge = false;
+    if (Phaser.Math.Distance.Between(elle.x, elle.y, p.x, p.y) > ECART) {
+      // Le prochain point du chemin, une fois consommés ceux qu'elle a déjà atteints.
+      while (
+        this.trace.length > 1 &&
+        Phaser.Math.Distance.Between(elle.x, elle.y, this.trace[0].x, this.trace[0].y) < 3
+      ) {
+        this.trace.shift();
+      }
+      const cible = this.trace[0] ?? { x: p.x, y: p.y };
+      const pas = (SUIT_VITESSE * dt) / 1000;
+      const a = Phaser.Math.Angle.Between(elle.x, elle.y, cible.x, cible.y);
+      this.suitPos.x += Math.cos(a) * pas;
+      this.suitPos.y += Math.sin(a) * pas;
+      nx = Math.round(this.suitPos.x);
+      ny = Math.round(this.suitPos.y);
+      bouge = true;
+    }
 
     if (nx !== go.x) go.setFlipX(nx < go.x);
     go.setPosition(nx, ny);
