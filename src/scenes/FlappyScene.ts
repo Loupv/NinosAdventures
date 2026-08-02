@@ -12,22 +12,51 @@ import { PixelText, measure } from '../ui/PixelText';
  *
  * Réglé pour un enfant de sept ans : chute lente, battement d'ailes généreux, trous
  * larges, et **aucune punition** — quand on touche, on recommence d'un appui, sans
- * jamais rien perdre. Cinq tuyaux passés et on gagne une pièce à collectionner.
+ * jamais rien perdre. Huit tuyaux passés et on gagne une pièce à collectionner.
+ *
+ * Ces huit tuyaux ne se ressemblent pas : le premier est large et lent, le dernier étroit et
+ * rapide, et à partir du cinquième le passage se balance. C'est ce qui fait qu'on a envie de le
+ * refaire — le rêve raconte une petite montée, pas cinq fois la même chose.
  */
 const PALETTE = 'tv' as const;
 
 const GRAVITE = 260; // px/s²
 const BATTEMENT = 110; // px/s vers le haut
-const VITESSE = 42; // px/s de défilement
-const ECART = 96; // distance entre deux tuyaux
-const TROU = 48; // hauteur du passage
 const SOL = 16; // bande de sol en bas
-const OBJECTIF = 5; // tuyaux à passer
+const OBJECTIF = 8; // tuyaux à passer
 const NUAGES = 12; // px/s : ils défilent plus lentement que les tuyaux, donc plus loin
 
+/**
+ * **Ça se resserre à mesure qu'on avance.** Le rêve commençait et finissait à la même difficulté :
+ * cinq tuyaux identiques, aucune raison de continuer autrement que pour compter. Maintenant le
+ * défilement accélère, le passage rétrécit et les tuyaux se rapprochent — doucement, et jusqu'à un
+ * plancher qui reste jouable à sept ans.
+ *
+ * `douceur` va de 0 (premier tuyau) à 1 (objectif atteint), et tout en découle.
+ */
+const VITESSE = { debut: 42, fin: 68 }; // px/s de défilement
+const TROU = { debut: 52, fin: 36 }; // hauteur du passage
+const ECART = { debut: 100, fin: 78 }; // distance entre deux tuyaux
+/** À partir de ce score, les tuyaux se mettent à monter et descendre tout doucement. */
+const DANSE = 4;
+const DANSE_AMPLITUDE = 10;
+const DANSE_VITESSE = 0.9;
+
 interface Tuyau {
-  haut: Phaser.GameObjects.Rectangle;
-  bas: Phaser.GameObjects.Rectangle;
+  haut: Phaser.GameObjects.TileSprite;
+  bas: Phaser.GameObjects.TileSprite;
+  /** Les deux embouts, à l'entrée du passage. */
+  boutHaut: Phaser.GameObjects.Image;
+  boutBas: Phaser.GameObjects.Image;
+  /** Le milieu du passage, et la phase de son balancement. */
+  trou: number;
+  phase: number;
+  /**
+   * La hauteur de **son** passage, figée au moment où il est placé. Elle se lisait sur le score à
+   * chaque image : le tuyau qu'on était en train de traverser rétrécissait au moment même où il
+   * comptait un point, et on mourait dedans sans avoir bougé.
+   */
+  hauteur: number;
   /** Vrai quand le canard l'a déjà dépassé : on ne compte qu'une fois. */
   compte: boolean;
 }
@@ -40,8 +69,10 @@ export class FlappyScene extends Phaser.Scene {
   private etat: 'attente' | 'vol' | 'perdu' | 'gagne' = 'attente';
   private titre!: PixelText;
   private sous!: PixelText;
+  /** Le fond clair posé sous les deux lignes : sans lui, elles tombent sur un tuyau noir. */
+  private bandeau!: Phaser.GameObjects.Rectangle;
   private compteur!: PixelText;
-  private nuages: Phaser.GameObjects.Rectangle[] = [];
+  private nuages: Phaser.GameObjects.Image[] = [];
   private touches!: { action: Phaser.Input.Keyboard.Key[]; sortie: Phaser.Input.Keyboard.Key[] };
 
   constructor() {
@@ -63,12 +94,13 @@ export class FlappyScene extends Phaser.Scene {
       .setOrigin(0, 0)
       .setDepth(51);
 
-    // Des nuages, très lents : c'est ce qui donne la sensation de voler.
+    // Des nuages, très lents : c'est ce qui donne la sensation de voler. Un retournement sur deux,
+    // pour qu'on ne voie pas que c'est quatre fois le même dessin.
     this.nuages = [
-      this.add.rectangle(30, 24, 20, 4, shade(PALETTE, 2)),
-      this.add.rectangle(96, 40, 14, 3, shade(PALETTE, 2)),
-      this.add.rectangle(140, 18, 24, 4, shade(PALETTE, 2)),
-      this.add.rectangle(60, 70, 16, 3, shade(PALETTE, 2)),
+      this.add.image(30, 22, texKey('nuage', PALETTE)),
+      this.add.image(96, 44, texKey('nuage', PALETTE)).setFlipX(true),
+      this.add.image(140, 14, texKey('nuage', PALETTE)),
+      this.add.image(60, 68, texKey('nuage', PALETTE)).setFlipX(true),
     ].map((n) => n.setOrigin(0, 0).setDepth(-50));
 
     this.fusee = this.add
@@ -80,6 +112,11 @@ export class FlappyScene extends Phaser.Scene {
       .play(animKey('fusee-vol', PALETTE));
 
     this.compteur = new PixelText(this, 'fl-score', 6, 5, 40, 13);
+    this.bandeau = this.add
+      .rectangle(0, 96, GB.W, 30, ciel)
+      .setOrigin(0, 0)
+      .setDepth(55)
+      .setVisible(false);
     // Dans le bas de l'écran : le canard vole en haut, le texte ne doit pas le couvrir.
     this.titre = new PixelText(this, 'fl-titre', 0, 98, GB.W, 13);
     this.sous = new PixelText(this, 'fl-sous', 0, 112, GB.W, 13);
@@ -154,10 +191,18 @@ export class FlappyScene extends Phaser.Scene {
     this.fusee.y += this.vy * dt;
     this.fusee.setAngle(Phaser.Math.Clamp(this.vy * 0.12, -20, 45));
 
+    const v = this.entre(VITESSE);
     for (const t of this.tuyaux) {
-      t.haut.x -= VITESSE * dt;
-      t.bas.x = t.haut.x;
-      if (!t.compte && t.haut.x + t.haut.width < this.fusee.x) {
+      t.haut.x -= v * dt;
+      // Passé quelques tuyaux, le passage se met à monter et descendre tout doucement.
+      if (this.score >= DANSE) {
+        t.phase += DANSE_VITESSE * dt;
+        t.trou += Math.cos(t.phase) * DANSE_AMPLITUDE * DANSE_VITESSE * dt;
+      }
+      this.poser(t, t.haut.x);
+      // On ne compte qu'une fois le tuyau **entièrement** derrière la boîte de collision : compté
+      // au milieu du canard, le point tombait alors qu'un bout de tuyau le frôlait encore.
+      if (!t.compte && t.haut.x + 16 < this.fusee.x - 5) {
         t.compte = true;
         this.score += 1;
         this.majCompteur();
@@ -167,7 +212,7 @@ export class FlappyScene extends Phaser.Scene {
         }
       }
       // Recyclage : le tuyau sorti à gauche repart à droite, à une hauteur neuve.
-      if (t.haut.x + t.haut.width < -4) this.replacer(t, this.plusADroite() + ECART);
+      if (t.haut.x + 16 < -4) this.replacer(t, this.plusADroite() + this.entre(ECART));
     }
 
     if (this.touche()) this.perdre();
@@ -175,37 +220,77 @@ export class FlappyScene extends Phaser.Scene {
 
   // ─────────────────────────────────────────────────────────────── mécanique
 
+  /**
+   * **Où en est la difficulté**, de 0 au premier tuyau à 1 à l'objectif. Tout ce qui se resserre —
+   * la vitesse, le passage, l'écart — se lit sur cette même courbe.
+   */
+  private entre(bornes: { debut: number; fin: number }): number {
+    const t = Phaser.Math.Clamp(this.score / OBJECTIF, 0, 1);
+    return bornes.debut + (bornes.fin - bornes.debut) * t;
+  }
+
   private reinitialiser(): void {
     this.tuyaux.forEach((t) => {
       t.haut.destroy();
       t.bas.destroy();
+      t.boutHaut.destroy();
+      t.boutBas.destroy();
     });
     this.tuyaux = [];
     this.score = 0;
     this.vy = 0;
     this.fusee.setPosition(40, 60).setAngle(0);
-    for (let i = 0; i < 3; i++) this.tuyaux.push(this.nouveauTuyau(GB.W + 20 + i * ECART));
+    const ecart = this.entre(ECART);
+    for (let i = 0; i < 3; i++) this.tuyaux.push(this.nouveauTuyau(GB.W + 20 + i * ecart));
     this.majCompteur();
   }
 
+  /**
+   * **Un tuyau dessiné, pas deux rectangles.** Le corps se répète à l'infini (`tileSprite`) et
+   * l'embout marque l'entrée du passage : c'est lui qu'on regarde en visant.
+   */
   private nouveauTuyau(x: number): Tuyau {
-    const dark = shade(PALETTE, 0);
-    const light = shade(PALETTE, 2);
-    const faire = () =>
-      this.add.rectangle(x, 0, 16, 8, light).setOrigin(0, 0).setDepth(10).setStrokeStyle(1, dark);
-    const t: Tuyau = { haut: faire(), bas: faire(), compte: false };
+    const corps = () =>
+      this.add
+        .tileSprite(x, 0, 16, 8, texKey('tuyau-corps', PALETTE))
+        .setOrigin(0, 0)
+        .setDepth(10);
+    const bout = () =>
+      this.add.image(x, 0, texKey('tuyau-bout', PALETTE)).setOrigin(0, 0).setDepth(11);
+    const t: Tuyau = {
+      haut: corps(),
+      bas: corps(),
+      boutHaut: bout(),
+      boutBas: bout(),
+      trou: GB.H / 2,
+      phase: 0,
+      hauteur: this.entre(TROU),
+      compte: false,
+    };
     this.replacer(t, x);
     return t;
   }
 
-  /** Repositionne un tuyau à droite, avec un trou à une hauteur tirée au hasard. */
+  /** Repositionne un tuyau à droite, avec un passage à une hauteur tirée au hasard. */
   private replacer(t: Tuyau, x: number): void {
-    const hautMin = 12;
-    const hautMax = GB.H - SOL - TROU - 12;
-    const y = Phaser.Math.Between(hautMin, hautMax);
-    t.haut.setPosition(x, 0).setSize(16, y);
-    t.bas.setPosition(x, y + TROU).setSize(16, GB.H - SOL - (y + TROU));
+    t.hauteur = this.entre(TROU);
+    const marge = 14 + t.hauteur / 2;
+    t.trou = Phaser.Math.Between(marge, GB.H - SOL - marge);
+    t.phase = Math.random() * Math.PI * 2;
     t.compte = false;
+    this.poser(t, x);
+  }
+
+  /** Redessine un tuyau là où il en est : deux colonnes, deux embouts, un passage au milieu. */
+  private poser(t: Tuyau, x: number): void {
+    const marge = 14 + t.hauteur / 2;
+    t.trou = Phaser.Math.Clamp(t.trou, marge, GB.H - SOL - marge);
+    const haut = Math.round(t.trou - t.hauteur / 2);
+    const bas = Math.round(t.trou + t.hauteur / 2);
+    t.haut.setPosition(x, 0).setSize(16, Math.max(1, haut - 6));
+    t.boutHaut.setPosition(x, haut - 6).setFlipY(true);
+    t.bas.setPosition(x, bas + 6).setSize(16, Math.max(1, GB.H - SOL - bas - 6));
+    t.boutBas.setPosition(x, bas);
   }
 
   private plusADroite(): number {
@@ -216,10 +301,11 @@ export class FlappyScene extends Phaser.Scene {
   private touche(): boolean {
     if (this.fusee.y < 4 || this.fusee.y > GB.H - SOL - 4) return true;
     const c = new Phaser.Geom.Rectangle(this.fusee.x - 4, this.fusee.y - 3, 8, 6);
-    return this.tuyaux.some(
-      (t) =>
-        Phaser.Geom.Intersects.RectangleToRectangle(c, t.haut.getBounds()) ||
-        Phaser.Geom.Intersects.RectangleToRectangle(c, t.bas.getBounds()),
+    // Les embouts font partie du tuyau : sans eux, on passait au travers des deux becs.
+    return this.tuyaux.some((t) =>
+      [t.haut, t.bas, t.boutHaut, t.boutBas].some((p) =>
+        Phaser.Geom.Intersects.RectangleToRectangle(c, p.getBounds()),
+      ),
     );
   }
 
@@ -250,6 +336,7 @@ export class FlappyScene extends Phaser.Scene {
 
   private annoncer(titre: string, sous: string): void {
     const ink = shadeHex(PALETTE, 0);
+    this.bandeau.setVisible(titre !== '' || sous !== '');
     this.titre.image.setPosition(Math.round((GB.W - measure(titre)) / 2), 98);
     this.titre.setLines([titre], ink);
     this.sous.image.setPosition(Math.round((GB.W - measure(sous)) / 2), 112);

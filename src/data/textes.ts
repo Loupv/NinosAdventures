@@ -101,12 +101,14 @@ export const FUSEE = {
   consigne: 'Nino sur une fusée.',
   demarrer: 'ESPACE pour pousser',
   score: (n: number) => `${n} tuyau${n > 1 ? 'x' : ''}.`,
-  reessayer: 'ESPACE pour réessayer',
+  // Les deux commandes tiennent sur une seule ligne de cent soixante pixels : au-delà, elles
+  // sortaient de l'écran par les deux bords.
+  reessayer: 'ESPACE encore',
   gagnePiece: 'Une pièce.',
   gagneEncore: 'Encore une fois.',
   reveil: 'ESPACE pour te réveiller',
   /** Rien n'obligeait à le dire, et personne ne trouvait la sortie du rêve. */
-  abandonner: 'ÉCHAP pour te réveiller',
+  abandonner: 'ÉCHAP réveil',
 };
 
 /** Le vol en parapente, depuis le toit de la tour. */

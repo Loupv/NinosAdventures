@@ -1698,6 +1698,53 @@ const ELEPHANT_BOULE_HAUT = retouche(ELEPHANT_TROMPE, {
 });
 
 /**
+ * **Les colonnes du rêve de la fusée.** Le mini-jeu se jouait contre deux rectangles gris posés là
+ * par le moteur — les seuls objets du jeu à ne pas être dessinés. Ce sont maintenant des tuyaux de
+ * bande dessinée : un corps qui se répète à l'infini (`tileSprite`) et un embout plus marqué à
+ * l'entrée du passage, pour qu'on voie où viser.
+ *
+ * **Sombres sur un ciel clair** : dessinés dans les tons pâles, ils disparaissaient purement et
+ * simplement dans le fond du rêve.
+ */
+const TUYAU_CORPS: Art = [
+  '0112111111112110',
+  '0112111111112110',
+  '0112111111112110',
+  '0112111111112110',
+  '0112111111112110',
+  '0112111111112110',
+  '0112111111112110',
+  '0112111111112110',
+];
+
+const TUYAU_BOUT: Art = [
+  '0000000000000000',
+  '0111111111111110',
+  '0122222222222210',
+  '0111111111111110',
+  '0000000000000000',
+  '................',
+  '................',
+  '................',
+];
+
+/**
+ * **Un nuage du rêve.** Le ciel de la fusée était meublé par quatre rectangles gris, qui se
+ * lisaient comme des planches flottantes plutôt que comme des nuages. Celui-ci a une bosse, un
+ * ventre plus sombre, et il suffit de le retourner pour en avoir un deuxième.
+ */
+const NUAGE: Art = [
+  '.......2222.....2222....',
+  '.....22222222.22222222..',
+  '...2222222222222222222..',
+  '..222222222222222222222.',
+  '.2222222222222222222222.',
+  '.1111111111111111111111.',
+  '........................',
+  '........................',
+];
+
+/**
  * **Le jardinier de la place.** Chapeau large et tablier : deux aplats de la couleur d'accent, et
  * on sait tout de suite ce qu'il fait. Il se plaint de la chaleur toute la journée, et il ne dira
  * merci qu'à quelqu'un qui aura arrosé les sept plantes du jeu à sa place.
@@ -2048,6 +2095,9 @@ export const IMAGES: Record<string, Art> = {
   papa: PAPA,
   maitresse: MAITRESSE,
   jardinier: JARDINIER,
+  'tuyau-corps': TUYAU_CORPS,
+  'tuyau-bout': TUYAU_BOUT,
+  nuage: NUAGE,
   copain: COPAIN,
   lit: LIT,
   'grand-lit': GRAND_LIT,

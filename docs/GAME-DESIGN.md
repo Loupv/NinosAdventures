@@ -682,8 +682,28 @@ sept ans :
 - **aucune punition** — quand on touche, on recommence d'un appui, on ne perd jamais
   rien ;
 - boîte de collision plus petite que le dessin : on pardonne ;
-- cinq obstacles passés et c'est gagné ;
+- **huit obstacles passés** et c'est gagné ;
 - Échap réveille Nino à tout moment.
+
+**Ça se resserre en avançant.** Les cinq tuyaux d'avant étaient cinq fois le même : même vitesse,
+même trou, même écart, du premier au dernier. Il n'y avait donc aucune raison de continuer autre
+que de compter jusqu'à cinq. Maintenant tout se lit sur une seule courbe, du premier tuyau
+(`score 0`) au huitième (`score 8`) : le défilement passe de 42 à 68 px/s, le passage de 52 à
+36 px de haut, l'écart entre deux tuyaux de 100 à 78 px. Et **à partir du cinquième, le passage
+se balance** doucement de haut en bas. Le premier tuyau reste large et lent — un enfant de sept
+ans le passe du premier coup — et le huitième demande vraiment de viser.
+
+Deux détails, invisibles mais décisifs : la hauteur du passage est **figée au moment où le tuyau
+est placé** (elle se relisait sur le score à chaque image, si bien que le tuyau qu'on traversait
+rétrécissait sur nous à l'instant où il comptait son point), et le point ne tombe qu'une fois le
+tuyau **entièrement derrière** la boîte de collision.
+
+**Et c'est dessiné.** Le rêve se jouait contre deux rectangles gris posés par le moteur — les
+seuls objets du jeu à n'être le dessin de personne — sur un ciel meublé de quatre autres
+rectangles gris. Ce sont maintenant des tuyaux de bande dessinée, corps répété et embout marqué
+à l'entrée du passage, **sombres sur ce ciel très clair** ; et de vrais nuages, retournés une
+fois sur deux pour qu'on ne voie pas que c'est quatre fois le même. Les deux lignes de texte du
+bas ont un fond clair sous elles : elles tombaient sinon sur une colonne noire.
 
 Gagner donne **une pièce à collectionner**. On ne sait pas encore ce qu'elles veulent
 dire, et c'est volontaire : Nino les ramasse d'abord, on comprendra après. Elles ont leur
@@ -697,7 +717,7 @@ baignoire vidée. Le rêve devient donc obligatoire, et c'est très bien : c'est
 plus drôle du jeu, personne ne devrait pouvoir passer à côté.
 
 Ça ne demande aucune adresse : **le flag est posé au réveil, gagné ou pas.** Se réveiller
-avec ÉCHAP après trois échecs compte autant que passer les cinq tuyaux — et le grand lit
+avec ÉCHAP après trois échecs compte autant que passer les huit tuyaux — et le grand lit
 est la seule chose à faire dans cette chambre, donc personne ne cherche longtemps. La
 réplique du réveil ne parle que du rêve — *« Quel drôle de rêve. Il y avait une fusée, et
 ça sentait bizarre. »* — et jamais de sa sœur : elle est là, à l'écran, ça suffit.
