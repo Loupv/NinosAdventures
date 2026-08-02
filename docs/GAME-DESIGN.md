@@ -392,6 +392,15 @@ C'est la branche implémentée. Elle sert de gabarit à toutes les suivantes.
 
 ### La pluie de l'éléphant
 
+**Et le quai se souvient de l'averse.** Un monsieur regarde l'eau depuis le bord, et il a une
+raison de ne pas y entrer qui ne tient pas debout : *« J'irais bien me baigner. » « Mais ces poissons
+me font un peu peur. »* Après la pluie, il ne se demande pas d'où elle venait — il en commente
+l'odeur : *« Cette pluie a une étrange odeur de cacahuète. »* L'eau sortait d'une trompe d'éléphant,
+et c'est très exactement la bonne réaction dans ce jeu.
+
+**L'Éléphant, lui, ne dit rien du départ.** Quand on lui reparle après coup : *« L'Éléphant regarde
+l'eau. » « Il y a un poisson en moins. » « Ça ne se voit pas. »*
+
 **Le seul endroit du jeu où l'absurde sert à quelque chose.** Le bout du quai est gardé — pas
 par une porte fermée, par sa mère. Et ce n'est pas un mur : **une ligne invisible à cinquante
 pixels de son banc**, où **ce n'est pas elle qui le repère, c'est lui qui s'arrête** :
@@ -543,6 +552,11 @@ près.
 
 Ça n'arrive qu'une fois, et après la blague de papa : c'est elle qui installe la table, et un père
 doit avoir fait semblant de ne pas reconnaître son fils avant de discuter navigation devant lui.
+
+**Et une fois, une seule, un adulte commence à se poser la question.** À la terrasse, si le poisson
+est parti à la mer : *« Il paraît qu'il a plu, cet après-midi. » « Sur le quai. » « Juste sur le
+quai. » « Mais comment… » « Peu importe. »* L'amorce avortée rend toutes les autres non-réactions
+plus drôles — à condition qu'elle n'arrive qu'une fois, et c'est le rôle du drapeau `papa-doute`.
 
 Et ça se voit plus tard : **si le bateau n'a pas coulé, papa n'est pas trempé au bar.** Le
 parrain ne dit plus *« Ton père est tout mouillé »* mais *« Il t'a raconté son bouchon ? À moi,
@@ -916,6 +930,20 @@ du jeu : **rien ne réagit tout seul**, quelqu'un doit être là.
 
 Nino a une petite sœur d'un an. Elle est cachée **quelque part**, une seule à la fois,
 et elle change de cachette dès qu'on l'a trouvée. Cinq cachettes, une par pièce de la maison.
+
+### Une scène qui raccourcit à chaque fois
+
+**Répéter la même entrée cinq fois, c'est une blague qui ralentit** — le comique de répétition veut
+qu'on accélère. La scène de Maman se raccourcit donc d'elle-même :
+
+| | |
+|---|---|
+| Les trois premières | elle entre, elle crie, **elle traverse la pièce**, elle repart avec sa fille |
+| La quatrième | elle reste sur le pas de la porte — **c'est Hermione qui trotte jusqu'à elle** |
+| La cinquième | elle crie, elle capitule, elle repart : *« Bon. » « Elle reste avec toi. »* — sans avoir fait un pas de plus |
+
+Le retournement de la quatrième est la vraie blague : le rituel s'est inversé, la petite a compris
+avant les adultes, et personne ne le commente.
 
 ### Le rythme, pas le commentaire
 
@@ -1297,6 +1325,16 @@ mais à l'autre bout du palier. On débouche des marches, on lève la tête sur 
 tout le fond, et il n'y a qu'à longer le bas de la pièce — pas à faire le tour d'un animal de douze
 mètres.
 
+### Trois fenêtres, trois hauteurs
+
+Les paliers sont identiques **au pixel près** — c'est la blague de l'ascension — mais rien ne disait
+qu'on montait. Une fenêtre par étage, et c'est le paysage qui compte les étages à la place du
+joueur :
+
+> **13e** — *« La fenêtre est ouverte. » « D'ici, les voitures font le bruit de la mer. »*
+> **27e** — *« D'ici, on ne voit plus que les toits. » « Et l'Erdre, tout au fond. »*
+> **31e** — *« D'ici, on ne voit plus rien. » « C'est peut-être un nuage. »*
+
 ### Voler
 
 Sur le toit : la vue, une antenne qui vibre, et **un parapente plié contre le parapet**.
@@ -1443,8 +1481,10 @@ Techniquement, c'est **le jeu lui-même qui joue le générique** : le mode cin�
 la scène de jeu (`cinema` dans l'arrivée), donc les décors, les animations et les personnages sont
 les vrais. Ce mode ne visite rien, ne sauvegarde rien, ne pose aucun drapeau d'heure et coupe
 l'interface — sinon un générique laisserait des traces dans la partie qu'il conclut. La caméra
-traverse lentement les pièces plus larges que l'écran, chaque carton tient quatre secondes et les
-lignes se replient toutes seules.
+traverse lentement les pièces plus larges que l'écran, les lignes se replient toutes seules, et
+chaque carton tient **trois secondes six** — deux secondes six pour les mentions de fin, qui sont des
+vannes d'une ligne et non des cartons de personnage. À quatre secondes pour tout le monde, le
+générique passait la minute et on l'attendait.
 
 **On ne peut pas le sauter.** Il y avait ESPACE pour passer, et le premier joueur l'a sauté sans le
 vouloir — la même touche venait de fermer la boîte précédente. Un générique de quarante secondes à

@@ -684,6 +684,8 @@ export const FETE: Array<{ qui?: string; lignes: string[]; son?: string; pause?:
 export const CREDITS: Array<{
   room: string;
   lignes: string[];
+  /** Les mentions de fin passent plus vite : ce sont des vannes, pas des cartons de personnage. */
+  court?: true;
   /**
    * **Celui qu'on remercie, remis à sa place le temps du carton.** À la fin du jeu, la plupart
    * d'entre eux ne sont plus là : le chat est sorti avec les parents, le poisson est parti à la
@@ -738,14 +740,16 @@ export const CREDITS: Array<{
     qui: { sprite: 'hermione', x: 20, y: 40, frame: 'idle-0', anim: 'hermione-idle' },
   },
   // ── Et les mentions de fin, celles que personne ne lit jamais dans les vrais films ──
-  { room: 'bars', lignes: ['Aucun animal n’a été maltraité.', 'L’écureuil a un avis différent.'] },
+  { room: 'bars', lignes: ['Aucun animal n’a été maltraité.', 'L’écureuil a un avis différent.'] , court: true },
   {
     room: 'couloir',
     lignes: ['Ce couloir a quatre portes', 'et un escalier.', 'Il n’a jamais servi à rien.'],
+    court: true,
   },
   {
     room: 'tour-pied',
     lignes: ['Toute ressemblance avec des personnes', 'réelles est parfaitement assumée.'],
+    court: true,
   },
 ];
 
@@ -1434,8 +1438,9 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
     },
     {
       lines: [
-        'Le frigo ronronne.',
+        'Le frigo ronronne, grand ouvert.',
         'Il ne reste plus rien d’intéressant dedans. Que des légumes.',
+        'On devrait peut-être le fermer, non ?',
       ],
     },
   ],
@@ -1935,6 +1940,24 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
    * comprend le problème tout seul, et il ne va pas plus loin. Un enfant qui se fait attraper par
    * sa mère n'a rien à résoudre ; un enfant qui la voit de loin, oui.
    */
+  /**
+   * **Le monsieur qui n'ira pas se baigner.** Il est au bord de l'eau depuis un moment, il a une
+   * bonne raison de ne pas y aller, et elle n'est pas bonne. Après l'averse, il ne se demande pas
+   * d'où venait la pluie : il en commente l'odeur, ce qui est très exactement la bonne réaction
+   * dans ce jeu — l'eau sortait de la trompe d'un éléphant, et personne n'a rien à redire.
+   */
+  baigneur: [
+    {
+      when: () => state.flag('maman-quai-partie'),
+      speaker: 'Le monsieur',
+      lines: ['« Cette pluie a une étrange odeur de cacahuète. »'],
+    },
+    {
+      speaker: 'Le monsieur',
+      lines: ['« J’irais bien me baigner. »', '« Mais ces poissons me font un peu peur. »'],
+    },
+  ],
+
   'maman-voit': [
     // Les fois suivantes, une ligne : il le sait déjà, et relire les trois mêmes phrases à
     // chaque pas vers la droite finirait par ressembler à un mur qui parle.
@@ -2050,8 +2073,22 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
     { lines: ['Une plante en plastique.', 'Elle est là depuis 1976, elle aussi.'] },
   ],
 
-  'fenetre-tour': [
+  /**
+   * **Trois fenêtres, trois hauteurs.** Les paliers de la tour sont volontairement identiques au
+   * pixel près — c'est la blague de l'ascension — mais rien ne disait qu'on montait. Une fenêtre
+   * par étage, et c'est le paysage qui compte les étages à la place du joueur : les voitures, puis
+   * les toits, puis plus rien du tout.
+   */
+  'fenetre-13': [
     { lines: ['La fenêtre est ouverte.', 'D’ici, les voitures font le bruit de la mer.'] },
+  ],
+
+  'fenetre-27': [
+    { lines: ['D’ici, on ne voit plus que les toits.', 'Et l’Erdre, tout au fond.'] },
+  ],
+
+  'fenetre-31': [
+    { lines: ['D’ici, on ne voit plus rien.', 'C’est peut-être un nuage.'] },
   ],
 
   /**
@@ -2294,6 +2331,11 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
    * est monté, mais on saura qu'il était en bas.
    */
   'elephant-erdre': [
+    // Le poisson est parti pour la mer. Personne n'en parle, et surtout pas lui.
+    {
+      when: () => state.flag('poisson-parti'),
+      lines: ['L’Éléphant regarde l’eau.', 'Il y a un poisson en moins.', 'Ça ne se voit pas.'],
+    },
     {
       when: () => state.flag('elephant-vu'),
       lines: ['L’éléphant boit toujours.', 'Ça doit faire beaucoup d’eau.'],
@@ -2634,6 +2676,24 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
    * est la seule chose du jeu qui dit que les adultes savent, un peu.
    */
   'papa-terrasse': [
+    /**
+     * **La seule fois où un adulte commence à se poser la question.** Il a vu sa femme rentrer en
+     * courant sous une pluie tombée d'un ciel bleu, et il va jusqu'à « mais comment » — puis il
+     * laisse tomber, parce que c'est ce que font les adultes de ce jeu. L'amorce avortée rend
+     * toutes les autres non-réactions plus drôles, à condition qu'elle n'arrive qu'une fois.
+     */
+    {
+      when: () => state.flag('poisson-parti') && !state.flag('papa-doute'),
+      speaker: 'Papa',
+      lines: [
+        '« Il paraît qu’il a plu, cet après-midi. »',
+        '« Sur le quai. »',
+        '« Juste sur le quai. »',
+        '« Mais comment… »',
+        '« Peu importe. »',
+      ],
+      effects: { flag: 'papa-doute' },
+    },
     {
       when: () => state.flag('papa-terrasse-vu'),
       speaker: 'Papa',

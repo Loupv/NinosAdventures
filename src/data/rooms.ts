@@ -341,6 +341,17 @@ export const ROOMS: Record<string, Room> = {
         dialogue: 'ecureuil-tour',
       },
       { id: 'porte-cabinet', x: 56, y: 32, sprite: 'porte', solid: true, dialogue: 'porte-cabinet' },
+      // **Une fenêtre par étage.** Les trois paliers sont identiques au pixel près ; c'est le
+      // paysage qui dit qu'on monte, et lui seul.
+      {
+        id: 'fenetre-tour',
+        x: 80,
+        y: 32,
+        sprite: 'fenetre',
+        frame: 'ouverte',
+        solid: true,
+        dialogue: 'fenetre-13',
+      },
       // **En plastique**, et elle ne compte pas dans les sept : elle ne boit pas. Arroser du
       // plastique donne une réplique, pas une fleur.
       {
@@ -411,7 +422,7 @@ export const ROOMS: Record<string, Room> = {
         sprite: 'fenetre',
         frame: 'ouverte',
         solid: true,
-        dialogue: 'fenetre-tour',
+        dialogue: 'fenetre-27',
       },
       // Voilà où elle était passée.
       {
@@ -472,6 +483,16 @@ export const ROOMS: Record<string, Room> = {
     ],
     objects: [
       { id: 'escalier-bas', x: 44, y: 84, sprite: 'escalier', depth: 88 },
+      // La dernière fenêtre : à cette hauteur, il n'y a plus rien à voir dehors.
+      {
+        id: 'fenetre-tour',
+        x: 100,
+        y: 34,
+        sprite: 'fenetre',
+        frame: 'ouverte',
+        solid: true,
+        dialogue: 'fenetre-31',
+      },
       /**
        * **Le second escalier s'ouvre en bas à droite**, contre le mur : du même côté que celui
        * d'arrivée, mais à l'autre bout du palier. On débouche des marches, on lève la tête sur un
@@ -1980,6 +2001,20 @@ export const ROOMS: Record<string, Room> = {
         hideIfFlag: 'maman-quai-partie',
       },
       { id: 'bouee', x: 40, y: 88, sprite: 'bouee', dialogue: 'quai' },
+      /**
+       * **Le monsieur qui n'ira pas se baigner.** Il regarde l'eau depuis le quai, il a une raison
+       * de ne pas y entrer, et elle ne tient pas debout. Après l'averse, il commente l'odeur de la
+       * pluie et rien d'autre.
+       */
+      {
+        id: 'baigneur',
+        x: 176,
+        y: 84,
+        sprite: 'copain',
+        priorite: 2,
+        portee: 14,
+        dialogue: 'baigneur',
+      },
       {
         id: 'plume',
         x: 152,

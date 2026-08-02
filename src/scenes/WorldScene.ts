@@ -59,7 +59,14 @@ import {
   SORTIR_DU_LIT,
   VIE,
 } from '../data/textes';
-import { CACHETTES, cachetteActuelle, hermioneSuit, mamanRenonce, rappel } from '../data/hermione';
+import {
+  CACHETTES,
+  CACHETTES_MAISON,
+  cachetteActuelle,
+  hermioneSuit,
+  mamanRenonce,
+  rappel,
+} from '../data/hermione';
 import { piece } from '../data/pieces';
 import { state } from '../systems/state';
 import { EV, bus, say, toast, type Buttons } from '../systems/bus';
@@ -150,8 +157,13 @@ const BALLON_PORTEE = 13;
 /** Ce qui dépasse de l'eau quand le poisson parle, en pixels. Le reste est sous la surface. */
 const EMERGE = 5;
 
-/** Le temps qu'une pièce reste à l'écran pendant le générique, en ms. */
-const GENERIQUE_ETAPE = 4000;
+/**
+ * Le temps qu'une pièce reste à l'écran pendant le générique, en ms — et le temps plus court des
+ * **mentions de fin**, qui sont des vannes d'une ligne et non des cartons de personnage. À quatre
+ * secondes pour tout le monde, le générique durait plus d'une minute et on l'attendait.
+ */
+const GENERIQUE_ETAPE = 3600;
+const GENERIQUE_COURT = 2600;
 
 /** Le temps que met la bosse à passer d'une étape à la suivante, dans la trompe. En ms. */
 const MONTEE = 800;
@@ -2594,11 +2606,12 @@ export class WorldScene extends Phaser.Scene {
     }
 
     // Un travelling lent d'un bord à l'autre, quand il y a de quoi traverser.
+    const duree = etape.court ? GENERIQUE_COURT : GENERIQUE_ETAPE;
     const cam = this.cameras.main;
     cam.stopFollow();
     if (this.roomW > GB.W) {
       cam.setScroll(0, 0);
-      cam.pan(this.roomW - GB.W / 2, cam.midPoint.y, GENERIQUE_ETAPE, 'Sine.easeInOut');
+      cam.pan(this.roomW - GB.W / 2, cam.midPoint.y, duree, 'Sine.easeInOut');
     }
 
     const suite = () => {
@@ -2619,7 +2632,7 @@ export class WorldScene extends Phaser.Scene {
      * quarante secondes à la fin d'un jeu qu'on vient de finir n'est pas une punition ; le rater
      * par accident, si.
      */
-    this.time.delayedCall(GENERIQUE_ETAPE + 600, suite);
+    this.time.delayedCall(duree + 600, suite);
   }
 
   /**
@@ -2800,6 +2813,37 @@ export class WorldScene extends Phaser.Scene {
       });
     };
 
+    /**
+     * **La quatrième fois, c'est Hermione qui vient.** Maman n'a plus la force de traverser la
+     * pièce : elle crie depuis l'entrée, et la petite trotte jusqu'à elle toute seule. Le rituel
+     * s'est retourné, et personne ne le commente.
+     */
+    const laPetiteVient = () => {
+      state.locked = true;
+      this.tweens.add({
+        targets: l.go,
+        x: maman.x + 5,
+        y: maman.y + 8,
+        duration: this.duree(l.go.x, l.go.y, maman.x, maman.y),
+        onUpdate: () => l.go.setDepth(profondeur() + 1),
+        onComplete: repartir,
+      });
+    };
+
+    /**
+     * **Une scène qui se raccourcit à chaque fois.** Répéter la même entrée cinq fois, c'est une
+     * blague qui ralentit ; le comique de répétition veut qu'on accélère. Les trois premières
+     * fois, Maman traverse la pièce et repart avec sa fille. La quatrième, elle reste sur le pas
+     * de la porte et c'est Hermione qui vient. La cinquième, elle crie, elle capitule, elle
+     * repart — sans avoir fait un pas de plus.
+     */
+    const suite =
+      state.hermione >= CACHETTES_MAISON - 1
+        ? repartir
+        : state.hermione >= CACHETTES_MAISON - 2
+          ? laPetiteVient
+          : traverser;
+
     // Un pas dans la pièce, puis le cri, puis la traversée.
     const vers = Phaser.Math.Angle.Between(depart.x, depart.y, l.def.x, l.def.y);
     this.tweens.add({
@@ -2814,7 +2858,7 @@ export class WorldScene extends Phaser.Scene {
           lines: rappel(state.hermione),
           // Maman est peut-être entrée par le bas : dans ce cas le texte monte.
           focusY: maman.y,
-          onDone: traverser,
+          onDone: suite,
         }),
     });
   }
