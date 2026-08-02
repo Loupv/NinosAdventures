@@ -27,13 +27,23 @@ import type { ItemId } from './items';
 
 // ═══════════════════════════════════════════════════════════════ 1. l'interface
 
-/** L'écran-titre. */
+/**
+ * L'écran-titre.
+ *
+ * **Repartir à zéro se demande deux fois.** La touche efface une partie entière — parfois plusieurs
+ * heures de chasse à Hermione — et l'écran-titre est le premier endroit où un enfant de sept ans
+ * essaie toutes les touches pour voir. Une question, deux réponses, et personne ne perd sa nuit par
+ * curiosité.
+ */
 export const TITRE = {
   ligne1: 'LES AVENTURES',
   ligne2: 'DE NINO',
   continuer: 'ESPACE : CONTINUER',
   commencer: 'APPUIE SUR ESPACE',
-  recommencer: 'R : RECOMMENCER',
+  recommencer: 'R : REPARTIR À ZÉRO',
+  effacer: 'TOUT EFFACER ?',
+  effacerOui: 'ESPACE : OUI',
+  effacerNon: 'ÉCHAP : NON',
 };
 
 /** Le journal, ouvert avec Entrée. */

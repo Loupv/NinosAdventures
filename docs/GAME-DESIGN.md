@@ -1579,6 +1579,19 @@ qui marche, qu'on peut suivre, et sur lequel on peut monter.
 japonais, et un héron qui exige des papiers.
 *Coût : un bateau qui avance (plateforme mobile), de l'eau franchissable.*
 
+## Repartir à zéro
+
+L'écran-titre propose **« R : REPARTIR À ZÉRO »** dès qu'une partie existe — et il pose la question
+avant d'obéir :
+
+> **TOUT EFFACER ?**
+> *ESPACE : OUI   ÉCHAP : NON*
+
+Une partie représente parfois des heures de chasse à Hermione, et l'écran-titre est le premier
+endroit où un enfant de sept ans essaie toutes les touches pour voir ce qu'elles font. La question
+ne clignote pas, contrairement à l'invite habituelle : **on ne fait pas clignoter ce qui efface une
+partie.** S'il n'y a rien à effacer, R démarre simplement une partie neuve, sans rien demander.
+
 ## Les raccourcis de développement
 
 **Cinq touches, et seulement des chiffres** : `1` le réveil, `2` la cour, `3` Nantes, `4` l'Erdre,

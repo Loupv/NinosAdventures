@@ -9,7 +9,10 @@ import { PixelText, measure } from '../ui/PixelText';
 /** L'écran-titre. Nino et Moon devant un portail qui tourne. */
 export class TitleScene extends Phaser.Scene {
   private prompt!: PixelText;
+  private aussi?: PixelText;
   private blink = true;
+  /** Vrai quand la question « tout effacer ? » est posée et attend une réponse. */
+  private demande = false;
 
   constructor() {
     super('Title');
@@ -47,27 +50,55 @@ export class TitleScene extends Phaser.Scene {
     // Le sol sous leurs pieds.
     this.add.rectangle(24, 108, GB.W - 48, 1, shade(pal, 1)).setOrigin(0, 0);
 
-    const hasSave = state.hasSave();
-    this.prompt = this.line(
-      hasSave ? TITRE.continuer : TITRE.commencer,
-      114,
-      ink,
-      'ttl-3',
-    );
-    if (hasSave) this.line(TITRE.recommencer, 127, shadeHex(pal, 2), 'ttl-4');
+    this.prompt = this.line('', 114, ink, 'ttl-3');
+    this.aussi = this.line('', 127, ink, 'ttl-4');
+    this.proposer();
 
     this.time.addEvent({
       delay: 480,
       loop: true,
       callback: () => {
         this.blink = !this.blink;
-        this.prompt.image.setVisible(this.blink);
+        // La question, elle, ne clignote pas : on ne fait pas clignoter ce qui efface une partie.
+        this.prompt.image.setVisible(this.demande || this.blink);
       },
     });
 
     const kb = this.input.keyboard!;
-    KEYS.action.forEach((c) => kb.addKey(c).on('down', () => this.begin(false)));
-    kb.addKey('R').on('down', () => this.begin(true));
+    KEYS.action.forEach((c) =>
+      kb.addKey(c).on('down', () => (this.demande ? this.begin(true) : this.begin(false))),
+    );
+    KEYS.cancel.forEach((c) => kb.addKey(c).on('down', () => this.demande && this.proposer()));
+    kb.addKey('R').on('down', () => this.demander());
+  }
+
+  /**
+   * L'état normal du titre : continuer si une partie existe, la commencer sinon — et, dans le
+   * premier cas seulement, la façon de tout effacer.
+   */
+  private proposer(): void {
+    this.demande = false;
+    const garde = state.hasSave();
+    this.ecrire(this.prompt, garde ? TITRE.continuer : TITRE.commencer, 114);
+    this.ecrire(this.aussi!, garde ? TITRE.recommencer : '', 127);
+  }
+
+  /** La question. Tant qu'elle est posée, ESPACE efface et ÉCHAP renonce. */
+  private demander(): void {
+    if (this.demande) return;
+    // Rien à effacer : on démarre une partie neuve sans poser de question.
+    if (!state.hasSave()) {
+      this.begin(true);
+      return;
+    }
+    this.demande = true;
+    this.ecrire(this.prompt, TITRE.effacer, 110);
+    this.ecrire(this.aussi!, `${TITRE.effacerOui}   ${TITRE.effacerNon}`, 126);
+  }
+
+  private ecrire(t: PixelText, texte: string, y: number): void {
+    t.image.setPosition(Math.round((GB.W - measure(texte)) / 2), y).setVisible(true);
+    t.setLines([texte], shadeHex('titre', 3));
   }
 
   private begin(fresh: boolean): void {
