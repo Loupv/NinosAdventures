@@ -3,6 +3,7 @@ import { GB, KEYS } from '../config';
 import { shade, shadeHex } from '../art/palette';
 import { animKey, texKey } from '../art/pixels';
 import { state } from '../systems/state';
+import { jouerMusique } from '../systems/audio';
 import { TITRE } from '../data/textes';
 import { PixelText, measure } from '../ui/PixelText';
 
@@ -21,6 +22,8 @@ export class TitleScene extends Phaser.Scene {
   create(): void {
     const pal = 'titre' as const;
     state.palette = pal;
+    // Les six notes de l'écran-titre — et le silence tant que le fichier n'est pas posé.
+    jouerMusique(this, 'titre');
     const ink = shadeHex(pal, 3);
 
     this.add

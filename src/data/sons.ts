@@ -363,10 +363,12 @@ export const SONS: Son[] = [
   },
   {
     id: 'musique-maison',
+    present: true,
+    provisoire: true,
     quand: 'Toute la maison : chambre, couloir, cuisine, salon, mezzanine, salle de bain.',
     variantes: 1,
     cherche:
-      'Lent, un peu vide, quatre voix maximum. Il fait trop chaud et il ne se passe rien : la musique doit avoir cette température.',
+      'Lent, un peu vide, quatre voix maximum. Il fait trop chaud et il ne se passe rien : la musique doit avoir cette température. Le fichier posé : « Out of Time » (Abstraction, lot Three Red Hearts, CC0) **ralentie de moitié** — une octave plus bas, deux fois plus lent, cent vingt-deux secondes de boucle. C’était la piste la plus calme du lot (0,86 attaque/s, mesuré), et son titre ne s’invente pas.',
     priorite: 'plus tard',
     boucle: true,
   },
@@ -408,6 +410,37 @@ export const SONS: Son[] = [
 const PAR_ID = new Map(SONS.map((s) => [s.id, s]));
 
 export const son = (id: string) => PAR_ID.get(id);
+
+/**
+ * **Quelle musique dans quelle pièce.** Trois ambiances pour tout le monde extérieur du
+ * jeu : la maison, la ville, l'eau. Une pièce absente d'ici = silence, et une musique dont
+ * le fichier n'est pas encore posé ne joue rien — la carte peut donc être complète avant
+ * les fichiers.
+ *
+ * L'écran-titre, le rêve de la fusée et l'écran de fin ne passent pas par cette carte :
+ * chacun est une scène à part, qui demande sa musique par son nom.
+ */
+const MUSIQUE_PAR_PIECE: Record<string, string> = {
+  chambre: 'musique-maison',
+  couloir: 'musique-maison',
+  'chambre-parents': 'musique-maison',
+  mezzanine: 'musique-maison',
+  sdb: 'musique-maison',
+  cuisine: 'musique-maison',
+  salon: 'musique-maison',
+  cour: 'musique-ville',
+  nantes: 'musique-ville',
+  ecole: 'musique-ville',
+  'tour-pied': 'musique-ville',
+  'tour-hall': 'musique-ville',
+  'tour-toit': 'musique-ville',
+  bars: 'musique-ville',
+  terrasse: 'musique-ville',
+  erdre: 'musique-eau',
+};
+
+/** La musique d'une pièce, ou `undefined` pour le silence. */
+export const musiquePour = (room: string): string | undefined => MUSIQUE_PAR_PIECE[room];
 
 /** Le dossier où le jeu ira les chercher. */
 export const DOSSIER = 'sons';

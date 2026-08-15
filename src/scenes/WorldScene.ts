@@ -72,7 +72,8 @@ import { piece } from '../data/pieces';
 import { state } from '../systems/state';
 import { EV, bus, say, toast, type Buttons } from '../systems/bus';
 import { gbFade, portalWarp, sparkle, splash } from '../systems/fx';
-import { jouer } from '../systems/audio';
+import { jouer, jouerMusique } from '../systems/audio';
+import { musiquePour } from '../data/sons';
 import { Player, type ViewMode } from '../entities/Player';
 import { ETAPES, type Etape } from '../dev/etapes';
 import { PixelText, measure } from '../ui/PixelText';
@@ -301,6 +302,10 @@ export class WorldScene extends Phaser.Scene {
     const id = ROOMS[wanted] ? wanted : 'chambre';
     this.room = ROOMS[id];
     state.room = id;
+    // La musique de l'endroit. Redemander celle qui joue déjà ne la fait pas repartir :
+    // toute la maison partage la même boucle. Le générique, lui, garde la musique avec
+    // laquelle il est arrivé — il traverse toutes les pièces, ce serait un zapping.
+    if (!this.cinema) jouerMusique(this, musiquePour(id));
     // L'heure du jour, en deux drapeaux. On se lève vers midi ; la nuit tombe en entrant
     // dans la tour ; sur le toit le ciel pâlit déjà — et une fois rentré par la fenêtre
     // c'est le matin, donc les couleurs du jour à nouveau.

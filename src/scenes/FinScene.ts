@@ -3,6 +3,7 @@ import { GB, KEYS } from '../config';
 import { shadeHex } from '../art/palette';
 import { texKey } from '../art/pixels';
 import { state } from '../systems/state';
+import { jouerMusique } from '../systems/audio';
 import { CACHETTES } from '../data/hermione';
 import { PIECES } from '../data/pieces';
 import { CETTE_NUIT, FIN } from '../data/textes';
@@ -34,6 +35,9 @@ export class FinScene extends Phaser.Scene {
 
   create(): void {
     state.palette = PALETTE;
+    // La mélodie de la maison, mais du soir. Tant que le fichier n'est pas posé : silence,
+    // ce qui va très bien à un enfant endormi.
+    jouerMusique(this, 'musique-fin');
     state.locked = true;
     this.page = 0;
     this.ecran = [];

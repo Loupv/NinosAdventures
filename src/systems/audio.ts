@@ -30,6 +30,13 @@ export const estCoupe = () => coupe;
 /** Coupe ou rallume tout le son. Renvoie l'état obtenu. */
 export function couperSon(scene: Phaser.Scene | undefined, valeur: boolean): boolean {
   coupe = valeur;
+  // La musique est une boucle déjà lancée : le drapeau ne suffit pas, on la met en
+  // pause — et on la reprend là où elle en était, pas au début.
+  if (musique) {
+    if (valeur) musique.boucle.pause();
+    else if (musique.boucle.isPaused) musique.boucle.resume();
+    else musique.boucle.play();
+  }
   // Par acquit de conscience, on essaie aussi les leviers de Phaser : ils n'ont aucun
   // effet ici, mais ils couperont les boucles déjà lancées le jour où il y aura des
   // musiques, sur une version où ils fonctionnent.
@@ -39,6 +46,43 @@ export function couperSon(scene: Phaser.Scene | undefined, valeur: boolean): boo
     if (noeud) noeud.gain.value = valeur ? 0 : 1;
   }
   return coupe;
+}
+
+/**
+ * ── La musique ──
+ *
+ * **Une seule boucle à la fois, et elle appartient au jeu, pas à une scène** : le
+ * gestionnaire de son de Phaser est global, donc la musique de la maison survit aux
+ * changements de pièce — la chambre, le couloir et la cuisine se partagent la même
+ * boucle sans qu'elle reparte du début.
+ */
+const VOLUME_MUSIQUE = 0.3;
+
+let musique: { id: string; boucle: Phaser.Sound.BaseSound } | undefined;
+
+/**
+ * Joue la musique demandée — ou coupe tout avec `undefined`.
+ *
+ * Redemander celle qui joue déjà ne fait rien : c'est ce qui permet d'appeler cette
+ * fonction à chaque arrivée dans une pièce sans jamais faire redémarrer la boucle.
+ * Une musique dont le fichier n'est pas posé vaut un silence, sans erreur — comme tous
+ * les sons du jeu.
+ */
+export function jouerMusique(scene: Phaser.Scene, id: string | undefined): void {
+  const s = id ? son(id) : undefined;
+  const voulu = s?.present ? id : undefined;
+  if (musique?.id === voulu) return;
+  if (musique) {
+    musique.boucle.destroy();
+    musique = undefined;
+  }
+  if (!voulu) return;
+  const k = cle(voulu, 1);
+  if (!scene.cache.audio.exists(k)) return;
+  const boucle = scene.sound.add(k, { loop: true, volume: VOLUME_MUSIQUE });
+  musique = { id: voulu, boucle };
+  // Coupé, on garde la boucle prête sans la lancer : `couperSon(false)` la démarrera.
+  if (!coupe) boucle.play();
 }
 
 /** À appeler dans le `preload` du Boot. */

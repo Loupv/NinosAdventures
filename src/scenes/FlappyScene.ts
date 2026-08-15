@@ -3,7 +3,7 @@ import { GB, KEYS } from '../config';
 import { shade, shadeHex } from '../art/palette';
 import { animKey, texKey } from '../art/pixels';
 import { state } from '../systems/state';
-import { jouer } from '../systems/audio';
+import { jouer, jouerMusique } from '../systems/audio';
 import { FUSEE } from '../data/textes';
 import { PixelText, measure } from '../ui/PixelText';
 
@@ -81,6 +81,9 @@ export class FlappyScene extends Phaser.Scene {
 
   create(): void {
     state.palette = PALETTE;
+    // Le rêve a sa musique à lui — et tant que le fichier n'est pas posé, ça coupe
+    // simplement celle de la maison : on rêve en silence.
+    jouerMusique(this, 'musique-fusee');
     const ciel = shade(PALETTE, 3);
 
     this.add.rectangle(0, 0, GB.W, GB.H, ciel).setOrigin(0, 0).setDepth(-100);

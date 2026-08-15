@@ -1573,9 +1573,18 @@ Chaque saut **repart de zéro** et ne pose que ce que l'étape déclare, sinon l
 - [x] D'autres pièces à collectionner : il y en a dix-neuf, et l'écran de fin les compte.
 
 **Son** — **dix-sept sons sont branchés**, et la liste complète est écrite :
-[`src/data/sons.ts`](../src/data/sons.ts), 28 sons, 70 fichiers. `npx tsx tools/sons.ts`
+[`src/data/sons.ts`](../src/data/sons.ts), 34 sons, 79 fichiers. `npx tsx tools/sons.ts`
 dit à tout moment ce qui manque, par priorité, avec le nom exact du fichier à poser dans
 `public/sons/`.
+
+**La musique est branchée.** Une carte pièce → musique dans `sons.ts` (`musiquePour`),
+trois ambiances — la maison, la ville, l'eau — et une seule boucle à la fois, qui
+appartient au jeu et pas à une scène : toute la maison partage la même boucle sans
+qu'elle reparte du début, et sortir dans la cour la coupe. L'écran-titre, le rêve de la
+fusée et l'écran de fin demandent la leur par son nom. **Une seule piste est posée** :
+`musique-maison`, « Out of Time » (Abstraction, CC0) ralentie de moitié — une octave plus
+bas, deux minutes de boucle, la piste la plus calme du lot chiptune. Les cinq autres
+attendent leur `.ogg`, rien d'autre : poser le fichier suffit.
 
 Quatre des plus importants sont **fabriqués** plutôt que trouvés (`npx tsx
 tools/synthese.ts`), parce qu'on voulait un contrôle exact sur ce qui pique l'oreille :
