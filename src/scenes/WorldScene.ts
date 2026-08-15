@@ -1384,6 +1384,13 @@ export class WorldScene extends Phaser.Scene {
           y: Math.round(vise.go.y + vise.go.displayHeight / 2),
         }
       : loin;
+    // **Sur les dormeurs, le jet vise une tête** — pas le creux du lit entre les deux.
+    // La tête de Maman est à gauche du dessin (colonne 4), celle de Papa à droite (19).
+    if (vise?.def.id === 'parents-dorment') {
+      const gauche = this.player.sprite.x < vise.go.x + vise.go.displayWidth / 2;
+      cible.x = Math.round(vise.go.x + (gauche ? 4 : 19));
+      cible.y = Math.round(vise.go.y + 3);
+    }
 
     jouer(this, 'pistolet', { volume: 0.6 });
     /**
