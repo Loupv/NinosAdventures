@@ -558,7 +558,7 @@ export const ROOMS: Record<string, Room> = {
         y: 84,
         w: 16,
         h: 17,
-        to: { room: 'tour-toit', x: 40, y: 120 },
+        to: { room: 'tour-toit', x: 78, y: 114 },
         needsFlag: 'enigme-elephant',
         blockedDialogue: ['escalier-garde'],
         son: 'escalier',
@@ -576,7 +576,7 @@ export const ROOMS: Record<string, Room> = {
     palette: 'ville',
     theme: 'ville',
     heure: 'aube',
-    spawn: { x: 40, y: 120 },
+    spawn: { x: 78, y: 114 },
     tiles: [
       ...CIEL,
       PARAPET,
@@ -590,11 +590,12 @@ export const ROOMS: Record<string, Room> = {
       INT.floor,
       INT.floor,
       INT.floor,
-      INT.wall,
-      INT.wall,
+      // L'escalier redescend par le bas de l'écran, sous le trône : le mur se perce là.
+      '#########..#########',
+      '#########..#########',
     ],
     objects: [
-      { id: 'escalier-bas', x: 24, y: 52, sprite: 'escalier', depth: 56 },
+      { id: 'escalier-bas', x: 72, y: 118, sprite: 'escalier', depth: 60 },
       // **La composition du toit est un tableau** : le trône et Moon au centre de l'écran,
       // Nino aligné en dessous par le travelling — et la lune un peu à gauche, comme les
       // vraies lunes, qui ne se placent jamais où on veut. C'est elle que Moon garde : on
@@ -636,7 +637,7 @@ export const ROOMS: Record<string, Room> = {
         showIfFlag: 'enigme-moon-toit',
       },
     ],
-    doors: [{ x: 24, y: 52, w: 16, h: 17, to: { room: 'tour-31', x: 108, y: 62 }, son: 'escalier' }],
+    doors: [{ x: 72, y: 132, w: 16, h: 12, to: { room: 'tour-31', x: 108, y: 62 }, son: 'escalier' }],
   },
 
   // ═══════════════════════════════════════════════════════ chapitre 1 : la maison
