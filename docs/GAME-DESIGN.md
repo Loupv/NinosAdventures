@@ -1377,10 +1377,12 @@ secondes vues de côté, et c'était trop court pour le dernier morceau du jeu.
 
 **Un parapente ne monte pas tout seul.** La flèche du haut n'existe pas : Nino descend
 doucement, tout le temps, et la seule façon de remonter est une **colonne d'air chaud** —
-trois tirets lumineux qui montent du sol vers le ciel, visibles de très loin, une toutes
-les deux secondes à des positions qui tournent sans se répéter. Le jeu du vol, c'est
-d'aller les chercher : gauche-droite pour viser la colonne, la portance fait le reste
-(elle gagne largement sur la chute), et la flèche du bas pique pour descendre exprès.
+un fil du sol au ciel, des tirets lumineux qui montent dessus, visible de très loin. Il en
+naît une toutes les une seconde et demie, à des positions qui tournent sans se répéter, et
+trois sont déjà en route au moment du saut. Le jeu du vol, c'est d'aller les chercher :
+gauche-droite pour viser la colonne, la portance fait le reste (elle gagne largement sur
+la chute), et la flèche du bas pique pour descendre exprès. **Toucher le sol, c'est
+raté** — même prix que la fenêtre manquée : la rafale remonte, et on y retourne.
 Première colonne : *« Une colonne d'air chaud ! »* — première entrée : *« Ça monte,
 dedans ! »* — et après, on sait voler.
 

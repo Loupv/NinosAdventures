@@ -133,6 +133,8 @@ export const VOL = {
   repose: 'Le vent le repose sur le toit.',
   reposeSuite: 'ESPACE',
   rate: 'Raté. On y retourne.',
+  /** Toucher le sol : le vol est raté, la rafale remonte — même prix que la fenêtre manquée. */
+  tombe: 'Trop bas ! On y retourne.',
   lumiere: 'Une lumière s’allume.',
   reussi: 'Pile dedans.',
   atterrir: 'ESPACE pour atterrir',

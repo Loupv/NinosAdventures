@@ -102,10 +102,10 @@ const HERON_Z = 700;
  * ascendants qu'on voit venir de loin et qu'on va chercher au pilotage. La flèche du bas
  * pique, pour descendre plus vite exprès. C'est le vrai jeu du vol.
  */
-const CHUTE = 8; // px/s : la descente permanente
+const CHUTE = 5; // px/s : la descente permanente
 const PORTANCE = 62; // px/s vers le haut, dans une colonne
 const PIQUE = 46; // px/s de plus, flèche du bas
-const THERMIQUE_TOUS = 2000; // ms entre deux colonnes
+const THERMIQUE_TOUS = 1600; // ms entre deux colonnes
 const THERMIQUE_Z = 850;
 /** Demi-largeur d'une colonne, en unités du monde. */
 const THERMIQUE_LARGE = 13;
@@ -335,6 +335,12 @@ export class ParapenteScene extends Phaser.Scene {
       down: KEYS.down.map((c) => kb.addKey(c)),
     };
 
+    // Trois colonnes déjà en route au décollage : la première arrive dans les secondes
+    // qui suivent le saut, pas dix secondes plus tard.
+    this.nouveauThermique(220);
+    this.nouveauThermique(480);
+    this.nouveauThermique(700);
+
     this.dessiner();
     this.annoncer(VOL.consigne, VOL.demarrer);
   }
@@ -412,6 +418,12 @@ export class ParapenteScene extends Phaser.Scene {
     const portance = this.dansUneColonne() ? -PORTANCE : 0;
     const vy = CHUTE + (bas ? PIQUE : 0) + portance;
     this.py = Phaser.Math.Clamp(this.py + (vy + souffle.y) * dt, 18, GB.H - 26);
+    // **Toucher le sol, c'est raté.** Même prix que la fenêtre manquée : la rafale
+    // remonte, la maison repart un peu moins loin, et on y retourne.
+    if (this.py >= GB.H - 26) {
+      jouer(this, 'rafale', { volume: 0.6 });
+      this.remonter(VOL.tombe);
+    }
   }
 
   /** Vrai quand Nino est dans une colonne d'air proche : c'est là que ça monte. */
@@ -437,15 +449,25 @@ export class ParapenteScene extends Phaser.Scene {
    * loin : trois tirets qui montent, du sol vers le ciel. Le jeu du vol, c'est d'aller
    * les chercher.
    */
+  private nouveauThermique(z: number): void {
+    const n = this.nesThermiques++;
+    // Un fil continu (le corps de la colonne) et cinq tirets qui montent dessus : de loin
+    // on voit le fil, de près on voit l'air qui monte.
+    const tirets = [0, 1, 2, 3, 4].map((i) =>
+      this.add
+        .rectangle(0, 0, 2, i === 0 ? 4 : 5, shade(PALETTE, i === 0 ? 2 : 3))
+        .setOrigin(0.5, 0)
+        .setDepth(80)
+        .setVisible(false),
+    );
+    this.thermiques.push({ x: ((n * 61) % 150) - 75, z, tirets });
+  }
+
   private lesThermiques(delta: number, dt: number): void {
     this.prochainThermique -= delta;
     if (this.prochainThermique <= 0) {
       this.prochainThermique = THERMIQUE_TOUS;
-      const n = this.nesThermiques++;
-      const tirets = [0, 1, 2].map(() =>
-        this.add.rectangle(0, 0, 2, 4, shade(PALETTE, 3)).setOrigin(0.5, 0).setDepth(80).setVisible(false),
-      );
-      this.thermiques.push({ x: ((n * 61) % 150) - 75, z: THERMIQUE_Z, tirets });
+      this.nouveauThermique(THERMIQUE_Z);
     }
     for (const t of [...this.thermiques]) {
       t.z -= this.allure() * dt;
@@ -690,11 +712,17 @@ export class ParapenteScene extends Phaser.Scene {
       t.tirets.forEach((d, i) => {
         d.setVisible(visible);
         if (!visible) return;
-        // Chaque tiret monte en boucle, décalé d'un tiers : la colonne s'anime sans
-        // dessin de plus.
-        const cycle = ((this.time.now / 900 + i / 3) % 1 + 1) % 1;
+        // Le premier rectangle est le fil continu de la colonne ; les quatre autres sont
+        // les tirets qui montent dessus, décalés d'un quart chacun.
+        if (i === 0) {
+          d.setPosition(sx, Math.round(haut));
+          d.setSize(Math.max(1, Math.round((FOCALE * 1.2) / zAffiche)), Math.max(1, Math.round(bas - haut)));
+          d.setDepth(79 + Math.round(1000 - t.z));
+          return;
+        }
+        const cycle = ((this.time.now / 800 + (i - 1) / 4) % 1 + 1) % 1;
         d.setPosition(sx, Math.round(Phaser.Math.Linear(bas, haut, cycle)));
-        d.setSize(Math.max(1, Math.round((FOCALE * 2.4) / zAffiche)), 4);
+        d.setSize(Math.max(2, Math.round((FOCALE * 3.2) / zAffiche)), 5);
         d.setDepth(80 + Math.round(1000 - t.z));
       });
     }
