@@ -1835,16 +1835,18 @@ const PARENTS_DORMENT: Art = [
  * clairs, ils se perdaient sur les murs pâles de la chambre.
  */
 const Z_GRAND: Art = [
+  '000000',
+  '...00.',
+  '..00..',
+  '.00...',
+  '000000',
+];
+
+const Z_PETIT: Art = [
   '0000',
   '..0.',
   '.0..',
   '0000',
-];
-
-const Z_PETIT: Art = [
-  '000',
-  '.0.',
-  '000',
 ];
 
 /**
