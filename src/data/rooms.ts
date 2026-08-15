@@ -653,6 +653,9 @@ export const ROOMS: Record<string, Room> = {
         dialogue: 'parapente',
         // Il n'apparaît qu'une fois la question de Moon résolue : c'est lui la récompense.
         showIfFlag: 'enigme-moon-toit',
+        // Et une fois rentré, il est sous le lit de Nino — son texte le disait, mais le
+        // dessin restait sur le toit.
+        hideIfFlag: 'parapente-rentre',
       },
     ],
     doors: [{ x: 72, y: 132, w: 16, h: 12, to: { room: 'tour-31', x: 108, y: 62 }, son: 'escalier' }],
