@@ -1584,9 +1584,17 @@ japonais, et un héron qui exige des papiers.
 **L'affiche est une photo de famille qui se prend pendant qu'on joue.** Au début, Nino et
 Moon sont seuls devant le portail. Chaque personnage principal rejoint l'écran-titre une
 fois rencontré : l'araignée dès son premier haïku, l'écureuil, Hermione dès qu'on l'a
-trouvée une fois, papa en capitaine, Gérard en l'air (il ne se pose jamais), et l'éléphant
-à moitié dans le cadre — parce qu'il est inutilement grand. Le titre lit la sauvegarde
-sans la charger pour de vrai ; recommencer à zéro vide l'affiche avec le reste.
+trouvée une fois, papa en capitaine, Gérard en l'air (il ne se pose jamais) — et
+l'éléphant, qui n'est pas un invité mais le décor : du sol jusqu'au-delà du haut de
+l'écran, la tête coupée par le cadre, la trompe qui descend boire derrière la famille.
+Le fond de l'affiche est un bleu plus noir que la teinte 0 de la palette : les
+personnages sont dessinés avec cette teinte en contour, et sur un fond de la même teinte
+ils fondaient dedans. Le titre lit la sauvegarde sans la charger pour de vrai ;
+recommencer à zéro vide l'affiche avec le reste.
+
+Sur le toit, **la lune se regarde** — et c'est Moon qui répond : son histoire avec elle
+se raconte là, une fois en entier (les seize heures de sommeil s'expliquent enfin), puis
+en deux lignes. C'est le seul endroit du jeu où Moon parle de lui.
 
 C'est la récompense discrète de l'écran qu'on voit le plus : lancer le jeu raconte où on
 en est, sans un chiffre.

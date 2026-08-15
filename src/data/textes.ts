@@ -2911,6 +2911,31 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
    * réponse est la seule chose que le jeu ait jamais voulu dire. Réussir fait apparaître le
    * parapente : c'est lui, la récompense.
    */
+  /**
+   * **Regarder la lune, c'est faire parler Moon.** Son histoire avec elle se raconte ici,
+   * une fois en entier — le motif des seize heures de sommeil revient, et il s'explique
+   * enfin — puis en deux lignes les fois suivantes. C'est le seul endroit du jeu où Moon
+   * parle de lui.
+   */
+  lune: [
+    {
+      when: () => state.flag('lune-histoire'),
+      speaker: 'Moon',
+      lines: ['« On se regarde, c’est tout. »', '« Ça nous suffit. »'],
+    },
+    {
+      speaker: 'Moon',
+      lines: [
+        '« Tu la regardes aussi. »',
+        '« Petit, je dormais seize heures par jour pour la voir huit. »',
+        '« Une nuit, elle a eu besoin d’un gardien. »',
+        '« Personne d’autre ne s’était réveillé. »',
+        '« Voilà l’histoire. »',
+      ],
+      effects: { flag: 'lune-histoire' },
+    },
+  ],
+
   'moon-toit': [
     {
       when: () => state.flag('enigme-moon-toit'),

@@ -27,8 +27,11 @@ export class TitleScene extends Phaser.Scene {
     jouerAmbiance(this, undefined);
     const ink = shadeHex(pal, 3);
 
+    // Le fond descend d'un cran **sous** la palette : les personnages sont dessinés avec la
+    // teinte 0 en contour, et sur un fond teinte 0 ils fondaient dedans. Un bleu plus noir
+    // que tout ce qui se dessine, et l'affiche retrouve ses silhouettes.
     this.add
-      .rectangle(0, 0, GB.W, GB.H, shade(pal, 0))
+      .rectangle(0, 0, GB.W, GB.H, 0x0c1722)
       .setOrigin(0, 0)
       .setDepth(-10);
     this.add
@@ -80,7 +83,17 @@ export class TitleScene extends Phaser.Scene {
     invite(50, 108, 'hermione', 'idle-0', 'hermione-idle', state.hermione > 0);
     invite(112, 108, 'papa-capitaine', 'marche-0', undefined, state.flag('papa-capitaine-vu'));
     invite(130, 98, 'poisson', 'saut-0', 'poisson-saut', state.flag('poisson-arrive'));
-    invite(150, 108, 'elephant', 'boit', 'elephant-oreille', state.flag('elephant-vu'));
+    // **L'éléphant n'est pas un invité, c'est le décor.** Du sol jusqu'au-delà du haut de
+    // l'écran, derrière tout le monde : la tête dépasse du cadre, personne ne trouve ça
+    // bizarre, et toute la famille pose devant lui.
+    if (state.flag('elephant-vu')) {
+      this.add
+        .sprite(224, 108, texKey('elephant', pal), 'boit')
+        .setOrigin(1, 1)
+        .setScale(6)
+        .setDepth(-6)
+        .play(animKey('elephant-oreille', pal));
+    }
 
     this.prompt = this.line('', 114, ink, 'ttl-3');
     this.aussi = this.line('', 127, ink, 'ttl-4');

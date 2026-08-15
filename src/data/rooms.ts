@@ -600,7 +600,9 @@ export const ROOMS: Record<string, Room> = {
       // Nino aligné en dessous par le travelling — et la lune un peu à gauche, comme les
       // vraies lunes, qui ne se placent jamais où on veut. C'est elle que Moon garde : on
       // l'apprend au bout de trente-deux étages, et personne ne demande depuis quand.
-      { id: 'lune', x: 40, y: 14, sprite: 'lune', depth: -60 },
+      // On peut lui parler — c'est Moon qui répond : son histoire avec elle se raconte
+      // ici, en la regardant. Portée longue : elle est dans le ciel, on lui parle d'en bas.
+      { id: 'lune', x: 40, y: 14, sprite: 'lune', depth: -60, portee: 44, dialogue: 'lune' },
       { id: 'trone', x: 73, y: 70, sprite: 'trone', depth: 78, solid: true },
       /**
        * **Moon, le dernier gardien, sur son trône, sous sa lune.** Il explique enfin son nom,
