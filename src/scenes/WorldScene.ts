@@ -2760,6 +2760,12 @@ export class WorldScene extends Phaser.Scene {
    */
   private sEndormir(l: Live): void {
     const beat = pickBeat('grand-lit');
+    // Un beat sans choix — la nuit du retour, les parents dorment dedans — se joue
+    // comme un dialogue normal : pas de rêve à lancer.
+    if (beat && !beat.choice) {
+      this.jouerBeat(beat, l);
+      return;
+    }
     if (!beat?.choice) return;
     state.locked = true;
     say({

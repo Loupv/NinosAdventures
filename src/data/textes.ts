@@ -1792,6 +1792,11 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
   ],
 
   'grand-lit': [
+    // La nuit du retour, il est occupé — et le rêve n'est pas au programme.
+    {
+      when: () => state.flag('parapente-rentre') && !state.flag('matin'),
+      lines: ['Papa et Maman dorment dedans.', 'Même pas en rêve.'],
+    },
     {
       lines: [
         'Le grand lit des parents. Interdit de sauter dessus.',

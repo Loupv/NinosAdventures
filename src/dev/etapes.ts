@@ -47,6 +47,11 @@ export interface Etape {
  */
 const DEHORS = [
   'reveil',
+  // Le rêve de la fusée est obligatoire avant la fin de la chasse : sans ces drapeaux, le
+  // grand lit reproposait le rêve à quelqu'un qui avait déjà coulé un bateau, et la
+  // chambre des parents racontait un réveil qui n'avait pas eu lieu.
+  'reve-fait',
+  'reve-raconte',
   'poisson-vu',
   'bouchon-retire',
   'maman-au-salon',
