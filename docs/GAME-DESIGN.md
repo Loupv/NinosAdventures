@@ -1293,7 +1293,7 @@ déjà rencontrés — sauf un, et personne ne demande comment il est monté :
 | 13e | **L'écureuil** | *« Qu'est-ce qui est mieux qu'une noisette ? »* | Deux noisettes |
 | 27e | **L'araignée** | *« Le fer blanc du mardi ne dort jamais deux fois sous la même chaussette. Qu'est-ce que ça veut dire ? »* | C'est un beau poème |
 | 31e | **L'Éléphant des Machines** | *« Combien de pas, d'ici jusqu'à la mer ? »* | Je ne sais pas |
-| Le toit | **Moon, sous sa lune** | *« Quelle heure est-il ? »* — la plus difficile de toutes les questions | L'heure de rentrer |
+| Le toit | **Moon, sous sa lune** | Trois questions : *« Qui t'a suivi toute la journée, sans marcher ? »* (la lune — le piège, c'est l'ombre), *« Le soleil, la lune, ou toi : qui ne brille pas ? »* (la lune — elle ne fait que rendre la lumière, c'est pour ça qu'on la garde), et la plus difficile de toutes : *« Quelle heure est-il ? »* | L'heure de rentrer |
 
 **Le hall annonce la quête, le toit la referme.** Dans le hall, un seau d'eau — l'eau
 scintille, rien ne dit ce qu'il y a dedans. On lui parle : c'est le poisson, qui revient

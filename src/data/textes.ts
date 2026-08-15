@@ -3028,18 +3028,31 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
         faux: { lines: ['« Non. »', '« Regarde le ciel. Pense à la maison. »'] },
       },
     },
+    /**
+     * **La deuxième apprend quelque chose de vrai** — la lune ne brille pas, elle rend la
+     * lumière — et c'est aussi tout le secret de Moon : voilà pourquoi elle a besoin d'un
+     * gardien. Le piège est solide, même un adulte tombe dedans.
+     */
     {
       when: () => state.flag('moon-toit-1'),
       speaker: 'Moon',
-      lines: ['« Deuxième question. »', '« Qui garde la lune ? »'],
+      lines: [
+        '« Deuxième question. »',
+        '« Le soleil, la lune, ou toi. »',
+        '« Qui ne brille pas ? »',
+      ],
       enigme: {
-        reponses: ['Personne', 'Toi', 'La tour'],
-        bonne: 1,
+        reponses: ['Moi', 'Le soleil', 'La lune'],
+        bonne: 2,
         juste: {
-          lines: ['« Exact. »', '« Quelqu’un doit bien le faire. »'],
+          lines: [
+            '« Exact. »',
+            '« Elle ne fait que rendre la lumière. »',
+            '« C’est pour ça qu’on la garde. »',
+          ],
           effects: { flag: 'moon-toit-2' },
         },
-        faux: { lines: ['« Non. »', '« Tu lui as déjà parlé, pourtant. »'] },
+        faux: { lines: ['« Non. »', '« Elle vous ment à tous. Gentiment. »'] },
       },
     },
     /**
@@ -3048,17 +3061,21 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
     {
       when: () => state.flag('moon-essaye'),
       speaker: 'Moon',
-      lines: ['« Alors. »', '« Combien d’étages fait cette tour ? »'],
+      lines: ['« Alors. »', '« Qui t’a suivi toute la journée, sans marcher ? »'],
       enigme: {
-        reponses: ['Cent', 'Trente-deux', 'Trop'],
+        reponses: ['Mon ombre', 'La lune', 'Moon'],
         bonne: 1,
         juste: {
-          lines: ['« Exact. »', '« Tu les as tous montés. »'],
+          lines: ['« Exact. »', '« Elle suit tous ceux qui rentrent. »'],
           effects: { flag: 'moon-toit-1' },
         },
-        faux: { lines: ['« Non. »', '« Tu viens de les monter. »'] },
+        faux: { lines: ['« Non. »', '« Ton ombre marche avec toi. »', '« L’autre ne marche jamais. »'] },
       },
     },
+    /**
+     * **La première se répond en levant les yeux** : la lune suit ceux qui marchent, tous
+     * les enfants l'ont vue faire. Le piège — l'ombre — est le plus tentant des trois.
+     */
     {
       speaker: 'Moon',
       lines: [
@@ -3066,17 +3083,19 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
         '« Gardien de la lune. »',
         '« Tu veux rentrer sans inquiéter personne. »',
         '« Alors réponds à trois questions. »',
-        '« D’abord : combien d’étages fait cette tour ? »',
+        '« D’abord : qui t’a suivi toute la journée, sans marcher ? »',
       ],
       enigme: {
-        reponses: ['Cent', 'Trente-deux', 'Trop'],
+        reponses: ['Mon ombre', 'La lune', 'Moon'],
         bonne: 1,
         juste: {
-          lines: ['« Exact. »', '« Tu les as tous montés. »'],
+          lines: ['« Exact. »', '« Elle suit tous ceux qui rentrent. »'],
           effects: { flag: 'moon-toit-1' },
         },
-        // « Trop » n'est pas faux, mais ce n'est pas un chiffre : il compte, lui.
-        faux: { lines: ['« Non. »', '« Tu viens de les monter. »'], effects: { flag: 'moon-essaye' } },
+        faux: {
+          lines: ['« Non. »', '« Ton ombre marche avec toi. »', '« L’autre ne marche jamais. »'],
+          effects: { flag: 'moon-essaye' },
+        },
       },
     },
   ],
