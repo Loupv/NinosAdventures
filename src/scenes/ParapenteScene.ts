@@ -94,15 +94,13 @@ const PARENTS = { x: -26, y: -16, w: 26, h: 20 };
  */
 const ARRIVEE = 70;
 
-/**
- * **Trois essais, puis on redescend.** Rater ne coûte toujours rien, mais on ne reste pas
- * enfermé dans le vol : au troisième, le vent repose Nino sur le toit de la tour, à côté de
- * son parapente. Il repart quand il veut — et c'est le même geste qu'au début.
- */
-const ESSAIS = 3;
-
 const HERON_TOUS = 2400; // ms entre deux hérons
-const HERON_Z = 1000;
+const HERON_Z = 700;
+/**
+ * **Le vol accélère en approchant.** Le début est une promenade, la fin demande de piloter :
+ * la vitesse d'avance gagne un tiers entre le saut et la maison, et les hérons suivent.
+ */
+const AVANCE_FIN = 24; // unités de z par seconde, en plus, à l'arrivée
 
 interface Immeuble {
   x: number;
@@ -133,14 +131,16 @@ export class ParapenteScene extends Phaser.Scene {
   private titre!: PixelText;
   private sous!: PixelText;
   private message!: PixelText;
-  private compteur!: PixelText;
-  private essais = ESSAIS;
+  /** Le premier héron qu'on VOIT est annoncé — pas le premier qui naît, invisible au loin. */
+  private heronAnnonce = false;
 
   private immeubles: Immeuble[] = [];
   private lignes: { z: number; go: Phaser.GameObjects.Rectangle }[] = [];
   private herons: Oiseau[] = [];
   private maison!: Phaser.GameObjects.Rectangle;
   private maisonToit!: Phaser.GameObjects.Rectangle;
+  private porte!: Phaser.GameObjects.Rectangle;
+  private cheminee!: Phaser.GameObjects.Rectangle;
   private fenetres: Phaser.GameObjects.Rectangle[] = [];
   private maisonZ = MAISON_Z;
   private annoncee = false;
@@ -158,7 +158,7 @@ export class ParapenteScene extends Phaser.Scene {
   /** Combien de rafales ont soufflé : elles alternent de côté. */
   private rafales = 0;
 
-  private keys!: Record<'action' | 'left' | 'right' | 'up' | 'down', Phaser.Input.Keyboard.Key[]>;
+  private keys!: Record<'action' | 'sortie' | 'left' | 'right' | 'up' | 'down', Phaser.Input.Keyboard.Key[]>;
 
   constructor() {
     super('Parapente');
@@ -183,7 +183,7 @@ export class ParapenteScene extends Phaser.Scene {
     this.nesHerons = 0;
     this.cognes = 0;
     this.rafales = 0;
-    this.essais = ESSAIS;
+    this.heronAnnonce = false;
     this.immeubles = [];
     this.lignes = [];
     this.herons = [];
@@ -205,6 +205,11 @@ export class ParapenteScene extends Phaser.Scene {
     ] as const) {
       this.add.rectangle(x, y, 1, 1, shade(PALETTE, 3)).setOrigin(0, 0).setDepth(1);
     }
+
+    // La lune de Moon, encore là dans le ciel de l'aube : elle veille jusqu'au bout.
+    this.add.image(20, 10, texKey('lune', PALETTE)).setOrigin(0, 0).setDepth(1);
+    // Une lueur au ras de l'horizon : le jour arrive, c'est pour ça qu'on se presse.
+    this.add.rectangle(0, HORIZON - 2, GB.W, 2, shade(PALETTE, 3)).setOrigin(0, 0).setDepth(2);
 
     // Le sol : tout ce qui est sous l'horizon. C'est la ville éteinte, vue de très haut.
     this.add
@@ -248,6 +253,9 @@ export class ParapenteScene extends Phaser.Scene {
           .setDepth(902),
       );
     }
+    // Une porte et une cheminée : trois rectangles font une maison, cinq en font une vraie.
+    this.porte = this.add.rectangle(0, 0, 1, 1, shade(PALETTE, 1)).setOrigin(0, 0).setDepth(902);
+    this.cheminee = this.add.rectangle(0, 0, 1, 1, shade(PALETTE, 1)).setOrigin(0, 0).setDepth(901);
 
     this.vol = this.add
       .image(this.px, this.py, texKey('parapente-vol', PALETTE))
@@ -260,13 +268,12 @@ export class ParapenteScene extends Phaser.Scene {
     this.titre = new PixelText(this, 'pp-titre', 0, 44, GB.W, 12);
     this.sous = new PixelText(this, 'pp-sous', 0, 58, GB.W, 12);
     this.message = new PixelText(this, 'pp-msg', 0, 4, GB.W, 12);
-    this.compteur = new PixelText(this, 'pp-essais', 3, GB.H - 13, 60, 12);
-    for (const t of [this.titre, this.sous, this.message, this.compteur]) t.image.setDepth(2100);
-    this.majEssais();
+    for (const t of [this.titre, this.sous, this.message]) t.image.setDepth(2100);
 
     const kb = this.input.keyboard!;
     this.keys = {
       action: KEYS.action.map((c) => kb.addKey(c)),
+      sortie: KEYS.cancel.map((c) => kb.addKey(c)),
       left: KEYS.left.map((c) => kb.addKey(c)),
       right: KEYS.right.map((c) => kb.addKey(c)),
       up: KEYS.up.map((c) => kb.addKey(c)),
@@ -280,6 +287,11 @@ export class ParapenteScene extends Phaser.Scene {
   update(_time: number, delta: number): void {
     const dt = delta / 1000;
     const appui = this.keys.action.some((k) => Phaser.Input.Keyboard.JustDown(k));
+    // ÉCHAP à tout moment : on n'est jamais enfermé dans le vol.
+    if (this.etat !== 'fini' && this.keys.sortie.some((k) => Phaser.Input.Keyboard.JustDown(k))) {
+      this.reposerSurLeToit();
+      return;
+    }
 
     if (this.etat === 'attente') {
       // Il flotte sur place en attendant qu'on se décide.
@@ -339,7 +351,11 @@ export class ParapenteScene extends Phaser.Scene {
   private neuf(b: Immeuble, z: number): void {
     const n = this.nesImmeubles++;
     // Deux suites qui ne retombent pas en phase : ça suffit à ce qu'on ne voie pas la boucle.
-    b.x = ((n * 53) % 240) - 120;
+    b.x = ((n * 53) % 200) - 100;
+    // **À l'approche de la maison, la ville s'écarte.** Un immeuble qui renaît devant la
+    // façade — avec sa fenêtre allumée — faisait concurrence à la cible au pire moment :
+    // dans la dernière ligne droite, les nouveaux venus se rangent sur les bords.
+    if (this.maisonZ < 420) b.x = (n % 2 === 0 ? -1 : 1) * (78 + ((n * 13) % 40));
     b.w = 22 + ((n * 17) % 26);
     // Hautes : il faut qu'une bonne moitié d'entre elles **dépasse l'horizon**, sinon on ne
     // survole pas une ville, on survole des dalles.
@@ -348,14 +364,19 @@ export class ParapenteScene extends Phaser.Scene {
     b.cogne = false;
   }
 
+  /** La vitesse d'avance du moment : une promenade au saut, un vrai vol à l'arrivée. */
+  private allure(): number {
+    return AVANCE + AVANCE_FIN * (1 - Phaser.Math.Clamp(this.maisonZ / MAISON_Z, 0, 1));
+  }
+
   private avancerLaVille(dt: number): void {
     for (const b of this.immeubles) {
-      b.z -= AVANCE * dt;
+      b.z -= this.allure() * dt;
       if (b.z < COGNE && !b.cogne) this.cogner(b);
       if (b.z < PROCHE) this.neuf(b, b.z + IMMEUBLES * PAS_Z);
     }
     for (const l of this.lignes) {
-      l.z -= AVANCE * dt;
+      l.z -= this.allure() * dt;
       if (l.z < PROCHE) l.z += LIGNES * PAS_LIGNE;
     }
   }
@@ -401,14 +422,18 @@ export class ParapenteScene extends Phaser.Scene {
         .play(animKey('heron-vol', PALETTE));
       // Ils arrivent en face, à des hauteurs et des côtés qui tournent sans se répéter.
       this.herons.push({ x: ((n * 37) % 120) - 60, y: ((n * 23) % 60) - 34, z: HERON_Z, go });
-      jouer(this, 'heron', { volume: 0.35 });
-      // Le premier est annoncé, les suivants non : on a compris, et on les voit venir.
-      if (n === 0) this.dire(VOL.heron);
     }
 
     for (const h of [...this.herons]) {
       // Ils volent vers nous : leur vitesse s'ajoute à la nôtre.
-      h.z -= (AVANCE + 40) * dt;
+      h.z -= (this.allure() + 40) * dt;
+      // Le premier qu'on VOIT est annoncé — pas le premier qui naît, petit point invisible
+      // au loin. « Des hérons ! » sort quand il y a un héron à l'écran.
+      if (!this.heronAnnonce && h.z < 320) {
+        this.heronAnnonce = true;
+        jouer(this, 'heron', { volume: 0.5 });
+        this.dire(VOL.heron);
+      }
       // Et ils dérivent un peu, sinon on les éviterait sans y penser.
       h.x += Math.sin(h.z / 90) * 12 * dt;
       if (h.z >= 14) continue;
@@ -427,7 +452,7 @@ export class ParapenteScene extends Phaser.Scene {
   // ───────────────────────────────────────────────────────────── la maison
 
   private laMaison(dt: number): void {
-    this.maisonZ -= AVANCE * dt;
+    this.maisonZ -= this.allure() * dt;
     if (!this.annoncee && this.maisonZ < 420) {
       this.annoncee = true;
       this.dire(VOL.maison);
@@ -445,17 +470,12 @@ export class ParapenteScene extends Phaser.Scene {
   }
 
   /**
-   * Rater ne coûte rien : une rafale le remonte, et la maison repart au loin. Au troisième
-   * essai, elle le repose plutôt en haut de la tour, à côté du parapente.
+   * **Rater ne coûte rien, autant de fois qu'on veut.** Une rafale le remonte, la maison
+   * repart un peu moins loin, et on recommence — un retry classique. ÉCHAP reste la seule
+   * porte de sortie, à la demande.
    */
   private remonter(pourquoi: string): void {
     this.dire(pourquoi);
-    this.essais -= 1;
-    this.majEssais();
-    if (this.essais <= 0) {
-      this.reposerSurLeToit();
-      return;
-    }
     this.maisonZ = MAISON_Z_RETOUR;
     this.annoncee = false;
     this.px = GB.W / 2;
@@ -465,11 +485,7 @@ export class ParapenteScene extends Phaser.Scene {
     this.prochaineRafale = RAFALE_TOUS;
   }
 
-  private majEssais(): void {
-    this.compteur.setLines([VOL.essais(Math.max(0, this.essais))], shadeHex(PALETTE, 3));
-  }
-
-  /** Trois essais passés : le vent le ramène d'où il vient, et il repart quand il veut. */
+  /** ÉCHAP : le vent le ramène d'où il vient, et il repart quand il veut. */
   private reposerSurLeToit(): void {
     this.etat = 'fini';
     for (const h of this.herons) h.go.destroy();
@@ -527,13 +543,18 @@ export class ParapenteScene extends Phaser.Scene {
 
     for (const h of this.herons) {
       h.go.setPosition(Math.round(this.ecranX(h.x, h.z)), Math.round(this.ecranY(h.y, h.z)));
-      h.go.setScale(Phaser.Math.Clamp((FOCALE / h.z) * 2.4, 0.25, 3));
+      h.go.setScale(Phaser.Math.Clamp((FOCALE / h.z) * 2.4, 0.5, 3));
       h.go.setDepth(100 + Math.round(1000 - h.z));
     }
+
+    // Nino se penche du côté où il va : c'est un parapente, pas un ascenseur.
+    this.vol.setAngle(Phaser.Math.Clamp(this.vx * 0.25, -16, 16));
 
     const visible = this.maisonZ < 900;
     this.maison.setVisible(visible);
     this.maisonToit.setVisible(visible);
+    this.porte.setVisible(visible);
+    this.cheminee.setVisible(visible);
     for (const f of this.fenetres) f.setVisible(visible);
     if (!visible) {
       this.vol.setPosition(Math.round(this.px), Math.round(this.py));
@@ -559,6 +580,26 @@ export class ParapenteScene extends Phaser.Scene {
         .setPosition(Math.round(fg), Math.round(fh))
         .setSize(Math.max(1, Math.round(fd - fg)), Math.max(1, Math.round(fb - fh)));
     });
+    // **La cible clignote.** La fenêtre de Nino s'allume et s'éteint trois fois par seconde :
+    // c'est ce qui la distingue de celle des parents, et c'est ce que le message annonce.
+    this.fenetres[1].setFillStyle(
+      shade(PALETTE, Math.floor(this.time.now / 320) % 2 === 0 ? 3 : 2),
+    );
+    // La porte, au milieu du rez-de-chaussée, et la cheminée sur le toit à gauche.
+    const pg = this.ecranX(-6, z);
+    const pd = this.ecranX(6, z);
+    const ph = this.ecranY(SOL - 18, z);
+    const pb = this.ecranY(SOL, z);
+    this.porte
+      .setPosition(Math.round(pg), Math.round(ph))
+      .setSize(Math.max(1, Math.round(pd - pg)), Math.max(1, Math.round(pb - ph)));
+    const cg = this.ecranX(-MAISON_LARGE / 2 + 20, z);
+    const cd = this.ecranX(-MAISON_LARGE / 2 + 34, z);
+    const ch = this.ecranY(-MAISON_HAUT / 2 - 14, z);
+    const cb = this.ecranY(-MAISON_HAUT / 2, z);
+    this.cheminee
+      .setPosition(Math.round(cg), Math.round(ch))
+      .setSize(Math.max(1, Math.round(cd - cg)), Math.max(1, Math.round(cb - ch)));
 
     this.vol.setPosition(Math.round(this.px), Math.round(this.py));
   }

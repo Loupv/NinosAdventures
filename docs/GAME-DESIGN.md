@@ -1387,14 +1387,27 @@ d'entiers qui ne retombent pas en phase, donc pas de hasard : deux vols se resse
 fenêtre allumée sur chacun quand il est assez proche, et **huit lignes de sol qui foncent vers
 nous** — sans elles, on ne sait pas si on vole ou si on flotte.
 
-**La maison arrive au bout**, avec ses deux fenêtres : la sienne, allumée, et celle des
-parents. Viser la mauvaise allume une lumière. La décision se prend à `z = 70` et pas au
-dernier moment : en approchant, les deux fenêtres s'écartent vers les bords, et trop près la
-sienne sortait de l'écran — la cible devenait injoignable pile au moment de viser.
+**La maison arrive au bout**, avec porte, cheminée, et ses deux fenêtres : **la sienne
+clignote** — trois fois par seconde, c'est ce qui la distingue de celle des parents, et c'est
+ce que le message annonce (*« La fenêtre qui clignote ! »*). Viser la mauvaise allume une
+lumière. La décision se prend à `z = 70` et pas au dernier moment : en approchant, les deux
+fenêtres s'écartent vers les bords, et trop près la sienne sortait de l'écran — la cible
+devenait injoignable pile au moment de viser. Et **dans la dernière ligne droite, la ville
+s'écarte** : un immeuble qui renaissait devant la façade, avec sa fenêtre allumée, faisait
+concurrence à la cible au pire moment — les nouveaux venus se rangent sur les bords.
 
 Réglé comme le rêve de la fusée, c'est-à-dire **sans aucune punition** : rater ne fait pas
 perdre, une rafale remonte Nino, la maison repart au loin (moins loin que la première fois) et
-il recommence.
+il recommence — **autant de fois qu'il veut**, un retry classique. ÉCHAP reste la seule porte
+de sortie : le vent le repose sur le toit, et il repart quand il veut. (Il y avait un compteur
+de trois essais qui forçait ce retour : un enfant à deux doigts de réussir se faisait ramener
+au toit par une règle — c'est lui qui décide, maintenant.)
+
+**Le vol accélère en approchant** : la vitesse d'avance gagne un tiers entre le saut et la
+maison, et les hérons suivent. Le début est une promenade — la lune encore dans le ciel de
+l'aube, une lueur au ras de l'horizon — la fin demande de piloter, et Nino se penche du côté
+où il va. Les hérons sont annoncés **quand on en voit un** (*« Des hérons ! »*), pas quand le
+premier naît en point invisible au loin — c'était une annonce sans oiseau.
 
 > **Un cul-de-sac à ne pas refaire ailleurs.** Le parapente du toit était garé derrière le
 > flag `parapente-pris`, posé au moment du saut et sauvegardé aussitôt. Si le vol

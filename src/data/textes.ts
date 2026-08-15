@@ -114,25 +114,20 @@ export const FUSEE = {
 /** Le vol en parapente, depuis le toit de la tour. */
 export const VOL = {
   consigne: 'Viser sa fenêtre.',
-  demarrer: 'ESPACE pour sauter',
+  demarrer: 'ESPACE saut   ÉCHAP toit',
   rafale: 'Une rafale.',
-  /** Les hérons de l'Erdre rentrent à la même heure que lui. */
-  heron: 'Un héron !',
+  /** Les hérons de l'Erdre rentrent à la même heure que lui — annoncés quand on les voit. */
+  heron: 'Des hérons !',
   heronTouche: 'Le héron n’a pas aimé.',
-  /** Quand la maison apparaît au loin, après une bonne demi-minute de vol. */
-  maison: 'La maison !',
+  /** Quand la maison apparaît au loin : la cible, dite par ce qui la distingue. */
+  maison: 'La fenêtre qui clignote !',
   /** Et quand il rentre dans un immeuble, ce qui arrive. */
   immeuble: 'Boum.',
   immeubleEncore: 'Pardon !',
-  /**
-   * **Trois essais.** Le compteur reste affiché en haut à gauche pendant tout le vol, et au
-   * troisième raté une rafale le repose sur le toit : on n'est jamais enfermé dans le vol, et
-   * il n'y a rien à perdre — le parapente est toujours là, en haut.
-   */
-  essais: (n: number) => `ESSAIS ${n}`,
+  /** ÉCHAP à tout moment : le vent le repose sur le toit, et il repart quand il veut. */
   repose: 'Le vent le repose sur le toit.',
   reposeSuite: 'ESPACE',
-  rate: 'Raté.',
+  rate: 'Raté. On y retourne.',
   lumiere: 'Une lumière s’allume.',
   reussi: 'Pile dedans.',
   atterrir: 'ESPACE pour atterrir',
