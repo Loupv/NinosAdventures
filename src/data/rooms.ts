@@ -268,7 +268,7 @@ export const ROOMS: Record<string, Room> = {
       // personne ne demande comment il est arrivé là — ni comment il compte monter.
       {
         id: 'poisson-seau',
-        x: 102,
+        x: 97,
         y: 40,
         sprite: 'seau',
         frame: 'eau-0',
@@ -292,7 +292,7 @@ export const ROOMS: Record<string, Room> = {
         frame: 'saut-0',
         anim: 'poisson-saut',
         depth: 70,
-        saute: { gauche: 98, droite: 106, hauteur: 16, eau: 52 },
+        saute: { gauche: 100, droite: 110, hauteur: 16, eau: 52 },
         showIfFlag: 'enigme-poisson',
       },
       {

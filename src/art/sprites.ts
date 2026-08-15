@@ -1754,53 +1754,48 @@ const retoucheHaut = (art: Art, depuis: number, lignes: string[]): Art =>
   art.map((l, i) => lignes[i - depuis] ?? l);
 
 /**
- * **Le seau du hall de la tour**, vu légèrement de dessus : l'ouverture fait une ellipse et
- * on voit l'eau dedans, qui scintille en deux images. Le poisson ne se montre pas — on
- * découvre qu'il est là en parlant au seau, et il ne saute qu'une fois son énigme résolue.
+ * **La bassine du hall de la tour**, vue légèrement de dessus : l'ouverture fait une ellipse
+ * et on voit l'eau dedans, qui scintille en deux images. Assez large pour que le poisson
+ * saute sans dépasser. Il ne se montre pas — on découvre qu'il est là en lui parlant, et il
+ * ne saute qu'une fois son énigme résolue.
  */
 const SEAU_EAU_A: Art = [
-  '..............',
-  '..............',
-  '..............',
-  '..............',
-  '..............',
-  '..............',
-  '..............',
-  '...00000000...',
-  '..0222322220..',
-  '.023222222320.',
-  '.000000000000.',
-  '.011111111110.',
-  '.011111111110.',
-  '..0111111110..',
-  '..0111111110..',
-  '...01111110...',
-  '...00000000...',
-  '..............',
+  '........................',
+  '........................',
+  '........................',
+  '........................',
+  '........................',
+  '........................',
+  '........................',
+  '..00000000000000000000..',
+  '.0222232222222322222220.',
+  '.0000000000000000000000.',
+  '.0111111111111111111110.',
+  '.0111111111111111111110.',
+  '..011111111111111111110.',
+  '..00000000000000000000..',
+  '...00..............00...',
 ];
 
 /** La même eau, les reflets décalés : c'est ce qui la fait bouger. */
-const SEAU_EAU_B = retoucheHaut(SEAU_EAU_A, 8, [
-  '..0232222320..',
-  '.022232232220.',
-]);
+const SEAU_EAU_B = retoucheHaut(SEAU_EAU_A, 8, ['.0232222223222222232220.']);
 
 /** Le poisson au ras de l'eau : il vient de jaillir. */
 const SEAU_SAUTE_A = retoucheHaut(SEAU_EAU_A, 3, [
-  '.....0000.....',
-  '....033330....',
-  '...03303330...',
-  '...03333330...',
+  '..........0000..........',
+  '.........033330.........',
+  '........03303330........',
+  '........03333330........',
 ]);
 
 /** Et plus haut, avec une goutte qui retombe. */
 const SEAU_SAUTE_B = retoucheHaut(SEAU_EAU_B, 0, [
-  '.....0000.....',
-  '....033330....',
-  '...03303330...',
-  '...03333330...',
-  '....033330....',
-  '......2.......',
+  '..........0000..........',
+  '.........033330.........',
+  '........03303330........',
+  '........03333330........',
+  '.........033330.........',
+  '...........2............',
 ]);
 
 /**
