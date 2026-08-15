@@ -2242,8 +2242,8 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
       when: () => state.flag('enigme-poisson'),
       speaker: 'Le poisson',
       lines: ['« Ne m’attends pas. »', '« J’en suis à l’étage un. »'],
-      // La tête sort du seau le temps de la réplique.
-      montre: { sprite: 'seau', frame: 'saute-0', x: 102, y: 40, depth: 72 },
+      // **Pas de tête qui sort ici** : une fois l'énigme résolue, le poisson entier saute
+      // déjà au-dessus du seau — la superposer faisait deux poissons.
     },
     {
       speaker: 'Le poisson',
