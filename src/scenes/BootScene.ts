@@ -57,6 +57,17 @@ export class BootScene extends Phaser.Scene {
       repeat: -1,
     });
 
+    // Les Zzz des dormeurs : deux images qui se croisent en montant, très lentement.
+    this.anims.create({
+      key: animKey('zzz-dort', pal),
+      frames: [
+        { key: texKey('zzz', pal), frame: 'dort-0' },
+        { key: texKey('zzz', pal), frame: 'dort-1' },
+      ],
+      frameRate: 1.1,
+      repeat: -1,
+    });
+
     // L'eau du seau scintille en deux images, comme celle de la baignoire.
     this.anims.create({
       key: animKey('seau-eau', pal),

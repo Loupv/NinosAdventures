@@ -1822,11 +1822,41 @@ const TRONE: Art = [
  * dessin du lit la nuit du retour. Pour une fois, personne ne cherche personne.
  */
 const PARENTS_DORMENT: Art = [
-  '..00000...00000..',
-  '.0333330.0222220.',
-  '.0300330.0200220.',
-  '.0333330.0222220.',
-  '..00000...00000..',
+  '..00000.........00000..',
+  '.0333330.......0222220.',
+  '.0300330.......0200220.',
+  '.0333330.......0222220.',
+  '..00000.........00000..',
+];
+
+/**
+ * **Les Zzz du sommeil**, en deux images qui alternent : le grand Z et le petit z se
+ * croisent en montant. Une planche pour tous les dormeurs de la maison.
+ */
+const ZZZ_A: Art = [
+  '......3333',
+  '........3.',
+  '.......3..',
+  '......3333',
+  '..........',
+  '..........',
+  '333.......',
+  '.3........',
+  '333.......',
+  '..........',
+];
+
+const ZZZ_B: Art = [
+  '..........',
+  '..........',
+  '......3333',
+  '........3.',
+  '.......3..',
+  '......3333',
+  '333.......',
+  '.3........',
+  '333.......',
+  '..........',
 ];
 
 /**
@@ -2231,6 +2261,7 @@ export const SHEETS: Record<string, Record<string, Art>> = {
   baignoire: { vide: BAIGNOIRE_VIDE, pleine: BAIGNOIRE_PLEINE, 'pleine-2': BAIGNOIRE_PLEINE_2 },
   'table-bar': { pleine: TABLE_BAR, vide: TABLE_BAR_VIDE },
   seau: { 'eau-0': SEAU_EAU_A, 'eau-1': SEAU_EAU_B, 'saute-0': SEAU_SAUTE_A, 'saute-1': SEAU_SAUTE_B },
+  zzz: { 'dort-0': ZZZ_A, 'dort-1': ZZZ_B },
 };
 
 /** Images fixes. */

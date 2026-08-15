@@ -876,7 +876,7 @@ export const ROOMS: Record<string, Room> = {
        */
       {
         id: 'parents-dorment',
-        x: 54,
+        x: 56,
         y: 24,
         sprite: 'parents-dorment',
         depth: 64,
@@ -893,6 +893,29 @@ export const ROOMS: Record<string, Room> = {
         sprite: 'lit-bebe',
         solid: true,
         dialogue: 'lit-bebe',
+        showIfFlag: 'parapente-rentre',
+        hideIfFlag: 'matin',
+      },
+      // Les Zzz, au-dessus du grand lit et du berceau : ils se croisent en montant.
+      {
+        id: 'zzz-parents',
+        x: 63,
+        y: 10,
+        sprite: 'zzz',
+        frame: 'dort-0',
+        anim: 'zzz-dort',
+        depth: 70,
+        showIfFlag: 'parapente-rentre',
+        hideIfFlag: 'matin',
+      },
+      {
+        id: 'zzz-bebe',
+        x: 24,
+        y: 68,
+        sprite: 'zzz',
+        frame: 'dort-0',
+        anim: 'zzz-dort',
+        depth: 96,
         showIfFlag: 'parapente-rentre',
         hideIfFlag: 'matin',
       },
