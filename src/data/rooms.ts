@@ -873,8 +873,8 @@ export const ROOMS: Record<string, Room> = {
        */
       {
         id: 'parents-dorment',
-        x: 52,
-        y: 22,
+        x: 54,
+        y: 24,
         sprite: 'parents-dorment',
         depth: 64,
         priorite: 2,

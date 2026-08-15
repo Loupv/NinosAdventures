@@ -15,6 +15,8 @@ export function gbFade(
   pal: PaletteId,
   dir: 'in' | 'out',
   onDone?: () => void,
+  /** Durée d'un palier. Le défaut est un battement de porte ; un coucher mérite plus lent. */
+  pas = STEP,
 ): Phaser.GameObjects.Rectangle {
   const steps: (0 | 1 | 2)[] = dir === 'out' ? [2, 1, 0] : [0, 1, 2];
   const rect = scene.add
@@ -28,13 +30,13 @@ export function gbFade(
     i += 1;
     if (i < steps.length) {
       rect.setFillStyle(shade(pal, steps[i]));
-      scene.time.delayedCall(STEP, tick);
+      scene.time.delayedCall(pas, tick);
       return;
     }
     if (dir === 'in') rect.destroy();
     onDone?.();
   };
-  scene.time.delayedCall(STEP, tick);
+  scene.time.delayedCall(pas, tick);
   return rect;
 }
 

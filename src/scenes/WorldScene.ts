@@ -436,6 +436,17 @@ export class WorldScene extends Phaser.Scene {
        * d'ambiance qui se déclenche toute seule : elle ne demande rien, elle ne bloque rien, elle
        * donne l'heure — et elle rappelle qu'on est attendu à la maison.
        */
+      /**
+       * **L'atterrissage : la maison dort.** Une fois, tout doucement — ça pose la règle
+       * de la fin (on traverse sur la pointe des pieds) sans rien demander.
+       */
+      if (id === 'chambre' && state.flag('parapente-rentre') && !state.flag('matin') && !state.flag('dort-dit')) {
+        state.setFlag('dort-dit');
+        state.save();
+        this.time.delayedCall(900, () => {
+          if (!state.locked && !this.transitioning) this.runDialogue('maison-dort');
+        });
+      }
       if (id === 'tour-pied' && !state.flag('nuit-dite')) {
         state.setFlag('nuit-dite');
         state.save();
@@ -2829,9 +2840,13 @@ export class WorldScene extends Phaser.Scene {
         state.setFlag('matin');
         state.save();
         this.transitioning = true;
+        // **Le fondu le plus lent du jeu, et un silence au bout.** C'est la fin qui commence :
+        // chaque moment d'ici au gâteau prend son temps.
         gbFade(this, this.pal, 'out', () => {
-          this.scene.restart({ room: 'chambre', x: l.def.x + 8, y: l.def.y + 20 });
-        });
+          this.time.delayedCall(1400, () => {
+            this.scene.restart({ room: 'chambre', x: l.def.x + 8, y: l.def.y + 20 });
+          });
+        }, 420);
         return;
       }
       say({ lines: SEMBLANT[i], focusY: l.def.y, onDone: () => raconter(i + 1) });

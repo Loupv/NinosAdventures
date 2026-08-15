@@ -656,7 +656,7 @@ export const GROGNEMENT = ['Moon grogne.'];
 
 /** Il rentre par la fenêtre, il cache le parapente, il se couche. */
 export const SEMBLANT = [
-  ['Nino plie le parapente. Mal.', 'Il le pousse sous le lit.'],
+  ['Nino plie le parapente.', 'Il le pousse sous le lit.'],
   ['Le ciel commence à être gris, dehors.'],
   ['Il se glisse sous la couette.', 'Il ferme les yeux très fort.'],
 ];
@@ -2192,6 +2192,16 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
    * une tour qui bouche le ciel, et il fait déjà sombre. C'est la seule narration d'ambiance du jeu
    * qui se déclenche toute seule — elle ne demande rien, elle ne bloque rien, elle dit l'heure.
    */
+  /**
+   * **À l'atterrissage, la maison dort.** Une fois, tout doucement : ça pose la règle de la
+   * scène — on traverse sur la pointe des pieds — sans rien demander.
+   */
+  'maison-dort': [
+    {
+      lines: ['La maison est silencieuse.', 'Tout le monde dort.'],
+    },
+  ],
+
   // La tour n'est pas mentionnée : à l'arrivée sur le parvis elle est encore hors champ,
   // un écran plus loin. C'est le regard levé à la porte qui la racontera.
   'nuit-tombe': [
