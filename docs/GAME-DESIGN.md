@@ -1365,8 +1365,10 @@ joueur :
 
 ### Voler
 
-Sur le toit : la vue, une antenne qui vibre, et **un parapente plié contre le parapet**.
-À qui il est, on ne sait pas.
+Sur le toit : la vue, une antenne qui vibre — et, une fois la question de Moon résolue,
+**le parapente apparaît contre le parapet, dans le dos du gardien**. Pour sauter, il faut
+contourner le trône et monter sur le rebord : on se retrouve au bord du vide, derrière
+Moon, et c'est exactement là qu'on doit être. À qui est le parapente, on ne sait pas.
 
 Le vol est un mini-jeu **vu vers l'avant**, comme une borne d'arcade : la ville vient vers
 nous, Nino se déplace sur tout l'écran aux quatre flèches, et le décor grandit à mesure. La
@@ -1595,7 +1597,8 @@ japonais, et un héron qui exige des papiers.
 ## L'écran-titre se remplit
 
 **L'affiche est une photo de famille qui se prend pendant qu'on joue.** Au début, Nino et
-Moon sont seuls devant le portail. Chaque personnage principal rejoint l'écran-titre une
+Moon sont seuls. (Le portail qui tournait au centre est parti : l'affiche raconte les
+rencontres, pas la mécanique.) Chaque personnage principal rejoint l'écran-titre une
 fois rencontré : l'araignée dès son premier haïku — pendue à son fil sous le « LES » du
 titre, elle monte et descend de quelques pixels, avec une pause à chaque bout — l'écureuil,
 Gérard dans son seau (il en saute de temps en temps), Hermione dès qu'on l'a

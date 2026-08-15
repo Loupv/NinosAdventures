@@ -630,8 +630,11 @@ export const ROOMS: Record<string, Room> = {
         // Pas un portail : la scène s'en occupe, pour que « Sauter ? Oui » fasse sauter
         // tout de suite au lieu de demander un deuxième appui.
         id: 'parapente',
-        x: 96,
-        y: 108,
+        // **Derrière Moon, contre le parapet.** Pour sauter, il faut monter sur le rebord,
+        // dans le dos du gardien : on contourne le trône, et on se retrouve au bord du vide.
+        x: 74,
+        y: 44,
+        depth: 48,
         sprite: 'parapente',
         priorite: 2,
         dialogue: 'parapente',

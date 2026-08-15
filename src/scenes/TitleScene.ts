@@ -7,7 +7,7 @@ import { jouerAmbiance, jouerMusique } from '../systems/audio';
 import { TITRE } from '../data/textes';
 import { PixelText, measure } from '../ui/PixelText';
 
-/** L'écran-titre. Nino et Moon devant un portail qui tourne. */
+/** L'écran-titre : la photo de famille, qui se remplit à mesure qu'on joue. */
 export class TitleScene extends Phaser.Scene {
   private prompt!: PixelText;
   private aussi?: PixelText;
@@ -41,10 +41,6 @@ export class TitleScene extends Phaser.Scene {
 
     this.bigLine(TITRE.ligne1, 20, ink, 'ttl-1');
     this.bigLine(TITRE.ligne2, 38, ink, 'ttl-2');
-
-    this.add
-      .sprite(GB.W / 2, 74, texKey('portail', pal), 'spin-0')
-      .play(animKey('portail-spin', pal));
 
     this.add
       .sprite(66, 108, texKey('nino', pal), 'down-0')
