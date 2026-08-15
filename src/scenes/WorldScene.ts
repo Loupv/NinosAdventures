@@ -25,6 +25,8 @@ import {
   ECUREUIL_FUITE,
   ECUREUIL_MOUILLE,
   ECUREUIL_RIT,
+  DORT_MAMAN,
+  DORT_PAPA,
   ECUREUIL_TREMPE,
   POISSON_RIT,
   VERRES_PAPA,
@@ -1415,6 +1417,15 @@ export class WorldScene extends Phaser.Scene {
           if (gerardTouche && gerard) {
             const bassine = this.live.find((x) => x.def.id === 'poisson-seau') ?? gerard;
             this.flotter(POISSON_RIT[this.mouillé % POISSON_RIT.length], bassine, 28);
+            this.mouillé += 1;
+            return;
+          }
+          // **Le côté du lit décide de la bouche.** Le jet tombé à gauche du milieu fait
+          // marmonner Maman (ses sorts), à droite Papa (sa tempête).
+          if (vise?.def.id === 'parents-dorment') {
+            const milieu = vise.go.x + vise.go.displayWidth / 2;
+            const registre = cible.x < milieu ? DORT_MAMAN : DORT_PAPA;
+            this.flotter(registre[this.mouillé % registre.length], vise);
             this.mouillé += 1;
             return;
           }

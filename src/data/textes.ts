@@ -521,6 +521,25 @@ export const ECUREUIL_TREMPE = ['« Non. »', '« Non non non — »'];
  * accuse le pigeon quand même : dehors, c'est toujours le pigeon, comme à la maison c'est
  * toujours le chat. Le parrain, lui, tire la seule conclusion utile.
  */
+/**
+ * **Les dormeurs arrosés marmonnent, chacun dans son registre** — et c'est le côté du lit
+ * qui décide de la bouche : Maman dort à gauche (la tête claire), Papa à droite. Personne
+ * ne se réveille : ils ont eu une journée.
+ */
+export const DORT_MAMAN = [
+  '« Pluvio... termino... »',
+  '« Canicula... disparus... »',
+  '« Hermionem... localisum... »',
+  '« Siesta... eternum... »',
+];
+
+export const DORT_PAPA = [
+  '« Bâbord... toute... »',
+  '« Ça tangue... tenez bon... »',
+  '« Le bouchon... tiendra... »',
+  '« Terre... en vue... »',
+];
+
 export const VERRES_PAPA = ['« NON MAIS CE PIGEON. »'];
 export const VERRES_PARRAIN = ['« Garçon. »', '« La même chose. »', '« Dans un verre plus lourd. »'];
 export const ECUREUIL_FUITE = 'L’écureuil détale, trempé.';
@@ -548,20 +567,6 @@ export const ARROSES: Record<string, string[]> = {
   araignee: ['« Tiède. »', '« Encore. »'],
   elephant: ['« Enfin. »', '« Il fait tellement chaud. »'],
   hermione: ['Hermione rit très fort.', 'Hermione en veut encore.'],
-  // **Les dormeurs de la nuit du retour.** On peut arroser à peu près tout le monde dans
-  // ce jeu — même une maison qui dort. Personne ne se réveille : ils marmonnent, chacun
-  // dans son registre. Papa navigue dans une tempête ; Maman jette des sorts. Les lignes
-  // alternent : un arrosage lui, un arrosage elle.
-  'parents-dorment': [
-    '« Bâbord... toute... »',
-    '« Pluvio... termino... »',
-    '« Ça tangue... tenez bon... »',
-    '« Canicula... disparus... »',
-    '« Le bouchon... tiendra... »',
-    '« Hermionem... localisum... »',
-    '« Terre... en vue... »',
-    '« Siesta... eternum... »',
-  ],
   // Hermione ne déroge pas à son personnage, même en dormant, même arrosée.
   'lit-bebe': ['« ... »'],
   parrain: ['« Il pleut ? »', '« Uniquement sur moi ? »'],
