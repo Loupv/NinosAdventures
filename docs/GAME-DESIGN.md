@@ -36,6 +36,7 @@ avec cynisme, et personne n'est méchant.
 | **L'écureuil** | un coin de la cour, puis la toute fin du quai de l'Erdre | À moitié caché, toujours. Pousse Nino à viser la fenêtre avec le ballon, puis à couler le bateau de papa — et nie tout, à chaque fois. Il ne gagne rien à ça. |
 | **L'Éléphant des Machines** | le bord de l'Erdre, puis le 31e étage de la tour | Douze mètres de bois et d'acier. On le voit d'abord boire dans la rivière, puis on le retrouve sur un palier. Personne ne demande comment il est monté ; lui se souvient de l'avoir croisé en bas. Il pose la seule énigme dont il ne connaît pas la réponse. |
 | **Le jardinier** | la place, près du tram | Chapeau, tablier, et il se plaint de la chaleur — le sport local. Il n'arrive pas à suivre, il ne demande jamais rien, et il dit merci si les sept plantes ont été arrosées sans lui. |
+| **L'employé des Machines** | l'entrée de la place | Le personnage le plus terne de la ville porte la plus grosse information du jeu, et la donne comme un problème d'effectifs : *« L'éléphant s'est échappé. »* Ses nouvelles suivent l'éléphant avec un temps de retard — il apprend par ouï-dire ce que Nino a vu de ses yeux, et personne ne fait jamais le rapprochement. |
 | **La maîtresse** | derrière les grilles de l'école | Réclame le projet d'art de Nino. N'importe quel objet fait l'affaire ; ce qu'elle note, c'est ce qu'on en dit — et elle garde la meilleure note. |
 | **Copains ×3** | école *(à construire)* | Un qui croit tout, un qui ne croit rien, un qui a déjà vu une dimension et n'en parle jamais. |
 

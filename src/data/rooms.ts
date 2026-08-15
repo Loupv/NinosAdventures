@@ -1480,6 +1480,20 @@ export const ROOMS: Record<string, Room> = {
         dialogue: 'passant',
         errance: { rayon: 30, vitesse: 26 },
       },
+      /**
+       * **L'employé des Machines de l'île.** Il est posté à l'entrée de la place, il n'a l'air
+       * de rien, et il porte la plus grosse information du jeu : l'éléphant s'est échappé.
+       * Personne ne la lui demande, et Nino ne fera jamais le rapprochement — c'est la règle.
+       */
+      {
+        id: 'machines',
+        x: 28,
+        y: 122,
+        sprite: 'copain',
+        priorite: 2,
+        errance: { rayon: 8, vitesse: 10 },
+        dialogue: 'machines',
+      },
       { id: 'poubelle', x: 132, y: 30, sprite: 'poubelle', solid: true, dialogue: 'poubelle' },
       {
         id: 'pigeon',

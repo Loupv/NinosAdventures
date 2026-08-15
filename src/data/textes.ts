@@ -2865,6 +2865,42 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
   'velos-ville': [{ lines: ['Trois vélos.', 'Six pneus à plat.'] }],
 
   /**
+   * **L'employé des Machines de l'île.** Le personnage le plus terne de la place porte la
+   * plus grosse information du jeu, et il la donne comme un problème d'effectifs : l'éléphant
+   * s'est échappé. Le joueur, lui, a vu cet éléphant boire l'Erdre — et le jeu ne fera
+   * **jamais** le rapprochement à sa place : l'absurde est constaté, jamais expliqué.
+   *
+   * Ses répliques suivent l'éléphant à la trace, toujours avec un temps de retard : il
+   * apprend par ouï-dire ce que Nino a vu de ses yeux.
+   */
+  machines: [
+    {
+      when: () => state.flag('elephant-tour-vu'),
+      speaker: 'L’employé',
+      lines: ['« On me dit qu’il est monté dans une tour. »', '« Je ne monte pas le chercher. »'],
+    },
+    {
+      when: () => state.flag('elephant-vu'),
+      speaker: 'L’employé',
+      lines: ['« Il paraît qu’il pleut au bord de l’Erdre. »', '« Aucun rapport, je suppose. »'],
+    },
+    {
+      when: () => state.flag('machines-vu'),
+      speaker: 'L’employé',
+      lines: ['« Pas d’éléphant. »', '« Il finira bien par avoir soif. »'],
+    },
+    {
+      speaker: 'L’employé',
+      lines: [
+        '« Je travaille aux Machines de l’île. »',
+        '« Enfin. Je travaillais. »',
+        '« L’éléphant s’est échappé. »',
+      ],
+      effects: { flag: 'machines-vu' },
+    },
+  ],
+
+  /**
    * **Le monsieur du thermomètre.** Il traverse la place en annonçant la température à qui
    * veut, et elle monte à chaque fois qu'on le croise. Il ne répond jamais à Nino, il
    * l'informe — et à la fin il n'a plus de chiffres, seulement l'ombre qui n'existe pas.
