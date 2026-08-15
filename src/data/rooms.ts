@@ -1028,12 +1028,16 @@ export const ROOMS: Record<string, Room> = {
         showIfFlag: 'poisson-arrive',
       },
       { id: 'wc', x: 16, y: 88, sprite: 'wc', solid: true, dialogue: 'wc' },
-      // Le bouchon, posé sur le rebord : il n'existe qu'une fois retiré de la baignoire.
+      // Le bouchon, posé au pied de la baignoire qu'il vient de quitter : il n'existe
+      // qu'une fois retiré, et on le trouve là où on l'a enlevé — pas à l'autre bout de
+      // la pièce.
       {
         id: 'bouchon',
-        x: 108,
-        y: 94,
+        x: 44,
+        y: 56,
         sprite: 'bouchon',
+        // Prioritaire sur la baignoire, sa voisine directe : sinon elle volait l'interaction.
+        priorite: 2,
         dialogue: 'bouchon',
         showIfFlag: 'bouchon-retire',
         hideIfFlag: 'bouchon-pris',
