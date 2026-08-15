@@ -97,6 +97,19 @@ const ARRIVEE = 70;
 const HERON_TOUS = 2400; // ms entre deux hérons
 const HERON_Z = 700;
 /**
+ * **Un parapente ne monte pas tout seul.** La flèche du haut n'existe plus : Nino descend
+ * doucement, tout le temps — et il remonte dans les **colonnes d'air chaud**, des courants
+ * ascendants qu'on voit venir de loin et qu'on va chercher au pilotage. La flèche du bas
+ * pique, pour descendre plus vite exprès. C'est le vrai jeu du vol.
+ */
+const CHUTE = 8; // px/s : la descente permanente
+const PORTANCE = 62; // px/s vers le haut, dans une colonne
+const PIQUE = 46; // px/s de plus, flèche du bas
+const THERMIQUE_TOUS = 2000; // ms entre deux colonnes
+const THERMIQUE_Z = 850;
+/** Demi-largeur d'une colonne, en unités du monde. */
+const THERMIQUE_LARGE = 13;
+/**
  * **Le vol accélère en approchant.** Le début est une promenade, la fin demande de piloter :
  * la vitesse d'avance gagne un tiers entre le saut et la maison, et les hérons suivent.
  */
@@ -137,6 +150,12 @@ export class ParapenteScene extends Phaser.Scene {
   private immeubles: Immeuble[] = [];
   private lignes: { z: number; go: Phaser.GameObjects.Rectangle }[] = [];
   private herons: Oiseau[] = [];
+  /** Les colonnes d'air : trois tirets lumineux qui montent, et de la portance dedans. */
+  private thermiques: { x: number; z: number; tirets: Phaser.GameObjects.Rectangle[] }[] = [];
+  private prochainThermique = 1400;
+  private nesThermiques = 0;
+  private thermiqueDit = false;
+  private porteDit = false;
   /** Les étoiles s'éteignent une à une à mesure que le jour approche. */
   private etoiles: Phaser.GameObjects.Rectangle[] = [];
   /** Les traînées du vent : visibles pendant une rafale, elles montrent d'où il pousse. */
@@ -189,6 +208,11 @@ export class ParapenteScene extends Phaser.Scene {
     this.vent = { x: 0, y: 0 };
     this.ventReste = 0;
     this.prochainHeron = HERON_TOUS;
+    this.thermiques = [];
+    this.prochainThermique = 1400;
+    this.nesThermiques = 0;
+    this.thermiqueDit = false;
+    this.porteDit = false;
     this.nesImmeubles = 0;
     this.nesHerons = 0;
     this.cognes = 0;
@@ -339,6 +363,7 @@ export class ParapenteScene extends Phaser.Scene {
     this.piloter(delta, dt);
     this.avancerLaVille(dt);
     this.lesHerons(delta, dt);
+    this.lesThermiques(delta, dt);
     this.laMaison(dt);
     this.dessiner();
   }
@@ -378,9 +403,61 @@ export class ParapenteScene extends Phaser.Scene {
       }
     }
     this.px = Phaser.Math.Clamp(this.px + (this.vx + souffle.x) * dt, 14, GB.W - 14);
-    // En hauteur, pas d'inertie : à sept ans, on veut que la flèche du haut fasse monter.
-    const vy = (haut ? -PILOTAGE * 0.8 : 0) + (bas ? PILOTAGE * 0.8 : 0);
+    /**
+     * **Plus de montée manuelle.** Nino descend doucement, tout le temps ; la flèche du
+     * bas pique ; et la seule façon de remonter, c'est une colonne d'air — la portance
+     * s'applique tant qu'on est dedans, et elle gagne largement sur la chute.
+     */
+    void haut;
+    const portance = this.dansUneColonne() ? -PORTANCE : 0;
+    const vy = CHUTE + (bas ? PIQUE : 0) + portance;
     this.py = Phaser.Math.Clamp(this.py + (vy + souffle.y) * dt, 18, GB.H - 26);
+  }
+
+  /** Vrai quand Nino est dans une colonne d'air proche : c'est là que ça monte. */
+  private dansUneColonne(): boolean {
+    for (const t of this.thermiques) {
+      if (t.z > 110 || t.z < PROCHE - 6) continue;
+      const sx = this.ecranX(t.x, Math.max(t.z, 32));
+      const demi = Math.max(10, (THERMIQUE_LARGE * FOCALE) / Math.max(t.z, 32));
+      if (Math.abs(sx - this.px) < demi) {
+        if (!this.porteDit) {
+          this.porteDit = true;
+          this.dire(VOL.porte);
+        }
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * **Les colonnes d'air.** Elles naissent au loin à des positions qui tournent sans se
+   * répéter, elles viennent vers nous comme le reste du monde, et on les voit de très
+   * loin : trois tirets qui montent, du sol vers le ciel. Le jeu du vol, c'est d'aller
+   * les chercher.
+   */
+  private lesThermiques(delta: number, dt: number): void {
+    this.prochainThermique -= delta;
+    if (this.prochainThermique <= 0) {
+      this.prochainThermique = THERMIQUE_TOUS;
+      const n = this.nesThermiques++;
+      const tirets = [0, 1, 2].map(() =>
+        this.add.rectangle(0, 0, 2, 4, shade(PALETTE, 3)).setOrigin(0.5, 0).setDepth(80).setVisible(false),
+      );
+      this.thermiques.push({ x: ((n * 61) % 150) - 75, z: THERMIQUE_Z, tirets });
+    }
+    for (const t of [...this.thermiques]) {
+      t.z -= this.allure() * dt;
+      if (!this.thermiqueDit && t.z < 420) {
+        this.thermiqueDit = true;
+        this.dire(VOL.thermique);
+      }
+      if (t.z < PROCHE - 6) {
+        t.tirets.forEach((d) => d.destroy());
+        this.thermiques = this.thermiques.filter((x) => x !== t);
+      }
+    }
   }
 
   // ─────────────────────────────────────────────────────────────── la ville
@@ -602,6 +679,24 @@ export class ParapenteScene extends Phaser.Scene {
           .setSize(Math.max(1, Math.round(large / 4)), Math.max(1, Math.round(hauteur / 6)));
         b.fenetre.setDepth(b.mur.depth + 2);
       }
+    }
+
+    for (const t of this.thermiques) {
+      const zAffiche = Math.max(t.z, 32);
+      const sx = Math.round(this.ecranX(t.x, zAffiche));
+      const bas = this.ecranY(SOL, zAffiche);
+      const haut = Math.max(14, HORIZON - (FOCALE * 30) / zAffiche);
+      const visible = t.z < 640 && sx > -4 && sx < GB.W + 4 && bas > haut;
+      t.tirets.forEach((d, i) => {
+        d.setVisible(visible);
+        if (!visible) return;
+        // Chaque tiret monte en boucle, décalé d'un tiers : la colonne s'anime sans
+        // dessin de plus.
+        const cycle = ((this.time.now / 900 + i / 3) % 1 + 1) % 1;
+        d.setPosition(sx, Math.round(Phaser.Math.Linear(bas, haut, cycle)));
+        d.setSize(Math.max(1, Math.round((FOCALE * 2.4) / zAffiche)), 4);
+        d.setDepth(80 + Math.round(1000 - t.z));
+      });
     }
 
     for (const h of this.herons) {

@@ -1372,9 +1372,17 @@ contourner le trône et monter sur le rebord : on se retrouve au bord du vide, d
 Moon, et c'est exactement là qu'on doit être. À qui est le parapente, on ne sait pas.
 
 Le vol est un mini-jeu **vu vers l'avant**, comme une borne d'arcade : la ville vient vers
-nous, Nino se déplace sur tout l'écran aux quatre flèches, et le décor grandit à mesure. La
-traversée dure une bonne demi-minute — c'était dix secondes vues de côté, et c'était trop
-court pour le dernier morceau du jeu.
+nous, et le décor grandit à mesure. La traversée dure une bonne demi-minute — c'était dix
+secondes vues de côté, et c'était trop court pour le dernier morceau du jeu.
+
+**Un parapente ne monte pas tout seul.** La flèche du haut n'existe pas : Nino descend
+doucement, tout le temps, et la seule façon de remonter est une **colonne d'air chaud** —
+trois tirets lumineux qui montent du sol vers le ciel, visibles de très loin, une toutes
+les deux secondes à des positions qui tournent sans se répéter. Le jeu du vol, c'est
+d'aller les chercher : gauche-droite pour viser la colonne, la portance fait le reste
+(elle gagne largement sur la chute), et la flèche du bas pique pour descendre exprès.
+Première colonne : *« Une colonne d'air chaud ! »* — première entrée : *« Ça monte,
+dedans ! »* — et après, on sait voler.
 
 **La perspective tient en deux lignes.** Chaque chose a une position dans le monde (`x`
 latéral, `y` vertical, `z` la distance) et l'écran s'en déduit :

@@ -118,6 +118,9 @@ export const VOL = {
   rafale: 'Une rafale.',
   /** Les hérons de l'Erdre rentrent à la même heure que lui — annoncés quand on les voit. */
   heron: 'Des hérons !',
+  /** La première colonne d'air, et la première fois qu'on y entre : c'est le jeu du vol. */
+  thermique: 'Une colonne d’air chaud !',
+  porte: 'Ça monte, dedans !',
   heronTouche: 'Le héron n’a pas aimé.',
   /** Quand la maison apparaît au loin : la cible, dite par ce qui la distingue. */
   maison: 'La fenêtre qui clignote !',
