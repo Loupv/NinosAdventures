@@ -552,6 +552,17 @@ export const SONS: Son[] = [
     priorite: 'plus tard',
   },
   {
+    id: 'musique-maison-nuit',
+    present: true,
+    provisoire: true,
+    quand: 'Toute la maison, la nuit du retour — jusqu’au matin.',
+    variantes: 1,
+    cherche:
+      'La mélodie de la maison, endormie : « Princess Quest (No Boing) » au quart de sa vitesse, deux octaves sous l’original, posée doucement. La même maison, qui dort.',
+    priorite: 'plus tard',
+    boucle: true,
+  },
+  {
     id: 'musique-mezzanine',
     present: true,
     provisoire: true,

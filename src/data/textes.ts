@@ -681,6 +681,15 @@ export const GROGNEMENT = ['Moon grogne.'];
 // ═══════════════════════════════════════════════════════════════ 7. la fin
 
 /** Il rentre par la fenêtre, il cache le parapente, il se couche. */
+/**
+ * **La question avant de dormir** : se coucher lance toute la fin du jeu — le matin, le
+ * gâteau, le générique. On ne déclenche pas ça d'un ESPACE distrait.
+ */
+export const COUCHER = {
+  question: ['Son lit.', 'Une très grande journée se termine.', 'Dormir ?'],
+  non: ['Pas tout de suite.', 'Encore un petit tour.'],
+};
+
 export const SEMBLANT = [
   ['Nino plie le parapente.', 'Il le pousse sous le lit.'],
   ['Le ciel commence à être gris, dehors.'],

@@ -27,6 +27,7 @@ import {
   ECUREUIL_RIT,
   DORT_MAMAN,
   DORT_PAPA,
+  COUCHER,
   ECUREUIL_TREMPE,
   POISSON_RIT,
   VERRES_PAPA,
@@ -322,7 +323,13 @@ export class WorldScene extends Phaser.Scene {
     // La musique de l'endroit. Redemander celle qui joue déjà ne la fait pas repartir :
     // toute la maison partage la même boucle. Le générique, lui, garde la musique avec
     // laquelle il est arrivé — il traverse toutes les pièces, ce serait un zapping.
-    if (!this.cinema) jouerMusique(this, musiquePour(id));
+    // **La nuit du retour, toute la maison joue sa version endormie** : la même mélodie,
+    // deux fois plus lente encore, chambre et mezzanine comprises — une seule maison qui dort.
+    const clef = musiquePour(id);
+    const dortEncore = state.flag('parapente-rentre') && !state.flag('matin');
+    const maisonnee = ['musique-maison', 'musique-chambre', 'musique-mezzanine'];
+    if (!this.cinema)
+      jouerMusique(this, dortEncore && clef && maisonnee.includes(clef) ? 'musique-maison-nuit' : clef);
     // Et les grillons, par-dessus, dès que la nuit est tombée — jusqu'au matin : la maison
     // endormie du retour les garde, par la vitre cassée.
     if (!this.cinema)
@@ -2919,6 +2926,24 @@ export class WorldScene extends Phaser.Scene {
    */
   private faireSemblant(l: Live): void {
     state.locked = true;
+    // **On demande avant.** Se coucher lance toute la fin du jeu : la question protège
+    // d'un ESPACE distrait, et « non » rend la nuit au joueur.
+    say({
+      lines: COUCHER.question,
+      choices: ['Oui', 'Non'],
+      focusY: l.def.y,
+      onDone: (reponse) => {
+        if (reponse !== 0) {
+          say({ lines: COUCHER.non, focusY: l.def.y, onDone: () => (state.locked = false) });
+          return;
+        }
+        this.dormirEnfin(l);
+      },
+    });
+  }
+
+  private dormirEnfin(l: Live): void {
+    state.locked = true;
     state.take('parapente');
     const couche = { sprite: 'nino-couche', x: l.def.x + 4, y: l.def.y + 10, cacheNino: true };
     const retirer = this.montrer(couche);
@@ -3024,7 +3049,8 @@ export class WorldScene extends Phaser.Scene {
         this.endormiSurLaTable();
         return;
       }
-      // La boîte passe en haut : toute la scène du gâteau reste visible en dessous.
+      // La boîte reste EN BAS : la scène du gâteau — et Nino — vivent dans la moitié
+      // haute de la cuisine, et la boîte en haut les cachait.
       // La réplique dit elle-même si un son l'accompagne, et le temps qu'on lui laisse après.
       if (FETE[i].son) jouer(this, FETE[i].son, { volume: 0.9 });
       const suite = () => {
@@ -3035,7 +3061,7 @@ export class WorldScene extends Phaser.Scene {
         }
         this.time.delayedCall(pause, () => dire(i + 1));
       };
-      say({ speaker: FETE[i].qui, lines: FETE[i].lignes, focusY: 110, onDone: suite });
+      say({ speaker: FETE[i].qui, lines: FETE[i].lignes, focusY: 30, onDone: suite });
     };
     dire(0);
   }
