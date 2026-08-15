@@ -2026,13 +2026,15 @@ export const ROOMS: Record<string, Room> = {
       // L'amarre, tendue entre le quai et la coque. Tant que le bateau flotte.
       {
         id: 'corde',
-        x: 236,
+        x: 242,
         y: 58,
         sprite: 'corde',
         depth: -18,
         priorite: 2,
-        // Serrée : au-delà, c'est à papa qu'on parle, puis au poisson.
-        portee: 16,
+        // Très serrée : il faut être contre la coque — au-delà, c'est à papa qu'on parle.
+        // Et surtout, la bulle n'apparaît qu'une fois le bateau en plein écran : elle se
+        // déclenchait avant qu'on le voie bien, et une corde sans bateau ne dit rien.
+        portee: 10,
         dialogue: 'corde',
         hideIfFlag: 'bateau-coule',
       },
@@ -2080,7 +2082,7 @@ export const ROOMS: Record<string, Room> = {
         priorite: 2,
         hideIfFlag: 'maman-quai-partie',
       },
-      { id: 'bouee', x: 40, y: 88, sprite: 'bouee', dialogue: 'quai' },
+      { id: 'bouee', x: 56, y: 88, sprite: 'bouee', dialogue: 'quai' },
       /**
        * **Le monsieur qui n'ira pas se baigner.** Il regarde l'eau depuis le quai, il a une raison
        * de ne pas y entrer, et elle ne tient pas debout. Après l'averse, il commente l'odeur de la
@@ -2088,7 +2090,7 @@ export const ROOMS: Record<string, Room> = {
        */
       {
         id: 'baigneur',
-        x: 24,
+        x: 34,
         y: 84,
         sprite: 'copain',
         priorite: 2,
@@ -2097,7 +2099,7 @@ export const ROOMS: Record<string, Room> = {
       },
       {
         id: 'plume',
-        x: 152,
+        x: 192,
         y: 84,
         sprite: 'plume',
         dialogue: 'plume',
@@ -2106,7 +2108,7 @@ export const ROOMS: Record<string, Room> = {
       // Le projet d'art de Nino, qui ne le sait pas encore.
       {
         id: 'chaussure',
-        x: 96,
+        x: 128,
         y: 86,
         sprite: 'chaussure',
         dialogue: 'chaussure',
@@ -2114,7 +2116,7 @@ export const ROOMS: Record<string, Room> = {
       },
       {
         id: 'panneau-erdre',
-        x: 64,
+        x: 80,
         y: 86,
         sprite: 'panneau',
         // Pas solide : sur le quai on ne saute plus, un meuble en travers fermerait
