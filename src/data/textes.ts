@@ -445,7 +445,7 @@ export const PLANTE = {
 };
 
 /** Ce qu'on voit quand une plante reçoit enfin de l'eau. Elle ne dit rien : elle pousse. */
-export const PLANTE_ARROSEE = 'Elle se redresse.';
+export const PLANTE_ARROSEE = 'La plante semble soudainement revivre.';
 
 /** Et quand c'était la dernière. Personne ne félicite : le jeu constate, et c'est mieux. */
 export const PLANTES_TOUTES = ['Plus une seule plante n’a soif.'];
@@ -1581,7 +1581,7 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
       lines: [
         'Moon, le chat blanc, dort sur le canapé.',
         'Nino le prend sur ses genoux. Moon accepte, magnanime.',
-        'Un chat, ça fait exactement trente-huit degrés.',
+        'C’est un radiateur qui ronronne.',
         'Nino le repose.',
       ],
       effects: { flag: 'chat-porte' },
@@ -1618,10 +1618,19 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
     },
   ],
 
+  /**
+   * **Papa plante sa propre blague.** On le retrouvera capitaine d'un bateau qui « fuit un
+   * tout petit peu » : ici, avant même de sortir de la maison, il regarde un tutoriel de
+   * colmatage « pour un ami ». Personne ne relève, et ceux qui refont le jeu sourient dès
+   * le salon.
+   */
   'papa-salon': [
     {
-      speaker: 'Papa',
-      lines: ['« Cinq minutes, Nino. »', 'Ça fait quarante minutes que ça fait cinq minutes.'],
+      lines: [
+        'Papa regarde une vidéo, très concentré.',
+        '« Colmater une coque : dix astuces. »',
+        '« C’est pour un ami », dit papa.',
+      ],
     },
   ],
 

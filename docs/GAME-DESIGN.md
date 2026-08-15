@@ -29,7 +29,7 @@ avec cynisme, et personne n'est méchant.
 | **Hermione** | une cachette à la fois | La petite sœur, un an. Elle est cachée quelque part et **change de cachette dès qu'on l'a trouvée**. |
 | **Moon** | salon | Le chat blanc. Dort, jusqu'à ce qu'on le paie en pizza. Devient le guide du jeu. |
 | **Maman** | cuisine, puis salon, puis le bout du quai de l'Erdre | Elle cherche Hermione dans la cuisine, plantée devant le frigo, et ne monte au salon qu'une fois qu'elle a renoncé. Tient le réel. C'est elle qui envoie Nino au frigo sans savoir ce qu'elle déclenche. |
-| **Papa** | salon | « Cinq minutes, Nino. » Depuis quarante minutes. |
+| **Papa** | salon | Il regarde un tutoriel : *« Colmater une coque : dix astuces. »* — « C'est pour un ami. » La meilleure blague du jeu est plantée avant même de sortir de la maison. |
 | **Papa (capitaine)** | l'Erdre | Le même papa, sur un bateau, avec un chapeau de capitaine. Il est là dès qu'on arrive au quai. |
 | **L'araignée** | mezzanine, puis le 27e étage de la tour | Géante, et elle dit des haïkus — un nouveau à chaque visite, dix en réserve. Quand elle les a tous dits, elle chante, elle danse, et elle s'en va. |
 | **Gérard, le poisson** | baignoire, puis l'Erdre | Saute d'un bord à l'autre, visible seulement quand il est en l'air. Raconte sa vie en cinq boîtes de dialogue, et ne demande de l'aide qu'au moment où le chat s'assoit au bord de la baignoire. Rend ses dettes, plus tard, dans l'Erdre. |
@@ -791,7 +791,8 @@ sèche. »*, la même chose plus *« Nino a ce qu'il faut. »* quand il a le pis
 la touche : un pistolet à eau se devine), et arrosée.
 
 Le dessin change **pour de bon** : deux pousses neuves, quatre fleurs, une ligne de feuillage en
-plus, le pot et la tige au pixel près — et une ligne, *« Elle se redresse. »* C'est le seul
+plus, le pot et la tige au pixel près — et une ligne, *« La plante semble soudainement
+revivre. »* C'est le seul
 changement d'apparence définitif du jeu qui ne soit pas une bêtise ; tout le reste de ce que fait le
 pistolet est une phrase blasée. Le couloir, au passage, cesse d'être le dernier écran où rien ne
 répondait.
@@ -1598,10 +1599,26 @@ Chaque saut **repart de zéro** et ne pose que ce que l'étape déclare, sinon l
       qu'une fois le bateau coulé.
 - [x] D'autres pièces à collectionner : il y en a dix-neuf, et l'écran de fin les compte.
 
-**Son** — **dix-sept sons sont branchés**, et la liste complète est écrite :
-[`src/data/sons.ts`](../src/data/sons.ts), 34 sons, 79 fichiers. `npx tsx tools/sons.ts`
-dit à tout moment ce qui manque, par priorité, avec le nom exact du fichier à poser dans
-`public/sons/`.
+**Son** — **quarante et un sons sur quarante-quatre sont branchés**, et la liste complète
+est écrite : [`src/data/sons.ts`](../src/data/sons.ts), 94 fichiers attendus, 79 posés.
+`npx tsx tools/sons.ts` dit à tout moment ce qui manque, par priorité, avec le nom exact
+du fichier à poser dans `public/sons/`. **Tout ce qui se synthétise est synthétisé**
+(`npx tsx tools/synthese.ts`) : les cris des cinq bêtes qui parlent, les huit prouts du
+rêve, le pistolet, la pluie, le plouf, le robinet, la rafale, le héron, le grognement,
+les bougies, la danse et le départ de l'araignée, l'objet qui tombe et la colère — tous
+marqués `provisoire` quand un vrai enregistrement fera mieux. Ne restent introuvables que
+les voix humaines : le babil d'Hermione et les dix « HERMIONE ! » de Maman.
+
+Trois règles de mise en son, dans le code :
+
+- **Deux timbres pour deux rôles.** Le récit tape son triangle soufflé ; les personnages
+  ont un carré filtré — le grain d'une bouche — transposé par personnage comme avant.
+- **Chaque bête crie à l'ouverture de sa réplique.** Moon miaule, le poisson fait une
+  bulle, l'écureuil pépie, l'araignée fait deux petits pas secs, l'Éléphant barrit — une
+  fois par boîte, par-dessus le bip du texte.
+- **Les majuscules grondent.** Toute réplique criée — « NON MAIS CE CHAT », « HERMIONE ! »,
+  Nino qui refuse de se lever — déclenche un grondement. Quatre capitales d'affilée
+  suffisent à faire une colère.
 
 **La musique est branchée.** Une carte pièce → musique dans `sons.ts` (`musiquePour`),
 trois ambiances — la maison, la ville, l'eau — et une seule boucle à la fois, qui
@@ -1618,9 +1635,14 @@ toutes du lot chiptune d'Abstraction (CC0), toutes marquées `provisoire` :
 - `musique-ville` — « Modern Bits » telle quelle, la plus mécanique du lot.
 - `musique-fusee` — « Penguin Town » **accélérée d'un quart** : plus aiguë, plus vite,
   plus bête. C'est un rêve.
+- `musique-mezzanine` — « Sanctuary » ralentie de moitié : la seule pièce de la maison
+  qui n'a pas la musique de la maison. C'est là-haut que vivait l'araignée, et personne
+  ne monte jamais.
+- `musique-fin` — « Out of Time » **au quart de sa vitesse** : la mélodie de la maison,
+  mais du soir — deux octaves sous l'original, une sous la maison, exactement ce que
+  demandait le registre.
 
-Restent `musique-fin` (la mélodie de la maison, mais du soir) et les six notes de
-l'écran-titre : poser le `.ogg` suffit.
+Ne restent que les six notes de l'écran-titre : poser le `.ogg` suffit.
 
 Quatre des plus importants sont **fabriqués** plutôt que trouvés (`npx tsx
 tools/synthese.ts`), parce qu'on voulait un contrôle exact sur ce qui pique l'oreille :

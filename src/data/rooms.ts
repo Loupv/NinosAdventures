@@ -943,7 +943,10 @@ export const ROOMS: Record<string, Room> = {
         // L'eau bouge tant qu'il y en a.
         animIfFlag: ['eau-coule', 'baignoire-eau'],
         animSaufFlag: 'bouchon-retire',
-        solid: true,
+        // La boîte solide commence cinq pixels sous le haut du dessin : sans ça, le couloir
+        // entre le mur et la baignoire faisait quatre pixels, et Hermione — cachée derrière —
+        // était presque impossible à atteindre.
+        solid: [0, 5, 24, 11],
         dialogue: 'baignoire',
       },
       {
