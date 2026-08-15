@@ -525,7 +525,7 @@ export class WorldScene extends Phaser.Scene {
        * console : `nino.etape('f')`.
        */
       this.input.keyboard!.on('keydown', (ev: KeyboardEvent) => {
-        if (!/^[1-5]$/.test(ev.key)) return;
+        if (!/^[1-7]$/.test(ev.key)) return;
         const etape = ETAPES.find((e) => e.touche === ev.key);
         if (etape) this.allerEtape(etape);
       });

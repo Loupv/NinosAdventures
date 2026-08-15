@@ -17,9 +17,9 @@ import type { ItemId } from '../data/items';
  */
 export interface Etape {
   /**
-   * L'identifiant du raccourci. **Seuls « 1 » à « 5 » répondent au clavier** : les lettres étaient
+   * L'identifiant du raccourci. **Seuls « 1 » à « 7 » répondent au clavier** : les lettres étaient
    * branchées elles aussi, et un enfant qui cherche la touche du pistolet à eau se retrouvait
-   * téléporté au pied de la tour. Les autres se lancent depuis la console : `nino.etape('f')`.
+   * téléporté au pied de la tour. Les autres se lancent depuis la console : `nino.etape('d')`.
    */
   touche: string;
   nom: string;
@@ -71,13 +71,23 @@ export const ETAPES: Etape[] = [
   // ── Les suivantes, depuis la console : nino.etape('c') ──
   { touche: 'c', nom: 'La cour de l’école', room: 'ecole', flags: DEHORS },
   { touche: 'a', nom: 'L’araignée', room: 'mezzanine', flags: ['reveil'], haiku: 0 },
-  { touche: '6', nom: 'La danse', room: 'mezzanine', flags: ['reveil'], haiku: 10 },
+  { touche: 'd', nom: 'La danse', room: 'mezzanine', flags: ['reveil'], haiku: 10 },
   {
-    touche: '7',
+    touche: 'g',
     nom: 'Le poisson',
     room: 'sdb',
     flags: ['reveil'],
     eauVieille: true,
+  },
+  // ── 6 et 7 : le saut, puis l'outro — les deux bouts de la fin du jeu ──
+  {
+    touche: '6',
+    nom: 'Le saut en parapente',
+    room: 'tour-toit',
+    x: 78,
+    y: 58,
+    // Les énigmes faites, le travelling déjà vu : le parapente attend contre le parapet.
+    flags: [...APRES_LE_NAUFRAGE, ...ENIGMES, 'toit-decouvert'],
   },
   { touche: '8', nom: 'La fusée', room: 'chambre-parents', minijeu: 'Flappy' },
   {
@@ -104,12 +114,14 @@ export const ETAPES: Etape[] = [
     flags: [...APRES_LE_NAUFRAGE, ...ENIGMES],
   },
   {
-    touche: 'f',
-    nom: 'La fin',
+    touche: '7',
+    nom: 'L’outro : le retour dans la chambre',
     room: 'chambre',
     x: 80,
     y: 108,
-    flags: [...APRES_LE_NAUFRAGE, ...ENIGMES, 'parapente-rentre'],
+    // La nuit du retour : la maison dort, il reste à se coucher — tout l'enchaînement de
+    // la fin part d'ici. `nuit` et `aube` sont posés en chemin par la tour, normalement.
+    flags: [...APRES_LE_NAUFRAGE, ...ENIGMES, 'nuit', 'aube', 'parapente-rentre'],
     items: ['parapente'],
   },
 ];
