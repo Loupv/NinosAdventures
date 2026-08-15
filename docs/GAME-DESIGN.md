@@ -1376,15 +1376,15 @@ nous, et le décor grandit à mesure. La traversée dure une bonne demi-minute �
 secondes vues de côté, et c'était trop court pour le dernier morceau du jeu.
 
 **Un parapente ne monte pas tout seul.** La flèche du haut n'existe pas : Nino descend
-doucement, tout le temps, et la seule façon de remonter est une **colonne d'air chaud** —
-un fil du sol au ciel, des tirets lumineux qui montent dessus, visible de très loin. Il en
-naît une toutes les une seconde et demie, à des positions qui tournent sans se répéter, et
-trois sont déjà en route au moment du saut. Le jeu du vol, c'est d'aller les chercher :
-gauche-droite pour viser la colonne, la portance fait le reste (elle gagne largement sur
-la chute), et la flèche du bas pique pour descendre exprès. **Toucher le sol, c'est
-raté** — même prix que la fenêtre manquée : la rafale remonte, et on y retourne.
-Première colonne : *« Une colonne d'air chaud ! »* — première entrée : *« Ça monte,
-dedans ! »* — et après, on sait voler.
+doucement, tout le temps, et la seule façon de remonter est un **petit tourbillon d'air
+chaud** — six tirets lumineux qui montent en zigzag, resserrés en bas, larges en haut, la
+silhouette d'une tornade de poche, visible de très loin. Ils sont **rares et puissants** :
+un toutes les trois secondes, deux déjà en route au moment du saut, et une seconde dedans
+rend toute l'altitude perdue. Le jeu du vol, c'est d'aller les chercher : gauche-droite
+pour viser, la portance fait le reste, et la flèche du bas pique pour descendre exprès.
+**Toucher le sol, c'est raté** — même prix que la fenêtre manquée : la rafale remonte, et
+on y retourne. Premier tourbillon : *« Une colonne d'air chaud ! »* — première entrée :
+*« Ça monte, dedans ! »* — et après, on sait voler.
 
 **La perspective tient en deux lignes.** Chaque chose a une position dans le monde (`x`
 latéral, `y` vertical, `z` la distance) et l'écran s'en déduit :

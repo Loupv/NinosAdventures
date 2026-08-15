@@ -103,12 +103,12 @@ const HERON_Z = 700;
  * pique, pour descendre plus vite exprès. C'est le vrai jeu du vol.
  */
 const CHUTE = 5; // px/s : la descente permanente
-const PORTANCE = 62; // px/s vers le haut, dans une colonne
+const PORTANCE = 95; // px/s vers le haut, dans un tourbillon : une seconde dedans rend tout
 const PIQUE = 46; // px/s de plus, flèche du bas
-const THERMIQUE_TOUS = 1600; // ms entre deux colonnes
+const THERMIQUE_TOUS = 3000; // ms entre deux tourbillons : rares, donc précieux
 const THERMIQUE_Z = 850;
 /** Demi-largeur d'une colonne, en unités du monde. */
-const THERMIQUE_LARGE = 13;
+const THERMIQUE_LARGE = 15;
 /**
  * **Le vol accélère en approchant.** Le début est une promenade, la fin demande de piloter :
  * la vitesse d'avance gagne un tiers entre le saut et la maison, et les hérons suivent.
@@ -335,11 +335,10 @@ export class ParapenteScene extends Phaser.Scene {
       down: KEYS.down.map((c) => kb.addKey(c)),
     };
 
-    // Trois colonnes déjà en route au décollage : la première arrive dans les secondes
+    // Deux tourbillons déjà en route au décollage : le premier arrive dans les secondes
     // qui suivent le saut, pas dix secondes plus tard.
-    this.nouveauThermique(220);
-    this.nouveauThermique(480);
-    this.nouveauThermique(700);
+    this.nouveauThermique(240);
+    this.nouveauThermique(620);
 
     this.dessiner();
     this.annoncer(VOL.consigne, VOL.demarrer);
@@ -451,14 +450,10 @@ export class ParapenteScene extends Phaser.Scene {
    */
   private nouveauThermique(z: number): void {
     const n = this.nesThermiques++;
-    // Un fil continu (le corps de la colonne) et cinq tirets qui montent dessus : de loin
-    // on voit le fil, de près on voit l'air qui monte.
-    const tirets = [0, 1, 2, 3, 4].map((i) =>
-      this.add
-        .rectangle(0, 0, 2, i === 0 ? 4 : 5, shade(PALETTE, i === 0 ? 2 : 3))
-        .setOrigin(0.5, 0)
-        .setDepth(80)
-        .setVisible(false),
+    // **Un petit tourbillon** : six tirets qui montent en zigzag, resserrés en bas, larges
+    // en haut — la silhouette d'une tornade de poche. Pas de fil : le cône se lit seul.
+    const tirets = [0, 1, 2, 3, 4, 5].map(() =>
+      this.add.rectangle(0, 0, 3, 4, shade(PALETTE, 3)).setOrigin(0.5, 0).setDepth(80).setVisible(false),
     );
     this.thermiques.push({ x: ((n * 61) % 150) - 75, z, tirets });
   }
@@ -712,18 +707,15 @@ export class ParapenteScene extends Phaser.Scene {
       t.tirets.forEach((d, i) => {
         d.setVisible(visible);
         if (!visible) return;
-        // Le premier rectangle est le fil continu de la colonne ; les quatre autres sont
-        // les tirets qui montent dessus, décalés d'un quart chacun.
-        if (i === 0) {
-          d.setPosition(sx, Math.round(haut));
-          d.setSize(Math.max(1, Math.round((FOCALE * 1.2) / zAffiche)), Math.max(1, Math.round(bas - haut)));
-          d.setDepth(79 + Math.round(1000 - t.z));
-          return;
-        }
-        const cycle = ((this.time.now / 800 + (i - 1) / 4) % 1 + 1) % 1;
-        d.setPosition(sx, Math.round(Phaser.Math.Linear(bas, haut, cycle)));
-        d.setSize(Math.max(2, Math.round((FOCALE * 3.2) / zAffiche)), 5);
-        d.setDepth(80 + Math.round(1000 - t.z));
+        // Chaque tiret monte en boucle, décalé d'un sixième — et il zigzague de gauche à
+        // droite en s'élargissant vers le haut : c'est ce qui fait le tourbillon.
+        const cycle = ((this.time.now / 700 + i / 6) % 1 + 1) % 1;
+        const ampleur = (FOCALE * (2 + cycle * 8)) / zAffiche;
+        const balancement = Math.sin(cycle * Math.PI * 4 + i) * ampleur * 0.5;
+        d.setPosition(Math.round(sx + balancement), Math.round(Phaser.Math.Linear(bas, haut, cycle)));
+        d.setSize(Math.max(2, Math.round(ampleur)), Math.max(3, Math.round((FOCALE * 1.6) / zAffiche)));
+        // Même base que les immeubles et la maison : une seule échelle de profondeur.
+        d.setDepth(100 + Math.round(1000 - t.z));
       });
     }
 
@@ -747,6 +739,15 @@ export class ParapenteScene extends Phaser.Scene {
       return;
     }
     const z = Math.max(this.maisonZ, ARRIVEE);
+    // **La profondeur de la maison suit sa distance**, comme tout le reste du monde : figée
+    // à 900, un immeuble ou un tourbillon plus lointains — mais nés plus près — lui
+    // passaient devant.
+    const socle = 100 + Math.round(1000 - z);
+    this.maison.setDepth(socle);
+    this.maisonToit.setDepth(socle + 1);
+    this.porte.setDepth(socle + 2);
+    this.cheminee.setDepth(socle + 1);
+    for (const f of this.fenetres) f.setDepth(socle + 2);
     const g = this.ecranX(-MAISON_LARGE / 2, z);
     const d = this.ecranX(MAISON_LARGE / 2, z);
     const bas = this.ecranY(SOL, z);
