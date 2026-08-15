@@ -1583,7 +1583,9 @@ japonais, et un héron qui exige des papiers.
 
 **L'affiche est une photo de famille qui se prend pendant qu'on joue.** Au début, Nino et
 Moon sont seuls devant le portail. Chaque personnage principal rejoint l'écran-titre une
-fois rencontré : l'araignée dès son premier haïku, l'écureuil, Hermione dès qu'on l'a
+fois rencontré : l'araignée dès son premier haïku — pendue à son fil sous le « LES » du
+titre, elle monte et descend de quelques pixels, avec une pause à chaque bout — l'écureuil,
+Gérard dans son seau (il en saute de temps en temps), Hermione dès qu'on l'a
 trouvée une fois, papa en capitaine, Gérard en l'air (il ne se pose jamais) — et
 l'éléphant, qui n'est pas un invité mais le décor : du sol jusqu'au-delà du haut de
 l'écran, la tête coupée par le cadre, la trompe qui descend boire derrière la famille.

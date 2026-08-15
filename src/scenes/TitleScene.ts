@@ -78,11 +78,38 @@ export class TitleScene extends Phaser.Scene {
       const s = this.add.sprite(x, y, texKey(sprite, pal), frame).setOrigin(0.5, 1);
       if (anim) s.play(animKey(anim, pal));
     };
-    invite(16, 108, 'araignee', 'pattes-0', 'araignee-pattes', state.haiku > 0);
     invite(34, 108, 'ecureuil', 'queue-0', 'ecureuil-queue', state.flag('ecureuil-vu'));
     invite(50, 108, 'hermione', 'idle-0', 'hermione-idle', state.hermione > 0);
     invite(112, 108, 'papa-capitaine', 'marche-0', undefined, state.flag('papa-capitaine-vu'));
-    invite(130, 98, 'poisson', 'saut-0', 'poisson-saut', state.flag('poisson-arrive'));
+    // Gérard pose dans son seau, et il en saute de temps en temps : c'est comme ça qu'il
+    // voyage, c'est comme ça qu'il pose.
+    invite(132, 108, 'seau', 'eau-0', 'seau-saute', state.flag('poisson-arrive'));
+    // L'araignée n'est pas dans le rang : elle pend à son fil, sous le « LES » du titre,
+    // à sa taille normale — et elle monte et descend, lentement, avec une pause à chaque
+    // bout. Le fil s'arrête à elle : il grandit et raccourcit avec la descente.
+    if (state.haiku > 0) {
+      const fil = this.add.rectangle(30, 6, 1, 54, shade(pal, 2)).setOrigin(0.5, 0).setDepth(-7);
+      const bete = this.add
+        .sprite(30, 60, texKey('araignee', pal), 'pattes-0')
+        .setOrigin(0.5, 0)
+        .setDepth(-5)
+        .play(animKey('araignee-pattes', pal));
+      this.tweens.addCounter({
+        from: 60,
+        to: 52,
+        duration: 2400,
+        yoyo: true,
+        repeat: -1,
+        hold: 1400,
+        repeatDelay: 1400,
+        ease: 'Sine.easeInOut',
+        onUpdate: (t) => {
+          const y = Math.round(t.getValue() ?? 60);
+          bete.setY(y);
+          fil.setSize(1, y - 6);
+        },
+      });
+    }
     // **L'éléphant n'est pas un invité, c'est le décor.** Du sol jusqu'au-delà du haut de
     // l'écran, derrière tout le monde : la tête dépasse du cadre, personne ne trouve ça
     // bizarre, et toute la famille pose devant lui.
