@@ -2256,7 +2256,7 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
         '« Qu’est-ce qui monte et descend sans bouger ? »',
       ],
       // Il sort la tête pour parler : c'est la révélation du seau.
-      montre: { sprite: 'seau', frame: 'saute-0', x: 97, y: 40, depth: 72 },
+      montre: { sprite: 'seau', frame: 'saute-0', x: 68, y: 40, depth: 72 },
       enigme: {
         reponses: ['La mer', 'L’ascenseur', 'Un escalier'],
         bonne: 0,
@@ -2266,12 +2266,12 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
             'Le seau frémit. Il y a un escalier, maintenant.',
             '« Monte. Moi, j’y vais à mon rythme. »',
           ],
-          montre: { sprite: 'seau', frame: 'saute-0', x: 97, y: 40, depth: 72 },
+          montre: { sprite: 'seau', frame: 'saute-0', x: 68, y: 40, depth: 72 },
           effects: { flag: 'enigme-poisson' },
         },
         faux: {
           lines: ['« Non. »', '« Indice : j’en reviens. »'],
-          montre: { sprite: 'seau', frame: 'saute-0', x: 97, y: 40, depth: 72 },
+          montre: { sprite: 'seau', frame: 'saute-0', x: 68, y: 40, depth: 72 },
         },
       },
     },

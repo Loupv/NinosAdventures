@@ -268,7 +268,9 @@ export const ROOMS: Record<string, Room> = {
       // personne ne demande comment il est arrivé là — ni comment il compte monter.
       {
         id: 'poisson-seau',
-        x: 97,
+        // **Au centre de l'écran, comme un boss de fin de jeu** : tous les gardiens de la
+        // tour se présentent face à l'arrivant — sauf l'éléphant, qui déborde de partout.
+        x: 68,
         y: 40,
         sprite: 'seau',
         frame: 'eau-0',
@@ -286,13 +288,15 @@ export const ROOMS: Record<string, Room> = {
        */
       {
         id: 'poisson-seau-saut',
-        x: 100,
+        x: 71,
         y: 44,
         sprite: 'poisson',
         frame: 'saut-0',
         anim: 'poisson-saut',
         depth: 70,
-        saute: { gauche: 100, droite: 110, hauteur: 16, eau: 52 },
+        // `eau` est la ligne d'eau **dessinée** de la bassine (rang 8 du dessin, y 40+8) :
+        // plus bas, le poisson s'enfonçait sous la surface avant de disparaître.
+        saute: { gauche: 71, droite: 81, hauteur: 16, eau: 48 },
         showIfFlag: 'enigme-poisson',
       },
       {
@@ -360,7 +364,8 @@ export const ROOMS: Record<string, Room> = {
       },
       {
         id: 'ecureuil-tour',
-        x: 84,
+        // Centré, en boss : dix pixels de large, le milieu de l'écran est à 80.
+        x: 75,
         y: 60,
         sprite: 'ecureuil',
         frame: 'queue-0',
