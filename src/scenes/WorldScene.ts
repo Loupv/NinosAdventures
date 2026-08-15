@@ -3835,6 +3835,12 @@ export class WorldScene extends Phaser.Scene {
     state.reset();
     for (const f of e.flags ?? []) state.setFlag(f);
     for (const i of e.items ?? []) state.give(i);
+    // **La cohérence des acquis.** Maman rend le pistolet à eau à la fin de la chasse :
+    // toute étape qui la met au salon le donne donc aussi, sans que chaque ligne le redise.
+    if (e.flags?.includes('maman-au-salon')) {
+      state.give('pistolet-eau');
+      state.setFlag('pistolet-rendu');
+    }
     if (e.haiku !== undefined) state.haiku = e.haiku;
     if (e.hermione !== undefined) state.hermione = e.hermione;
     if (e.eauVieille) {
