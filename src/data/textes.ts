@@ -2807,11 +2807,14 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
   ],
 
   parrain: [
-    // Après le passage du pigeon : il attend son verre plus lourd, et il ne lâche pas l'idée.
+    // Après le passage du pigeon : il attend son verre plus lourd — **une fois**. La réplique
+    // rend ensuite la parole aux blagues du bateau : « ton père est tout mouillé » et le
+    // bouchon raconté deux fois valent mieux qu'une commande qui radote par-dessus.
     {
-      when: () => state.flag('verres-tombes'),
+      when: () => state.flag('verres-tombes') && !state.flag('parrain-verres-dit'),
       speaker: 'Le parrain',
       lines: ['« On attend les verres. »', '« Des lourds. »'],
+      effects: { flag: 'parrain-verres-dit' },
     },
     // Il n'est trempé que s'il est tombé à l'eau : le naufrage n'est pas obligatoire, et la
     // terrasse ne doit pas raconter une baignade qui n'a pas eu lieu.

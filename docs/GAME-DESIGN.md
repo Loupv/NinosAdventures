@@ -579,7 +579,10 @@ toujours, comme le font les pigeons.
 **Papa a tout vu** — son fils, le pistolet, le jet — et il accuse le pigeon quand même : *« NON
 MAIS CE PIGEON. »* Dehors, c'est toujours le pigeon, comme à la maison c'est toujours le chat.
 Le parrain tire la seule conclusion utile : *« Garçon. La même chose. Dans un verre plus
-lourd. »* — et son dialogue le garde ensuite : *« On attend les verres. » « Des lourds. »*
+lourd. »* — et à la visite suivante, une fois : *« On attend les verres. » « Des lourds. »*
+**Une fois seulement** : la réplique rend ensuite la parole aux blagues du bateau — *« Ton
+père est tout mouillé »* et le bouchon raconté deux fois ne doivent pas finir derrière une
+commande qui radote.
 
 Petit bonus d'horlogerie : si le joueur a dérangé le pigeon six fois avant, celui-ci est déjà
 perché **sur** la table au moment de la proposition — l'écureuil fait viser un pigeon posé
