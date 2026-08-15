@@ -853,6 +853,33 @@ export const ROOMS: Record<string, Room> = {
         dialogue: 'armoire',
       },
       { id: 'carton', ...at(2, 13), sprite: 'carton', solid: true },
+      /**
+       * **La nuit du retour.** Nino rentre en parapente, la maison dort : Papa et Maman dans
+       * le grand lit — deux têtes sur l'oreiller — et Hermione dans son lit de bébé. Tout ça
+       * n'existe que cette nuit-là : au matin, la chambre redevient la chambre.
+       */
+      {
+        id: 'parents-dorment',
+        x: 52,
+        y: 22,
+        sprite: 'parents-dorment',
+        depth: 64,
+        priorite: 2,
+        portee: 16,
+        dialogue: 'parents-dorment',
+        showIfFlag: 'parapente-rentre',
+        hideIfFlag: 'matin',
+      },
+      {
+        id: 'lit-bebe',
+        x: 20,
+        y: 82,
+        sprite: 'lit-bebe',
+        solid: true,
+        dialogue: 'lit-bebe',
+        showIfFlag: 'parapente-rentre',
+        hideIfFlag: 'matin',
+      },
     ],
     doors: [{ x: 120, y: 136, w: 16, h: 8, to: { room: 'couloir', x: 64, y: 26 } }],
   },

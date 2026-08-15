@@ -656,6 +656,7 @@ export const SEMBLANT = [
   ['Il se glisse sous la couette.', 'Il ferme les yeux très fort.'],
 ];
 
+
 /** Les parents entrent. Ils parlent à voix basse, ce qui est pire. */
 export const PARENTS: Array<{ qui?: string; lignes: string[] }> = [
   { qui: 'Maman', lignes: ['« Il dort. »'] },
@@ -1760,6 +1761,18 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
       effects: { flag: 'armoire-suspecte' },
     },
     { lines: ['L’armoire attend.', 'Ce sera pour une autre fois.'] },
+  ],
+
+  /**
+   * **La maison endormie, la nuit du retour.** Nino traverse sur la pointe des pieds : ses
+   * parents dorment dans le grand lit, Hermione dans son lit de bébé. Personne ne cherche
+   * personne — c'est la première fois du jeu.
+   */
+  'parents-dorment': [
+    { lines: ['Papa et Maman dorment.', 'Pour une fois, personne ne cherche personne.'] },
+  ],
+  'lit-bebe': [
+    { lines: ['Hermione dort dans son petit lit.', 'Elle a eu une grande journée, elle aussi.'] },
   ],
 
   'grand-lit': [

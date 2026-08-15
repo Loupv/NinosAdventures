@@ -312,17 +312,20 @@ export class WorldScene extends Phaser.Scene {
     // toute la maison partage la même boucle. Le générique, lui, garde la musique avec
     // laquelle il est arrivé — il traverse toutes les pièces, ce serait un zapping.
     if (!this.cinema) jouerMusique(this, musiquePour(id));
-    // Et les grillons, par-dessus, dès que la nuit est tombée — jusqu'au retour en parapente.
+    // Et les grillons, par-dessus, dès que la nuit est tombée — jusqu'au matin : la maison
+    // endormie du retour les garde, par la vitre cassée.
     if (!this.cinema)
-      jouerAmbiance(this, state.flag('nuit') && !state.flag('parapente-rentre') ? 'nuit' : undefined);
+      jouerAmbiance(this, state.flag('nuit') && !state.flag('matin') ? 'nuit' : undefined);
     // L'heure du jour, en deux drapeaux. On se lève vers midi ; la nuit tombe en entrant
     // dans la tour ; sur le toit le ciel pâlit déjà — et une fois rentré par la fenêtre
     // c'est le matin, donc les couleurs du jour à nouveau.
     if (this.room.heure && !this.cinema) state.setFlag(this.room.heure);
+    // La nuit ne s'arrête pas au retour en parapente : Nino rentre dans une maison endormie,
+    // et il fait nuit jusqu'à ce qu'il dorme vraiment — c'est le drapeau `matin` qui rallume.
     this.pal =
       state.flag('aube') && !state.flag('parapente-rentre')
         ? paletteAube(paletteNocturne(this.room.palette))
-        : state.flag('nuit') && !state.flag('parapente-rentre')
+        : state.flag('nuit') && !state.flag('matin')
           ? paletteNocturne(this.room.palette)
           : this.room.palette;
     state.palette = this.pal;
@@ -392,6 +395,11 @@ export class WorldScene extends Phaser.Scene {
       // Le tout début du jeu : Nino se réveille dans son lit.
       if (id === 'chambre' && !state.flag('reveil')) {
         this.reveil();
+        return;
+      }
+      // Le matin après la nuit du retour : Nino est dans son lit, les parents entrent.
+      if (id === 'chambre' && state.flag('matin') && !state.flag('anniversaire')) {
+        this.reveilDesParents();
         return;
       }
       // Et la toute fin : la cuisine, le gâteau, les sept bougies.
@@ -2082,6 +2090,8 @@ export class WorldScene extends Phaser.Scene {
     // **Pas de suiveuse pendant l'anniversaire** : la cuisine a déjà son Hermione, attablée devant
     // le gâteau. Elles s'y retrouvaient toutes les deux, ce qui faisait une sœur de trop.
     if (state.flag('anniversaire')) return;
+    // La nuit du retour, elle dort dans son lit de bébé : personne ne rampe derrière Nino.
+    if (state.flag('parapente-rentre') && !state.flag('matin')) return;
     if (hermioneSuit(state.hermione, this.room.id)) {
       const p = this.player.sprite;
       this.trySpawn({
@@ -2782,10 +2792,47 @@ export class WorldScene extends Phaser.Scene {
    * parents entrent le chercher. Ils ne parlent pas de la fenêtre ouverte. Ils ne parlent
    * pas du parapente. Ils l'emmènent dans la cuisine.
    */
+  /**
+   * **La nuit du retour : se coucher pour de vrai.** Nino plie le parapente, se glisse sous
+   * la couette — et l'écran s'éteint sur la maison endormie. Le drapeau `matin` rallume le
+   * jour, et la scène du réveil prend le relais à la réouverture de la chambre.
+   */
   private faireSemblant(l: Live): void {
     state.locked = true;
     state.take('parapente');
     const couche = { sprite: 'nino-couche', x: l.def.x + 4, y: l.def.y + 10, cacheNino: true };
+    const retirer = this.montrer(couche);
+    const raconter = (i: number) => {
+      if (i >= SEMBLANT.length) {
+        this.events.once(Phaser.Scenes.Events.SHUTDOWN, retirer);
+        state.setFlag('matin');
+        state.save();
+        this.transitioning = true;
+        gbFade(this, this.pal, 'out', () => {
+          this.scene.restart({ room: 'chambre', x: l.def.x + 8, y: l.def.y + 20 });
+        });
+        return;
+      }
+      say({ lines: SEMBLANT[i], focusY: l.def.y, onDone: () => raconter(i + 1) });
+    };
+    raconter(0);
+  }
+
+  /**
+   * **Le matin.** Nino est dans son lit, il fait jour, et les parents entrent à voix basse —
+   * ce qui est pire. La scène se joue à l'arrivée dans la chambre tant que l'anniversaire
+   * n'a pas commencé : rechargée en plein milieu, elle se rejoue, et rien ne se perd.
+   */
+  private reveilDesParents(): void {
+    const l = this.live.find((x) => x.def.id === 'lit');
+    if (!l) {
+      state.locked = false;
+      return;
+    }
+    state.locked = true;
+    const couche = { sprite: 'nino-couche', x: l.def.x + 4, y: l.def.y + 10, cacheNino: true };
+    const retirer = this.montrer(couche);
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, retirer);
 
     // Les parents entrent par la porte de la chambre et vont jusqu'au lit.
     const porte = this.entrees()[0];
@@ -2821,39 +2868,22 @@ export class WorldScene extends Phaser.Scene {
       });
     };
 
-    const entrer = () => {
-      state.locked = true;
-      acteurs.forEach((a) => a.setVisible(true));
-      /**
-       * **Chacun sa place au pied du lit.** Ils arrivaient tous les deux sur le même pixel : deux
-       * parents parfaitement superposés, dont on ne voyait qu'un. Quatorze pixels d'écart, c'est-à-dire
-       * une largeur de personnage et demie — on les voit tous les deux, et ils ont l'air de se tenir
-       * côte à côte plutôt que de se marcher dessus.
-       */
-      this.tweens.add({
-        targets: acteurs,
-        x: (_cible: unknown, _clef: string, _valeur: number, i: number) => l.def.x + 18 + i * 14,
-        y: l.def.y + 20,
-        duration: this.duree(seuil.x, seuil.y, l.def.x + 24, l.def.y + 20),
-        ease: 'Sine.easeInOut',
-        onUpdate: profondeur,
-        onComplete: () => parler(0),
-      });
-    };
-
-    // Deux boîtes pour se coucher, et Nino apparaît dans son lit le temps du texte.
-    // Nino apparaît dans son lit dès la première boîte, et il y reste : c'est ce que les
-    // parents vont voir en entrant.
-    const retirer = this.montrer(couche);
-    const raconter = (i: number) => {
-      if (i >= SEMBLANT.length) {
-        this.events.once(Phaser.Scenes.Events.SHUTDOWN, retirer);
-        entrer();
-        return;
-      }
-      say({ lines: SEMBLANT[i], focusY: l.def.y, onDone: () => raconter(i + 1) });
-    };
-    raconter(0);
+    /**
+     * **Chacun sa place au pied du lit.** Ils arrivaient tous les deux sur le même pixel : deux
+     * parents parfaitement superposés, dont on ne voyait qu'un. Quatorze pixels d'écart, c'est-à-dire
+     * une largeur de personnage et demie — on les voit tous les deux, et ils ont l'air de se tenir
+     * côte à côte plutôt que de se marcher dessus.
+     */
+    acteurs.forEach((a) => a.setVisible(true));
+    this.tweens.add({
+      targets: acteurs,
+      x: (_cible: unknown, _clef: string, _valeur: number, i: number) => l.def.x + 18 + i * 14,
+      y: l.def.y + 20,
+      duration: this.duree(seuil.x, seuil.y, l.def.x + 24, l.def.y + 20),
+      ease: 'Sine.easeInOut',
+      onUpdate: profondeur,
+      onComplete: () => parler(0),
+    });
   }
 
   /** Dans la cuisine, tout le monde attend depuis ce matin. */
@@ -3359,8 +3389,14 @@ export class WorldScene extends Phaser.Scene {
       this.sEndormir(l);
       return;
     }
-    // Rentré par la fenêtre, parapente sous le bras : c'est la fin du chapitre.
-    if (l.def.id === 'lit' && state.flag('parapente-rentre') && !state.flag('anniversaire')) {
+    // Rentré par la fenêtre, parapente sous le bras : il se couche pour de vrai, dans une
+    // maison qui dort. Les parents viendront au matin — c'est la scène d'arrivée qui joue.
+    if (
+      l.def.id === 'lit' &&
+      state.flag('parapente-rentre') &&
+      !state.flag('matin') &&
+      !state.flag('anniversaire')
+    ) {
       this.faireSemblant(l);
       return;
     }

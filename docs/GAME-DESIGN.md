@@ -1463,11 +1463,19 @@ doivent sauter aux yeux — les fenêtres allumées de la ville, et la sienne au
 
 ### La fin
 
-De retour dans sa chambre, parapente sous le bras, il suffit d'aller au lit :
+**Nino atterrit dans une maison endormie.** Il fait encore nuit dedans : la palette du soir
+tient jusqu'à ce qu'il dorme vraiment, les grillons s'entendent par la vitre cassée, et la
+maison se traverse sur la pointe des pieds. Dans la chambre des parents, **Papa et Maman
+dorment dans le grand lit** — deux têtes sur l'oreiller, *« Pour une fois, personne ne
+cherche personne. »* — et **Hermione dort dans son lit de bébé**, la tête qui dépasse de la
+couverture. Tout ça n'existe que cette nuit-là : au matin, la chambre redevient la chambre.
+
+Puis il suffit d'aller au lit :
 
 1. *« Nino plie le parapente. Mal. Il le pousse sous le lit. »*
 2. *« Il se glisse sous la couette. Il ferme les yeux très fort. »* — et on **le voit dans
-   son lit**, comme au tout début du jeu.
+   son lit**, comme au tout début du jeu. L'écran s'éteint : cette fois il dort pour de
+   vrai, et le drapeau `matin` rallume le jour.
 3. **Les parents entrent.** Ils ne parlent ni de la fenêtre ouverte, ni du parapente.
    *« Il dort. »* — *« À sept heures du matin ? »* — *« Nino. Nino, viens. »* Ils s'arrêtent au
    pied du lit **côte à côte**, à quatorze pixels l'un de l'autre : ils visaient le même pixel, et

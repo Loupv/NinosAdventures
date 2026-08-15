@@ -1823,6 +1823,35 @@ const TRONE: Art = [
 ];
 
 /**
+ * **Papa et Maman endormis** : deux têtes sur l'oreiller du grand lit, posées par-dessus le
+ * dessin du lit la nuit du retour. Pour une fois, personne ne cherche personne.
+ */
+const PARENTS_DORMENT: Art = [
+  '..0000....0000..',
+  '.033330..022220.',
+  '.033330..022220.',
+  '..0000....0000..',
+];
+
+/**
+ * **Le lit de bébé d'Hermione**, dans la chambre des parents, la nuit du retour. Les
+ * barreaux font le lit, la petite tête dépasse de la couverture. Elle a eu une grande
+ * journée, elle aussi.
+ */
+const LIT_BEBE: Art = [
+  '0000000000000000',
+  '0.0.0.0..0.0.0.0',
+  '0.0.0.0..0.0.0.0',
+  '0000000000000000',
+  '0122333211111110',
+  '0122333211111110',
+  '0111111111111110',
+  '0000000000000000',
+  '.00..........00.',
+  '.00..........00.',
+];
+
+/**
  * **La lune**, au-dessus du toit. C'est elle que Moon garde — on l'apprend en haut de
  * trente-deux étages, et personne ne demande depuis quand.
  */
@@ -2217,6 +2246,8 @@ export const IMAGES: Record<string, Art> = {
   nuage: NUAGE,
   lune: LUNE,
   trone: TRONE,
+  'parents-dorment': PARENTS_DORMENT,
+  'lit-bebe': LIT_BEBE,
   copain: COPAIN,
   lit: LIT,
   'grand-lit': GRAND_LIT,
