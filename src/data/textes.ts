@@ -549,9 +549,21 @@ export const ARROSES: Record<string, string[]> = {
   elephant: ['« Enfin. »', '« Il fait tellement chaud. »'],
   hermione: ['Hermione rit très fort.', 'Hermione en veut encore.'],
   // **Les dormeurs de la nuit du retour.** On peut arroser à peu près tout le monde dans
-  // ce jeu — même une maison qui dort. Personne ne se réveille : ils ont eu une journée.
-  'parents-dorment': ['Papa se retourne.', 'Maman remonte la couverture.', 'Personne ne se réveille.'],
-  'lit-bebe': ['Hermione sourit dans son sommeil.', 'Elle rêve d’eau, maintenant.'],
+  // ce jeu — même une maison qui dort. Personne ne se réveille : ils marmonnent, chacun
+  // dans son registre. Papa navigue dans une tempête ; Maman jette des sorts. Les lignes
+  // alternent : un arrosage lui, un arrosage elle.
+  'parents-dorment': [
+    '« Bâbord... toute... »',
+    '« Pluvio... termino... »',
+    '« Ça tangue... tenez bon... »',
+    '« Canicula... disparus... »',
+    '« Le bouchon... tiendra... »',
+    '« Hermionem... localisum... »',
+    '« Terre... en vue... »',
+    '« Siesta... eternum... »',
+  ],
+  // Hermione ne déroge pas à son personnage, même en dormant, même arrosée.
+  'lit-bebe': ['« ... »'],
   parrain: ['« Il pleut ? »', '« Uniquement sur moi ? »'],
   // La plante du treizième étage. Elle ne compte pas dans les sept : elle ne boit pas.
   'plante-13': ['L’eau glisse sur le plastique.', 'La plante ne bougera plus jamais.'],
