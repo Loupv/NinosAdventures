@@ -1495,9 +1495,16 @@ Puis il suffit d'aller au lit :
    sur la table. *« JOYEUX ANNIVERSAIRE ! »*
 5. *« Tu as bien dormi ? »* — *« ... »* — *« Oui. »* C'est le seul mensonge de Nino dans tout le
    jeu, et il tient en un mot.
-6. *« Souffle ! »* — *« Nino prend une très grande respiration. »* — *« ... »*
-7. **Six bougies éteintes. La septième repart toute seule.** *« Celle-là, c'est une farce. »* —
-   *« Ce n'est pas moi. »* — *« Ce n'est pas moi non plus. »* — **« Moon regarde ailleurs. »**
+6. *« Souffle ! »* — et **le souffle est un mini-jeu** : marteler ESPACE remplit une jauge
+   qui fuit toute seule, et la puissance décide du sort des bougies. Trop faible, elles se
+   rallument — *« Cinq bougies s'éteignent. Puis se rallument, une par une. »* — et papa
+   admet, au premier raté : *« Je pensais que ça se rallumerait moins que ça. »* Maman
+   relance — *« Encore ! Plus fort ! »* — autant de fois qu'il faut. Nino est en haut, à
+   côté de son gâteau, Hermione entre Maman et la table : la boîte vit en bas, et le héros
+   de la fête ne passe jamais dessous.
+7. **Un grand souffle : six bougies éteintes. La septième repart toute seule.** *« Celle-là,
+   c'est une farce. »* — *« Ce n'est pas moi. »* — *« Ce n'est pas moi non plus. »* —
+   **« Moon regarde ailleurs. »**
 8. *« Nino souffle une deuxième fois. »* — *« Voilà. »* — et **il s'endort sur la table**, la tête
    dans les bras, au milieu de sa propre fête : *« Nino s'endort sur la table. »*
 

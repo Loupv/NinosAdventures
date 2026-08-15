@@ -719,9 +719,26 @@ export const FETE: Array<{ qui?: string; lignes: string[]; son?: string; pause?:
   { lignes: ['« ... »'], pause: 900 },
   { qui: 'Nino', lignes: ['« Oui. »'] },
   { qui: 'Papa', lignes: ['« Souffle ! »'] },
-  { lignes: ['Nino prend une très grande respiration.'], son: 'bougies', pause: 900 },
-  { lignes: ['...'], pause: 1200 },
-  { lignes: ['Six bougies éteintes.', 'La septième repart toute seule.'], pause: 700 },
+];
+
+/**
+ * **Le souffle est un mini-jeu** : marteler ESPACE remplit une jauge, et la puissance
+ * décide du sort des bougies. Trop faible, elles se rallument — ce sont des bougies
+ * farceuses, papa l'admet — et on recommence. Réussi : six éteintes, la septième repart,
+ * et la vraie farce commence.
+ */
+export const SOUFFLE = {
+  consigne: 'ESPACE ESPACE ESPACE !',
+  inspire: 'Nino prend une très grande respiration.',
+  faible: ['Deux bougies vacillent.', 'Elles se rallument aussitôt.'],
+  moyen: ['Cinq bougies s’éteignent.', 'Puis se rallument, une par une.'],
+  papaAdmet: ['« Je pensais que ça se rallumerait moins que ça. »'],
+  encore: ['« Encore ! Plus fort ! »'],
+  reussi: ['Six bougies éteintes.', 'La septième repart toute seule.'],
+};
+
+/** La suite de la fête, une fois les six bougies éteintes : la farce, et le sommeil. */
+export const FETE_FARCE: typeof FETE = [
   { qui: 'Papa', lignes: ['« Ah. »', '« Celle-là, c’est une farce. »'] },
   { qui: 'Maman', lignes: ['« Ce n’est pas moi. »'] },
   { qui: 'Papa', lignes: ['« Ce n’est pas moi non plus. »'], pause: 800 },

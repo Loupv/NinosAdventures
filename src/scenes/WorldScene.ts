@@ -29,6 +29,8 @@ import {
   DORT_PAPA,
   COUCHER,
   ECUREUIL_TREMPE,
+  FETE_FARCE,
+  SOUFFLE,
   POISSON_RIT,
   VERRES_PAPA,
   VERRES_PARRAIN,
@@ -3038,32 +3040,108 @@ export class WorldScene extends Phaser.Scene {
   /** Dans la cuisine, tout le monde attend depuis ce matin. */
   private anniversaire(): void {
     state.locked = true;
+    // **Nino est en haut, à côté de son gâteau** : la boîte de dialogue vit en bas, et
+    // le héros de la fête ne doit jamais passer dessous.
+    this.player.sprite.setPosition(112, 56);
+    this.player.facing = 'down';
     /**
      * **La scène des bougies prend son temps.** Certaines répliques portent une `pause` : après
      * elles, le jeu attend avant d'ouvrir la boîte suivante, écran vide. C'est tout ce qu'il faut
      * pour qu'un silence soit un silence — sans ça, la dernière scène du jeu défilait aussi vite
      * qu'un dialogue de couloir, et la fin tombait comme un couperet.
      */
-    const dire = (i: number) => {
-      if (i >= FETE.length) {
-        this.endormiSurLaTable();
+    const jouerSerie = (serie: typeof FETE, i: number, fin: () => void) => {
+      if (i >= serie.length) {
+        fin();
         return;
       }
-      // La boîte reste EN BAS : la scène du gâteau — et Nino — vivent dans la moitié
-      // haute de la cuisine, et la boîte en haut les cachait.
-      // La réplique dit elle-même si un son l'accompagne, et le temps qu'on lui laisse après.
-      if (FETE[i].son) jouer(this, FETE[i].son, { volume: 0.9 });
+      if (serie[i].son) jouer(this, serie[i].son!, { volume: 0.9 });
       const suite = () => {
-        const pause = FETE[i].pause;
+        const pause = serie[i].pause;
         if (!pause) {
-          dire(i + 1);
+          jouerSerie(serie, i + 1, fin);
           return;
         }
-        this.time.delayedCall(pause, () => dire(i + 1));
+        this.time.delayedCall(pause, () => jouerSerie(serie, i + 1, fin));
       };
-      say({ speaker: FETE[i].qui, lines: FETE[i].lignes, focusY: 30, onDone: suite });
+      say({ speaker: serie[i].qui, lines: serie[i].lignes, focusY: 30, onDone: suite });
     };
-    dire(0);
+    // L'ouverture, puis le souffle — un mini-jeu — puis la farce, puis le sommeil.
+    jouerSerie(FETE, 0, () =>
+      this.soufflerLesBougies(() => jouerSerie(FETE_FARCE, 0, () => this.endormiSurLaTable())),
+    );
+  }
+
+  /**
+   * **Le souffle des sept bougies, au marteau d'ESPACE.** Une jauge se remplit à chaque
+   * appui et fuit toute seule : il faut taper vite. Trop faible, les bougies se rallument —
+   * ce sont des bougies farceuses, papa l'admet au premier raté — et on recommence, autant
+   * de fois qu'il faut. Six éteintes sur un grand souffle, et la septième repart : c'est la
+   * farce écrite, elle attend le vrai souffle.
+   */
+  private soufflerLesBougies(apres: () => void, essai = 0): void {
+    const inspire = () => {
+      // La jauge : un cadre, un remplissage, et la consigne qui martèle.
+      const cadre = this.add.rectangle(39, 99, 82, 10, shade(this.pal, 0)).setOrigin(0, 0).setDepth(2100);
+      const fond = this.add.rectangle(40, 100, 80, 8, shade(this.pal, 2)).setOrigin(0, 0).setDepth(2101);
+      const jauge = this.add.rectangle(40, 100, 1, 8, shade(this.pal, 3)).setOrigin(0, 0).setDepth(2102);
+      const consigne = new PixelText(this, 'wl-souffle', 0, 114, GB.W, 12);
+      consigne.image
+        .setPosition(Math.round((GB.W - measure(SOUFFLE.consigne)) / 2), 114)
+        .setDepth(2103);
+      consigne.setLines([SOUFFLE.consigne], shadeHex(this.pal, 0));
+
+      let puissance = 0;
+      const touche = this.input.keyboard!.addKey('SPACE');
+      const souffler = () => {
+        puissance = Math.min(1, puissance + 0.11);
+      };
+      touche.on('down', souffler);
+      const fuite = this.time.addEvent({
+        delay: 90,
+        loop: true,
+        callback: () => {
+          puissance = Math.max(0, puissance - 0.022);
+          jauge.setSize(Math.max(1, Math.round(puissance * 80)), 8);
+        },
+      });
+
+      this.time.delayedCall(2600, () => {
+        touche.off('down', souffler);
+        fuite.destroy();
+        [cadre, fond, jauge].forEach((r) => r.destroy());
+        consigne.destroy();
+        jouer(this, 'bougies', { volume: 0.9 });
+        const resultat = () => {
+          if (puissance >= 0.72) {
+            say({ lines: SOUFFLE.reussi, focusY: 30, onDone: () => this.time.delayedCall(700, apres) });
+            return;
+          }
+          const constat = puissance >= 0.4 ? SOUFFLE.moyen : SOUFFLE.faible;
+          say({
+            lines: constat,
+            focusY: 30,
+            onDone: () => {
+              // L'aveu de papa, une fois, au premier raté : ce sont des bougies farceuses.
+              const rejouer = () =>
+                say({
+                  speaker: 'Maman',
+                  lines: SOUFFLE.encore,
+                  focusY: 30,
+                  onDone: () => this.soufflerLesBougies(apres, essai + 1),
+                });
+              if (essai === 0) {
+                say({ speaker: 'Papa', lines: SOUFFLE.papaAdmet, focusY: 30, onDone: rejouer });
+              } else {
+                rejouer();
+              }
+            },
+          });
+        };
+        this.time.delayedCall(600, resultat);
+      });
+    };
+    say({ lines: [SOUFFLE.inspire], focusY: 30, onDone: inspire });
   }
 
   /**

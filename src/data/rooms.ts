@@ -1190,8 +1190,9 @@ export const ROOMS: Record<string, Room> = {
       },
       {
         id: 'hermione-fete',
-        x: 104,
-        y: 88,
+        // Entre Maman et la table : la petite est au premier rang, comme il se doit.
+        x: 88,
+        y: 64,
         sprite: 'hermione',
         frame: 'idle-0',
         anim: 'hermione-idle',
