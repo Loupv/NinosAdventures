@@ -1185,8 +1185,9 @@ seul coup, sans un seul asset supplémentaire.
 - **Fondus « en escalier » 4 tons** — la Game Boy ne sait pas faire d'alpha, elle
   décale sa palette. Nos fondus l'imitent.
 - **Bandeau de lieu** à l'arrivée, avec une étoile quand le lieu est découvert.
-- **La jauge est en haut à gauche**, pas à droite : le coin haut-droit doit rester libre
-  pour le décor, sinon une porte ou une fenêtre posée là passe sous le badge.
+- **Ce qui s'affiche par-dessus le jeu se pose en haut à gauche**, pas à droite : le coin
+  haut-droit doit rester libre pour le décor, sinon une porte ou une fenêtre posée là passe
+  sous le badge.
 - **L'eau bouge.** Le décor est cuit deux fois, la deuxième avec les tuiles d'eau décalées
   de deux pixels, et on alterne toutes les 380 ms. Ça vaut pour l'Erdre et pour toute pièce
   qui contient de l'eau, sans un dessin de plus. L'eau de la baignoire, qui est un sprite et
@@ -1205,8 +1206,7 @@ seul coup, sans un seul asset supplémentaire.
   pleine venait frôler le trait et donnait l'impression de sortir de l'écran.
 - **La boîte de dialogue ne cache jamais l'action.** Chaque réplique dit où regarder
   (`focusY`), et la boîte se place à l'opposé : si Maman entre par la porte du bas, le
-  texte monte en haut de l'écran. L'étiquette du nom et la fenêtre de choix suivent, et
-  la jauge de température s'efface le temps de la réplique.
+  texte monte en haut de l'écran. L'étiquette du nom et la fenêtre de choix suivent.
 - **Vingt et un caractères par réponse.** La fenêtre de choix fait cent trente pixels de large et
 **ne replie pas les lignes : elle tronque, sans le dire.** Trois réponses du jeu passaient par-dessus
 le bord, dont celle de l'énigme de l'araignée. Le vérificateur refuse maintenant toute réponse plus
@@ -1238,77 +1238,6 @@ derrière lui au bout de trois secondes. Sécher au bout d'une pièce vidait la 
 il ne mettait plus d'eau que dans sa chambre.
 
 Ça ne se joue qu'une fois.
-
-## La quête : faire descendre la température — **en pause, et le code est parti**
-
-> **Le code de cette quête a été retiré.** Plus de température calculée, plus de
-> `fraicheur.ts`, plus de palettes `real-chaud` / `real-doux`, plus d'effet `cool` dans les
-> dialogues. Ce qui suit reste écrit **comme cahier des charges** : le jour où on la relance,
-> tout est là pour la refaire, et rien ne traîne dans le jeu en attendant.
-
-> **Suspendue le 28 juillet 2026.** Les interactions qui donnaient des degrés ont été
-> retirées du jeu : plus aucun dialogue ne rapporte de fraîcheur, la lumière de la maison
-> ne change plus, et la page « FRAIS » du journal a disparu. La chaleur reste : il fait
-> trop chaud, Nino dégouline, les vélos de la ville ont fondu — c'est l'ambiance, ce n'est
-> plus un score.
->
-> Le mécanisme est intact et n'attend qu'un mot : `fraicheur.ts` garde le registre,
-> `state.fraicheurs` garde le compte, `applyFraicheur()` fonctionne toujours (la sonde
-> `nino.cool('volets')` le prouve). Pour rallumer la quête : remettre les `cool:` dans les
-> dialogues, rebrancher `paletteFor()` dans `WorldScene.create()`, et rendre la page du
-> journal. **Tout ce qui suit décrit la quête telle qu'elle était pensée**, et reste vrai
-> le jour où on la reprend.
-
-**Il fait 34°. On cherche tous les moyens de faire baisser ça.**
-
-C'est la mission, en une phrase qu'un enfant de sept ans peut répéter. Objectif : **20°**,
-et alors le jour peut enfin finir.
-
-**Aucun chiffre n'est affiché à l'écran.** Pas de thermomètre en surimpression : le seul
-retour, c'est **la lumière de la maison qui change** (voir plus bas). Le compte exact
-reste consultable dans le journal, pour l'adulte qui lit par-dessus l'épaule.
-
-La chaleur n'est jamais expliquée davantage que par la phrase de Moon : *« le monde est
-trop petit aujourd'hui. »* On n'en dira pas plus, et c'est ce qui rend tout le reste
-possible.
-
-### Pourquoi ça marche
-
-- **Le compteur est le sujet.** Pas de score abstrait à collectionner : chaque
-  trouvaille est un geste qu'un enfant a déjà fait un jour de canicule.
-- **On cherche beaucoup de petites choses.** Fermer les volets, s'allonger sur le
-  carrelage, rester debout devant le frigo ouvert, se mettre dans l'ombre du
-  réverbère : −1° chacun. Le jeu récompense le fait de tout toucher.
-- **Certaines idées réchauffent.** Se recoucher : +1°. Prendre le chat sur ses genoux
-  (un chat, ça fait trente-huit degrés) : +1°. Le vidéoprojecteur allumé : +1°. C'est
-  la blague, et ça apprend au joueur que la jauge marche dans les deux sens.
-- **Les mondes parallèles sont les gros moyens.** −3 à −5° chacun. Ils ne sont pas une
-  récompense narrative séparée : ils sont *la meilleure façon* d'avoir froid.
-
-### La lumière comme récompense
-
-C'est là que le système de palettes paie. La maison a **quatre lumières**, choisies par
-la température, et toutes les pièces changent d'un coup :
-
-C'est donc la seule jauge du jeu, et elle est dans le décor.
-
-| Température | Palette | Ce qu'on voit |
-|---|---|---|
-| 34 – 30° | `real-chaud` | midi blanchi, contrastes durs, ça pique les yeux |
-| 29 – 25° | `real` | le vert Game Boy normal |
-| 24 – 21° | `real-doux` | l'or de la fin d'après-midi |
-| ≤ 20° | `real-soir` | le bleu du soir — le jour a fini |
-
-Un enfant voit la lumière baisser et comprend qu'il gagne, sans qu'on lui explique
-quoi que ce soit. Zéro asset supplémentaire : les mêmes dessins, quatre palettes.
-
-### Où c'est écrit
-
-Tout est dans **[fraicheur.ts](../src/data/fraicheur.ts)** : un tableau, un moyen par
-ligne, avec son libellé et ses degrés. Ce fichier alimente à lui seul la jauge, la page
-« FRAIS » du journal et la liste de ce qu'il reste à écrire. Ajouter un moyen = une
-ligne ici, plus `cool: '<id>'` dans le dialogue concerné. La température n'est jamais
-stockée : elle se recalcule depuis les moyens trouvés, donc elle ne peut pas dériver.
 
 ## Chapitre 2 : la Tour de Bretagne
 
@@ -1561,40 +1490,38 @@ pixels) et neuf pixels d'interligne, pour que onze lignes tiennent sans toucher 
 Chacune part d'un objet que Nino peut **déjà** toucher dans le jeu. « Coût » = ce
 qu'il faut ajouter au moteur, au-delà des pièces et des dialogues.
 
-Chaque axe contribue à la même chose : **des degrés**. En voici les gros moyens.
-
-### A. L'Océan de l'Évier — *la bonde de la baignoire* — −4°
+### A. L'Océan de l'Évier — *la bonde de la baignoire*
 Elle fait un bruit d'océan. On tire la bonde, et la salle de bain se vide vers le bas.
 Au fond : tout ce qui a été perdu dans les canalisations, rangé par un poisson qui
 prend son travail très au sérieux. Nino remonte **la petite cuillère** que maman
 cherche depuis des années — ce qui change ce que maman dit, pour toujours.
 *Palette `eau` (existe). Coût : aucun, tout est déjà là.*
 
-### B. Le Fond de l'Armoire — *l'armoire des parents* — −4°
+### B. Le Fond de l'Armoire — *l'armoire des parents*
 Le fond est plus loin qu'il ne devrait. C'est un couloir de manteaux qui ne finit pas,
 jusqu'aux affaires d'enfance des parents. Au bout, un garçon de six ans qui ressemble
 beaucoup à papa, et qui ne comprend pas pourquoi Nino le fixe.
 *Coût : une pièce qui se rejoue sur elle-même jusqu'à ce qu'on fasse la bonne chose.*
 
-### C. Dans la Lumière — *le vidéoprojecteur* — −4°
+### C. Dans la Lumière — *le vidéoprojecteur*
 L'ombre de Nino fait signe avant lui. S'il entre dans le carré de lumière, il devient
 plat : dans ce monde, **on ne marche que dans ce qui est éclairé**. Il en ressort avec
 son ombre en compagnon — elle atteint ce que Nino n'atteint pas.
 *Palette `tv` (existe). Coût : zones éclairées franchissables + un suiveur.*
 
-### D. Le Terrain qui n'existe pas — *le ballon de la cour* — −4°
+### D. Le Terrain qui n'existe pas — *le ballon de la cour*
 Le ballon revient tout seul parce que quelqu'un le renvoie. Derrière la haie, la même
 cour, mais les copains y sont déjà, à un jeu dont les règles changent chaque fois qu'on
 demande à quoi on joue. **C'est l'entrée du chapitre école** : les copains se nomment ici.
 *Coût : un mini-jeu très simple, et un règlement qui se réécrit.*
 
-### E. Nantes en vélo — *le pneu à plat* — −5°
+### E. Nantes en vélo — *le pneu à plat*
 Une pompe traîne dans les cartons de la mezzanine. Réparé, le vélo ouvre la ville :
 la Loire, le passage Pommeraye, le jardin des plantes — et **l'Éléphant des Machines**,
 qui marche, qu'on peut suivre, et sur lequel on peut monter.
 *Palette `ville` (existe). Coût : un déplacement rapide, plusieurs écrans de ville.*
 
-### F. Remonter l'Erdre — *papa capitaine* — −3° (déjà jouable : tremper les pieds)
+### F. Remonter l'Erdre — *papa capitaine* (déjà jouable : tremper les pieds)
 « Monte pas, ça bouge. » Il faut donc un autre bateau. L'île de Versailles, son jardin
 japonais, et un héron qui exige des papiers.
 *Coût : un bateau qui avance (plateforme mobile), de l'eau franchissable.*
@@ -1643,8 +1570,7 @@ Chaque saut **repart de zéro** et ne pose que ce que l'étape déclare, sinon l
 
 - [x] Un passage vers l'est de l'Erdre — il mène à la Tour de Bretagne, et il ne s'ouvre
       qu'une fois le bateau coulé.
-- [ ] Une deuxième pièce à collectionner : il n'y en a qu'une (le rêve de la fusée), et
-      l'écran de fin les compte.
+- [x] D'autres pièces à collectionner : il y en a dix-neuf, et l'écran de fin les compte.
 
 **Son** — **dix-sept sons sont branchés**, et la liste complète est écrite :
 [`src/data/sons.ts`](../src/data/sons.ts), 28 sons, 70 fichiers. `npx tsx tools/sons.ts`
@@ -1684,8 +1610,6 @@ Les deux indispensables : **le prout de la fusée** (huit variantes, c'est de lo
 fonctionnalité la plus importante du projet) et **le souffle des bougies** — une grande
 inspiration, puis rien, puis une respiration d'enfant qui dort. C'est le dernier son du
 jeu, il doit être le plus doux.
-- [ ] Un écran de fin de chapitre à 20° : le ventilateur repart tout seul, la nuit tombe.
-- [ ] Le ventilateur réparé pourrait être le tout dernier moyen (−2°).
 
 **Confort**
 - [ ] Contrôles tactiles (D-pad à l'écran) si on veut jouer sur tablette.
