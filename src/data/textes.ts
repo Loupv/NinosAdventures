@@ -1929,27 +1929,10 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
     },
   ],
 
-  'poisson-erdre': [
-    {
-      when: () => state.flag('bateau-coule'),
-      speaker: 'Le poisson',
-      lines: ['« Bon. »', '« Passe, maintenant. »'],
-    },
-    // Le bateau est là depuis le début : cette réplique attendait un drapeau qui n'existe
-    // plus, et l'indice du bouchon ne sortait donc jamais.
-    {
-      speaker: 'Le poisson',
-      lines: ['« Le bateau, là-bas. »', '« Il a un bouchon, lui aussi. »'],
-    },
-    {
-      speaker: 'Le poisson',
-      lines: [
-        '« Merci pour le bouchon. »',
-        '« Je n’oublie pas ces choses-là. »',
-        '« Il n’y a rien à couler, pour l’instant. »',
-      ],
-    },
-  ],
+  // **Le poisson de l'Erdre ne parle plus au bord de l'eau** : il saute, il est occupé, et
+  // tout se dit à l'éléphant. Son indice du bouchon était devenu redondant — c'est l'écureuil
+  // qui donne la clé du naufrage — et il garde la parole là où elle compte : dans la scène du
+  // départ, la tête hors de l'eau.
 
   baignoire: [
     {

@@ -3300,7 +3300,7 @@ export class WorldScene extends Phaser.Scene {
      * ne peut plus parler ni à Maman ni à papa, et c'est ce moment-là qui vaut les deux.
      */
     if (
-      (l.def.id === 'elephant-erdre' || l.def.id === 'poisson-erdre') &&
+      l.def.id === 'elephant-erdre' &&
       state.flag('elephant-vu') &&
       state.flag('maman-quai-vue') &&
       !state.flag('poisson-parti')

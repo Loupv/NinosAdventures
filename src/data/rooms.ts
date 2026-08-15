@@ -1960,7 +1960,8 @@ export const ROOMS: Record<string, Room> = {
         frame: 'saut-0',
         anim: 'poisson-saut',
         depth: -10,
-        dialogue: 'poisson-erdre',
+        // **Pas de dialogue** : il saute, il est occupé. Tout se dit à l'éléphant — c'est
+        // lui qu'on regarde, et la scène du départ se déclenche sur lui.
         showIfFlag: 'bouchon-retire',
       },
       // **L'Éléphant des Machines, la première fois.** Au second plan, dans l'eau, en train de
