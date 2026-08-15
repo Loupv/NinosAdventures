@@ -6,7 +6,7 @@ import { animKey, blankCanvas, paintArt, texKey } from '../art/pixels';
 import { ROOMS, nomDuLieu, type Door, type Room, type RoomObject } from '../data/rooms';
 import { ARROSABLES, CHARACTER_SPRITES } from '../data/characters';
 import { ITEMS, type ItemId } from '../data/items';
-import { pickBeat, type Effects, type Montre } from '../data/dialogues';
+import { pickBeat, type DialogueBeat, type Effects, type Montre } from '../data/dialogues';
 import {
   ANNONCES,
   ARAIGNEE_PARTIE,
@@ -61,6 +61,10 @@ import {
   SEMBLANT,
   SORTIR_DU_LIT,
   VIE,
+  OBJETS,
+  QUEL_OBJET,
+  beatObjet,
+  portables,
 } from '../data/textes';
 import {
   CACHETTES,
@@ -818,12 +822,14 @@ export class WorldScene extends Phaser.Scene {
     // Il retombe dans la cour au lieu de rester planté dans le cadre.
     b.setVelocity(0, 90);
     /**
-     * **Une vitre qui casse dans une maison vide ne fait pas de bruit.** Papa gronde tant qu'il est
-     * dans le salon ; Maman gronde si elle est rentrée sous la pluie ; entre les deux, il n'y a
-     * personne derrière ce mur — papa est sur son bateau, puis à sa terrasse — et il ne reste que
-     * l'écureuil, qui rit.
+     * **Une vitre qui casse dans une maison vide ne fait pas de bruit.** Mais la maison ne se
+     * vide pas à la diversion : les parents courent après le chat **dedans**, et tant que Nino
+     * ne les a pas vus au bord de l'Erdre, quelqu'un est derrière ce mur. C'est donc la première
+     * visite de l'Erdre qui fait le silence — `parents-sortis` tombe trop tôt, à la seconde même
+     * où casser la vitre devient possible, et papa ne grondait jamais. Maman regronde une fois
+     * rentrée sous la pluie ; entre les deux, il ne reste que l'écureuil, qui rit.
      */
-    const personne = state.flag('parents-sortis') && !state.flag('maman-quai-partie');
+    const personne = state.vu('erdre') && !state.flag('maman-quai-partie');
     if (!personne) {
       this.runDialogue('fenetre-cassee', vitre);
       return;
@@ -3315,6 +3321,15 @@ export class WorldScene extends Phaser.Scene {
       this.discussionDuBateau();
       return;
     }
+    /**
+     * **Le projet d'art se choisit.** Si Nino porte plusieurs objets pas encore montrés, la
+     * maîtresse demande lequel — sans ça, l'ordre d'une liste décidait à sa place. Un seul
+     * objet, et on retombe sur le dialogue normal.
+     */
+    if (l.def.dialogue === 'maitresse' && state.flag('devoir-donne') && portables().length >= 2) {
+      this.choisirLObjet(l, portables(), 0);
+      return;
+    }
     // **Le pigeon ignore Nino.** Pas de boîte de dialogue : une boîte supposerait qu'il
     // s'intéresse à nous. Il se décale, il emmène son point d'ancrage avec lui, et il continue.
     // Les sept plantes partagent un texte : c'est la scène qui sait laquelle a bu.
@@ -3352,6 +3367,34 @@ export class WorldScene extends Phaser.Scene {
   private runDialogue(id: string, l?: Live): void {
     const beat = pickBeat(id);
     if (!beat) return;
+    this.jouerBeat(beat, l);
+  }
+
+  /**
+   * **Choisir ce qu'on pose sur la table.** Quand Nino porte plusieurs objets pas encore
+   * montrés, la maîtresse demande — et c'est lui qui décide, pas l'ordre d'une liste. La
+   * fenêtre de choix ne rend que quatre lignes : trois objets à la fois, et « Autre chose... »
+   * fait tourner la liste quand il en porte davantage.
+   */
+  private choisirLObjet(l: Live, liste: ItemId[], depart: number): void {
+    const tranche = [...liste.slice(depart), ...liste.slice(0, depart)].slice(0, 3);
+    const tourne = liste.length > 3;
+    say({
+      speaker: 'La maîtresse',
+      lines: QUEL_OBJET.question,
+      choices: [...tranche.map((id) => OBJETS[id].nom), ...(tourne ? [QUEL_OBJET.autre] : [])],
+      focusY: l.def.y,
+      onDone: (i) => {
+        if (i !== undefined && i < tranche.length) {
+          this.jouerBeat(beatObjet(tranche[i]), l);
+          return;
+        }
+        this.choisirLObjet(l, liste, (depart + 3) % liste.length);
+      },
+    });
+  }
+
+  private jouerBeat(beat: DialogueBeat, l?: Live): void {
 
     /**
      * **Un devoir noté : une petite discussion.** Deux ou trois questions à la suite, aucune

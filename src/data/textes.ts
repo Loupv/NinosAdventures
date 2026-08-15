@@ -932,6 +932,30 @@ const OFFRABLES: ItemId[] = [
 ];
 
 /**
+ * **Ce que Nino porte et n'a pas encore montré.** Quand il y en a plusieurs, la scène ouvre un
+ * choix : c'est Nino qui décide ce qu'il pose sur la table, pas l'ordre de la liste.
+ */
+export const portables = (): ItemId[] =>
+  OFFRABLES.filter((id) => state.has(id) && !state.flag(rendu(id)));
+
+/** La question du choix, et la ligne qui fait tourner la liste quand il porte plus de trois choses. */
+export const QUEL_OBJET = {
+  question: ['« Montre-moi. »', '« Qu’est-ce que tu m’apportes ? »'],
+  autre: 'Autre chose...',
+};
+
+/**
+ * **La discussion d'un objet précis**, pour quand Nino l'a choisi lui-même : le même contenu
+ * que le beat correspondant de `maitresse`, construit à la demande.
+ */
+export const beatObjet = (id: ItemId): DialogueBeat => ({
+  speaker: 'La maîtresse',
+  lines: ACCUEILS[id],
+  devoir: DEVOIRS[id],
+  effects: { flag: rendu(id) },
+});
+
+/**
  * **La discussion du projet d'art, objet par objet.**
  *
  * Chaque objet a son accueil (ce que la maîtresse dit en le voyant arriver sur sa table, la
@@ -1979,11 +2003,12 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
    * Dans les deux cas où il y a quelqu'un, c'est le chat qui prend : c'est toujours le chat.
    */
   'fenetre-cassee': [
-    // **Tant que Nino n'est pas sorti, il y a du monde derrière ce mur.** Les parents courent après
-    // le chat dans la cuisine, mais ils sont là : casser une vitre juste après la diversion doit
-    // encore faire réagir quelqu'un. C'est la fenêtre enjambée qui vide la maison, pas la diversion.
+    // **Tant que Nino n'a pas vu ses parents dehors, il y a du monde derrière ce mur.** La
+    // diversion ne vide pas la maison : les parents courent après le chat dedans. C'est la
+    // première visite de l'Erdre — où on les retrouve, lui sur son bateau, elle au bout du
+    // quai — qui fait le silence.
     {
-      when: () => !state.flag('fenetre-ouverte'),
+      when: () => !state.vu('erdre'),
       speaker: 'Papa',
       lines: ['« NON MAIS CE CHAT. »'],
     },

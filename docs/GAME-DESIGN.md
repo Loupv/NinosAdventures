@@ -909,12 +909,17 @@ question de **qui est derrière ce mur** :
 
 | Quand | Qui réagit |
 |---|---|
-| Les parents tiennent encore le salon | **Papa** : *« NON MAIS CE CHAT. »* |
-| Ils sont sortis (papa sur son bateau, puis à sa terrasse) | **personne** — la maison est vide, et il ne reste que **l'écureuil, qui rit** : *« Hé hé hé. »* |
+| Nino n'a pas encore vu l'Erdre | **Papa** : *« NON MAIS CE CHAT. »* |
+| Nino a vu ses parents au bord de l'eau (lui sur son bateau, elle au bout du quai) | **personne** — la maison est vide, et il ne reste que **l'écureuil, qui rit** : *« Hé hé hé. »* |
 | Maman est rentrée sous la pluie de l'éléphant | **Maman**, même phrase : c'est toujours le chat qui prend |
 
 Une vitre qui casse dans une maison vide ne fait pas de bruit. C'est la version décor de la règle
 du jeu : **rien ne réagit tout seul**, quelqu'un doit être là.
+
+**Ce n'est pas la diversion qui vide la maison** : les parents courent après le chat *dedans*,
+et le drapeau `parents-sortis` tombe à la seconde même où casser la vitre devient possible —
+gater le cri dessus rendait papa muet à jamais. C'est **la première visite de l'Erdre** qui
+fait foi : tant que Nino ne les a pas vus dehors, quelqu'un est derrière ce mur.
 
 ### Branches secondaires déjà ouvertes
 
