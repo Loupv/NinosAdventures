@@ -479,7 +479,7 @@ export const SONS: Son[] = [
     id: 'musique-maison',
     present: true,
     provisoire: true,
-    quand: 'La maison, sauf la chambre de Nino et la mezzanine : couloir, cuisine, salon, salle de bain.',
+    quand: 'La maison, sauf la chambre de Nino et la mezzanine : couloir, cuisine, salon, salle de bain — et la cour, qui est encore la maison.',
     variantes: 1,
     cherche:
       'Plus douce que la chambre : on y passe, on n’y habite pas. Le fichier posé : « Princess Quest (No Boing) » (Abstraction, CC0) ralentie de moitié et posée un quart moins fort — la deuxième piste la plus calme du lot, sans aucun bruitage dedans.',
@@ -501,7 +501,7 @@ export const SONS: Son[] = [
     id: 'musique-ville',
     present: true,
     provisoire: true,
-    quand: 'La cour, Nantes, la Tour de Bretagne.',
+    quand: 'Nantes, l’école, les bars, la Tour de Bretagne — la ville commence passé la cour.',
     variantes: 1,
     cherche:
       'Plus vif, plus mécanique. Dehors, ça bouge. Le fichier posé : « Modern Bits » (Abstraction, CC0), telle quelle — la plus mécanique du lot, deux minutes de boucle.',
@@ -593,7 +593,8 @@ const MUSIQUE_PAR_PIECE: Record<string, string> = {
   sdb: 'musique-maison',
   cuisine: 'musique-maison',
   salon: 'musique-maison',
-  cour: 'musique-ville',
+  // La cour est encore la maison : sa musique la suit dehors, et ne change qu'à Nantes.
+  cour: 'musique-maison',
   nantes: 'musique-ville',
   ecole: 'musique-ville',
   'tour-pied': 'musique-ville',
