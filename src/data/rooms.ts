@@ -272,12 +272,28 @@ export const ROOMS: Record<string, Room> = {
         y: 40,
         sprite: 'seau',
         frame: 'eau-0',
-        // L'eau scintille en continu ; une fois l'énigme résolue, le poisson saute —
-        // avant, rien ne dit qu'il est dedans.
+        // L'eau scintille en continu. Avant l'énigme, rien ne dit qu'il y a quelqu'un
+        // dedans : la tête ne sort que pendant qu'on lui parle (montre), et le vrai saut
+        // est un poisson entier, à part, comme dans la baignoire.
         anim: 'seau-eau',
-        animIfFlag: ['enigme-poisson', 'seau-saute'],
         priorite: 2,
         dialogue: 'poisson-tour',
+      },
+      /**
+       * **Le poisson entier, qui saute hors du seau** — une fois son énigme résolue. Le même
+       * mécanisme que la baignoire : visible seulement en l'air, un petit plouf à chaque
+       * plongeon.
+       */
+      {
+        id: 'poisson-seau-saut',
+        x: 100,
+        y: 44,
+        sprite: 'poisson',
+        frame: 'saut-0',
+        anim: 'poisson-saut',
+        depth: 70,
+        saute: { gauche: 98, droite: 106, hauteur: 16, eau: 52 },
+        showIfFlag: 'enigme-poisson',
       },
       {
         id: 'plante-hall',
@@ -1687,7 +1703,7 @@ export const ROOMS: Record<string, Room> = {
       { id: 'copain3', x: 140, y: 52, sprite: 'copain', priorite: 2, portee: 20, dialogue: 'copain3' },
       // Le seul arbre du jeu, dans le coin gauche de la cour.
       { id: 'arbre', x: 8, y: 24, sprite: 'arbre', dialogue: 'arbre' },
-      { id: 'banc', x: 108, y: 46, sprite: 'banc', dialogue: 'banc' },
+      { id: 'banc', x: 108, y: 46, sprite: 'banc' },
       // ── dans la rue : le panneau, et le ballon passé par-dessus la grille ──
       { id: 'panneau-ecole', x: 28, y: 68, sprite: 'panneau', solid: true, dialogue: 'panneau-ecole' },
       {
@@ -1771,7 +1787,7 @@ export const ROOMS: Record<string, Room> = {
       { id: 'reverbere-3', x: 164, y: 76, sprite: 'reverbere' },
       { id: 'reverbere-4', x: 196, y: 76, sprite: 'reverbere' },
       { id: 'carton-tour', x: 68, y: 96, sprite: 'carton', dialogue: 'carton-tour' },
-      { id: 'banc', x: 116, y: 92, sprite: 'banc', dialogue: 'banc' },
+      { id: 'banc', x: 116, y: 92, sprite: 'banc' },
       {
         id: 'pigeon',
         x: 152,
@@ -1925,9 +1941,8 @@ export const ROOMS: Record<string, Room> = {
         // Après le passage du pigeon, la table reste sans verres : le dessin est l'archive.
         frameIfFlag: [['verres-tombes', 'vide']],
         solid: true,
-        // Serrée : sinon la table leur volait la parole à tous les deux.
-        portee: 4,
-        dialogue: 'table-bar',
+        // **Muette** : le texte des tables du bar dit « Personne à cette table », et à
+        // celle-ci il y a papa et le parrain. On leur parle à eux.
       },
       {
         id: 'papa-terrasse',
@@ -1947,7 +1962,7 @@ export const ROOMS: Record<string, Room> = {
         errance: { rayon: 26, vitesse: 24 },
       },
       { id: 'reverbere', x: 132, y: 36, sprite: 'reverbere', solid: true },
-      { id: 'banc', x: 20, y: 60, sprite: 'banc', solid: true, dialogue: 'banc' },
+      { id: 'banc', x: 20, y: 60, sprite: 'banc', solid: true },
       { id: 'poubelle', x: 104, y: 16, sprite: 'poubelle', solid: true, dialogue: 'poubelle' },
       /**
        * **Le pigeon de la terrasse.** C'est lui que l'écureuil fait viser : arrosé, il décolle
@@ -2076,7 +2091,8 @@ export const ROOMS: Record<string, Room> = {
           marche: 'papa-marche',
           arret: 'papa-bricole',
         },
-        dialogue: 'papa-capitaine',
+        // **Pas de dialogue** : il ne lève pas la tête, il ne nous voit pas — il marmonne
+        // tout seul. La révélation (« Nino. Ne dis pas à ta mère. ») vient au naufrage.
         hideIfFlag: 'papa-sauve',
       },
       // ── premier plan : le quai ──
@@ -2116,7 +2132,7 @@ export const ROOMS: Record<string, Room> = {
       // Hermione, elle attend papa qui bricole — et elle voit tout ce qui passe. Il faudra
       // qu'elle s'en aille d'elle-même : c'est l'éléphant qui s'en chargera.
       // Le banc reste quand ils sont partis : c'est le quai qui se vide, pas le décor.
-      { id: 'banc-quai', x: 256, y: 82, sprite: 'banc', depth: 96, dialogue: 'banc' },
+      { id: 'banc-quai', x: 256, y: 82, sprite: 'banc', depth: 96 },
       {
         id: 'maman-quai',
         x: 264,

@@ -331,6 +331,10 @@ export const NAUFRAGE = [
   '« C’est de l’eau. »',
   '« Un capitaine ne quitte pas son navire. »',
   '« Ça va se stabiliser. »',
+  // **La révélation.** On ne peut jamais lui parler sur son bateau, il ne lève pas la
+  // tête, il ne nous voit pas — et au moment de couler, sans se retourner :
+  '« Nino. »',
+  '« Ne dis pas à ta mère. »',
   '« Bon. »',
   '« Blublublub. »',
 ];
@@ -461,6 +465,7 @@ export const ECUREUIL_RIT = '« Hé hé hé. »';
  */
 export const PAPA_BRICOLE = [
   '« Si je mets ça là… »',
+  '« Ce bouchon fuit. »',
   '« Hmm. Ça vient d’où, ça ? »',
   '« Un coup de scie ici, quelques clous là. »',
 ];
@@ -538,7 +543,7 @@ export const ARROSES: Record<string, string[]> = {
   araignee: ['« Tiède. »', '« Encore. »'],
   elephant: ['« Enfin. »', '« Il fait tellement chaud. »'],
   hermione: ['Hermione rit très fort.', 'Hermione en veut encore.'],
-  parrain: ['« Il pleut ? »', '« Dedans ? »'],
+  parrain: ['« Il pleut ? »', '« Uniquement sur moi ? »'],
   // La plante du treizième étage. Elle ne compte pas dans les sept : elle ne boit pas.
   'plante-13': ['L’eau glisse sur le plastique.', 'La plante ne bougera plus jamais.'],
   jardinier: ['« Hé ! »', '« Sur les plantes, pas sur moi. »'],
@@ -2076,6 +2081,8 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
         'Et papa est sur son bateau.',
         'Ils ne doivent pas nous voir.',
       ],
+      // C'est ici que Nino voit papa en capitaine pour la première fois : le drapeau sert
+      // à l'écran-titre (papa rejoint l'affiche) — l'interaction avec lui n'existe plus.
       effects: { flag: 'maman-quai-vue' },
     },
   ],
@@ -2179,13 +2186,11 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
    * une tour qui bouche le ciel, et il fait déjà sombre. C'est la seule narration d'ambiance du jeu
    * qui se déclenche toute seule — elle ne demande rien, elle ne bloque rien, elle dit l'heure.
    */
+  // La tour n'est pas mentionnée : à l'arrivée sur le parvis elle est encore hors champ,
+  // un écran plus loin. C'est le regard levé à la porte qui la racontera.
   'nuit-tombe': [
     {
-      lines: [
-        'Le ciel a changé pendant qu’on marchait.',
-        'La nuit est tombée.',
-        'La tour est noire, et elle ne finit pas.',
-      ],
+      lines: ['Le ciel a changé pendant qu’on marchait.', 'La nuit est tombée.'],
     },
   ],
 
@@ -2237,6 +2242,8 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
       when: () => state.flag('enigme-poisson'),
       speaker: 'Le poisson',
       lines: ['« Ne m’attends pas. »', '« J’en suis à l’étage un. »'],
+      // La tête sort du seau le temps de la réplique.
+      montre: { sprite: 'seau', frame: 'saute-0', x: 102, y: 40, depth: 72 },
     },
     {
       speaker: 'Le poisson',
@@ -2248,6 +2255,8 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
         '« C’est la règle des tours. Toi aussi, ça te concerne. »',
         '« Qu’est-ce qui monte et descend sans bouger ? »',
       ],
+      // Il sort la tête pour parler : c'est la révélation du seau.
+      montre: { sprite: 'seau', frame: 'saute-0', x: 102, y: 40, depth: 72 },
       enigme: {
         reponses: ['La mer', 'L’ascenseur', 'Un escalier'],
         bonne: 0,
@@ -2257,9 +2266,13 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
             'Le seau frémit. Il y a un escalier, maintenant.',
             '« Monte. Moi, j’y vais à mon rythme. »',
           ],
+          montre: { sprite: 'seau', frame: 'saute-0', x: 102, y: 40, depth: 72 },
           effects: { flag: 'enigme-poisson' },
         },
-        faux: { lines: ['« Non. »', '« Indice : j’en reviens. »'] },
+        faux: {
+          lines: ['« Non. »', '« Indice : j’en reviens. »'],
+          montre: { sprite: 'seau', frame: 'saute-0', x: 102, y: 40, depth: 72 },
+        },
       },
     },
   ],
@@ -2411,12 +2424,6 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
   ],
 
   /** Le mobilier de la ville. Il ne sert à rien, et il répond quand on lui parle. */
-  banc: [
-    {
-      lines: ['Un banc.', 'La pierre est brûlante.', 'Personne ne s’assoit là aujourd’hui.'],
-    },
-  ],
-
   poubelle: [
     { lines: ['Une poubelle de ville.', 'Nino ne regarde pas dedans.', 'Il a bien réfléchi.'] },
   ],
@@ -3121,40 +3128,10 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
   ],
 
   // ----------------------------------------------------------------- l'Erdre
-  'papa-capitaine': [
-    // L'eau lui arrive au chapeau : il n'y a plus de conversation possible.
-    {
-      when: () => state.flag('papa-dans-leau'),
-      speaker: 'Papa',
-      lines: ['« Blublublub. »'],
-    },
-    // Le bateau descend, et il trouve encore que tout va bien.
-    {
-      when: () => state.flag('bateau-coule'),
-      speaker: 'Papa',
-      lines: ['« Ne reste pas là. »', '« Enfin, si. Reste. »', '« Mais ne dis rien. »'],
-    },
-    /**
-     * **Il bricole, et il ne lève pas la tête.** Maman l'attend au bout du quai avec Hermione :
-     * il n'a plus d'alibi à donner à personne, il a un bouchon qui fuit. C'est aussi là que
-     * Nino entend parler du bouchon pour la première fois.
-     */
-    {
-      when: () => !state.flag('papa-capitaine-vu'),
-      speaker: 'Papa',
-      lines: [
-        'Sur le bateau, il y a Papa, à genoux dans la coque.',
-        'Il porte son chapeau de capitaine.',
-        '« Deux minutes, Nino ! »',
-        '« J’ai un bouchon qui fuit. »',
-      ],
-      effects: { flag: 'papa-capitaine-vu' },
-    },
-    {
-      speaker: 'Papa',
-      lines: ['« Deux minutes. »', 'Ça fait deux minutes depuis un moment.'],
-    },
-  ],
+  // **On ne parle jamais à papa sur son bateau.** Il bricole, il marmonne tout seul
+  // (`PAPA_BRICOLE` — c'est là que le bouchon se dit), et il ne lève pas la tête : il ne
+  // nous voit pas. C'est ce qui rend la révélation du naufrage possible — « Nino. Ne dis
+  // pas à ta mère. » — dite sans se retourner, au moment de couler.
 
   bateau: [
     {

@@ -3599,12 +3599,16 @@ export class WorldScene extends Phaser.Scene {
     // Une énigme : on propose les réponses, et seule la bonne applique ses effets.
     if (beat.enigme) {
       const e = beat.enigme;
+      // La mise en scène du beat vaut aussi pour une énigme : le poisson sort la tête de
+      // son seau le temps de poser sa question.
+      const retirerBeat = this.montrer(beat.montre);
       say({
         speaker: beat.speaker,
         lines: beat.lines,
         choices: e.reponses,
         focusY: l?.def.y,
         onDone: (reponse) => {
+          retirerBeat();
           const juste = reponse === e.bonne;
           jouer(this, juste ? 'enigme-juste' : 'enigme-faux', { volume: 0.6 });
           const branche = juste ? e.juste : e.faux;
