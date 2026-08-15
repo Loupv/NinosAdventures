@@ -515,16 +515,8 @@ export const ROOMS: Record<string, Room> = {
     ],
     objects: [
       { id: 'escalier-bas', x: 44, y: 84, sprite: 'escalier', depth: 88 },
-      // La dernière fenêtre : à cette hauteur, il n'y a plus rien à voir dehors.
-      {
-        id: 'fenetre-tour',
-        x: 100,
-        y: 34,
-        sprite: 'fenetre',
-        frame: 'ouverte',
-        solid: true,
-        dialogue: 'fenetre-31',
-      },
+      // **Pas de fenêtre au 31e** : l'éléphant tient tout le mur du fond, et elle se
+      // dessinait par-dessus lui. À cet étage, la vue, c'est lui.
       /**
        * **Le second escalier s'ouvre en bas à droite**, contre le mur : du même côté que celui
        * d'arrivée, mais à l'autre bout du palier. On débouche des marches, on lève la tête sur un

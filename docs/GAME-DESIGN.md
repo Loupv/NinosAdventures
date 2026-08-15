@@ -1353,7 +1353,7 @@ mais à l'autre bout du palier. On débouche des marches, on lève la tête sur 
 tout le fond, et il n'y a qu'à longer le bas de la pièce — pas à faire le tour d'un animal de douze
 mètres.
 
-### Trois fenêtres, trois hauteurs
+### Deux fenêtres, deux hauteurs — et un éléphant
 
 Les paliers sont identiques **au pixel près** — c'est la blague de l'ascension — mais rien ne disait
 qu'on montait. Une fenêtre par étage, et c'est le paysage qui compte les étages à la place du
@@ -1361,7 +1361,8 @@ joueur :
 
 > **13e** — *« La fenêtre est ouverte. » « D'ici, les voitures font le bruit de la mer. »*
 > **27e** — *« D'ici, on ne voit plus que les toits. » « Et l'Erdre, tout au fond. »*
-> **31e** — *« D'ici, on ne voit plus rien. » « C'est peut-être un nuage. »*
+> **31e** — pas de fenêtre : l'éléphant tient tout le mur du fond, et elle se dessinait
+> par-dessus lui. À cet étage, la vue, c'est lui.
 
 ### Voler
 

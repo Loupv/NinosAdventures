@@ -2218,10 +2218,6 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
     { lines: ['D’ici, on ne voit plus que les toits.', 'Et l’Erdre, tout au fond.'] },
   ],
 
-  'fenetre-31': [
-    { lines: ['D’ici, on ne voit plus rien.', 'C’est peut-être un nuage.'] },
-  ],
-
   /**
    * Les quatre gardiens de la tour. Une énigme par étage, et **aucune mauvaise réponse ne
    * coûte quoi que ce soit** : on redemande autant qu'on veut. Chaque « faux » donne un
