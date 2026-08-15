@@ -59,7 +59,7 @@ const DEHORS = [
 const APRES_LE_NAUFRAGE = [...DEHORS, 'bateau-coule', 'papa-dans-leau', 'papa-sauve'];
 
 /** Les quatre énigmes de la tour résolues. */
-const ENIGMES = ['enigme-moon', 'enigme-ecureuil', 'enigme-araignee', 'enigme-elephant'];
+const ENIGMES = ['enigme-poisson', 'enigme-ecureuil', 'enigme-araignee', 'enigme-elephant', 'enigme-moon-toit'];
 
 export const ETAPES: Etape[] = [
   // ── Les cinq du clavier : les cinq moments qu'on rejoue tout le temps ──

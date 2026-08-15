@@ -244,6 +244,27 @@ poser(
 // Et son départ : une longue glissade vers le haut, de plus en plus loin.
 poser('araignee-part-1', gain(fondus(passeBas(glissando(1100, 480, 1500), 3), FREQUENCE, 30, 320), 0.3));
 
+console.log('\n── la nuit : des grillons ──');
+// Une stridulation = trois impulsions de triangle aigu très courtes. On les pose sur un
+// fond de bruit presque inaudible, à des instants fixes : la boucle de quatre secondes
+// s'enchaîne sur elle-même sans qu'on entende la couture.
+const poserSur = (fond: Float64Array, morceau: Float64Array, aMs: number) => {
+  const debut = Math.round((aMs / 1000) * FREQUENCE);
+  for (let i = 0; i < morceau.length && debut + i < fond.length; i++) fond[debut + i] += morceau[i];
+  return fond;
+};
+const stridulation = (hz: number) => {
+  const tic = gain(fondus(passeBas(triangle(24, hz), 1), FREQUENCE, 2, 10), 0.16);
+  return coller(tic, silence(28), tic, silence(28), tic);
+};
+{
+  const fond = gain(fondus(passeBas(bruitBlanc(4200, 163), 7), FREQUENCE, 400, 500), 0.1);
+  poserSur(fond, stridulation(3600), 400);
+  poserSur(fond, stridulation(3400), 1700);
+  poserSur(fond, stridulation(3800), 2900);
+  poser('nuit-1', fond);
+}
+
 console.log('\n── les pas : du bruit, aucune note ──');
 const pas = (ms: number, passes: number, demiVie: number, graine: number) =>
   gain(

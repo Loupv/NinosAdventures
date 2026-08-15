@@ -261,19 +261,23 @@ export const ROOMS: Record<string, Room> = {
         y: 16,
         sprite: 'escalier',
         depth: 20,
-        // Il n'y a pas d'escalier avant que Moon accepte : c'est l'énigme qui le fait apparaître.
-        showIfFlag: 'enigme-moon',
+        // Il n'y a pas d'escalier avant que le poisson accepte : c'est l'énigme qui le fait apparaître.
+        showIfFlag: 'enigme-poisson',
       },
-      // Il est arrivé avant lui. Personne ne demande comment.
+      // **Le poisson, dans un seau, au milieu du hall.** Il revient tout juste de la mer, et
+      // personne ne demande comment il est arrivé là — ni comment il compte monter.
       {
-        id: 'moon',
-        x: 104,
-        y: 48,
-        sprite: 'moon',
-        frame: 'idle-0',
-        anim: 'moon-idle',
-        errance: { rayon: 12 },
-        dialogue: 'moon-tour',
+        id: 'poisson-seau',
+        x: 102,
+        y: 40,
+        sprite: 'seau',
+        frame: 'eau-0',
+        // L'eau scintille en continu ; une fois l'énigme résolue, le poisson saute —
+        // avant, rien ne dit qu'il est dedans.
+        anim: 'seau-eau',
+        animIfFlag: ['enigme-poisson', 'seau-saute'],
+        priorite: 2,
+        dialogue: 'poisson-tour',
       },
       {
         id: 'plante-hall',
@@ -295,7 +299,7 @@ export const ROOMS: Record<string, Room> = {
         w: 16,
         h: 17,
         to: { room: 'tour-13', x: 52, y: 108 },
-        needsFlag: 'enigme-moon',
+        needsFlag: 'enigme-poisson',
         blockedDialogue: ['escalier-garde'],
         son: 'escalier',
       },
@@ -591,6 +595,24 @@ export const ROOMS: Record<string, Room> = {
     ],
     objects: [
       { id: 'escalier-bas', x: 24, y: 52, sprite: 'escalier', depth: 56 },
+      // **La lune, énorme, posée dans le ciel.** C'est elle que Moon garde : on l'apprend ici,
+      // au bout de trente-deux étages, et personne ne demande depuis quand.
+      { id: 'lune', x: 40, y: 14, sprite: 'lune', depth: -60 },
+      /**
+       * **Moon, le dernier gardien, directement sous sa lune.** Il explique enfin son nom, il
+       * pose la plus difficile de toutes les questions, et c'est lui qui donne le parapente.
+       * Personne ne demande comment il est monté : c'est le principe.
+       */
+      {
+        id: 'moon-toit',
+        x: 44,
+        y: 96,
+        sprite: 'moon',
+        frame: 'idle-0',
+        anim: 'moon-idle',
+        priorite: 2,
+        dialogue: 'moon-toit',
+      },
       { id: 'antenne', x: 132, y: 56, sprite: 'reverbere', solid: true, dialogue: 'antenne' },
       { id: 'vue', x: 72, y: 50, sprite: 'panneau', solid: true, dialogue: 'vue-tour' },
       // Une étoile un peu plus grosse que les autres, posée dans le ciel : de quoi
@@ -605,6 +627,8 @@ export const ROOMS: Record<string, Room> = {
         sprite: 'parapente',
         priorite: 2,
         dialogue: 'parapente',
+        // Il n'apparaît qu'une fois la question de Moon résolue : c'est lui la récompense.
+        showIfFlag: 'enigme-moon-toit',
       },
     ],
     doors: [{ x: 24, y: 52, w: 16, h: 17, to: { room: 'tour-31', x: 108, y: 62 }, son: 'escalier' }],
@@ -1694,18 +1718,8 @@ export const ROOMS: Record<string, Room> = {
       band('#'),
     ],
     objects: [
-      // Les marches du parvis, en grand : on les monte en marchant vers la droite, et c'est
-      // en s'arrêtant dessus qu'on lève la tête.
-      {
-        id: 'marches',
-        x: 208,
-        y: 70,
-        sprite: 'escalier',
-        scale: 2,
-        depth: -30,
-        portee: 24,
-        dialogue: 'tour-vue',
-      },
+      // La porte porte aussi le regard vers le haut : la première fois qu'on la touche,
+      // Nino lève la tête avant d'entrer.
       { id: 'porte-tour', x: 240, y: 88, sprite: 'porte', depth: -20, dialogue: 'porte-tour' },
       { id: 'panneau-tour', x: 136, y: 88, sprite: 'panneau', dialogue: 'panneau-tour' },
       // **Quatre réverbères tout le long du parvis.** De nuit, sans eux, l'écran était noir

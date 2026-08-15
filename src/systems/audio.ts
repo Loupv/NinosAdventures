@@ -32,10 +32,11 @@ export function couperSon(scene: Phaser.Scene | undefined, valeur: boolean): boo
   coupe = valeur;
   // La musique est une boucle déjà lancée : le drapeau ne suffit pas, on la met en
   // pause — et on la reprend là où elle en était, pas au début.
-  if (musique) {
-    if (valeur) musique.boucle.pause();
-    else if (musique.boucle.isPaused) musique.boucle.resume();
-    else musique.boucle.play();
+  for (const canal of [musique, ambiance]) {
+    if (!canal) continue;
+    if (valeur) canal.boucle.pause();
+    else if (canal.boucle.isPaused) canal.boucle.resume();
+    else canal.boucle.play();
   }
   // Par acquit de conscience, on essaie aussi les leviers de Phaser : ils n'ont aucun
   // effet ici, mais ils couperont les boucles déjà lancées le jour où il y aura des
@@ -82,6 +83,33 @@ export function jouerMusique(scene: Phaser.Scene, id: string | undefined): void 
   const boucle = scene.sound.add(k, { loop: true, volume: VOLUME_MUSIQUE });
   musique = { id: voulu, boucle };
   // Coupé, on garde la boucle prête sans la lancer : `couperSon(false)` la démarrera.
+  if (!coupe) boucle.play();
+}
+
+/**
+ * ── L'ambiance ──
+ *
+ * Un second canal de boucle, **par-dessus la musique** : les grillons de la nuit. Même
+ * contrat que la musique — une seule à la fois, redemander celle qui joue ne fait rien,
+ * fichier absent = silence.
+ */
+const VOLUME_AMBIANCE = 0.4;
+
+let ambiance: { id: string; boucle: Phaser.Sound.BaseSound } | undefined;
+
+export function jouerAmbiance(scene: Phaser.Scene, id: string | undefined): void {
+  const s = id ? son(id) : undefined;
+  const voulu = s?.present ? id : undefined;
+  if (ambiance?.id === voulu) return;
+  if (ambiance) {
+    ambiance.boucle.destroy();
+    ambiance = undefined;
+  }
+  if (!voulu) return;
+  const k = cle(voulu, 1);
+  if (!scene.cache.audio.exists(k)) return;
+  const boucle = scene.sound.add(k, { loop: true, volume: VOLUME_AMBIANCE });
+  ambiance = { id: voulu, boucle };
   if (!coupe) boucle.play();
 }
 

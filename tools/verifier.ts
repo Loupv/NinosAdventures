@@ -330,10 +330,11 @@ const FIN = new Set([
   'bouchon-retire',
   'bateau-coule',
   'maman-quai-partie',
-  'enigme-moon',
+  'enigme-poisson',
   'enigme-ecureuil',
   'enigme-araignee',
   'enigme-elephant',
+  'enigme-moon-toit',
   'parapente-pris',
 ]);
 const apres = joignables(FIN);

@@ -57,6 +57,31 @@ export class BootScene extends Phaser.Scene {
       repeat: -1,
     });
 
+    // L'eau du seau scintille en deux images, comme celle de la baignoire.
+    this.anims.create({
+      key: animKey('seau-eau', pal),
+      frames: [
+        { key: texKey('seau', pal), frame: 'eau-0' },
+        { key: texKey('seau', pal), frame: 'eau-1' },
+      ],
+      frameRate: 1.4,
+      repeat: -1,
+    });
+    // Le poisson qui saute dans son seau, une fois son énigme résolue. Il replonge
+    // entre deux sauts : l'eau seule fait la dernière image.
+    this.anims.create({
+      key: animKey('seau-saute', pal),
+      frames: [
+        { key: texKey('seau', pal), frame: 'saute-0' },
+        { key: texKey('seau', pal), frame: 'saute-1' },
+        { key: texKey('seau', pal), frame: 'saute-0' },
+        { key: texKey('seau', pal), frame: 'eau-0' },
+        { key: texKey('seau', pal), frame: 'eau-1' },
+      ],
+      frameRate: 2.2,
+      repeat: -1,
+    });
+
     this.anims.create({
       key: animKey('hermione-idle', pal),
       frames: [

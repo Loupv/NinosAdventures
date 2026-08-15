@@ -1289,10 +1289,23 @@ déjà rencontrés — sauf un, et personne ne demande comment il est monté :
 
 | Étage | Qui | L'énigme | La bonne réponse |
 |---|---|---|---|
-| Hall | **Moon** | *« Qui dort seize heures par jour, et personne ne lui dit rien ? »* | Un chat |
+| Hall | **Le poisson, dans un seau** | *« Qu'est-ce qui monte et descend sans bouger ? »* | La mer |
 | 13e | **L'écureuil** | *« Qu'est-ce qui est mieux qu'une noisette ? »* | Deux noisettes |
 | 27e | **L'araignée** | *« Le fer blanc du mardi ne dort jamais deux fois sous la même chaussette. Qu'est-ce que ça veut dire ? »* | C'est un beau poème |
 | 31e | **L'Éléphant des Machines** | *« Combien de pas, d'ici jusqu'à la mer ? »* | Je ne sais pas |
+| Le toit | **Moon, sous sa lune** | *« Quelle heure est-il ? »* — la plus difficile de toutes les questions | L'heure de rentrer |
+
+**Le hall annonce la quête, le toit la referme.** Dans le hall, un seau d'eau — l'eau
+scintille, rien ne dit ce qu'il y a dedans. On lui parle : c'est le poisson, qui revient
+tout juste de la mer (l'eau salée gratte, personne ne le dit) et qui considère que la règle
+des tours s'applique à lui aussi : une énigme par étage, et tout en haut. Dans un seau.
+Personne ne relève. Une fois son énigme résolue, il saute dedans — avant, rien ne bouge.
+
+Sur le toit, **Moon attend sous une lune énorme**, et trente-deux étages servent à
+apprendre pourquoi le chat s'appelle Moon : gardien de la lune, évidemment. Sa question
+est la plus difficile de toutes, sa bonne réponse est la seule chose que le jeu ait jamais
+voulu dire, et réussir fait apparaître le parapente — c'est lui, la récompense. Le
+parapente ne traîne plus sur le toit : il se mérite.
 
 Quatre remarques sur ces énigmes :
 
@@ -1304,9 +1317,9 @@ Quatre remarques sur ces énigmes :
 - **L'éléphant récompense l'honnêteté** — la bonne réponse est « Je ne sais pas », et il
   répond *« Moi non plus. »* C'est le dernier verrou du jeu : il ne doit jamais bloquer.
 - **Aucune mauvaise réponse ne coûte quoi que ce soit.** On redemande autant qu'on veut, et
-  chaque échec donne un indice, jamais la réponse : Moon dit *« Réfléchis à qui tu
-  parles »*, l'araignée dit *« Tu cherches trop »* (ce qui écarte les deux réponses qui cherchent
-  un sens).
+  chaque échec donne un indice, jamais la réponse : le poisson dit *« Indice : j'en
+  reviens »*, l'araignée dit *« Tu cherches trop »* (ce qui écarte les deux réponses qui cherchent
+  un sens), Moon dit *« Regarde le ciel. Pense à la maison. »*
 - **L'araignée était partie de la mezzanine** en dansant, très tôt dans le jeu. Voilà où
   elle était.
 

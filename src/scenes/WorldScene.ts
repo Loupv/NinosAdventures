@@ -78,7 +78,7 @@ import { piece } from '../data/pieces';
 import { state } from '../systems/state';
 import { EV, bus, say, toast, type Buttons } from '../systems/bus';
 import { gbFade, portalWarp, sparkle, splash } from '../systems/fx';
-import { jouer, jouerMusique } from '../systems/audio';
+import { jouer, jouerAmbiance, jouerMusique } from '../systems/audio';
 import { musiquePour } from '../data/sons';
 import { Player, type ViewMode } from '../entities/Player';
 import { ETAPES, type Etape } from '../dev/etapes';
@@ -312,6 +312,9 @@ export class WorldScene extends Phaser.Scene {
     // toute la maison partage la même boucle. Le générique, lui, garde la musique avec
     // laquelle il est arrivé — il traverse toutes les pièces, ce serait un zapping.
     if (!this.cinema) jouerMusique(this, musiquePour(id));
+    // Et les grillons, par-dessus, dès que la nuit est tombée — jusqu'au retour en parapente.
+    if (!this.cinema)
+      jouerAmbiance(this, state.flag('nuit') && !state.flag('parapente-rentre') ? 'nuit' : undefined);
     // L'heure du jour, en deux drapeaux. On se lève vers midi ; la nuit tombe en entrant
     // dans la tour ; sur le toit le ciel pâlit déjà — et une fois rentré par la fenêtre
     // c'est le matin, donc les couleurs du jour à nouveau.
@@ -671,7 +674,9 @@ export class WorldScene extends Phaser.Scene {
     let go: Phaser.GameObjects.Image | Phaser.GameObjects.Sprite;
     // Une planche d'images s'il est animé — ou s'il **marche en patrouillant** : ses animations
     // sont dans `patrouille`, parce que ce sont celles d'un aller-retour, pas d'un état.
-    if (anim || def.patrouille?.marche) {
+    // Et s'il **pourrait** s'animer un jour (`animIfFlag`) : le rafraîchissement ne sait
+    // animer que les sprites — le seau du poisson naissait image, et ne sautait jamais.
+    if (anim || def.patrouille?.marche || def.animIfFlag) {
       const s = this.add.sprite(def.x, def.y, key, frame);
       if (anim) s.play(animKey(anim, pal));
       go = s;

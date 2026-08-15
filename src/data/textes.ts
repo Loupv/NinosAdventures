@@ -2173,8 +2173,8 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
     {
       lines: [
         'Le ciel a changé pendant qu’on marchait.',
+        'La nuit est tombée.',
         'La tour est noire, et elle ne finit pas.',
-        'Il faudrait rentrer avant que les parents s’inquiètent.',
       ],
     },
   ],
@@ -2216,23 +2216,40 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
     },
   ],
 
-  'moon-tour': [
+  /**
+   * **Le poisson au seau, premier gardien.** Il revient tout juste de la mer — l'eau salée
+   * gratte — et puisqu'il est là, il considère que la règle des tours s'applique à lui
+   * aussi : une énigme par étage, et arriver tout en haut. Dans un seau. Personne ne
+   * relève. C'est lui qui annonce la quête, et sa solennité est très sérieuse.
+   */
+  'poisson-tour': [
     {
-      when: () => state.flag('enigme-moon'),
-      speaker: 'Moon',
-      lines: ['« Tu montes ? »', '« Moi je descends. »'],
+      when: () => state.flag('enigme-poisson'),
+      speaker: 'Le poisson',
+      lines: ['« Ne m’attends pas. »', '« J’en suis à l’étage un. »'],
     },
     {
-      speaker: 'Moon',
-      lines: ['« Une question, et je bouge. »', '« Qui dort seize heures par jour, et personne ne lui dit rien ? »'],
+      speaker: 'Le poisson',
+      lines: [
+        'Un seau d’eau, posé au milieu du hall.',
+        '« Je reviens de la mer. »',
+        '« L’eau salée, ça gratte. Personne ne le dit. »',
+        '« Puisque je suis là : une énigme par étage, et tout en haut. »',
+        '« C’est la règle des tours. Toi aussi, ça te concerne. »',
+        '« Qu’est-ce qui monte et descend sans bouger ? »',
+      ],
       enigme: {
-        reponses: ['Un chat', 'Un bébé', 'Papa'],
+        reponses: ['La mer', 'L’ascenseur', 'Un escalier'],
         bonne: 0,
         juste: {
-          lines: ['« Mmh. »', 'Moon regarde le mur. Il y a un escalier, maintenant.', '« Monte. »'],
-          effects: { flag: 'enigme-moon' },
+          lines: [
+            '« La marée. Oui. »',
+            'Le seau frémit. Il y a un escalier, maintenant.',
+            '« Monte. Moi, j’y vais à mon rythme. »',
+          ],
+          effects: { flag: 'enigme-poisson' },
         },
-        faux: { lines: ['« Non. »', '« Réfléchis à qui tu parles. »'] },
+        faux: { lines: ['« Non. »', '« Indice : j’en reviens. »'] },
       },
     },
   ],
@@ -2681,17 +2698,21 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
 
   // ------------------------------------------------------- au pied de la tour
   /** Lever la tête. C'est tout le sujet de cet écran. */
-  'tour-vue': [
+  /**
+   * La porte de la tour fait d'abord lever la tête — une fois — puis elle redevient une
+   * porte. Les grandes marches du parvis qui portaient ce regard étaient illisibles à
+   * l'écran : un empilement de lignes horizontales.
+   */
+  'porte-tour': [
     {
+      when: () => !state.flag('tour-vue'),
       lines: [
         'Nino lève la tête.',
         'Des fenêtres, des fenêtres, des fenêtres.',
         'Ça continue au-dessus de l’écran.',
       ],
+      effects: { flag: 'tour-vue' },
     },
-  ],
-
-  'porte-tour': [
     { lines: ['La porte est ouverte.', 'Dedans, ça sent le tapis et l’ascenseur.'] },
   ],
 
@@ -2880,6 +2901,44 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
         'Mais le ciel, derrière, commence à être gris.',
         'C’est bientôt le matin.',
       ],
+    },
+  ],
+
+  /**
+   * **Moon, le dernier gardien, sur le toit — sous sa lune.** Trente-deux étages pour
+   * apprendre pourquoi le chat s'appelle Moon, et c'est dit sans aucune emphase, comme tout
+   * ce qui compte dans ce jeu. Sa question est la plus difficile de toutes, et sa bonne
+   * réponse est la seule chose que le jeu ait jamais voulu dire. Réussir fait apparaître le
+   * parapente : c'est lui, la récompense.
+   */
+  'moon-toit': [
+    {
+      when: () => state.flag('enigme-moon-toit'),
+      speaker: 'Moon',
+      lines: ['« Tu sais l’heure, maintenant. »', '« Vas-y. Je surveille. »'],
+    },
+    {
+      speaker: 'Moon',
+      lines: [
+        '« On m’appelle Moon. »',
+        '« Gardien de la lune. »',
+        '« Tu veux rentrer sans inquiéter personne. »',
+        '« Alors réponds à la plus difficile de toutes les questions. »',
+        '« Quelle heure est-il ? »',
+      ],
+      enigme: {
+        reponses: ['L’heure de rentrer', 'Minuit', 'Tard'],
+        bonne: 0,
+        juste: {
+          lines: [
+            '« Exact. »',
+            'Moon pousse quelque chose du bout de la patte.',
+            'Un parapente, plié contre le parapet.',
+          ],
+          effects: { flag: 'enigme-moon-toit' },
+        },
+        faux: { lines: ['« Non. »', '« Regarde le ciel. Pense à la maison. »'] },
+      },
     },
   ],
 

@@ -531,6 +531,27 @@ export const SONS: Son[] = [
     boucle: true,
   },
   {
+    id: 'musique-parapente',
+    present: true,
+    provisoire: true,
+    quand: 'Le vol en parapente, du saut à l’atterrissage.',
+    variantes: 1,
+    cherche:
+      'De l’arcade : vif, héroïque, un peu bête. Le fichier posé : « Save the City » (Abstraction, CC0), telle quelle — le titre fait très bien l’affaire pour un enfant qui rentre chez lui en parapente.',
+    priorite: 'plus tard',
+    boucle: true,
+  },
+  {
+    id: 'nuit',
+    present: true,
+    fabrique: true,
+    quand: 'Dehors et dans la tour, dès que la nuit est tombée — en boucle.',
+    variantes: 1,
+    cherche:
+      'Des grillons : un fond de bruit très sombre, presque rien, et deux ou trois stridulations par boucle. Joué en boucle par-dessus la musique.',
+    priorite: 'plus tard',
+  },
+  {
     id: 'musique-mezzanine',
     present: true,
     provisoire: true,

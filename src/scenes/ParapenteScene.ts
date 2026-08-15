@@ -4,7 +4,7 @@ import { shade, shadeHex } from '../art/palette';
 import { animKey, texKey } from '../art/pixels';
 import { state } from '../systems/state';
 import { VOL } from '../data/textes';
-import { jouer } from '../systems/audio';
+import { jouer, jouerAmbiance, jouerMusique } from '../systems/audio';
 import { PixelText, measure } from '../ui/PixelText';
 
 /**
@@ -165,6 +165,10 @@ export class ParapenteScene extends Phaser.Scene {
   }
 
   create(): void {
+    // De l'arcade, du saut à l'atterrissage : le vol est un jeu, sa musique le dit.
+    jouerMusique(this, 'musique-parapente');
+    // Pas de grillons à trois cents mètres : l'ambiance de nuit reprend à l'atterrissage.
+    jouerAmbiance(this, undefined);
     this.etat = 'attente';
     this.px = GB.W / 2;
     this.py = 60;

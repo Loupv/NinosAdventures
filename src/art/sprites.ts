@@ -1749,6 +1749,81 @@ const TUYAU_BOUT: Art = [
   '................',
 ];
 
+/** Remplace des lignes à partir d'un rang donné — pour poser un poisson au-dessus d'un seau. */
+const retoucheHaut = (art: Art, depuis: number, lignes: string[]): Art =>
+  art.map((l, i) => lignes[i - depuis] ?? l);
+
+/**
+ * **Le seau du hall de la tour**, vu légèrement de dessus : l'ouverture fait une ellipse et
+ * on voit l'eau dedans, qui scintille en deux images. Le poisson ne se montre pas — on
+ * découvre qu'il est là en parlant au seau, et il ne saute qu'une fois son énigme résolue.
+ */
+const SEAU_EAU_A: Art = [
+  '..............',
+  '..............',
+  '..............',
+  '..............',
+  '..............',
+  '..............',
+  '..............',
+  '...00000000...',
+  '..0222322220..',
+  '.023222222320.',
+  '.000000000000.',
+  '.011111111110.',
+  '.011111111110.',
+  '..0111111110..',
+  '..0111111110..',
+  '...01111110...',
+  '...00000000...',
+  '..............',
+];
+
+/** La même eau, les reflets décalés : c'est ce qui la fait bouger. */
+const SEAU_EAU_B = retoucheHaut(SEAU_EAU_A, 8, [
+  '..0232222320..',
+  '.022232232220.',
+]);
+
+/** Le poisson au ras de l'eau : il vient de jaillir. */
+const SEAU_SAUTE_A = retoucheHaut(SEAU_EAU_A, 3, [
+  '.....0000.....',
+  '....033330....',
+  '...03303330...',
+  '...03333330...',
+]);
+
+/** Et plus haut, avec une goutte qui retombe. */
+const SEAU_SAUTE_B = retoucheHaut(SEAU_EAU_B, 0, [
+  '.....0000.....',
+  '....033330....',
+  '...03303330...',
+  '...03333330...',
+  '....033330....',
+  '......2.......',
+]);
+
+/**
+ * **La lune**, au-dessus du toit. C'est elle que Moon garde — on l'apprend en haut de
+ * trente-deux étages, et personne ne demande depuis quand.
+ */
+const LUNE: Art = [
+  '.....33333......',
+  '...333333333....',
+  '..33333233333...',
+  '.3333333333333..',
+  '.3323333333233..',
+  '333333323333333.',
+  '333333333333333.',
+  '333323333332333.',
+  '333333333333333.',
+  '.3333332333333..',
+  '.3333333333333..',
+  '..33233333333...',
+  '...333333333....',
+  '.....33333......',
+];
+
 /**
  * **Un nuage du rêve.** Le ciel de la fusée était meublé par quatre rectangles gris, qui se
  * lisaient comme des planches flottantes plutôt que comme des nuages. Celui-ci a une bosse, un
@@ -2109,6 +2184,7 @@ export const SHEETS: Record<string, Record<string, Art>> = {
   velo: { droit: VELO, plat: VELO_PLAT },
   baignoire: { vide: BAIGNOIRE_VIDE, pleine: BAIGNOIRE_PLEINE, 'pleine-2': BAIGNOIRE_PLEINE_2 },
   'table-bar': { pleine: TABLE_BAR, vide: TABLE_BAR_VIDE },
+  seau: { 'eau-0': SEAU_EAU_A, 'eau-1': SEAU_EAU_B, 'saute-0': SEAU_SAUTE_A, 'saute-1': SEAU_SAUTE_B },
 };
 
 /** Images fixes. */
@@ -2120,6 +2196,7 @@ export const IMAGES: Record<string, Art> = {
   'tuyau-corps': TUYAU_CORPS,
   'tuyau-bout': TUYAU_BOUT,
   nuage: NUAGE,
+  lune: LUNE,
   copain: COPAIN,
   lit: LIT,
   'grand-lit': GRAND_LIT,
