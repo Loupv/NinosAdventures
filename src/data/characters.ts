@@ -60,4 +60,4 @@ export const CHARACTER_SPRITES = new Set(
  * dialogue, et arroser un vélo ne peut pas lui arracher une réplique blasée. On mouille ce qui
  * boit, pas du mobilier.
  */
-export const ARROSABLES = new Set([...CHARACTER_SPRITES, 'pigeon', 'plante']);
+export const ARROSABLES = new Set([...CHARACTER_SPRITES, 'pigeon', 'plante', 'parents-dorment', 'lit-bebe']);

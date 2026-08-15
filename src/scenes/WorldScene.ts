@@ -268,6 +268,9 @@ export class WorldScene extends Phaser.Scene {
   private gouttes = 0;
   /** Et les giclées du bout de la trompe. */
   private jets = 0;
+  /** Compteur des Z de sommeil : il alterne les tailles et décale les zigzags. */
+  private zzzNes = 0;
+  private zzzVivants = 0;
   /** Combien de fois on a arrosé l'écureuil de la tour : il ne râle pas deux fois pareil. */
   private mouillé = 0;
   /** La vanne affichée au-dessus de lui, s'il y en a une. */
@@ -445,6 +448,50 @@ export class WorldScene extends Phaser.Scene {
         state.save();
         this.time.delayedCall(900, () => {
           if (!state.locked && !this.transitioning) this.runDialogue('maison-dort');
+        });
+      }
+      // **Les Z des dormeurs**, en particules : un Z naît toutes les bonnes secondes
+      // au-dessus du grand lit et du berceau, monte en zigzag, et disparaît là-haut.
+      // Le minuteur meurt avec la scène, et les drapeaux se relisent à chaque naissance.
+      if (id === 'chambre-parents') {
+        const sources = [
+          { x: 68, y: 20, grand: true },
+          { x: 28, y: 78, grand: false },
+        ];
+        sources.forEach((src, quel) => {
+          this.time.addEvent({
+            delay: 1300,
+            startAt: quel * 650,
+            loop: true,
+            callback: () => {
+              if (!state.flag('parapente-rentre') || state.flag('matin')) return;
+              // Six Z au plus en même temps : même précaution que les gouttes de pluie —
+              // un onglet en arrière-plan ne doit pas les empiler.
+              if (this.zzzVivants >= 6) return;
+              this.zzzVivants += 1;
+              const n = this.zzzNes++;
+              const z = this.add
+                .image(src.x, src.y, texKey(src.grand && n % 2 === 0 ? 'z-grand' : 'z-petit', this.pal))
+                .setOrigin(0.5, 0.5)
+                .setDepth(1200);
+              this.tweens.addCounter({
+                from: 0,
+                to: 1,
+                duration: 2400,
+                onUpdate: (t) => {
+                  const v = t.getValue() ?? 0;
+                  z.setPosition(
+                    Math.round(src.x + Math.sin(v * Math.PI * 3 + n) * 4),
+                    Math.round(src.y - v * 22),
+                  );
+                },
+                onComplete: () => {
+                  this.zzzVivants -= 1;
+                  z.destroy();
+                },
+              });
+            },
+          });
         });
       }
       if (id === 'tour-pied' && !state.flag('nuit-dite')) {
