@@ -61,16 +61,50 @@ catégorie. C'est plus lisse et plus « moderne » que les 512 : à mélanger av
 
 ### 3. Les musiques
 
+Il en faut **six**, toutes en boucle, toutes déclarées dans `sons.ts` : `titre`,
+`musique-maison`, `musique-ville`, `musique-eau`, `musique-fusee`, `musique-fin`. Poser le
+`.ogg` suffit, il n'y a rien à brancher.
+
+**Le plus gros gisement, et de loin :
+[FREE Music Loop Bundle](https://tallbeard.itch.io/music-loop-bundle)** — Abstraction
+(Tallbeard Studios), **CC0**, prix libre. **Plus de deux cents boucles sans couture**,
+rangées par style — chiptune, ambient, calme, nerveux — et le lot grossit à chaque mise à
+jour. C'est le seul endroit où l'on peut espérer trouver les six pistes d'un coup, avec une
+cohérence de timbre entre elles. L'auteur ne demande aucune attribution mais refuse
+explicitement l'usage en NFT, en entraînement de modèles, et la revente telle quelle. Son
+lot plus étroit — *FREE Chiptune Music Loops*, 24 boucles — est déjà dedans : prendre le
+gros, il contient l'autre.
+
 **[4 Chiptunes (Adventure)](https://opengameart.org/content/4-chiptunes-adventure)** —
 Juhani Junkala, **CC0**, boucles sans couture, fournies en **OGG et WAV**. Quatre pistes :
-Stage 1 (léger, aventureux), Stage 2 (un peu plus tendu), Boss Fight, Stage Select.
+Stage 1 (léger, aventureux), Stage 2 (un peu plus tendu), Boss Fight, Stage Select. C'est
+l'auteur des 512 bruitages : les deux lots vont ensemble, ce qui n'est pas rien.
 
 **[5 Chiptunes (Action)](https://opengameart.org/content/5-chiptunes-action)** — même
 auteur, **CC0**, plus nerveux. Une piste d'action ferait très bien `musique-fusee` en
 attendant mieux.
 
-Pour la maison la nuit, en revanche, aucune de ces pistes ne conviendra : elles sont toutes
-trop gaies. Ce sera à composer — ou à ralentir de moitié, ce qui marche étonnamment bien.
+**[High Quality 8-bit / Chiptune
+Musics](https://hydrogene.itch.io/high-quality-8-bit-musics)** — HydroGene, **CC0**,
+dix-huit pistes qui bouclent sans couture. Plus riche, plus « composé » que les autres, et
+pensé pour des jeux d'action : à écouter d'abord pour la ville et pour la fusée.
+
+**Deux collections à fouiller**, sur OpenGameArt, qui rassemblent le travail de plusieurs
+auteurs sous une seule licence : **[CC0
+Chiptunes](https://opengameart.org/content/cc0-chiptunes)** (une vingtaine d'entrées, dont
+les deux lots de Junkala et les 512 bruitages) et **[CC0 - Retro
+Music](https://opengameart.org/content/cc0-retro-music)**. La bibliothèque entière du site
+se filtre par licence : ne garder que CC0 évite tout fichier de crédits à maintenir.
+
+**La maison la nuit reste le problème.** Aucune de ces pistes ne conviendra : elles sont
+toutes trop gaies, et il faut ici quelque chose de lent, un peu vide, quatre voix maximum —
+il fait trop chaud et il ne se passe rien. Trois façons de s'en sortir, dans l'ordre de
+paresse : ralentir de moitié une piste calme du lot Tallbeard (ça marche étonnamment bien,
+et `musique-fin` est justement décrite comme la même mélodie une octave plus bas) ; fouiller
+la collection **[CC0 - Calm /
+Relaxing](https://opengameart.org/content/cc0-calm-relaxing-music)**, quatre-vingt-dix
+pistes calmes mais presque aucune en chiptune ; ou la composer, ce qui pour quatre voix et
+trente secondes est une soirée de travail.
 
 ### 4. Les fabriquer soi-même, en dix secondes
 
