@@ -1581,10 +1581,20 @@ dit à tout moment ce qui manque, par priorité, avec le nom exact du fichier à
 trois ambiances — la maison, la ville, l'eau — et une seule boucle à la fois, qui
 appartient au jeu et pas à une scène : toute la maison partage la même boucle sans
 qu'elle reparte du début, et sortir dans la cour la coupe. L'écran-titre, le rêve de la
-fusée et l'écran de fin demandent la leur par son nom. **Une seule piste est posée** :
-`musique-maison`, « Out of Time » (Abstraction, CC0) ralentie de moitié — une octave plus
-bas, deux minutes de boucle, la piste la plus calme du lot chiptune. Les cinq autres
-attendent leur `.ogg`, rien d'autre : poser le fichier suffit.
+fusée et l'écran de fin demandent la leur par son nom. **Quatre pistes sont posées**,
+toutes du lot chiptune d'Abstraction (CC0), toutes marquées `provisoire` :
+
+- `musique-maison` — « Out of Time » **ralentie de moitié** : une octave plus bas, deux
+  minutes de boucle, la piste la plus calme du lot. Il fait trop chaud et il ne se passe
+  rien.
+- `musique-eau` — « Deep Blue » ralentie de moitié aussi : la canicule ralentit tout, et
+  les deux moitiés lentes du jeu partagent le même traitement.
+- `musique-ville` — « Modern Bits » telle quelle, la plus mécanique du lot.
+- `musique-fusee` — « Penguin Town » **accélérée d'un quart** : plus aiguë, plus vite,
+  plus bête. C'est un rêve.
+
+Restent `musique-fin` (la mélodie de la maison, mais du soir) et les six notes de
+l'écran-titre : poser le `.ogg` suffit.
 
 Quatre des plus importants sont **fabriqués** plutôt que trouvés (`npx tsx
 tools/synthese.ts`), parce qu'on voulait un contrôle exact sur ce qui pique l'oreille :

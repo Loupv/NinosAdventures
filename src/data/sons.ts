@@ -354,10 +354,12 @@ export const SONS: Son[] = [
   // ── Les musiques ──────────────────────────────────────────────────────────
   {
     id: 'musique-fusee',
+    present: true,
+    provisoire: true,
     quand: 'Pendant le rêve de la fusée.',
     variantes: 1,
     cherche:
-      'Dans l’esprit de Nyan Cat : boucle chiptune très courte, très rapide, très bête. **La chanson d’origine est protégée** — pour un usage familial ça n’a aucune importance, mais si le jeu sort un jour il faudra une composition à nous. Ça s’écrit très bien directement en code avec l’audio de Phaser.',
+      'Dans l’esprit de Nyan Cat : boucle chiptune très courte, très rapide, très bête. Le fichier posé : « Penguin Town » (Abstraction, CC0), la plus courte du lot, **accélérée d’un quart** — plus aiguë, plus vite, plus bête. Vingt-huit secondes de boucle.',
     priorite: 'important',
     boucle: true,
   },
@@ -374,17 +376,23 @@ export const SONS: Son[] = [
   },
   {
     id: 'musique-ville',
+    present: true,
+    provisoire: true,
     quand: 'La cour, Nantes, la Tour de Bretagne.',
     variantes: 1,
-    cherche: 'Plus vif, plus mécanique. Dehors, ça bouge.',
+    cherche:
+      'Plus vif, plus mécanique. Dehors, ça bouge. Le fichier posé : « Modern Bits » (Abstraction, CC0), telle quelle — la plus mécanique du lot, deux minutes de boucle.',
     priorite: 'plus tard',
     boucle: true,
   },
   {
     id: 'musique-eau',
+    present: true,
+    provisoire: true,
     quand: 'Le bord de l’Erdre.',
     variantes: 1,
-    cherche: 'Presque rien : trois notes qui reviennent, et de l’eau derrière.',
+    cherche:
+      'Presque rien : trois notes qui reviennent, et de l’eau derrière. Le fichier posé : « Deep Blue » (Abstraction, CC0) **ralentie de moitié**, comme la maison — trois minutes et demie d’une boucle qui traîne les pieds. Le titre décidait pour nous.',
     priorite: 'plus tard',
     boucle: true,
   },
