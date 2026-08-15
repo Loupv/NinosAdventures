@@ -52,7 +52,35 @@ export class TitleScene extends Phaser.Scene {
       .setOrigin(0.5, 1)
       .play(animKey('moon-idle', pal));
     // Le sol sous leurs pieds.
-    this.add.rectangle(24, 108, GB.W - 48, 1, shade(pal, 1)).setOrigin(0, 0);
+    this.add.rectangle(8, 108, GB.W - 16, 1, shade(pal, 1)).setOrigin(0, 0);
+
+    /**
+     * **L'affiche se remplit à mesure qu'on joue.** Chaque personnage principal rejoint
+     * Nino et Moon sur l'écran-titre une fois rencontré : au début ils sont deux, à la fin
+     * c'est une photo de famille — l'araignée, l'écureuil, Hermione, papa en capitaine,
+     * Gérard en l'air (il ne se pose jamais), et l'éléphant à moitié dans le cadre, parce
+     * qu'il est inutilement grand. On lit la sauvegarde sans la charger « pour de vrai » :
+     * `begin()` rechargera ou remettra à zéro selon ce qu'on choisit.
+     */
+    if (state.hasSave()) state.load();
+    const invite = (
+      x: number,
+      y: number,
+      sprite: string,
+      frame: string,
+      anim: string | undefined,
+      la: boolean,
+    ) => {
+      if (!la) return;
+      const s = this.add.sprite(x, y, texKey(sprite, pal), frame).setOrigin(0.5, 1);
+      if (anim) s.play(animKey(anim, pal));
+    };
+    invite(16, 108, 'araignee', 'pattes-0', 'araignee-pattes', state.haiku > 0);
+    invite(34, 108, 'ecureuil', 'queue-0', 'ecureuil-queue', state.flag('ecureuil-vu'));
+    invite(50, 108, 'hermione', 'idle-0', 'hermione-idle', state.hermione > 0);
+    invite(112, 108, 'papa-capitaine', 'marche-0', undefined, state.flag('papa-capitaine-vu'));
+    invite(130, 98, 'poisson', 'saut-0', 'poisson-saut', state.flag('poisson-arrive'));
+    invite(150, 108, 'elephant', 'boit', 'elephant-oreille', state.flag('elephant-vu'));
 
     this.prompt = this.line('', 114, ink, 'ttl-3');
     this.aussi = this.line('', 127, ink, 'ttl-4');

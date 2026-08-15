@@ -1579,6 +1579,18 @@ qui marche, qu'on peut suivre, et sur lequel on peut monter.
 japonais, et un héron qui exige des papiers.
 *Coût : un bateau qui avance (plateforme mobile), de l'eau franchissable.*
 
+## L'écran-titre se remplit
+
+**L'affiche est une photo de famille qui se prend pendant qu'on joue.** Au début, Nino et
+Moon sont seuls devant le portail. Chaque personnage principal rejoint l'écran-titre une
+fois rencontré : l'araignée dès son premier haïku, l'écureuil, Hermione dès qu'on l'a
+trouvée une fois, papa en capitaine, Gérard en l'air (il ne se pose jamais), et l'éléphant
+à moitié dans le cadre — parce qu'il est inutilement grand. Le titre lit la sauvegarde
+sans la charger pour de vrai ; recommencer à zéro vide l'affiche avec le reste.
+
+C'est la récompense discrète de l'écran qu'on voit le plus : lancer le jeu raconte où on
+en est, sans un chiffre.
+
 ## Repartir à zéro
 
 **En pleine partie, ÉCHAP ramène à l'écran-titre** — après une question, parce qu'un enfant qui
