@@ -1224,6 +1224,12 @@ export const RENOTE = {
  */
 export const MAMAN_PARTIE = ['Elle ne nous a pas vus…'];
 
+/**
+ * **Arroser le poisson en plein saut.** Il revient de la mer, l'eau salée gratte — alors
+ * de l'eau douce en plein vol, c'est un cadeau. Une phrase par arrosage, en boucle.
+ */
+export const POISSON_RIT = ['« Hihihi ! »', '« Encore ! »', '« Ça, ça ne gratte pas. »'];
+
 export const POISSON_PART = { qui: 'Le poisson', lignes: ['« Aaaaaaaaaaaaaah. »'] };
 
 export const BAREME: Bareme[] = [
@@ -2258,8 +2264,10 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
       // Il sort la tête pour parler : c'est la révélation du seau.
       montre: { sprite: 'seau', frame: 'saute-0', x: 68, y: 40, depth: 72 },
       enigme: {
-        reponses: ['La mer', 'L’ascenseur', 'Un escalier'],
-        bonne: 0,
+        // Jamais la bonne réponse en premier : un appui trop rapide sur ESPACE validait
+        // le premier choix, et l'énigme se passait toute seule. Vaut pour toutes les tours.
+        reponses: ['L’ascenseur', 'La mer', 'Un escalier'],
+        bonne: 1,
         juste: {
           lines: [
             '« La marée. Oui. »',
@@ -2287,8 +2295,8 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
       speaker: 'L’écureuil',
       lines: ['« Psst. »', '« Qu’est-ce qui est mieux qu’une noisette ? »'],
       enigme: {
-        reponses: ['Deux noisettes', 'Une pomme', 'Rien'],
-        bonne: 0,
+        reponses: ['Une pomme', 'Rien', 'Deux noisettes'],
+        bonne: 2,
         juste: {
           lines: [
             '« Exactement. »',
@@ -2325,14 +2333,16 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
         '« Qu’est-ce que ça veut dire ? »',
       ],
       enigme: {
-        reponses: ['C’est un beau poème', 'Une chaussette perdue', 'Rien du tout'],
-        bonne: 0,
+        reponses: ['Une chaussette perdue', 'C’est un beau poème', 'Rien du tout'],
+        bonne: 1,
         juste: {
+          // Toute la révélation reste dans sa bouche : une ligne de récit au milieu de ses
+          // répliques lui faisait parler d'elle à la troisième personne.
           lines: [
             '« Voilà. »',
             '« Ça ne veut rien dire. »',
             '« C’est un poème. »',
-            'Elle tire un fil. Les marches suivantes apparaissent.',
+            '« Tisse ton chemin vers l’étage suivant. »',
           ],
           effects: { flag: 'enigme-araignee' },
         },
@@ -2369,10 +2379,12 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
         reponses: ['Beaucoup', 'Douze mille', 'Je ne sais pas'],
         bonne: 2,
         juste: {
+          // Tout reste dans sa bouche : la ligne de récit au milieu le faisait parler de
+          // lui à la troisième personne.
           lines: [
             '« Moi non plus. »',
-            'Il se pousse. Derrière lui, l’escalier du toit.',
-            '« Passe. »',
+            '« Je me pousse. »',
+            '« L’escalier est derrière moi. Passe. »',
           ],
           effects: { flag: 'enigme-elephant' },
         },
@@ -2953,24 +2965,24 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
     },
   ],
 
+  /**
+   * **Trois questions pour le dernier gardien** — le boss de fin pose plus qu'une colle.
+   * Les deux premières se répondent en ayant joué ; la dernière est la plus difficile de
+   * toutes, et sa bonne réponse est la seule chose que le jeu ait jamais voulu dire.
+   */
   'moon-toit': [
     {
       when: () => state.flag('enigme-moon-toit'),
       speaker: 'Moon',
-      lines: ['« Tu sais l’heure, maintenant. »', '« Vas-y. Je surveille. »'],
+      lines: ['« Tu sais tout, maintenant. »', '« Vas-y. Je surveille. »'],
     },
     {
+      when: () => state.flag('moon-toit-2'),
       speaker: 'Moon',
-      lines: [
-        '« On m’appelle Moon. »',
-        '« Gardien de la lune. »',
-        '« Tu veux rentrer sans inquiéter personne. »',
-        '« Alors réponds à la plus difficile de toutes les questions. »',
-        '« Quelle heure est-il ? »',
-      ],
+      lines: ['« La dernière. »', '« La plus difficile de toutes. »', '« Quelle heure est-il ? »'],
       enigme: {
-        reponses: ['L’heure de rentrer', 'Minuit', 'Tard'],
-        bonne: 0,
+        reponses: ['Minuit', 'Tard', 'L’heure de rentrer'],
+        bonne: 2,
         juste: {
           lines: [
             '« Exact. »',
@@ -2980,6 +2992,40 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
           effects: { flag: 'enigme-moon-toit' },
         },
         faux: { lines: ['« Non. »', '« Regarde le ciel. Pense à la maison. »'] },
+      },
+    },
+    {
+      when: () => state.flag('moon-toit-1'),
+      speaker: 'Moon',
+      lines: ['« Deuxième question. »', '« Qui garde la lune ? »'],
+      enigme: {
+        reponses: ['Personne', 'Toi', 'La tour'],
+        bonne: 1,
+        juste: {
+          lines: ['« Exact. »', '« Quelqu’un doit bien le faire. »'],
+          effects: { flag: 'moon-toit-2' },
+        },
+        faux: { lines: ['« Non. »', '« Tu lui as déjà parlé, pourtant. »'] },
+      },
+    },
+    {
+      speaker: 'Moon',
+      lines: [
+        '« On m’appelle Moon. »',
+        '« Gardien de la lune. »',
+        '« Tu veux rentrer sans inquiéter personne. »',
+        '« Alors réponds à trois questions. »',
+        '« D’abord : combien d’étages fait cette tour ? »',
+      ],
+      enigme: {
+        reponses: ['Cent', 'Trente-deux', 'Trop'],
+        bonne: 1,
+        juste: {
+          lines: ['« Exact. »', '« Tu les as tous montés. »'],
+          effects: { flag: 'moon-toit-1' },
+        },
+        // « Trop » n'est pas faux, mais ce n'est pas un chiffre : il compte, lui.
+        faux: { lines: ['« Non. »', '« Tu viens de les monter. »'] },
       },
     },
   ],

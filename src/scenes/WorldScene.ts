@@ -26,6 +26,7 @@ import {
   ECUREUIL_MOUILLE,
   ECUREUIL_RIT,
   ECUREUIL_TREMPE,
+  POISSON_RIT,
   VERRES_PAPA,
   VERRES_PARRAIN,
   ECUREUIL_VANNES,
@@ -1207,7 +1208,7 @@ export class WorldScene extends Phaser.Scene {
    *    quitte pas son navire » — deux cent dix-sept pixels — sortait de l'écran par la
    *    droite, et il ne restait que « Un capitaine ne quit ».
    */
-  private flotter(t: string, sur: Live): void {
+  private flotter(t: string, sur: Live, decale = 12): void {
     this.vanne?.destroy();
     const MAX = 140;
     const lignes = measure(t) <= MAX ? [t] : wrap(t, MAX);
@@ -1223,7 +1224,7 @@ export class WorldScene extends Phaser.Scene {
         Math.round(cam.scrollX) + 2,
         Math.round(cam.scrollX + cam.width) - large - 2,
       ),
-      Math.round(sur.go.y - 12 - LINE_H * (lignes.length - 1)),
+      Math.round(sur.go.y - decale - LINE_H * (lignes.length - 1)),
     );
     /**
      * **Le texte flottant emporte son fond.** En encre sombre à même le décor, il devenait illisible
@@ -1313,6 +1314,15 @@ export class WorldScene extends Phaser.Scene {
       : loin;
 
     jouer(this, 'pistolet', { volume: 0.6 });
+    /**
+     * **Le poisson arrosé en plein saut rit.** Il n'est pas une cible comme les autres — pas
+     * de dialogue, visible seulement en l'air — et il replonge plus vite que les gouttes ne
+     * volent : la touche se juge **au moment du tir**, sur sa position d'alors.
+     */
+    const gerard = this.live.find((x) => x.def.id === 'poisson-seau-saut');
+    const gerardTouche =
+      !!gerard?.go.visible &&
+      Phaser.Math.Distance.Between(cible.x, cible.y, gerard.go.x + 4, gerard.go.y + 3) < 22;
     for (let i = 0; i < 3; i++) {
       const g = this.add
         .image(main.x, main.y, texKey('goutte', this.pal))
@@ -1329,6 +1339,15 @@ export class WorldScene extends Phaser.Scene {
           g.destroy();
           if (i < 2) return;
           splash(this, this.pal, cible.x, cible.y);
+          // L'eau douce, après la mer qui gratte, c'est un cadeau. Le rire s'ancre sur la
+          // bassine, bien au-dessus de l'arc du saut : posé sur le poisson, il retombait
+          // avec lui et son fond sombre le masquait.
+          if (gerardTouche && gerard) {
+            const bassine = this.live.find((x) => x.def.id === 'poisson-seau') ?? gerard;
+            this.flotter(POISSON_RIT[this.mouillé % POISSON_RIT.length], bassine, 28);
+            this.mouillé += 1;
+            return;
+          }
           if (!vise) return;
           if (vise.def.id === 'ecureuil') {
             state.locked = true;
@@ -1398,15 +1417,17 @@ export class WorldScene extends Phaser.Scene {
           .setDepth(4000),
       );
     }
+    // La façade fait la largeur du toit (les murs de la pièce sont à 8 px des bords) :
+    // plus étroite, la tour s'élargissait au sommet.
     morceaux.push(
-      this.add.rectangle(28, this.roomH, 104, HAUTEUR, shade(this.pal, 1)).setOrigin(0, 0).setDepth(4000),
+      this.add.rectangle(8, this.roomH, 144, HAUTEUR, shade(this.pal, 1)).setOrigin(0, 0).setDepth(4000),
     );
     for (let ligne = 0; ligne < 13; ligne++) {
-      for (let col = 0; col < 5; col++) {
-        const allume = (ligne * 5 + col) % 9 === 4;
+      for (let col = 0; col < 7; col++) {
+        const allume = (ligne * 7 + col) % 9 === 4;
         morceaux.push(
           this.add
-            .rectangle(44 + col * 16, this.roomH + 14 + ligne * 24, 6, 8, shade(this.pal, allume ? 3 : 0))
+            .rectangle(20 + col * 18, this.roomH + 14 + ligne * 24, 6, 8, shade(this.pal, allume ? 3 : 0))
             .setOrigin(0, 0)
             .setDepth(4001),
         );
