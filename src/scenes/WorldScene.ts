@@ -3647,7 +3647,7 @@ export class WorldScene extends Phaser.Scene {
           retirerBeat();
           const juste = reponse === e.bonne;
           jouer(this, juste ? 'enigme-juste' : 'enigme-faux', { volume: 0.6 });
-          const branche = juste ? e.juste : e.faux;
+          const branche = juste ? e.juste : ((reponse !== undefined && e.fauxPar?.[reponse]) || e.faux);
           const retirerBranche = this.montrer(branche.montre);
           say({
             speaker: beat.speaker,

@@ -40,6 +40,12 @@ export interface Enigme {
   bonne: number;
   juste: Branch;
   faux: Branch;
+  /**
+   * Une réplique **particulière** pour certaines mauvaises réponses, par indice : c'est ce
+   * qui permet à Moon de se vexer quand on le désigne, lui, comme celui qui ne brille pas.
+   * Les autres mauvaises réponses retombent sur `faux`.
+   */
+  fauxPar?: Record<number, Branch>;
 }
 
 /**

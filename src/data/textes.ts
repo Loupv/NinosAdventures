@@ -3038,11 +3038,11 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
       speaker: 'Moon',
       lines: [
         '« Deuxième question. »',
-        '« Le soleil, la lune, ou toi. »',
+        '« Le soleil, la lune, ou moi. »',
         '« Qui ne brille pas ? »',
       ],
       enigme: {
-        reponses: ['Moi', 'Le soleil', 'La lune'],
+        reponses: ['Toi', 'Le soleil', 'La lune'],
         bonne: 2,
         juste: {
           lines: [
@@ -3053,6 +3053,10 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
           effects: { flag: 'moon-toit-2' },
         },
         faux: { lines: ['« Non. »', '« Elle vous ment à tous. Gentiment. »'] },
+        // Désigner Moon lui-même : il est blanc au clair de lune, et il le sait.
+        fauxPar: {
+          0: { lines: ['« ... »', '« Non. »', '« Vexant. »'] },
+        },
       },
     },
     /**
