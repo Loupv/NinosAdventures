@@ -33,7 +33,7 @@ avec cynisme, et personne n'est méchant.
 | **Papa (capitaine)** | l'Erdre | Le même papa, sur un bateau, avec un chapeau de capitaine. Il est là dès qu'on arrive au quai. |
 | **L'araignée** | mezzanine, puis le 27e étage de la tour | Géante, et elle dit des haïkus — un nouveau à chaque visite, dix en réserve. Quand elle les a tous dits, elle chante, elle danse, et elle s'en va. |
 | **Gérard, le poisson** | baignoire, puis l'Erdre | Saute d'un bord à l'autre, visible seulement quand il est en l'air. Raconte sa vie en cinq boîtes de dialogue, et ne demande de l'aide qu'au moment où le chat s'assoit au bord de la baignoire. Rend ses dettes, plus tard, dans l'Erdre. |
-| **L'écureuil** | un coin de la cour, puis la toute fin du quai de l'Erdre | À moitié caché, toujours. Pousse Nino à viser la fenêtre avec le ballon, puis à couler le bateau de papa — et nie tout, à chaque fois. Il ne gagne rien à ça. |
+| **L'écureuil** | un coin de la cour, le quai de l'Erdre, derrière le banc de la terrasse | À moitié caché, toujours. Pousse Nino à viser la fenêtre avec le ballon, à couler le bateau de papa, puis à arroser le pigeon de la terrasse — et nie tout, à chaque fois. Il ne gagne rien à ça. |
 | **L'Éléphant des Machines** | le bord de l'Erdre, puis le 31e étage de la tour | Douze mètres de bois et d'acier. On le voit d'abord boire dans la rivière, puis on le retrouve sur un palier. Personne ne demande comment il est monté ; lui se souvient de l'avoir croisé en bas. Il pose la seule énigme dont il ne connaît pas la réponse. |
 | **Le jardinier** | la place, près du tram | Chapeau, tablier, et il se plaint de la chaleur — le sport local. Il n'arrive pas à suivre, il ne demande jamais rien, et il dit merci si les sept plantes ont été arrosées sans lui. |
 | **L'employé des Machines** | l'entrée de la place | Le personnage le plus terne de la ville porte la plus grosse information du jeu, et la donne comme un problème d'effectifs : *« L'éléphant s'est échappé. »* Ses nouvelles suivent l'éléphant avec un temps de retard — il apprend par ouï-dire ce que Nino a vu de ses yeux, et personne ne fait jamais le rapprochement. |
@@ -561,7 +561,29 @@ plus drôles — à condition qu'elle n'arrive qu'une fois, et c'est le rôle du
 
 Et ça se voit plus tard : **si le bateau n'a pas coulé, papa n'est pas trempé au bar.** Le
 parrain ne dit plus *« Ton père est tout mouillé »* mais *« Il t'a raconté son bouchon ? À moi,
-deux fois. »* Deux fins de soirée pour la même terrasse, selon ce qu'on a fait de l'après-midi. Papa est sur un bateau, avec un chapeau de capitaine, et il
+deux fois. »* Deux fins de soirée pour la même terrasse, selon ce qu'on a fait de l'après-midi.
+
+### La troisième bêtise : le pigeon et les verres
+
+L'écureuil est aussi à la terrasse, derrière le banc, la queue qui dépasse. Toujours le même
+patron en trois temps — il propose (*« Psst. » « T'es précis ? » « Prouve-le. Arrose le
+pigeon. »*), il insiste (*« Le pigeon. » « Il est toujours sec. »*), il nie (*« Je ne connais
+pas ce pigeon. » « Je connais personne. »*) — et trois victimes de plus en plus loin de chez
+Nino : la fenêtre de sa maison, le bateau de son père, les verres d'un inconnu.
+
+**Le pigeon arrosé décolle par-dessus la table de papa et emporte les deux verres.** Ils
+tombent chacun de leur côté et restent couchés au sol le temps de la visite ; au retour, la
+table est simplement vide — le serveur est passé. Le pigeon, lui, a quitté le quartier pour
+toujours, comme le font les pigeons.
+
+**Papa a tout vu** — son fils, le pistolet, le jet — et il accuse le pigeon quand même : *« NON
+MAIS CE PIGEON. »* Dehors, c'est toujours le pigeon, comme à la maison c'est toujours le chat.
+Le parrain tire la seule conclusion utile : *« Garçon. La même chose. Dans un verre plus
+lourd. »* — et son dialogue le garde ensuite : *« On attend les verres. » « Des lourds. »*
+
+Petit bonus d'horlogerie : si le joueur a dérangé le pigeon six fois avant, celui-ci est déjà
+perché **sur** la table au moment de la proposition — l'écureuil fait viser un pigeon posé
+entre les deux verres, et personne ne trouve ça suspect. Papa est sur un bateau, avec un chapeau de capitaine, et il
    demande à Nino de dire à sa mère **qu'il est resté au salon** — ce qui est vrai, il y est
    aussi. Personne ne relève.
 

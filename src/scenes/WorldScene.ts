@@ -26,6 +26,8 @@ import {
   ECUREUIL_MOUILLE,
   ECUREUIL_RIT,
   ECUREUIL_TREMPE,
+  VERRES_PAPA,
+  VERRES_PARRAIN,
   ECUREUIL_VANNES,
   JARDINIER_MERCI,
   JARDINIER_PART,
@@ -1315,6 +1317,8 @@ export class WorldScene extends Phaser.Scene {
             });
           } else if (vise.def.sprite === 'ecureuil') {
             this.ecureuilChangeDeCoin(vise);
+          } else if (vise.def.id === 'pigeon-terrasse') {
+            this.pigeonRenverseLesVerres(vise);
           } else if (PLANTES.some((pl) => pl.id === vise.def.id)) {
             this.arroserUnePlante(vise);
           } else {
@@ -1331,6 +1335,80 @@ export class WorldScene extends Phaser.Scene {
         },
       });
     }
+  }
+
+  /**
+   * **La troisième bêtise de l'écureuil.** Le pigeon arrosé décolle par-dessus la table de
+   * papa, emporte les deux verres au passage, et quitte l'écran par le haut — pour toujours.
+   * Papa a tout vu, son fils, le pistolet, le jet ; il accuse le pigeon quand même. Dehors,
+   * c'est toujours le pigeon, comme à la maison c'est toujours le chat.
+   *
+   * Les verres tombés restent au sol le temps de la visite ; au retour, la table est
+   * simplement vide (`frameIfFlag`) — le serveur est passé.
+   */
+  private pigeonRenverseLesVerres(l: Live): void {
+    state.locked = true;
+    // Plus d'errance : à partir d'ici, c'est un vol, pas une promenade.
+    this.errants = this.errants.filter((e) => e.live !== l);
+    const table = this.live.find((x) => x.def.id === 'table-papa');
+    const tx = table?.def.x ?? 64;
+    const ty = table?.def.y ?? 52;
+    l.go.setDepth(1500);
+    // 1. Il décolle vers la table — c'est sur son chemin, pas un détour.
+    this.tweens.add({
+      targets: l.go,
+      x: tx + 5,
+      y: ty - 8,
+      duration: 320,
+      ease: 'Quad.easeOut',
+      onComplete: () => {
+        jouer(this, 'vitre-cassee', { volume: 0.5 });
+        if (table) (table.go as Phaser.GameObjects.Image).setFrame('vide');
+        // 2. Les deux verres partent chacun de leur côté et finissent couchés au sol.
+        for (const cote of [-1, 1]) {
+          const v = this.add
+            .image(tx + 7 + cote * 5, ty + 1, texKey('verre', this.pal))
+            .setOrigin(0.5, 0.5)
+            .setDepth(ty + 24);
+          this.tweens.add({
+            targets: v,
+            x: v.x + cote * 9,
+            y: ty + 15,
+            angle: cote * 90,
+            duration: 260,
+            ease: 'Quad.easeIn',
+            onComplete: () => splash(this, this.pal, Math.round(v.x), Math.round(v.y)),
+          });
+        }
+        // 3. Et il quitte le quartier par le haut, sans un mot, comme d'habitude.
+        this.tweens.add({
+          targets: l.go,
+          x: this.roomW + 20,
+          y: -20,
+          duration: 650,
+          ease: 'Quad.easeIn',
+          onComplete: () => {
+            l.go.setVisible(false);
+            state.setFlag('verres-tombes');
+            state.save();
+            say({
+              speaker: 'Papa',
+              lines: VERRES_PAPA,
+              focusY: ty,
+              onDone: () =>
+                say({
+                  speaker: 'Le parrain',
+                  lines: VERRES_PARRAIN,
+                  focusY: ty,
+                  onDone: () => {
+                    state.locked = false;
+                  },
+                }),
+            });
+          },
+        });
+      },
+    });
   }
 
   /**

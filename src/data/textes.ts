@@ -507,6 +507,15 @@ export const ECUREUIL_VANNES = [
  * dans le coffre de la chambre : lui parler ne le fait plus fuir, l'arroser oui.
  */
 export const ECUREUIL_TREMPE = ['« Non. »', '« Non non non — »'];
+
+/**
+ * **La troisième bêtise, à la terrasse.** Le pigeon arrosé décolle par-dessus la table de
+ * papa et emporte les deux verres. Papa a tout vu — son fils, le pistolet, le jet — et il
+ * accuse le pigeon quand même : dehors, c'est toujours le pigeon, comme à la maison c'est
+ * toujours le chat. Le parrain, lui, tire la seule conclusion utile.
+ */
+export const VERRES_PAPA = ['« NON MAIS CE PIGEON. »'];
+export const VERRES_PARRAIN = ['« Garçon. »', '« La même chose. »', '« Dans un verre plus lourd. »'];
 export const ECUREUIL_FUITE = 'L’écureuil détale, trempé.';
 
 /**
@@ -1796,6 +1805,29 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
    * Le même écureuil, dans les roseaux, avec une idée plus grosse. Même structure que
    * dans la cour : il propose, il insiste, il nie.
    */
+  /**
+   * Le même écureuil, derrière le banc de la terrasse, avec sa troisième idée. Toujours le
+   * même patron — il propose, il insiste, il nie — et trois victimes de plus en plus loin
+   * de chez Nino : la fenêtre de sa maison, le bateau de son père, les verres d'un inconnu.
+   */
+  'ecureuil-terrasse': [
+    {
+      when: () => state.flag('verres-tombes'),
+      speaker: 'L’écureuil',
+      lines: ['« Je ne connais pas ce pigeon. »', '« Je connais personne. »'],
+    },
+    {
+      when: () => state.flag('ecureuil-verre'),
+      speaker: 'L’écureuil',
+      lines: ['« Le pigeon. »', '« Il est toujours sec. »'],
+    },
+    {
+      speaker: 'L’écureuil',
+      lines: ['« Psst. »', '« T’es précis ? »', '« Prouve-le. Arrose le pigeon. »'],
+      effects: { flag: 'ecureuil-verre' },
+    },
+  ],
+
   'ecureuil-erdre': [
     {
       when: () => state.flag('bateau-coule'),
@@ -2775,6 +2807,12 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
   ],
 
   parrain: [
+    // Après le passage du pigeon : il attend son verre plus lourd, et il ne lâche pas l'idée.
+    {
+      when: () => state.flag('verres-tombes'),
+      speaker: 'Le parrain',
+      lines: ['« On attend les verres. »', '« Des lourds. »'],
+    },
     // Il n'est trempé que s'il est tombé à l'eau : le naufrage n'est pas obligatoire, et la
     // terrasse ne doit pas raconter une baignade qui n'a pas eu lieu.
     {

@@ -1242,6 +1242,27 @@ const TABLE_BAR: Art = [
   '....0000000.....',
 ];
 
+/**
+ * La même table, **sans les verres** : c'est l'état de la table de papa après le passage du
+ * pigeon. Les autres tables du jeu gardent les leurs. (Pas de `retouche()` ici : il est
+ * déclaré plus bas dans le fichier.)
+ */
+const TABLE_BAR_VIDE: Art = [
+  '................',
+  '................',
+  '................',
+  '................',
+  ...TABLE_BAR.slice(4),
+];
+
+/** Un verre tout seul, pour le voir tomber de la table. Trois pixels de large : un verre. */
+const VERRE: Art = [
+  '0.0',
+  '0.0',
+  '030',
+  '.0.',
+];
+
 const PLANTE: Art = [
   '..000000..',
   '.02222220.',
@@ -2087,6 +2108,7 @@ export const SHEETS: Record<string, Record<string, Art>> = {
   fenetre: { fermee: FENETRE, ouverte: FENETRE_OUVERTE, cassee: FENETRE_CASSEE },
   velo: { droit: VELO, plat: VELO_PLAT },
   baignoire: { vide: BAIGNOIRE_VIDE, pleine: BAIGNOIRE_PLEINE, 'pleine-2': BAIGNOIRE_PLEINE_2 },
+  'table-bar': { pleine: TABLE_BAR, vide: TABLE_BAR_VIDE },
 };
 
 /** Images fixes. */
@@ -2109,7 +2131,7 @@ export const IMAGES: Record<string, Art> = {
   lavabo: LAVABO,
   wc: WC,
   table: TABLE,
-  'table-bar': TABLE_BAR,
+  verre: VERRE,
   ventilo: VENTILO,
   armoire: ARMOIRE,
   carton: CARTON,

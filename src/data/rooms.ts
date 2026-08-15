@@ -1768,8 +1768,8 @@ export const ROOMS: Record<string, Room> = {
       { id: 'enseigne-1', x: 48, y: 18, sprite: 'panneau', solid: true, dialogue: 'enseigne-bar' },
       { id: 'bar-2', x: 112, y: 16, sprite: 'porte', solid: true, dialogue: 'bar-porte-2' },
       // Les terrasses.
-      { id: 'table-bar-1', x: 32, y: 44, sprite: 'table-bar', solid: true, dialogue: 'table-bar' },
-      { id: 'table-bar-2', x: 96, y: 52, sprite: 'table-bar', solid: true, dialogue: 'table-bar' },
+      { id: 'table-bar-1', x: 32, y: 44, sprite: 'table-bar', frame: 'pleine', solid: true, dialogue: 'table-bar' },
+      { id: 'table-bar-2', x: 96, y: 52, sprite: 'table-bar', frame: 'pleine', solid: true, dialogue: 'table-bar' },
       // Trois personnes très occupées.
       {
         id: 'compteur-de-fenetres',
@@ -1862,6 +1862,9 @@ export const ROOMS: Record<string, Room> = {
         x: 64,
         y: 52,
         sprite: 'table-bar',
+        frame: 'pleine',
+        // Après le passage du pigeon, la table reste sans verres : le dessin est l'archive.
+        frameIfFlag: [['verres-tombes', 'vide']],
         solid: true,
         // Serrée : sinon la table leur volait la parole à tous les deux.
         portee: 4,
@@ -1887,6 +1890,38 @@ export const ROOMS: Record<string, Room> = {
       { id: 'reverbere', x: 132, y: 36, sprite: 'reverbere', solid: true },
       { id: 'banc', x: 20, y: 60, sprite: 'banc', solid: true, dialogue: 'banc' },
       { id: 'poubelle', x: 104, y: 16, sprite: 'poubelle', solid: true, dialogue: 'poubelle' },
+      /**
+       * **Le pigeon de la terrasse.** C'est lui que l'écureuil fait viser : arrosé, il décolle
+       * par-dessus la table de papa et emporte les deux verres. Après ça, il a quitté le
+       * quartier — et la table reste vide pour toujours.
+       */
+      {
+        id: 'pigeon-terrasse',
+        x: 96,
+        y: 100,
+        // La table où boivent deux adultes : la chose la plus mal choisie de l'écran.
+        perchoir: { x: 70, y: 42 },
+        sprite: 'pigeon',
+        dialogue: 'pigeon',
+        errance: { rayon: 24, vitesse: 14 },
+        hideIfFlag: 'verres-tombes',
+      },
+      /**
+       * **Le même écureuil, troisième coin.** Derrière le banc, la queue qui dépasse. Il propose,
+       * il insiste, il nie — comme pour la fenêtre, comme pour le bateau. Il ne gagne toujours
+       * rien.
+       */
+      {
+        id: 'ecureuil-terrasse',
+        x: 26,
+        y: 56,
+        sprite: 'ecureuil',
+        frame: 'queue-0',
+        anim: 'ecureuil-queue',
+        depth: 58,
+        priorite: 2,
+        dialogue: 'ecureuil-terrasse',
+      },
     ],
     doors: [
       { x: 0, y: 96, w: 8, h: 16, to: { room: 'bars', x: 144, y: 104 } },
