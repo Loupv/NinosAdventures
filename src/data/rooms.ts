@@ -595,26 +595,31 @@ export const ROOMS: Record<string, Room> = {
     ],
     objects: [
       { id: 'escalier-bas', x: 24, y: 52, sprite: 'escalier', depth: 56 },
-      // **La lune, énorme, posée dans le ciel.** C'est elle que Moon garde : on l'apprend ici,
-      // au bout de trente-deux étages, et personne ne demande depuis quand.
+      // **La composition du toit est un tableau** : le trône et Moon au centre de l'écran,
+      // Nino aligné en dessous par le travelling — et la lune un peu à gauche, comme les
+      // vraies lunes, qui ne se placent jamais où on veut. C'est elle que Moon garde : on
+      // l'apprend au bout de trente-deux étages, et personne ne demande depuis quand.
       { id: 'lune', x: 40, y: 14, sprite: 'lune', depth: -60 },
+      { id: 'trone', x: 73, y: 70, sprite: 'trone', depth: 78, solid: true },
       /**
-       * **Moon, le dernier gardien, directement sous sa lune.** Il explique enfin son nom, il
-       * pose la plus difficile de toutes les questions, et c'est lui qui donne le parapente.
-       * Personne ne demande comment il est monté : c'est le principe.
+       * **Moon, le dernier gardien, sur son trône, sous sa lune.** Il explique enfin son nom,
+       * il pose la plus difficile de toutes les questions, et c'est lui qui donne le
+       * parapente. Personne ne demande comment il est monté : c'est le principe.
        */
       {
         id: 'moon-toit',
-        x: 44,
-        y: 96,
+        x: 74,
+        y: 66,
         sprite: 'moon',
         frame: 'idle-0',
         anim: 'moon-idle',
+        depth: 90,
         priorite: 2,
+        portee: 16,
         dialogue: 'moon-toit',
       },
       { id: 'antenne', x: 132, y: 56, sprite: 'reverbere', solid: true, dialogue: 'antenne' },
-      { id: 'vue', x: 72, y: 50, sprite: 'panneau', solid: true, dialogue: 'vue-tour' },
+      { id: 'vue', x: 116, y: 92, sprite: 'panneau', solid: true, dialogue: 'vue-tour' },
       // Une étoile un peu plus grosse que les autres, posée dans le ciel : de quoi
       // regarder en haut plutôt qu'en bas.
       { id: 'ciel', x: 108, y: 32, sprite: 'etoile', depth: -50, dialogue: 'ciel-tour' },

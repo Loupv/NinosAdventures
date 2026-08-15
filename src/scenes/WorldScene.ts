@@ -370,6 +370,10 @@ export class WorldScene extends Phaser.Scene {
     if (this.cinema) this.player.sprite.setVisible(false);
     if (this.mode === 'side') this.player.sprite.setDepth(10);
 
+    // La première arrivée sur le toit se fait en travelling : la caméra remonte la façade
+    // de la tour et découvre le tableau — la lune, le trône, Moon, et Nino aligné dessous.
+    if (id === 'tour-toit' && !this.cinema && !state.flag('toit-decouvert')) this.travellingDuToit();
+
     // Après le joueur : quand Hermione le suit, elle a besoin de sa position.
     this.spawnHermione();
 
@@ -1346,6 +1350,76 @@ export class WorldScene extends Phaser.Scene {
         },
       });
     }
+  }
+
+  /**
+   * **L'arrivée sur le toit, en travelling vertical.** La caméra part de très bas — la
+   * façade de la tour défile, fenêtres allumées une sur neuf — et remonte jusqu'au tableau :
+   * la lune, le trône, Moon dessus, et Nino aligné dessous. C'est le sommet du jeu, il a
+   * droit à son plan.
+   *
+   * La façade n'existe pas dans la pièce : elle est dessinée sous le bord bas du toit, dans
+   * une zone où la caméra n'a normalement pas le droit d'aller — on élargit ses bornes le
+   * temps du plan, puis tout est détruit et les bornes reviennent. Une seule fois par
+   * partie (`toit-decouvert`).
+   */
+  private travellingDuToit(): void {
+    state.locked = true;
+    state.setFlag('toit-decouvert');
+    state.save();
+    const cam = this.cameras.main;
+    const HAUTEUR = 320; // la façade, sous la pièce
+    const moon = this.live.find((x) => x.def.id === 'moon-toit');
+    // Nino arrive aligné sous le trône : le travelling est aussi un raccord.
+    this.player.sprite.setPosition((moon?.def.x ?? 74) + 6, 118);
+    this.player.facing = 'up';
+
+    // La façade : le ciel de nuit derrière (étoiles comprises — sans lui, le fond de la
+    // caméra dépassait des deux côtés), la tour en silhouette, des rangées de fenêtres
+    // éteintes, une allumée de temps en temps.
+    const morceaux: Phaser.GameObjects.GameObject[] = [];
+    morceaux.push(
+      this.add.rectangle(0, this.roomH, this.roomW, HAUTEUR, shade(this.pal, 0)).setOrigin(0, 0).setDepth(3999),
+    );
+    for (let i = 0; i < 14; i++) {
+      const gauche = i % 2 === 0;
+      morceaux.push(
+        this.add
+          .rectangle(gauche ? 4 + (i * 7) % 22 : this.roomW - 6 - ((i * 5) % 20), this.roomH + 10 + i * 22, 1, 1, shade(this.pal, 3))
+          .setOrigin(0, 0)
+          .setDepth(4000),
+      );
+    }
+    morceaux.push(
+      this.add.rectangle(28, this.roomH, 104, HAUTEUR, shade(this.pal, 1)).setOrigin(0, 0).setDepth(4000),
+    );
+    for (let ligne = 0; ligne < 13; ligne++) {
+      for (let col = 0; col < 5; col++) {
+        const allume = (ligne * 5 + col) % 9 === 4;
+        morceaux.push(
+          this.add
+            .rectangle(44 + col * 16, this.roomH + 14 + ligne * 24, 6, 8, shade(this.pal, allume ? 3 : 0))
+            .setOrigin(0, 0)
+            .setDepth(4001),
+        );
+      }
+    }
+
+    cam.stopFollow();
+    cam.setBounds(0, 0, this.roomW, this.roomH + HAUTEUR);
+    cam.setScroll(0, this.roomH + HAUTEUR - GB.H);
+    jouer(this, 'rafale', { volume: 0.4 });
+    this.tweens.add({
+      targets: cam,
+      scrollY: 0,
+      duration: 3200,
+      ease: 'Sine.easeInOut',
+      onComplete: () => {
+        for (const m of morceaux) m.destroy();
+        cam.setBounds(0, 0, this.roomW, this.roomH);
+        state.locked = false;
+      },
+    });
   }
 
   /**

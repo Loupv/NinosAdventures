@@ -1804,6 +1804,25 @@ const SEAU_SAUTE_B = retoucheHaut(SEAU_EAU_B, 0, [
 ]);
 
 /**
+ * **Le trône de Moon**, sur le toit. Un dossier haut, deux accoudoirs, et un chat dessus :
+ * trente-deux étages pour découvrir que le gardien de la lune a un siège de fonction.
+ */
+const TRONE: Art = [
+  '.00........00.',
+  '.010000000010.',
+  '.011111111110.',
+  '.011111111110.',
+  '.011111111110.',
+  '.011111111110.',
+  '00111111111100',
+  '01111111111110',
+  '01111111111110',
+  '00111111111100',
+  '.01.......10..',
+  '.01.......10..',
+];
+
+/**
  * **La lune**, au-dessus du toit. C'est elle que Moon garde — on l'apprend en haut de
  * trente-deux étages, et personne ne demande depuis quand.
  */
@@ -2197,6 +2216,7 @@ export const IMAGES: Record<string, Art> = {
   'tuyau-bout': TUYAU_BOUT,
   nuage: NUAGE,
   lune: LUNE,
+  trone: TRONE,
   copain: COPAIN,
   lit: LIT,
   'grand-lit': GRAND_LIT,

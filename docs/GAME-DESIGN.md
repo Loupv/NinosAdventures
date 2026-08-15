@@ -1301,11 +1301,19 @@ tout juste de la mer (l'eau salée gratte, personne ne le dit) et qui considère
 des tours s'applique à lui aussi : une énigme par étage, et tout en haut. Dans un seau.
 Personne ne relève. Une fois son énigme résolue, il saute dedans — avant, rien ne bouge.
 
-Sur le toit, **Moon attend sous une lune énorme**, et trente-deux étages servent à
-apprendre pourquoi le chat s'appelle Moon : gardien de la lune, évidemment. Sa question
-est la plus difficile de toutes, sa bonne réponse est la seule chose que le jeu ait jamais
-voulu dire, et réussir fait apparaître le parapente — c'est lui, la récompense. Le
-parapente ne traîne plus sur le toit : il se mérite.
+Sur le toit, **Moon attend sur un trône, sous une lune énorme**, et trente-deux étages
+servent à apprendre pourquoi le chat s'appelle Moon : gardien de la lune, évidemment. Sa
+question est la plus difficile de toutes, sa bonne réponse est la seule chose que le jeu
+ait jamais voulu dire, et réussir fait apparaître le parapente — c'est lui, la récompense.
+Le parapente ne traîne plus sur le toit : il se mérite.
+
+**Et on y arrive en travelling.** La première fois, la caméra part de très bas — la façade
+de la tour défile sur un ciel étoilé, fenêtres éteintes, une allumée de temps en temps —
+et remonte en trois secondes jusqu'au tableau : le trône et Moon au centre exact de
+l'écran, Nino aligné dessous, la lune un peu à gauche comme les vraies lunes. C'est le
+sommet du jeu, il a droit à son plan. La façade n'existe pas dans la pièce : elle est
+dessinée sous le bord bas du toit, dans une zone où la caméra n'a normalement pas le
+droit d'aller, et tout est détruit à l'arrivée.
 
 Quatre remarques sur ces énigmes :
 
