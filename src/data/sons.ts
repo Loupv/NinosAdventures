@@ -479,10 +479,21 @@ export const SONS: Son[] = [
     id: 'musique-maison',
     present: true,
     provisoire: true,
-    quand: 'Toute la maison : chambre, couloir, cuisine, salon, mezzanine, salle de bain.',
+    quand: 'La maison, sauf la chambre de Nino et la mezzanine : couloir, cuisine, salon, salle de bain.',
     variantes: 1,
     cherche:
-      'Lent, un peu vide, quatre voix maximum. Il fait trop chaud et il ne se passe rien : la musique doit avoir cette température. Le fichier posé : « Out of Time » (Abstraction, lot Three Red Hearts, CC0) **ralentie de moitié** — une octave plus bas, deux fois plus lent, cent vingt-deux secondes de boucle. C’était la piste la plus calme du lot (0,86 attaque/s, mesuré), et son titre ne s’invente pas.',
+      'Plus douce que la chambre : on y passe, on n’y habite pas. Le fichier posé : « Princess Quest (No Boing) » (Abstraction, CC0) ralentie de moitié et posée un quart moins fort — la deuxième piste la plus calme du lot, sans aucun bruitage dedans.',
+    priorite: 'plus tard',
+    boucle: true,
+  },
+  {
+    id: 'musique-chambre',
+    present: true,
+    provisoire: true,
+    quand: 'La chambre de Nino — la pièce où tout commence.',
+    variantes: 1,
+    cherche:
+      'Lent, un peu vide, quatre voix maximum. Il fait trop chaud et il ne se passe rien : la musique doit avoir cette température. Le fichier posé : « Out of Time » (Abstraction, CC0) **ralentie de moitié** — une octave plus bas, cent vingt-deux secondes de boucle. C’était la piste la plus calme du lot (0,86 attaque/s, mesuré), et son titre ne s’invente pas.',
     priorite: 'plus tard',
     boucle: true,
   },
@@ -554,7 +565,7 @@ export const son = (id: string) => PAR_ID.get(id);
  * chacun est une scène à part, qui demande sa musique par son nom.
  */
 const MUSIQUE_PAR_PIECE: Record<string, string> = {
-  chambre: 'musique-maison',
+  chambre: 'musique-chambre',
   couloir: 'musique-maison',
   'chambre-parents': 'musique-maison',
   mezzanine: 'musique-mezzanine',

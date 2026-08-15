@@ -1627,9 +1627,12 @@ qu'elle reparte du début, et sortir dans la cour la coupe. L'écran-titre, le r
 fusée et l'écran de fin demandent la leur par son nom. **Quatre pistes sont posées**,
 toutes du lot chiptune d'Abstraction (CC0), toutes marquées `provisoire` :
 
-- `musique-maison` — « Out of Time » **ralentie de moitié** : une octave plus bas, deux
+- `musique-chambre` — « Out of Time » **ralentie de moitié** : une octave plus bas, deux
   minutes de boucle, la piste la plus calme du lot. Il fait trop chaud et il ne se passe
-  rien.
+  rien. C'est la pièce où tout commence, elle garde sa musique à elle.
+- `musique-maison` — « Princess Quest (No Boing) » ralentie de moitié et posée un quart
+  moins fort, pour le reste de la maison : plus douce que la chambre — on y passe, on n'y
+  habite pas.
 - `musique-eau` — « Deep Blue » ralentie de moitié aussi : la canicule ralentit tout, et
   les deux moitiés lentes du jeu partagent le même traitement.
 - `musique-ville` — « Modern Bits » telle quelle, la plus mécanique du lot.
