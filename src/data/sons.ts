@@ -120,10 +120,12 @@ export const SONS: Son[] = [
   },
   {
     id: 'prout',
+    present: true,
+    provisoire: true,
     quand: 'Chaque appui sur Espace dans le rêve de la fusée.',
     variantes: 8,
     cherche:
-      'Des prouts. Huit, tous différents : court, long, aigu, hésitant, celui qui repart. C’est la fonctionnalité la plus importante du projet, et elle mérite d’être faite sérieusement.',
+      'Des prouts. Huit, tous différents : court, long, aigu, hésitant, celui qui repart. C’est la fonctionnalité la plus importante du projet, et elle mérite d’être faite sérieusement. En attendant, huit synthétiques (une impulsion dont la hauteur renégocie tous les dix millisecondes) tiennent la scène.',
     priorite: 'indispensable',
     maison: true,
   },
@@ -149,6 +151,8 @@ export const SONS: Son[] = [
   },
   {
     id: 'plouf',
+    present: true,
+    provisoire: true,
     quand: 'Le poisson traverse la surface — baignoire et Erdre.',
     variantes: 4,
     cherche:
@@ -199,6 +203,8 @@ export const SONS: Son[] = [
   },
   {
     id: 'robinet',
+    present: true,
+    provisoire: true,
     quand: 'Nino ouvre l’eau de la baignoire.',
     variantes: 2,
     cherche:
@@ -208,15 +214,19 @@ export const SONS: Son[] = [
   },
   {
     id: 'pistolet',
+    present: true,
+    provisoire: true,
     quand: 'Le jet du pistolet à eau, sur l’écureuil de la cour.',
     variantes: 2,
     cherche:
-      'Un pschitt court et mouillé, une demi-seconde. Le vrai pistolet à eau de la maison, deux pressions différentes — ou une bouche qui souffle dans une paille dans un verre d’eau, c’est le même son et c’est plus drôle à enregistrer.',
+      'Un pschitt court et mouillé, une demi-seconde. Le vrai pistolet à eau de la maison, deux pressions différentes — ou une bouche qui souffle dans une paille dans un verre d’eau, c’est le même son et c’est plus drôle à enregistrer. En attendant : deux bouffées de bruit synthétiques.',
     priorite: 'important',
     maison: true,
   },
   {
     id: 'heron',
+    present: true,
+    provisoire: true,
     quand: 'Un héron passe devant le parapente, ou se fait bousculer.',
     variantes: 2,
     cherche:
@@ -253,14 +263,110 @@ export const SONS: Son[] = [
   // ── Les moments uniques ───────────────────────────────────────────────────
   {
     id: 'chat',
-    quand: 'On parle à Moon avant qu’il ne parle.',
+    present: true,
+    provisoire: true,
+    quand: 'On parle à Moon avant qu’il ne parle — et à chaque réplique de lui ensuite.',
     variantes: 3,
-    cherche: 'Un miaulement de chat blanc pas très concerné. Moon, si possible.',
+    cherche:
+      'Un miaulement de chat blanc pas très concerné. Moon, si possible. En attendant : trois glissades de triangle qui montent et redescendent.',
     priorite: 'important',
     maison: true,
   },
+  /**
+   * ── Les voix des bêtes ──
+   *
+   * Chaque animal qui parle pousse **son cri à l'ouverture de sa réplique**, en plus du bip
+   * du texte : le poisson fait une bulle, l'écureuil pépie, l'araignée fait deux petits pas
+   * secs, l'Éléphant barrit. Tous synthétisés par `tools/synthese.ts` — des glissandos.
+   */
+  {
+    id: 'poisson',
+    present: true,
+    fabrique: true,
+    quand: 'Le poisson prend la parole.',
+    variantes: 2,
+    cherche: 'Une bulle : une note qui coule vers le bas, très filtrée — on l’entend sous l’eau.',
+    priorite: 'important',
+  },
+  {
+    id: 'araignee',
+    present: true,
+    fabrique: true,
+    quand: 'L’araignée prend la parole.',
+    variantes: 2,
+    cherche:
+      'Deux tout petits pas secs, presque rien : c’est une bête silencieuse qui veut bien faire un effort.',
+    priorite: 'important',
+  },
+  {
+    id: 'ecureuil',
+    present: true,
+    fabrique: true,
+    quand: 'L’écureuil prend la parole.',
+    variantes: 2,
+    cherche: 'Deux pépiements pressés, tout en haut — il parle comme il vole des verres.',
+    priorite: 'important',
+  },
+  {
+    id: 'araignee-danse',
+    present: true,
+    fabrique: true,
+    quand: 'L’araignée entame sa danse d’adieu, au 27e étage.',
+    variantes: 1,
+    cherche: 'Quatre notes qui montent, une petite valse d’adieu en carré.',
+    priorite: 'plus tard',
+  },
+  {
+    id: 'araignee-part',
+    present: true,
+    fabrique: true,
+    quand: 'L’araignée s’envole en tournant vers le haut de l’écran.',
+    variantes: 1,
+    cherche: 'Une longue glissade vers le haut, de plus en plus loin.',
+    priorite: 'plus tard',
+  },
+  {
+    id: 'pluie',
+    present: true,
+    fabrique: true,
+    quand: 'La pluie de l’éléphant, sur l’Erdre — en boucle tant qu’il pleut.',
+    variantes: 1,
+    cherche:
+      'Du bruit très sombre, long, aux fondus larges : deux lectures qui se chevauchent font une averse continue.',
+    priorite: 'plus tard',
+  },
+  {
+    id: 'voix',
+    present: true,
+    fabrique: true,
+    quand: 'Chaque caractère qu’un personnage prononce — le récit garde le bip du texte.',
+    variantes: 1,
+    cherche:
+      'Un carré filtré quatre fois : les harmoniques impaires font le « grain » d’une bouche, là où le triangle du texte n’est qu’un souffle. Transposé par personnage, comme le bip du texte.',
+    priorite: 'important',
+  },
+  {
+    id: 'objet-tombe',
+    present: true,
+    fabrique: true,
+    quand: 'Un objet tombe et atterrit : les verres de la terrasse, le bol de la diversion.',
+    variantes: 2,
+    cherche: 'Un clonk : le choc, puis la note de l’objet qui s’éteint. Le verre sonne plus haut que le bol.',
+    priorite: 'plus tard',
+  },
+  {
+    id: 'colere',
+    present: true,
+    fabrique: true,
+    quand: 'Toute réplique criée EN MAJUSCULES : « NON MAIS CE CHAT », « HERMIONE ! », Nino qui refuse de se lever.',
+    variantes: 2,
+    cherche: 'Un grondement qui descend. C’est la règle du jeu : les majuscules grondent.',
+    priorite: 'plus tard',
+  },
   {
     id: 'grognement',
+    present: true,
+    provisoire: true,
     quand: 'Le poisson disparaît par le trou de la baignoire, sous le nez du chat.',
     variantes: 2,
     cherche:
@@ -320,6 +426,8 @@ export const SONS: Son[] = [
   },
   {
     id: 'elephant',
+    present: true,
+    provisoire: true,
     quand: 'On parle à l’Éléphant des Machines.',
     variantes: 2,
     cherche:
@@ -336,6 +444,8 @@ export const SONS: Son[] = [
   },
   {
     id: 'rafale',
+    present: true,
+    provisoire: true,
     quand: 'Le vent pousse le parapente.',
     variantes: 3,
     cherche: 'Du vent dans un micro, court. Trois forces différentes.',
@@ -343,6 +453,8 @@ export const SONS: Son[] = [
   },
   {
     id: 'bougies',
+    present: true,
+    provisoire: true,
     quand: 'Nino souffle ses sept bougies — et s’endort avant la fin.',
     variantes: 1,
     cherche:
@@ -398,11 +510,24 @@ export const SONS: Son[] = [
   },
   {
     id: 'musique-fin',
+    present: true,
+    provisoire: true,
     quand: 'L’écran de fin, après les bougies.',
     variantes: 1,
     cherche:
-      'La mélodie de la maison, mais du soir : plus lente, une octave plus bas. Trente secondes suffisent, elle ne tourne qu’une fois.',
+      'La mélodie de la maison, mais du soir : plus lente, une octave plus bas. Trente secondes suffisent, elle ne tourne qu’une fois. Le fichier posé fait exactement ça : « Out of Time » au quart de sa vitesse — deux octaves sous l’original, une sous la maison.',
     priorite: 'important',
+    boucle: true,
+  },
+  {
+    id: 'musique-mezzanine',
+    present: true,
+    provisoire: true,
+    quand: 'La mezzanine — la seule pièce de la maison qui n’a pas la musique de la maison.',
+    variantes: 1,
+    cherche:
+      'Un peu mystérieuse : c’est là-haut que vivait l’araignée, et personne ne monte jamais. Le fichier posé : « Sanctuary » (Abstraction, CC0) ralentie de moitié, comme tout ce qui est lent dans ce jeu.',
+    priorite: 'plus tard',
     boucle: true,
   },
   {
@@ -432,7 +557,7 @@ const MUSIQUE_PAR_PIECE: Record<string, string> = {
   chambre: 'musique-maison',
   couloir: 'musique-maison',
   'chambre-parents': 'musique-maison',
-  mezzanine: 'musique-maison',
+  mezzanine: 'musique-mezzanine',
   sdb: 'musique-maison',
   cuisine: 'musique-maison',
   salon: 'musique-maison',

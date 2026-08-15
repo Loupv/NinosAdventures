@@ -127,5 +127,27 @@ export function jouer(
  */
 export function jouerVoix(scene: Phaser.Scene, parleur?: string): void {
   const v = (parleur && VOIX[parleur]) || VOIX.recit;
-  jouer(scene, 'texte', { volume: v.volume, detune: v.detune, rate: v.rate });
+  // Deux timbres pour deux rôles : le récit garde le triangle soufflé, les personnages ont
+  // un carré filtré — le grain d'une bouche. Même hauteur par personnage qu'avant.
+  const timbre = parleur && VOIX[parleur] ? 'voix' : 'texte';
+  jouer(scene, timbre, { volume: v.volume, detune: v.detune, rate: v.rate });
+}
+
+/**
+ * **Le cri de la bête, à l'ouverture de sa réplique.** Le poisson fait une bulle,
+ * l'écureuil pépie, l'araignée fait deux petits pas secs, Moon miaule, l'Éléphant barrit —
+ * une fois par boîte de dialogue, par-dessus le bip du texte qui continue de faire la
+ * parole. Les humains n'ont pas de cri : ils ont déjà leur hauteur de voix.
+ */
+const CRIS_DE_BETES: Record<string, string> = {
+  Moon: 'chat',
+  'Le poisson': 'poisson',
+  'L’araignée': 'araignee',
+  'L’écureuil': 'ecureuil',
+  'L’Éléphant': 'elephant',
+};
+
+export function jouerCri(scene: Phaser.Scene, parleur?: string): void {
+  const id = parleur && CRIS_DE_BETES[parleur];
+  if (id) jouer(scene, id, { volume: 0.5 });
 }

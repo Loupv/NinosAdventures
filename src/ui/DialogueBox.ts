@@ -5,7 +5,7 @@ import { shade, shadeHex } from '../art/palette';
 import { state } from '../systems/state';
 import type { DialogueRequest } from '../systems/bus';
 import { PixelText, measure } from './PixelText';
-import { jouer, jouerVoix } from '../systems/audio';
+import { jouer, jouerCri, jouerVoix } from '../systems/audio';
 
 const BOX = { x: 4, w: 152, h: 48 };
 /**
@@ -98,6 +98,11 @@ export class DialogueBox {
     this.active = true;
     this.openedAt = this.scene.time.now;
     state.locked = true;
+    // Le cri de la bête qui parle, une fois par boîte. Et la règle des majuscules : toute
+    // réplique criée — « NON MAIS CE CHAT », « HERMIONE ! », Nino qui refuse de se lever —
+    // gronde. Quatre capitales d'affilée suffisent à faire une colère.
+    jouerCri(this.scene, this.speaker);
+    if (req.lines.some((l) => /[A-ZÀ-Ü]{4,}/.test(l))) jouer(this.scene, 'colere', { volume: 0.5 });
     this.draw();
     this.setVisible(true);
     this.renderPage();

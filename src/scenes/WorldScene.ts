@@ -1377,7 +1377,10 @@ export class WorldScene extends Phaser.Scene {
             angle: cote * 90,
             duration: 260,
             ease: 'Quad.easeIn',
-            onComplete: () => splash(this, this.pal, Math.round(v.x), Math.round(v.y)),
+            onComplete: () => {
+              jouer(this, 'objet-tombe', { volume: 0.6 });
+              splash(this, this.pal, Math.round(v.x), Math.round(v.y));
+            },
           });
         }
         // 3. Et il quitte le quartier par le haut, sans un mot, comme d'habitude.
@@ -1640,6 +1643,10 @@ export class WorldScene extends Phaser.Scene {
     // Revenir plus tard, c'est revenir au sec.
     this.time.delayedCall(2000, () => {
       this.time.addEvent({ delay: 40, loop: true, callback: () => this.uneGoutte() });
+      // L'averse s'entend : le fichier fait 1,4 s avec des fondus larges, relancé toutes les
+      // 1,1 s les lectures se chevauchent — une pluie continue. Le minuteur meurt avec la scène.
+      jouer(this, 'pluie', { volume: 0.5 });
+      this.time.addEvent({ delay: 1100, loop: true, callback: () => jouer(this, 'pluie', { volume: 0.5 }) });
       puis();
     });
   }
@@ -2219,6 +2226,7 @@ export class WorldScene extends Phaser.Scene {
    */
   private danse(l: Live): void {
     state.locked = true;
+    jouer(this, 'araignee-danse', { volume: 0.6 });
     // Elle ne peut pas errer et danser en même temps.
     this.errants = this.errants.filter((e) => e.live !== l);
 
@@ -2260,6 +2268,7 @@ export class WorldScene extends Phaser.Scene {
 
     /** Elle part en tournant, vers le haut de l'écran. Pas de fondu : elle sort. */
     const sortie = () => {
+      jouer(this, 'araignee-part', { volume: 0.5 });
       const x0 = go.x;
       const y0 = go.y;
       const a0 = go.angle;
@@ -2372,6 +2381,7 @@ export class WorldScene extends Phaser.Scene {
           bol.go.setDepth(60);
         },
         onComplete: () => {
+          jouer(this, 'objet-tombe', { volume: 0.7 });
           this.cameras.main.shake(180, 0.006);
           say({
             speaker: 'Papa',

@@ -166,6 +166,32 @@ export function triangle(ms: number, hz: number): Float64Array {
   });
 }
 
+/**
+ * Une note qui **glisse** d'une hauteur à l'autre — le miaulement, la bulle, le barrissement :
+ * tous les cris sont des glissades. Accumulation de phase : la fréquence change sans que
+ * l'onde saute.
+ */
+export function glissando(
+  ms: number,
+  hzDebut: number,
+  hzFin: number,
+  forme: 'carre' | 'triangle' = 'triangle',
+): Float64Array {
+  const n = echantillons(ms);
+  const x = new Float64Array(n);
+  let phase = 0;
+  for (let i = 0; i < n; i++) {
+    const hz = hzDebut + ((hzFin - hzDebut) * i) / Math.max(1, n - 1);
+    phase += hz / FREQUENCE;
+    const p = phase % 1;
+    x[i] = forme === 'carre' ? (p < 0.5 ? 1 : -1) : 4 * Math.abs(p - 0.5) - 1;
+  }
+  return x;
+}
+
+/** Du silence, pour espacer deux morceaux dans un `coller`. */
+export const silence = (ms: number): Float64Array => new Float64Array(echantillons(ms));
+
 /** Met des sons bout à bout. */
 export function coller(...morceaux: Float64Array[]): Float64Array {
   const total = morceaux.reduce((n, m) => n + m.length, 0);
