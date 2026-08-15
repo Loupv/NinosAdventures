@@ -461,8 +461,8 @@ export class WorldScene extends Phaser.Scene {
         ];
         sources.forEach((src, quel) => {
           this.time.addEvent({
-            delay: 1300,
-            startAt: quel * 650,
+            delay: 1700,
+            startAt: quel * 850,
             loop: true,
             callback: () => {
               if (!state.flag('parapente-rentre') || state.flag('matin')) return;
@@ -480,11 +480,11 @@ export class WorldScene extends Phaser.Scene {
               this.tweens.addCounter({
                 from: 0,
                 to: 1,
-                duration: 1600,
+                duration: 2600,
                 onUpdate: (t) => {
                   const v = t.getValue() ?? 0;
                   z.setPosition(
-                    Math.round(src.x + Math.sin(v * Math.PI * 3 + n) * 4),
+                    Math.round(src.x + Math.sin(v * Math.PI * 2 + n) * 4),
                     Math.round(src.y - v * 14),
                   );
                   // De 1,5 à 0,75 : il disparaît à la moitié de sa taille de naissance.
