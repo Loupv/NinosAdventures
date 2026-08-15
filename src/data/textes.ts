@@ -814,8 +814,18 @@ export const CREDITS: Array<{
     lignes: ['L’ÉCUREUIL', 'mauvaises idées.', 'Nie toute participation.'],
     qui: { sprite: 'ecureuil', x: 124, y: 72, frame: 'queue-0', anim: 'ecureuil-queue' },
   },
-  { room: 'nantes', lignes: ['LE JARDINIER', 'arrosage.', 'N’a pas arrosé.'] },
-  { room: 'ecole', lignes: ['LA MAÎTRESSE', 'notation.', 'A noté une croûte de pizza.'] },
+  {
+    room: 'nantes',
+    lignes: ['LE JARDINIER', 'arrosage.', 'N’a pas arrosé.'],
+    qui: { sprite: 'jardinier', x: 96, y: 92 },
+  },
+  {
+    // **Toujours vrai, quelle que soit la partie** : elle ne note une croûte de pizza que si
+    // on la lui apporte, mais son devoir n'a jamais eu de bonne réponse — c'est sa règle.
+    room: 'ecole',
+    lignes: ['LA MAÎTRESSE', 'notation.', 'Son devoir n’avait pas de bonne réponse.'],
+    qui: { sprite: 'maitresse', x: 56, y: 54 },
+  },
   {
     room: 'erdre',
     lignes: [

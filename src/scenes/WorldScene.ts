@@ -3173,20 +3173,29 @@ export class WorldScene extends Phaser.Scene {
     state.locked = true;
     const etape = CREDITS[i];
     const dernier = i + 1 >= CREDITS.length;
-    this.carton(dernier ? [...etape.lignes, '', ...GENERIQUE.fin] : etape.lignes);
 
     // Celui qu'on remercie, reposé là où on l'a rencontré : à la fin du jeu, presque aucun n'est
     // encore dans sa pièce, et remercier une pièce vide n'a pas le même effet.
     // Et pas deux fois : si la pièce l'a encore chez elle, on ne le double pas.
     const q = etape.qui && !this.live.some((l) => l.def.sprite === etape.qui?.sprite) ? etape.qui : undefined;
+    let cite: Phaser.GameObjects.Image | Phaser.GameObjects.Sprite | undefined;
     if (q) {
-      const go = q.anim
+      cite = q.anim
         ? this.add.sprite(q.x, q.y, texKey(q.sprite, this.pal), q.frame)
         : this.add.image(q.x, q.y, texKey(q.sprite, this.pal), q.frame);
-      go.setOrigin(0, 0).setScale(q.scale ?? 1);
-      go.setDepth(q.y + go.displayHeight);
-      if (q.anim && go instanceof Phaser.GameObjects.Sprite) go.play(animKey(q.anim, this.pal));
+      cite.setOrigin(0, 0).setScale(q.scale ?? 1);
+      cite.setDepth(q.y + cite.displayHeight);
+      if (q.anim && cite instanceof Phaser.GameObjects.Sprite) cite.play(animKey(q.anim, this.pal));
+    } else if (etape.qui) {
+      // Il est encore chez lui : c'est lui qu'on regarde pour placer le carton.
+      const la = this.live.find((l) => l.def.sprite === etape.qui?.sprite);
+      cite = la?.go as typeof cite;
     }
+
+    // **Le carton se pousse pour laisser voir celui qu'il remercie** : en haut par défaut,
+    // en bas si le personnage cité vit dans la bande haute de l'écran.
+    const ancre = cite ? { y: cite.y, h: cite.displayHeight } : undefined;
+    const carton = this.carton(etape.lignes, ancre);
 
     // Un travelling lent d'un bord à l'autre, quand il y a de quoi traverser.
     const duree = etape.court ? GENERIQUE_COURT : GENERIQUE_ETAPE;
@@ -3215,6 +3224,16 @@ export class WorldScene extends Phaser.Scene {
      * quarante secondes à la fin d'un jeu qu'on vient de finir n'est pas une punition ; le rater
      * par accident, si.
      */
+    if (dernier) {
+      // **Le carton de Nino a son propre temps.** Collé sous celui d'Hermione, les deux
+      // mangeaient la moitié de l'écran — et Hermione avec. L'un, puis l'autre.
+      this.time.delayedCall(duree + 600, () => {
+        carton.forEach((g) => g.destroy());
+        this.carton(GENERIQUE.fin, ancre);
+        this.time.delayedCall(GENERIQUE_ETAPE + 600, suite);
+      });
+      return;
+    }
     this.time.delayedCall(duree + 600, suite);
   }
 
@@ -3223,23 +3242,35 @@ export class WorldScene extends Phaser.Scene {
    * qu'on peut passer. Ce n'est pas une boîte de dialogue — elle attendrait un appui, et ici c'est
    * le temps qui décide.
    */
-  private carton(brutes: string[]): void {
+  private carton(
+    brutes: string[],
+    /** Où vit le personnage cité (y et hauteur à l'écran) : le carton prend l'autre bande. */
+    ancre?: { y: number; h: number },
+  ): Phaser.GameObjects.GameObject[] {
     // **Les lignes se replient toutes seules.** Un remerciement un peu long sortait de l'écran par
     // la droite, exactement comme les lignes trop longues de l'écran de fin : on ne compte plus les
     // caractères à la main, on laisse le retour à la ligne faire son travail.
-    //
-    // **Et le carton vit EN HAUT.** En bas, il mangeait le quai, les tables, les personnages
-    // cités — tout ce que les pièces posent au sol. En haut il ne recouvre que des murs et
-    // du ciel : c'est la seule bande de l'écran qui ne cache jamais personne.
     const lignes = brutes.flatMap((l) => (l ? wrap(l, GB.W - 10) : ['']));
-    this.add
-      .rectangle(0, 0, GB.W, 8 + lignes.length * LINE_H + 4, shade(this.pal, 0))
+    const h = 4 + lignes.length * LINE_H + 2;
+
+    // **Le carton évite celui qu'il remercie.** En haut par défaut — c'est la bande qui cache
+    // le moins de monde — mais si le personnage cité vit justement là (Hermione sous le lit,
+    // le poisson dans la baignoire), le carton descend. Sauf s'il vit aussi en bas : alors
+    // on reste en haut, cacher des pieds vaut mieux que cacher une tête.
+    const chevaucheHaut = ancre !== undefined && ancre.y < h + 6;
+    const chevaucheBas = ancre !== undefined && ancre.y + ancre.h > GB.H - h - 6;
+    const enBas = chevaucheHaut && !chevaucheBas;
+    const y0 = enBas ? GB.H - h : 0;
+
+    const fond = this.add
+      .rectangle(0, y0, GB.W, h, shade(this.pal, 0))
       .setOrigin(0, 0)
       .setScrollFactor(0)
       .setDepth(1900);
-    const texte = new PixelText(this, 'gen-carton', 0, 6, GB.W, lignes.length * LINE_H + 2);
+    const texte = new PixelText(this, 'gen-carton', 0, y0 + 3, GB.W, lignes.length * LINE_H + 2);
     texte.image.setScrollFactor(0).setDepth(1910);
     texte.setLines(lignes, shadeHex(this.pal, 3));
+    return [fond, texte.image];
   }
 
   /**

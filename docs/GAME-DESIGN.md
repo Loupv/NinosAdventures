@@ -1545,9 +1545,11 @@ compte ce qui a été **trouvé**, pas ce qui a été réussi : les cachettes d'
 
 ## Le générique
 
-**Fondu, et le jeu repasse par ses propres écrans.** Onze pièces, une par carton, posé **en haut
-de l'écran** — en bas, il mangeait les quais, les tables et les personnages qu'il remercie ; en
-haut il ne recouvre que des murs et du ciel — et à chaque fois **celui qu'on remercie est reposé là où on l'a rencontré** :
+**Fondu, et le jeu repasse par ses propres écrans.** Onze pièces, une par carton — et **le carton
+évite celui qu'il remercie** : en haut par défaut, en bas si le personnage cité vit justement dans
+la bande haute (Hermione sous son lit, Gérard dans la baignoire). La bande est serrée au plus près
+du texte, et le tout dernier écran ne cumule plus rien : la dernière mention passe, puis **NINO a
+son carton à lui** — et à chaque fois **celui qu'on remercie est reposé là où on l'a rencontré** :
 Moon sur son canapé, Gérard dans la baignoire, l'araignée dans la mezzanine, l'écureuil dans la cour,
 Hermione sous le lit. À la fin du jeu presque aucun n'est encore chez lui — le chat est sorti avec les
 parents, le poisson est parti à la mer, l'araignée a dansé et s'en est allée — et remercier une pièce
@@ -1563,7 +1565,7 @@ sans rire. Tout le comique est dans le poste — et jamais dans une vanne ajout�
 | **L'ARAIGNÉE** | poèmes et chorégraphie. Dix haïkus, une danse, aucun rappel. |
 | **L'ÉCUREUIL** | mauvaises idées. Nie toute participation. |
 | **LE JARDINIER** | arrosage. N'a pas arrosé. |
-| **LA MAÎTRESSE** | notation. A noté une croûte de pizza. |
+| **LA MAÎTRESSE** | notation. Son devoir n'avait pas de bonne réponse. |
 | **L'ÉLÉPHANT DES MACHINES** | effets spéciaux : pluie. Douze mètres, aucune doublure. |
 | **PAPA** | bateau, chapeau, alibis. Cascades exécutées par lui-même. |
 | **LA TOUR DE BRETAGNE** | décors. N'a pas bougé de la nuit. |
