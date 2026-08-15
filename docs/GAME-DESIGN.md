@@ -1406,10 +1406,22 @@ de trois essais qui forçait ce retour : un enfant à deux doigts de réussir se
 au toit par une règle — c'est lui qui décide, maintenant.)
 
 **Le vol accélère en approchant** : la vitesse d'avance gagne un tiers entre le saut et la
-maison, et les hérons suivent. Le début est une promenade — la lune encore dans le ciel de
-l'aube, une lueur au ras de l'horizon — la fin demande de piloter, et Nino se penche du côté
-où il va. Les hérons sont annoncés **quand on en voit un** (*« Des hérons ! »*), pas quand le
-premier naît en point invisible au loin — c'était une annonce sans oiseau.
+maison, et les hérons suivent — ils viennent aussi plus souvent. Le début est une promenade —
+la lune encore dans le ciel de l'aube, une lueur au ras de l'horizon — la fin demande de
+piloter, et Nino se penche du côté où il va. Les hérons sont annoncés **quand on en voit un**
+(*« Des hérons ! »*), pas quand le premier naît en point invisible au loin — c'était une
+annonce sans oiseau.
+
+Trois choses encore, qui font le voyage :
+
+- **les étoiles s'éteignent une à une** à mesure que le jour approche avec la maison ;
+- **on repasse au-dessus de l'Erdre** à mi-vol — une bande d'eau claire en travers du sol,
+  et le seul repère que Nino connaît : *« L'Erdre ! »* ;
+- **le vent se voit** : trois traînées filent dans son sens pendant qu'une rafale souffle.
+
+Et les annonces (*« Viser sa fenêtre. »*, le score du retour) se posent sur **un bandeau
+clair** : l'encre sombre se perdait sur le sol sombre dès que le texte descendait sous
+l'horizon.
 
 > **Un cul-de-sac à ne pas refaire ailleurs.** Le parapente du toit était garé derrière le
 > flag `parapente-pris`, posé au moment du saut et sauvegardé aussitôt. Si le vol

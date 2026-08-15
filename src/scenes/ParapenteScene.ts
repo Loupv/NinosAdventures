@@ -137,6 +137,16 @@ export class ParapenteScene extends Phaser.Scene {
   private immeubles: Immeuble[] = [];
   private lignes: { z: number; go: Phaser.GameObjects.Rectangle }[] = [];
   private herons: Oiseau[] = [];
+  /** Les étoiles s'éteignent une à une à mesure que le jour approche. */
+  private etoiles: Phaser.GameObjects.Rectangle[] = [];
+  /** Les traînées du vent : visibles pendant une rafale, elles montrent d'où il pousse. */
+  private trainees: Phaser.GameObjects.Rectangle[] = [];
+  /** L'Erdre, qu'on survole à mi-vol : le seul repère que Nino connaît. */
+  private riviere!: Phaser.GameObjects.Rectangle;
+  private riviereZ = 0;
+  private riviereDite = false;
+  /** Le bandeau clair sous les annonces : sans lui, l'encre sombre se perdait sur le sol sombre. */
+  private bandeau!: Phaser.GameObjects.Rectangle;
   private maison!: Phaser.GameObjects.Rectangle;
   private maisonToit!: Phaser.GameObjects.Rectangle;
   private porte!: Phaser.GameObjects.Rectangle;
@@ -188,6 +198,10 @@ export class ParapenteScene extends Phaser.Scene {
     this.lignes = [];
     this.herons = [];
     this.fenetres = [];
+    this.etoiles = [];
+    this.trainees = [];
+    this.riviereZ = 950;
+    this.riviereDite = false;
     state.palette = PALETTE;
 
     // Le ciel prend le ton moyen : ça laisse le ton clair aux fenêtres allumées, qui sont les
@@ -203,7 +217,9 @@ export class ParapenteScene extends Phaser.Scene {
       [136, 14],
       [92, 34],
     ] as const) {
-      this.add.rectangle(x, y, 1, 1, shade(PALETTE, 3)).setOrigin(0, 0).setDepth(1);
+      this.etoiles.push(
+        this.add.rectangle(x, y, 1, 1, shade(PALETTE, 3)).setOrigin(0, 0).setDepth(1),
+      );
     }
 
     // La lune de Moon, encore là dans le ciel de l'aube : elle veille jusqu'au bout.
@@ -216,6 +232,16 @@ export class ParapenteScene extends Phaser.Scene {
       .rectangle(0, HORIZON, GB.W, GB.H - HORIZON, shade(PALETTE, 0))
       .setOrigin(0, 0)
       .setDepth(2);
+
+    // L'Erdre : une bande d'eau claire en travers du sol, qu'on survole à mi-vol.
+    this.riviere = this.add.rectangle(0, 0, GB.W, 1, shade(PALETTE, 2)).setOrigin(0, 0).setDepth(4);
+
+    // Trois traînées de vent, cachées : elles filent pendant une rafale, dans son sens.
+    for (const y of [28, 66, 96]) {
+      this.trainees.push(
+        this.add.rectangle(0, y, 10, 1, shade(PALETTE, 3)).setOrigin(0, 0).setDepth(60).setVisible(false),
+      );
+    }
 
     for (let i = 0; i < LIGNES; i++) {
       this.lignes.push({
@@ -265,6 +291,11 @@ export class ParapenteScene extends Phaser.Scene {
       // passer devant le point de vue.
       .setDepth(2000);
 
+    this.bandeau = this.add
+      .rectangle(0, 40, GB.W, 34, shade(PALETTE, 2))
+      .setOrigin(0, 0)
+      .setDepth(2090)
+      .setVisible(false);
     this.titre = new PixelText(this, 'pp-titre', 0, 44, GB.W, 12);
     this.sous = new PixelText(this, 'pp-sous', 0, 58, GB.W, 12);
     this.message = new PixelText(this, 'pp-msg', 0, 4, GB.W, 12);
@@ -339,6 +370,13 @@ export class ParapenteScene extends Phaser.Scene {
     if (this.ventReste > 0) this.ventReste -= delta;
 
     const souffle = this.ventReste > 0 ? this.vent : { x: 0, y: 0 };
+    // Les traînées : on voit le vent pendant qu'il souffle, et d'où il pousse.
+    for (const t of this.trainees) {
+      t.setVisible(this.ventReste > 0);
+      if (this.ventReste > 0) {
+        t.x = ((t.x + souffle.x * 4 * dt) % GB.W + GB.W) % GB.W;
+      }
+    }
     this.px = Phaser.Math.Clamp(this.px + (this.vx + souffle.x) * dt, 14, GB.W - 14);
     // En hauteur, pas d'inertie : à sept ans, on veut que la flèche du haut fasse monter.
     const vy = (haut ? -PILOTAGE * 0.8 : 0) + (bas ? PILOTAGE * 0.8 : 0);
@@ -379,6 +417,18 @@ export class ParapenteScene extends Phaser.Scene {
       l.z -= this.allure() * dt;
       if (l.z < PROCHE) l.z += LIGNES * PAS_LIGNE;
     }
+    // L'Erdre passe une fois, à mi-vol. Le seul repère que Nino connaît : il le dit.
+    if (this.riviereZ > 0) {
+      this.riviereZ -= this.allure() * dt;
+      if (!this.riviereDite && this.riviereZ < 340) {
+        this.riviereDite = true;
+        this.dire(VOL.erdre);
+      }
+      if (this.riviereZ < PROCHE) {
+        this.riviereZ = -1;
+        this.riviere.setVisible(false);
+      }
+    }
   }
 
   /**
@@ -412,7 +462,9 @@ export class ParapenteScene extends Phaser.Scene {
   private lesHerons(delta: number, dt: number): void {
     this.prochainHeron -= delta;
     if (this.prochainHeron <= 0) {
-      this.prochainHeron = HERON_TOUS;
+      // Ils viennent plus souvent à mesure qu'on approche : la fin demande de piloter.
+      this.prochainHeron =
+        HERON_TOUS - 800 * (1 - Phaser.Math.Clamp(this.maisonZ / MAISON_Z, 0, 1));
       const n = this.nesHerons++;
       const go = this.add
         .sprite(0, 0, texKey('heron', PALETTE), 'vol-0')
@@ -510,6 +562,17 @@ export class ParapenteScene extends Phaser.Scene {
 
   /** Une seule passe : chaque chose du monde prend sa place et sa taille à l'écran. */
   private dessiner(): void {
+    // Le jour approche avec la maison : les étoiles s'éteignent une à une.
+    const jour = 1 - Phaser.Math.Clamp(this.maisonZ / MAISON_Z, 0, 1);
+    this.etoiles.forEach((e, i) => e.setVisible(jour < (i + 1) / 7));
+
+    if (this.riviereZ > 0) {
+      const y = this.ecranY(SOL, this.riviereZ);
+      const epais = Math.max(2, Math.round((FOCALE * 26) / this.riviereZ));
+      this.riviere.setPosition(0, Math.round(y - epais / 2)).setSize(GB.W, epais);
+      this.riviere.setVisible(y < GB.H + epais);
+    }
+
     for (const l of this.lignes) {
       const y = this.ecranY(SOL, l.z);
       l.go.setPosition(0, Math.round(y)).setSize(GB.W, l.z < 200 ? 2 : 1);
@@ -634,8 +697,10 @@ export class ParapenteScene extends Phaser.Scene {
     this.time.delayedCall(900, () => this.message.setLines([''], shadeHex(PALETTE, 0)));
   }
 
-  private annoncer(titre: string, sous: string, clair = false): void {
-    const ink = shadeHex(PALETTE, clair ? 3 : 0);
+  private annoncer(titre: string, sous: string, _clair = false): void {
+    // Toujours l'encre sombre, toujours sur le bandeau clair : lisible sur ciel comme sur sol.
+    this.bandeau.setVisible(titre !== '' || sous !== '');
+    const ink = shadeHex(PALETTE, 0);
     this.titre.image.setPosition(Math.round((GB.W - measure(titre)) / 2), 44);
     this.titre.setLines([titre], ink);
     this.sous.image.setPosition(Math.round((GB.W - measure(sous)) / 2), 58);

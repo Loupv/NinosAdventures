@@ -121,6 +121,8 @@ export const VOL = {
   heronTouche: 'Le héron n’a pas aimé.',
   /** Quand la maison apparaît au loin : la cible, dite par ce qui la distingue. */
   maison: 'La fenêtre qui clignote !',
+  /** On repasse au-dessus de la rivière, à mi-vol : le seul repère que Nino connaît. */
+  erdre: 'L’Erdre !',
   /** Et quand il rentre dans un immeuble, ce qui arrive. */
   immeuble: 'Boum.',
   immeubleEncore: 'Pardon !',
