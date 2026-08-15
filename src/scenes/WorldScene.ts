@@ -296,6 +296,11 @@ export class WorldScene extends Phaser.Scene {
     this.ballonEnVol = false;
     this.vanne = undefined;
     this.sauteurs = [];
+    // Les compteurs de Z repartent de zéro : un changement de pièce tue leurs tweens sans
+    // passer par onComplete, et les champs survivent au redémarrage de la scène — le
+    // plafond restait plein à vie.
+    this.zzzVivants = 0;
+    this.zzzNes = 0;
     this.errants = [];
     this.transitioning = false;
   }
@@ -455,8 +460,10 @@ export class WorldScene extends Phaser.Scene {
       // au-dessus du grand lit et du berceau, monte en zigzag, et disparaît là-haut.
       // Le minuteur meurt avec la scène, et les drapeaux se relisent à chaque naissance.
       if (id === 'chambre-parents') {
+        // Le Z du grand lit naît au bord du lit, côté sol clair : au-dessus de la tête de
+        // lit, sombre sur les briques sombres, il était invisible.
         const sources = [
-          { x: 68, y: 20, grand: true },
+          { x: 91, y: 27, grand: true },
           { x: 28, y: 78, grand: false },
         ];
         sources.forEach((src, quel) => {
@@ -487,8 +494,8 @@ export class WorldScene extends Phaser.Scene {
                     Math.round(src.x + Math.sin(v * Math.PI * 2 + n) * 4),
                     Math.round(src.y - v * 14),
                   );
-                  // De 1,5 à 0,75 : il disparaît à la moitié de sa taille de naissance.
-                  z.setScale(1.5 - v * 0.75);
+                  // De 1,1 à 0,75 : une respiration discrète, pas un ballon.
+                  z.setScale(1.1 - v * 0.35);
                 },
                 onComplete: () => {
                   this.zzzVivants -= 1;
