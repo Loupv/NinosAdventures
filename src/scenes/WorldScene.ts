@@ -487,7 +487,8 @@ export class WorldScene extends Phaser.Scene {
                     Math.round(src.x + Math.sin(v * Math.PI * 3 + n) * 4),
                     Math.round(src.y - v * 14),
                   );
-                  z.setScale(1.5 - v * 1.3);
+                  // De 1,5 à 0,75 : il disparaît à la moitié de sa taille de naissance.
+                  z.setScale(1.5 - v * 0.75);
                 },
                 onComplete: () => {
                   this.zzzVivants -= 1;
