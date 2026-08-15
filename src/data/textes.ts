@@ -2257,6 +2257,33 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
       // **Pas de tête qui sort ici** : une fois l'énigme résolue, le poisson entier saute
       // déjà au-dessus du seau — la superposer faisait deux poissons.
     },
+    /**
+     * **Après un essai raté, droit à la question.** Personne ne réécoute six lignes
+     * d'introduction pour retenter une réponse.
+     */
+    {
+      when: () => state.flag('poisson-essaye'),
+      speaker: 'Le poisson',
+      lines: ['« Alors ? »', '« Qu’est-ce qui monte et descend sans bouger ? »'],
+      montre: { sprite: 'seau', frame: 'saute-0', x: 68, y: 40, depth: 72 },
+      enigme: {
+        reponses: ['L’ascenseur', 'La mer', 'Un escalier'],
+        bonne: 1,
+        juste: {
+          lines: [
+            '« La marée. Oui. »',
+            'Le seau frémit. Il y a un escalier, maintenant.',
+            '« Monte. Moi, j’y vais à mon rythme. »',
+          ],
+          montre: { sprite: 'seau', frame: 'saute-0', x: 68, y: 40, depth: 72 },
+          effects: { flag: 'enigme-poisson' },
+        },
+        faux: {
+          lines: ['« Non. »', '« Indice : j’en reviens. »'],
+          montre: { sprite: 'seau', frame: 'saute-0', x: 68, y: 40, depth: 72 },
+        },
+      },
+    },
     {
       speaker: 'Le poisson',
       lines: [
@@ -2286,6 +2313,7 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
         faux: {
           lines: ['« Non. »', '« Indice : j’en reviens. »'],
           montre: { sprite: 'seau', frame: 'saute-0', x: 68, y: 40, depth: 72 },
+          effects: { flag: 'poisson-essaye' },
         },
       },
     },
@@ -3014,6 +3042,23 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
         faux: { lines: ['« Non. »', '« Tu lui as déjà parlé, pourtant. »'] },
       },
     },
+    /**
+     * **Après un essai raté, droit à la question** : Moon ne se représente pas deux fois.
+     */
+    {
+      when: () => state.flag('moon-essaye'),
+      speaker: 'Moon',
+      lines: ['« Alors. »', '« Combien d’étages fait cette tour ? »'],
+      enigme: {
+        reponses: ['Cent', 'Trente-deux', 'Trop'],
+        bonne: 1,
+        juste: {
+          lines: ['« Exact. »', '« Tu les as tous montés. »'],
+          effects: { flag: 'moon-toit-1' },
+        },
+        faux: { lines: ['« Non. »', '« Tu viens de les monter. »'] },
+      },
+    },
     {
       speaker: 'Moon',
       lines: [
@@ -3031,7 +3076,7 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
           effects: { flag: 'moon-toit-1' },
         },
         // « Trop » n'est pas faux, mais ce n'est pas un chiffre : il compte, lui.
-        faux: { lines: ['« Non. »', '« Tu viens de les monter. »'] },
+        faux: { lines: ['« Non. »', '« Tu viens de les monter. »'], effects: { flag: 'moon-essaye' } },
       },
     },
   ],
