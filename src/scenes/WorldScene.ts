@@ -3080,12 +3080,21 @@ export class WorldScene extends Phaser.Scene {
           y: Math.max(2, Math.min(this.roomH - 24, l.def.y - 6)),
         }
       : (() => {
-          const porte = this.entrees().reduce((a, b) =>
-            Phaser.Math.Distance.Between(a.x, a.y, l.def.x, l.def.y) <
-            Phaser.Math.Distance.Between(b.x, b.y, l.def.x, l.def.y)
-              ? a
-              : b,
-          );
+          /**
+           * **Elle vient de la cuisine, elle y retourne.** Pendant toute la chasse, Maman garde
+           * le frigo : sa porte est celle qui mène vers la cuisine — directement, ou par le
+           * couloir — et pas la plus proche de la cachette. Dans le couloir, la plus proche
+           * était celle de la salle de bain : elle surgissait d'une pièce vide et repartait s'y
+           * enfermer.
+           */
+          const portes = this.room.doors;
+          const vers =
+            portes.find((d) => d.to.room === 'cuisine') ??
+            portes.find((d) => d.to.room === 'couloir') ??
+            portes[0];
+          const porte = vers
+            ? { x: vers.x + vers.w / 2, y: vers.y + vers.h / 2 }
+            : this.entrees()[0];
           return { x: Math.round(porte.x - 4), y: Math.round(porte.y - 15) };
         })();
     const maman = this.add
