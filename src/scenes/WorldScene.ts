@@ -1395,6 +1395,11 @@ export class WorldScene extends Phaser.Scene {
     const gerardTouche =
       !!gerard?.go.visible &&
       Phaser.Math.Distance.Between(cible.x, cible.y, gerard.go.x + 4, gerard.go.y + 3) < 22;
+    // Le côté du lit se fige au moment du tir : jugé à l'arrivée des gouttes, un joueur
+    // qui bouge pendant le vol du jet changeait le dormeur.
+    const coteMaman =
+      vise?.def.id === 'parents-dorment' &&
+      this.player.sprite.x < vise.go.x + vise.go.displayWidth / 2;
     for (let i = 0; i < 3; i++) {
       const g = this.add
         .image(main.x, main.y, texKey('goutte', this.pal))
@@ -1420,11 +1425,11 @@ export class WorldScene extends Phaser.Scene {
             this.mouillé += 1;
             return;
           }
-          // **Le côté du lit décide de la bouche.** Le jet tombé à gauche du milieu fait
-          // marmonner Maman (ses sorts), à droite Papa (sa tempête).
+          // **Le côté du lit décide de la bouche.** Depuis la gauche du milieu, Maman
+          // marmonne ses sorts ; depuis la droite, Papa sa tempête. On juge sur la position
+          // de Nino : le jet, lui, s'aimante au centre du sprite — toujours pile au milieu.
           if (vise?.def.id === 'parents-dorment') {
-            const milieu = vise.go.x + vise.go.displayWidth / 2;
-            const registre = cible.x < milieu ? DORT_MAMAN : DORT_PAPA;
+            const registre = coteMaman ? DORT_MAMAN : DORT_PAPA;
             this.flotter(registre[this.mouillé % registre.length], vise);
             this.mouillé += 1;
             return;
