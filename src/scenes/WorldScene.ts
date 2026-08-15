@@ -447,7 +447,8 @@ export class WorldScene extends Phaser.Scene {
         state.setFlag('dort-dit');
         state.save();
         this.time.delayedCall(900, () => {
-          if (!state.locked && !this.transitioning) this.runDialogue('maison-dort');
+          if (this.room.id === 'chambre' && !state.locked && !this.transitioning)
+            this.runDialogue('maison-dort');
         });
       }
       // **Les Z des dormeurs**, en particules : un Z naît toutes les bonnes secondes
@@ -474,16 +475,19 @@ export class WorldScene extends Phaser.Scene {
                 .image(src.x, src.y, texKey(src.grand && n % 2 === 0 ? 'z-grand' : 'z-petit', this.pal))
                 .setOrigin(0.5, 0.5)
                 .setDepth(1200);
+              // Il naît une fois et demie trop grand, rapetisse en montant, et s'éteint
+              // tout petit : la respiration du sommeil, en un seul geste.
               this.tweens.addCounter({
                 from: 0,
                 to: 1,
-                duration: 2400,
+                duration: 1600,
                 onUpdate: (t) => {
                   const v = t.getValue() ?? 0;
                   z.setPosition(
                     Math.round(src.x + Math.sin(v * Math.PI * 3 + n) * 4),
-                    Math.round(src.y - v * 22),
+                    Math.round(src.y - v * 14),
                   );
+                  z.setScale(1.5 - v * 1.3);
                 },
                 onComplete: () => {
                   this.zzzVivants -= 1;
