@@ -126,6 +126,8 @@ export const VOL = {
   maison: 'La fenêtre qui clignote !',
   /** On repasse au-dessus de la rivière, à mi-vol : le seul repère que Nino connaît. */
   erdre: 'L’Erdre !',
+  /** Une pièce à collectionner flotte en plein ciel : il faut passer dedans. */
+  piece: 'Une pièce ! En plein ciel !',
   /** Et quand il rentre dans un immeuble, ce qui arrive. */
   immeuble: 'Boum.',
   immeubleEncore: 'Pardon !',
@@ -396,9 +398,25 @@ export const JARDINIER_MERCI = {
   ],
 };
 
+/** La pièce des plantes, remise en main propre avant de partir. */
+export const JARDINIER_PIECE = {
+  qui: 'Gilbert',
+  lignes: ['« Tiens. »', '« C’est tout ce que j’ai sur moi. »'],
+};
+
 export const JARDINIER_PART = {
   qui: 'Gilbert',
   lignes: ['« ... »', '« Qu’est-ce que je fais là, moi ? »', '« Bon. »', '« Je m’en vais. »'],
+};
+
+/** S'il a atterri **dans la maison** — la septième plante peut être n'importe où. */
+export const JARDINIER_PART_MAISON = {
+  qui: 'Gilbert',
+  lignes: [
+    '« ... »',
+    '« Je n’ai rien à faire ici. »',
+    '« Ne faites pas attention à moi. »',
+  ],
 };
 
 /**
@@ -900,6 +918,18 @@ export const PIECES_TEXTE: Record<string, { nom: string; provenance: string }> =
   frigo: {
     nom: 'Pièce du frigo',
     provenance: 'Sous le frigo. Attrapée par le côté.',
+  },
+  vol: {
+    nom: 'Pièce du plein ciel',
+    provenance: 'Attrapée en parapente, à trois cents mètres au-dessus de Nantes.',
+  },
+  vingt: {
+    nom: 'Pièce de la maîtresse',
+    provenance: 'Un vingt sur vingt au projet d’art. Elle ne la donne qu’une fois.',
+  },
+  plantes: {
+    nom: 'Pièce du jardinier',
+    provenance: 'Sept plantes arrosées. Gilbert est venu la donner en personne.',
   },
 };
 

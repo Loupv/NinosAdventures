@@ -30,6 +30,7 @@ import {
   COUCHER,
   ECUREUIL_TREMPE,
   FETE_FARCE,
+  FIN,
   SOUFFLE,
   POISSON_RIT,
   VERRES_PAPA,
@@ -37,6 +38,8 @@ import {
   ECUREUIL_VANNES,
   JARDINIER_MERCI,
   JARDINIER_PART,
+  JARDINIER_PART_MAISON,
+  JARDINIER_PIECE,
   CREDITS,
   GENERIQUE,
   QUITTER,
@@ -1704,16 +1707,29 @@ export class WorldScene extends Phaser.Scene {
     };
 
     const parler = () => {
+      // Le merci, la pièce en main propre, puis le départ — et si la septième plante
+      // était dans la maison, il s'excuse d'y être : « Ne faites pas attention à moi. »
+      const MAISON_ICI = ['chambre', 'couloir', 'chambre-parents', 'mezzanine', 'sdb', 'cuisine', 'salon'];
+      const part = MAISON_ICI.includes(this.room.id) ? JARDINIER_PART_MAISON : JARDINIER_PART;
+      const donner = () => {
+        if (!state.pieces.has('plantes')) {
+          state.pieces.add('plantes');
+          state.save();
+          jouer(this, 'piece', { volume: 0.8 });
+          toast(ANNONCES.pieceTrouvee(piece('plantes')?.name ?? 'plantes'));
+        }
+        say({ speaker: part.qui, lines: part.lignes, focusY: vers.y, onDone: repartir });
+      };
       say({
         speaker: JARDINIER_MERCI.qui,
         lines: JARDINIER_MERCI.lignes,
         focusY: vers.y,
         onDone: () =>
           say({
-            speaker: JARDINIER_PART.qui,
-            lines: JARDINIER_PART.lignes,
+            speaker: JARDINIER_PIECE.qui,
+            lines: JARDINIER_PIECE.lignes,
             focusY: vers.y,
-            onDone: repartir,
+            onDone: donner,
           }),
       });
     };
@@ -3211,14 +3227,17 @@ export class WorldScene extends Phaser.Scene {
     // **Les lignes se replient toutes seules.** Un remerciement un peu long sortait de l'écran par
     // la droite, exactement comme les lignes trop longues de l'écran de fin : on ne compte plus les
     // caractères à la main, on laisse le retour à la ligne faire son travail.
+    //
+    // **Et le carton vit EN HAUT.** En bas, il mangeait le quai, les tables, les personnages
+    // cités — tout ce que les pièces posent au sol. En haut il ne recouvre que des murs et
+    // du ciel : c'est la seule bande de l'écran qui ne cache jamais personne.
     const lignes = brutes.flatMap((l) => (l ? wrap(l, GB.W - 10) : ['']));
-    const haut = GB.H - 8 - lignes.length * LINE_H;
     this.add
-      .rectangle(0, haut - 4, GB.W, GB.H - haut + 4, shade(this.pal, 0))
+      .rectangle(0, 0, GB.W, 8 + lignes.length * LINE_H + 4, shade(this.pal, 0))
       .setOrigin(0, 0)
       .setScrollFactor(0)
       .setDepth(1900);
-    const texte = new PixelText(this, 'gen-carton', 0, haut, GB.W, lignes.length * LINE_H + 2);
+    const texte = new PixelText(this, 'gen-carton', 0, 6, GB.W, lignes.length * LINE_H + 2);
     texte.image.setScrollFactor(0).setDepth(1910);
     texte.setLines(lignes, shadeHex(this.pal, 3));
   }
@@ -3234,11 +3253,11 @@ export class WorldScene extends Phaser.Scene {
   private endormiSurLaTable(): void {
     state.setFlag('fin');
     state.save();
-    const table = this.room.objects.find((o) => o.id === 'table');
+    // Il s'endort là où il a soufflé : à côté de son gâteau, en haut de la cuisine.
     this.montrer({
       sprite: 'nino-couche',
-      x: (table?.x ?? 88) - 4,
-      y: (table?.y ?? 72) - 6,
+      x: 106,
+      y: 52,
       depth: 200,
       cacheNino: true,
     });
@@ -3247,9 +3266,28 @@ export class WorldScene extends Phaser.Scene {
       focusY: 20,
       onDone: () => {
         this.transitioning = true;
-        gbFade(this, this.pal, 'out', () => {
-          this.scene.stop('Ui');
-          this.scene.restart({ room: CREDITS[0].room, cinema: 0 });
+        /**
+         * **« FIN », qui dérive doucement.** Le mot monte du bas de l'écran jusqu'au
+         * milieu, sur la scène immobile — Nino endormi près du gâteau, la famille autour —
+         * s'y pose quelques secondes, puis le fondu le plus lent du jeu emmène au générique.
+         */
+        const mot = new PixelText(this, 'wl-fin-mot', 0, 0, GB.W, 14);
+        mot.setLines([FIN.titre], shadeHex(this.pal, 0));
+        mot.image
+          .setScale(2)
+          .setPosition(Math.round((GB.W - measure(FIN.titre) * 2) / 2), GB.H + 10)
+          .setDepth(2200);
+        this.tweens.add({
+          targets: mot.image,
+          y: 62,
+          duration: 4200,
+          ease: 'Sine.easeOut',
+        });
+        this.time.delayedCall(6200, () => {
+          gbFade(this, this.pal, 'out', () => {
+            this.scene.stop('Ui');
+            this.scene.restart({ room: CREDITS[0].room, cinema: 0 });
+          }, 340);
         });
       },
     });
@@ -3783,6 +3821,13 @@ export class WorldScene extends Phaser.Scene {
                 ? RENOTE.pareil
                 : RENOTE.moins;
           state.note = Math.max(state.note, bareme.note);
+          // **Le vingt sur vingt vaut une pièce**, une seule fois : la maîtresse ne la
+          // donne qu'au premier sans-faute, et elle ne le dit pas aux autres.
+          if (bareme.note >= 20 && !state.pieces.has('vingt')) {
+            state.pieces.add('vingt');
+            jouer(this, 'piece', { volume: 0.8 });
+            toast(ANNONCES.pieceTrouvee(piece('vingt')?.name ?? 'vingt'));
+          }
           jouer(this, bareme.note >= 16 ? 'enigme-juste' : 'valider', { volume: 0.6 });
           say({
             speaker: beat.speaker,

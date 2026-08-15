@@ -160,6 +160,8 @@ export class ParapenteScene extends Phaser.Scene {
   private etoiles: Phaser.GameObjects.Rectangle[] = [];
   /** Les traînées du vent : visibles pendant une rafale, elles montrent d'où il pousse. */
   private trainees: Phaser.GameObjects.Rectangle[] = [];
+  /** La pièce du plein ciel : une seule, à aller chercher en altitude. */
+  private pieceCiel?: { x: number; y: number; z: number; go: Phaser.GameObjects.Image };
   /** L'Erdre, qu'on survole à mi-vol : le seul repère que Nino connaît. */
   private riviere!: Phaser.GameObjects.Rectangle;
   private riviereZ = 0;
@@ -340,6 +342,19 @@ export class ParapenteScene extends Phaser.Scene {
     this.nouveauThermique(240);
     this.nouveauThermique(620);
 
+    // **La pièce du plein ciel**, une fois par partie : haute et décalée — il faut la
+    // vouloir, et un tourbillon aide à l'atteindre.
+    this.pieceCiel = undefined;
+    if (!state.pieces.has('vol')) {
+      const go = this.add
+        .image(0, 0, texKey('piece', PALETTE))
+        .setOrigin(0.5, 0.5)
+        .setDepth(940)
+        .setVisible(false);
+      // Au point de collecte (z clampé à 30, soit ×3) : écran (111, 28) — haut à droite.
+      this.pieceCiel = { x: 10.5, y: -7.4, z: 950, go };
+    }
+
     this.dessiner();
     this.annoncer(VOL.consigne, VOL.demarrer);
   }
@@ -369,6 +384,7 @@ export class ParapenteScene extends Phaser.Scene {
     this.avancerLaVille(dt);
     this.lesHerons(delta, dt);
     this.lesThermiques(delta, dt);
+    this.laPieceDuCiel(dt);
     this.laMaison(dt);
     this.dessiner();
   }
@@ -597,6 +613,29 @@ export class ParapenteScene extends Phaser.Scene {
 
   // ───────────────────────────────────────────────────────────── la maison
 
+  /** La pièce avance avec le monde ; passer dedans la ramasse, pour toujours. */
+  private laPieceDuCiel(dt: number): void {
+    const p = this.pieceCiel;
+    if (!p) return;
+    p.z -= this.allure() * dt;
+    if (p.z < PROCHE - 10) {
+      p.go.setVisible(false);
+      return;
+    }
+    if (p.z < 40) {
+      const sx = this.ecranX(p.x, Math.max(p.z, 30));
+      const sy = this.ecranY(p.y, Math.max(p.z, 30));
+      if (Math.abs(sx - this.px) < 12 && Math.abs(sy - this.py) < 12) {
+        state.pieces.add('vol');
+        state.save();
+        jouer(this, 'piece', { volume: 0.8 });
+        this.dire(VOL.piece);
+        p.go.destroy();
+        this.pieceCiel = undefined;
+      }
+    }
+  }
+
   private laMaison(dt: number): void {
     this.maisonZ -= this.allure() * dt;
     if (!this.annoncee && this.maisonZ < 420) {
@@ -624,6 +663,8 @@ export class ParapenteScene extends Phaser.Scene {
     this.dire(pourquoi);
     this.maisonZ = MAISON_Z_RETOUR;
     this.annoncee = false;
+    // La pièce manquée revient avec l'essai suivant, un peu plus près.
+    if (this.pieceCiel) this.pieceCiel.z = 520;
     this.px = GB.W / 2;
     this.py = 60;
     this.vx = 0;
@@ -717,6 +758,17 @@ export class ParapenteScene extends Phaser.Scene {
         // Même base que les immeubles et la maison : une seule échelle de profondeur.
         d.setDepth(100 + Math.round(1000 - t.z));
       });
+    }
+
+    if (this.pieceCiel) {
+      const p = this.pieceCiel;
+      const visible = p.z < 620 && p.z > PROCHE - 10;
+      p.go.setVisible(visible);
+      if (visible) {
+        p.go.setPosition(Math.round(this.ecranX(p.x, p.z)), Math.round(this.ecranY(p.y, p.z)));
+        p.go.setScale(Phaser.Math.Clamp((FOCALE / p.z) * 2.2, 0.5, 2.5));
+        p.go.setDepth(100 + Math.round(1000 - p.z));
+      }
     }
 
     for (const h of this.herons) {

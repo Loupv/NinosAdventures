@@ -117,7 +117,13 @@ réponse, et la note ne voulait plus rien dire.
 **Et le bouchon ne peut pas valoir vingt** : c'est le premier objet qu'on peut avoir, dès la salle
 de bain, et décrocher la meilleure note dessus vidait les sept autres de tout intérêt. Cinq points
 au maximum, donc seize sur vingt — la maîtresse le dit à sa façon : *« C'est joliment dit. » « C'est
-un bouchon, Nino. »* (La vieille chaussure est dans le même cas, pour la même raison.)
+un bouchon, Nino. »* La vieille chaussure, elle, peut valoir vingt : il faut oser répondre
+*« Je ne sais pas »* puis *« Je l'ai décidé »*, et c'est exactement le genre de réponses que ce
+devoir veut récompenser.
+
+**Et le vingt sur vingt vaut une pièce**, une seule fois : *« Ne le dis pas aux autres. »* La
+maîtresse ne la donne qu'au premier sans-faute — refaire vingt avec un autre objet ne donne rien,
+et elle ne s'en explique pas.
 
 **Le seul devoir du jeu, et il n'a pas de bonne réponse.** La maîtresse réclame le projet
 d'art de Nino : *« Rapporte-moi un objet, et explique-moi en quoi c'est de l'art. »*
@@ -734,7 +740,9 @@ bas ont un fond clair sous elles : elles tombaient sinon sur une colonne noire.
 Gagner donne **une pièce à collectionner**. On ne sait pas encore ce qu'elles veulent
 dire, et c'est volontaire : Nino les ramasse d'abord, on comprendra après. Elles ont leur
 page dans le journal, et leur registre dans
-**[pieces.ts](../src/data/pieces.ts)**.
+**[pieces.ts](../src/data/pieces.ts)**. Il y en a **cinq à trouver**, une par manière de
+mériter : gagner le rêve de la fusée, avoir l'idée du bras derrière le frigo, viser une
+pièce en plein ciel pendant le vol, décrocher vingt sur vingt, arroser les sept plantes.
 
 **Et au réveil, Hermione est là.** Elle a rampé jusqu'au grand lit pendant qu'il dormait,
 et elle dépasse du bord du lit. C'est la deuxième cachette de la chasse, et **elle n'existe
@@ -820,7 +828,10 @@ Il pousse la porte la plus proche, il traverse, il remercie. Puis il se rend com
 
 > *« ... » « Qu'est-ce que je fais là, moi ? » « Bon. » « Je m'en vais. »*
 
-Et il repart par où il est venu. **C'est le seul personnage du jeu qui relève l'absurde** — tous les
+Et il repart par où il est venu. **Mais d'abord il paie** : *« Tiens. » « C'est tout ce que
+j'ai sur moi. »* — une pièce, la seule du jeu remise en main propre. Et si la septième
+plante l'a fait entrer **dans la maison**, il ne demande pas ce qu'il fait là — il le sait
+très bien : *« Je n'ai rien à faire ici. » « Ne faites pas attention à moi. »* **C'est le seul personnage du jeu qui relève l'absurde** — tous les
 autres l'avalent sans broncher, Maman arrive en sous-marin sur un quai et personne ne dit rien. Il
 aura fallu arroser sept plantes pour qu'un adulte se demande enfin ce qu'il fait là.
 
@@ -1472,6 +1483,12 @@ L'écran du vol est **dans la palette de l'aube**, comme le toit d'où il vient 
 le ton moyen et non le plus clair, ce qui laisse le ton clair aux deux seules choses qui
 doivent sauter aux yeux — les fenêtres allumées de la ville, et la sienne au bout.
 
+**Et une pièce flotte dans le ciel**, une fois par partie : haute et à droite du couloir,
+là où on ne va que si on le décide, et un tourbillon aide à s'y tenir. La manquer n'est pas
+grave — elle revient un peu plus loin si le vol recommence, et elle attend au prochain vol
+tant qu'elle n'est pas prise. La prendre, en revanche, se paie tout de suite :
+*« Une pièce ! En plein ciel ! »*
+
 ### La fin
 
 **Nino atterrit dans une maison endormie.** Il fait encore nuit dedans : la palette du soir
@@ -1519,13 +1536,18 @@ silences, la dernière scène du jeu défilait aussi vite qu'un dialogue de coul
 comme un couperet. La bougie farceuse est là pour la même raison : **il faut une blague entre le
 souffle et le noir**, sinon le jeu s'arrête au milieu d'une respiration.
 
+Et avant le générique, **le mot « FIN » monte doucement du bas de l'écran** sur la scène
+immobile — Nino endormi près du gâteau, la famille autour — se pose au milieu, y reste
+quelques secondes, puis le fondu le plus lent du jeu emmène aux cartons.
+
 L'écran de fin est dans la palette du jour — c'est le matin de son anniversaire — et il
 compte ce qui a été **trouvé**, pas ce qui a été réussi : les cachettes d'Hermione, les pièces. Il n'y a pas de score dans ce jeu.
 
 ## Le générique
 
-**Fondu, et le jeu repasse par ses propres écrans.** Onze pièces, une par carton, avec une ligne de
-remerciement en bas — et à chaque fois **celui qu'on remercie est reposé là où on l'a rencontré** :
+**Fondu, et le jeu repasse par ses propres écrans.** Onze pièces, une par carton, posé **en haut
+de l'écran** — en bas, il mangeait les quais, les tables et les personnages qu'il remercie ; en
+haut il ne recouvre que des murs et du ciel — et à chaque fois **celui qu'on remercie est reposé là où on l'a rencontré** :
 Moon sur son canapé, Gérard dans la baignoire, l'araignée dans la mezzanine, l'écureuil dans la cour,
 Hermione sous le lit. À la fin du jeu presque aucun n'est encore chez lui — le chat est sorti avec les
 parents, le poisson est parti à la mer, l'araignée a dansé et s'en est allée — et remercier une pièce
