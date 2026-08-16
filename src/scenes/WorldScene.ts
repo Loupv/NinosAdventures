@@ -90,7 +90,7 @@ import { gbFade, portalWarp, sparkle, splash } from '../systems/fx';
 import { jouer, jouerAmbiance, jouerMusique } from '../systems/audio';
 import { musiquePour } from '../data/sons';
 import { Player, type ViewMode } from '../entities/Player';
-import { ETAPES, type Etape } from '../dev/etapes';
+import { ETAPES, preparerEtape, type Etape } from '../dev/etapes';
 import { PixelText, measure } from '../ui/PixelText';
 import { LINE_H, wrap } from '../art/font';
 import { reglages } from '../systems/reglages';
@@ -4351,27 +4351,7 @@ export class WorldScene extends Phaser.Scene {
    */
   private allerEtape(e: Etape): void {
     if (this.transitioning) return;
-    // On repart de zéro à chaque saut : une étape doit donner exactement la même
-    // chose à chaque fois, sans traîner ce que le saut précédent avait posé.
-    state.reset();
-    for (const f of e.flags ?? []) state.setFlag(f);
-    for (const i of e.items ?? []) state.give(i);
-    // **La cohérence des acquis.** Maman rend le pistolet à eau à la fin de la chasse :
-    // toute étape qui la met au salon le donne donc aussi, sans que chaque ligne le redise.
-    if (e.flags?.includes('maman-au-salon')) {
-      state.give('pistolet-eau');
-      state.setFlag('pistolet-rendu');
-    }
-    if (e.haiku !== undefined) state.haiku = e.haiku;
-    if (e.hermione !== undefined) state.hermione = e.hermione;
-    if (e.eauVieille) {
-      state.setFlag('eau-coule');
-      state.eauDepuis = 0;
-      state.ecrans = 99;
-    }
-    state.locked = false;
-    state.save();
-
+    preparerEtape(e);
     this.scene.stop('Ui');
     if (e.minijeu) {
       this.scene.start(e.minijeu);

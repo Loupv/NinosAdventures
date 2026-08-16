@@ -795,6 +795,11 @@ export const REGLAGES = {
   aideSon: 'La musique et les bruitages.',
   aideRaccourcis: 'Les touches 1 à 8 sautent dans le jeu.',
   sortir: '%REG% : RETOUR',
+  /** La troisième ligne, qui n'apparaît que si les raccourcis sont allumés. */
+  allerA: 'Aller à…',
+  aideAllerA: 'Sauter à un moment du jeu.',
+  /** Le titre de la liste des étapes. */
+  etapes: 'ALLER À',
 };
 
 /**

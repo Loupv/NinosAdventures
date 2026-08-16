@@ -1803,6 +1803,13 @@ console a disparu avec eux : une console n'a pas d'étiquette collée dessus.
 Les réglages vivent **à côté de la partie**, dans leur propre clé de stockage : effacer sa
 sauvegarde pour recommencer ne doit pas rallumer un son qu'on avait coupé.
 
+**Et une troisième ligne apparaît quand les raccourcis sont allumés** : *« Aller à… »*, la
+liste des dix moments du jeu, à parcourir à la croix. Sur une tablette il n'y a pas de
+touches numérotées — un raccourci qu'on ne peut pas déclencher n'est pas un raccourci. La
+préparation de l'état d'une étape vit désormais dans
+[etapes.ts](../src/dev/etapes.ts) (`preparerEtape`), partagée par le clavier et par la
+liste : deux chemins vers le même moment du jeu, un seul endroit qui sait ce qu'il contient.
+
 ### Le jeu nomme les touches qu'on a sous les doigts
 
 Au clavier, une consigne dit *« ESPACE : CONTINUER »*. Sur une tablette, il n'y a pas

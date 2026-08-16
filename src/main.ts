@@ -55,7 +55,12 @@ const game = new Phaser.Game({
   pixelArt: true,
   roundPixels: true,
   backgroundColor: '#0f380f',
-  scale: { mode: Phaser.Scale.NONE, autoCenter: Phaser.Scale.CENTER_BOTH },
+  // Sur tactile, c'est le CSS qui étire et centre le canevas : le centrage de Phaser
+  // calcule ses marges sur la taille d'origine et décalait l'écran hors de la console.
+  scale: {
+    mode: Phaser.Scale.NONE,
+    autoCenter: TACTILE ? Phaser.Scale.NO_CENTER : Phaser.Scale.CENTER_BOTH,
+  },
   physics: { default: 'arcade', arcade: { gravity: { x: 0, y: 0 } } },
   // L'ordre compte : le monde, puis l'interface, puis le journal par-dessus.
   scene: [

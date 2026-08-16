@@ -1,4 +1,5 @@
 import type { ItemId } from '../data/items';
+import { state } from '../systems/state';
 
 /**
  * Raccourcis de développement : **une touche chiffrée = un moment du jeu**, posé dans
@@ -142,3 +143,31 @@ export const ETAPES: Etape[] = [
     cinema: true,
   },
 ];
+
+/**
+ * **Poser l'état d'une étape**, sans décider de l'écran : c'est l'appelant qui sait s'il
+ * doit redémarrer une pièce, lancer un mini-jeu ou dérouler le générique.
+ *
+ * On repart de zéro à chaque saut — une étape doit donner exactement la même chose à
+ * chaque fois, sans traîner ce que le saut précédent avait posé.
+ */
+export function preparerEtape(e: Etape): void {
+  state.reset();
+  for (const f of e.flags ?? []) state.setFlag(f);
+  for (const i of e.items ?? []) state.give(i);
+  // **La cohérence des acquis.** Maman rend le pistolet à eau à la fin de la chasse :
+  // toute étape qui la met au salon le donne donc aussi, sans que chaque ligne le redise.
+  if (e.flags?.includes('maman-au-salon')) {
+    state.give('pistolet-eau');
+    state.setFlag('pistolet-rendu');
+  }
+  if (e.haiku !== undefined) state.haiku = e.haiku;
+  if (e.hermione !== undefined) state.hermione = e.hermione;
+  if (e.eauVieille) {
+    state.setFlag('eau-coule');
+    state.eauDepuis = 0;
+    state.ecrans = 99;
+  }
+  state.locked = false;
+  state.save();
+}
