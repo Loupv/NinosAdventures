@@ -1560,7 +1560,7 @@ cette page : on vient de le souffler, et une troupe vaut mieux qu'un dessin de p
 
 ## Le générique
 
-**Fondu, et le jeu repasse par ses propres écrans.** Onze pièces, une par carton — et **le carton
+**Fondu, et le jeu repasse par ses propres écrans.** Neuf pièces, une par carton — et **le carton
 est une fenêtre de dialogue** : même cadre à deux traits, même fond clair, même encre. Le générique
 parle la langue du jeu, au lieu d'une bande noire qui recouvrait la moitié de l'écran. Et **il
 évite celui qu'il remercie** : en haut par défaut, en bas si le personnage cité vit justement dans
@@ -1575,14 +1575,17 @@ vide n'a pas le même effet.
 **La forme est celle d'un générique de film** : le nom en capitales, le poste, puis un détail dit
 sans rire. Tout le comique est dans le poste — et jamais dans une vanne ajoutée par-dessus.
 
+**Et l'ordre raconte quelque chose** : d'abord les parents, qui ont tenu la journée sans rien
+en dire ; puis les bêtes, qui ont fait tout le travail ; puis le bateau, qui a coulé pour de
+bon ; puis Nino, qui dort. Les seconds rôles — la maîtresse, le jardinier — sont sortis au
+montage : ils n'ont pas fait la nuit de Nino, ils ont croisé sa journée.
+
 | | |
 |---|---|
 | **MOON** | dans son propre rôle. Cachet : un bout de pizza. |
 | **GÉRARD** | rôle du poisson. A quitté le tournage avant la fin. |
 | **L'ARAIGNÉE** | poète et mélancolique. Artiste sûrement trop incomprise. |
 | **L'ÉCUREUIL** | mauvaises idées. Nie toute participation à ce tournage. |
-| **LE JARDINIER** | arrosage. N'a pas arrosé. |
-| **LA MAÎTRESSE** | notation. N'a jamais demandé d'où ça venait. |
 | **L'ÉLÉPHANT DES MACHINES** | effets spéciaux : pluie. Douze mètres, aucune doublure. |
 | **PAPA** | bateau, chapeau, alibis. Cascades exécutées par lui-même. |
 | **MAMAN** | production, gâteau, sept bougies. Savait depuis ce matin. |
@@ -1590,7 +1593,7 @@ sans rire. Tout le comique est dans le poste — et jamais dans une vanne ajout�
 
 **Et plus aucune mention de fin** : la tour, les cachettes d'Hermione, les bruits de fusée,
 la ressemblance assumée et « aucun animal n'a été maltraité » sont toutes sorties au montage.
-Un générique de dix écrans n'a pas la place de radoter, et les vannes hors-champ passaient
+Un générique de neuf écrans n'a pas la place de radoter, et les vannes hors-champ passaient
 mal après des cartons qui montrent quelqu'un.
 
 Personne n'est remercié pour son travail : ils sont crédités pour **ce qu'ils ont fait dans

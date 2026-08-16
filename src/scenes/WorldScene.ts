@@ -186,12 +186,11 @@ const BALLON_PORTEE = 13;
 const EMERGE = 5;
 
 /**
- * Le temps qu'une pièce reste à l'écran pendant le générique, en ms — et le temps plus court des
- * **mentions de fin**, qui sont des vannes d'une ligne et non des cartons de personnage. À quatre
- * secondes pour tout le monde, le générique durait plus d'une minute et on l'attendait.
+ * Le temps qu'une pièce reste à l'écran pendant le générique, en ms. À quatre secondes
+ * pour tout le monde, le générique durait plus d'une minute et on l'attendait ; un carton
+ * peut demander plus long pour lui seul (`duree`), et Nino le fait.
  */
 const GENERIQUE_ETAPE = 3600;
-const GENERIQUE_COURT = 2600;
 
 /** Le temps que met la bosse à passer d'une étape à la suivante, dans la trompe. En ms. */
 const MONTEE = 800;
@@ -3261,6 +3260,12 @@ export class WorldScene extends Phaser.Scene {
   private etapeDuGenerique(i: number): void {
     state.locked = true;
     const etape = CREDITS[i];
+    // Un index hors liste ne devrait pas arriver — mais s'il arrive, on finit proprement
+    // plutôt que de planter au milieu du générique.
+    if (!etape) {
+      this.scene.start('Fin');
+      return;
+    }
     // **Un carton peut ne pas avoir lieu d'être** : l'épave au fond de l'Erdre n'existe
     // que si le bateau a coulé. On passe au suivant sans le montrer.
     if (etape.si && !state.flag(etape.si)) {
@@ -3410,7 +3415,7 @@ export class WorldScene extends Phaser.Scene {
 
     // **Un travelling lent, qui s'arrête sur celui qu'on remercie** — et non au bout du
     // quai : l'éléphant de l'Erdre passait à l'écran et la caméra continuait sans lui.
-    const duree = etape.duree ?? (etape.court ? GENERIQUE_COURT : GENERIQUE_ETAPE);
+    const duree = etape.duree ?? GENERIQUE_ETAPE;
     const cam = this.cameras.main;
     cam.stopFollow();
     if (this.roomW > GB.W) {

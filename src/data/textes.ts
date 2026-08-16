@@ -783,8 +783,6 @@ export const DODO: typeof FETE = [
 export const CREDITS: Array<{
   room: string;
   lignes: string[];
-  /** Les mentions de fin passent plus vite : ce sont des vannes, pas des cartons de personnage. */
-  court?: true;
   /**
    * **Celui qu'on remercie, remis à sa place le temps du carton.** À la fin du jeu, la plupart
    * d'entre eux ne sont plus là : le chat est sorti avec les parents, le poisson est parti à la
@@ -818,6 +816,18 @@ export const CREDITS: Array<{
   /** Le carton n'existe que si ce drapeau est posé. */
   si?: string;
 }> = [
+  // ── D'abord les parents : ce sont eux qui ont tenu la journée sans rien en dire ──
+  {
+    room: 'terrasse',
+    lignes: ['PAPA', 'bateau, chapeau, alibis.', 'Cascades exécutées par lui-même.'],
+    qui: { sprite: 'papa', x: 52, y: 48 },
+  },
+  {
+    room: 'cuisine',
+    lignes: ['MAMAN', 'production, gâteau, sept bougies.', 'Savait depuis ce matin.'],
+    qui: { sprite: 'maman', x: 76, y: 58 },
+  },
+  // ── Puis les bêtes, qui ont fait tout le travail ──
   {
     room: 'salon',
     lignes: ['MOON', 'dans son propre rôle.', 'Cachet : un bout de pizza.'],
@@ -851,18 +861,6 @@ export const CREDITS: Array<{
     tireur: { x: 98, y: 70 },
   },
   {
-    room: 'nantes',
-    lignes: ['LE JARDINIER', 'arrosage.', 'N’a pas arrosé.'],
-    qui: { sprite: 'jardinier', x: 96, y: 92 },
-  },
-  {
-    // **Toujours vrai, quelle que soit la partie** : elle ne note une croûte de pizza que si
-    // on la lui apporte, mais son devoir n'a jamais eu de bonne réponse — c'est sa règle.
-    room: 'ecole',
-    lignes: ['LA MAÎTRESSE', 'notation.', 'N’a jamais demandé d’où ça venait.'],
-    qui: { sprite: 'maitresse', x: 56, y: 54 },
-  },
-  {
     room: 'erdre',
     lignes: [
       'L’ÉLÉPHANT DES MACHINES',
@@ -871,6 +869,7 @@ export const CREDITS: Array<{
     ],
     qui: { sprite: 'elephant', x: 140, y: 26, frame: 'boit', anim: 'elephant-boit', scale: 2 },
   },
+  // ── L'avant-dernier mot au bateau : il a coulé pour de bon, il a droit à son plan ──
   {
     // **Le contrechamp du naufrage**, s'il a eu lieu : l'épave dans la vase, et des
     // locataires qui ne se sont pas annoncés.
@@ -879,17 +878,6 @@ export const CREDITS: Array<{
     si: 'bateau-coule',
     bas: 'bas',
   },
-  {
-    room: 'terrasse',
-    lignes: ['PAPA', 'bateau, chapeau, alibis.', 'Cascades exécutées par lui-même.'],
-    qui: { sprite: 'papa', x: 52, y: 48 },
-  },
-  {
-    room: 'cuisine',
-    lignes: ['MAMAN', 'production, gâteau, sept bougies.', 'Savait depuis ce matin.'],
-    qui: { sprite: 'maman', x: 76, y: 58 },
-  },
-  // ── Et les mentions de fin, celles que personne ne lit jamais dans les vrais films ──
   {
     // **Le dernier carton montre Nino.** Dans son lit, des Z au-dessus de la tête :
     // le générique le remercie pendant qu'il dort — il a fait tout ça aujourd'hui.
