@@ -1523,13 +1523,12 @@ Puis il suffit d'aller au lit :
    fort ! »* — et **le mini-jeu se rejoue, autant de fois qu'il faut**. Nino est en haut, à
    côté de son gâteau, Hermione entre Maman et la table : la boîte vit en bas, et le héros
    de la fête ne passe jamais dessous.
-7. **Un grand souffle : six bougies éteintes. La septième repart toute seule** — à l'écran
-   aussi : six flammes meurent, la septième se rallume, et elle ne s'éteindra qu'au deuxième
-   souffle de la farce. *« Celle-là,
-   c'est une farce. »* — *« Ce n'est pas moi. »* — *« Ce n'est pas moi non plus. »* —
-   **« Moon regarde ailleurs. »**
-8. *« Nino souffle une deuxième fois. »* — *« Voilà. »* — et **il s'endort sur la table**, la tête
-   dans les bras, au milieu de sa propre fête : *« Nino s'endort sur la table. »*
+7. **Un grand souffle : les sept s'éteignent d'un coup.** *« Sept bougies éteintes. »*
+   *« D'un seul souffle. »* Une bougie qui se rallume, c'est un raté — la réussite est
+   nette, et les farceuses n'existent que dans l'échec.
+8. Et **personne ne dit qu'il dort : on le voit.** Nino se couche sur la table, la tête
+   dans les bras, des Z montent au-dessus de lui — et les parents l'appellent dans le
+   vide : *« Nino... »* — *« Nino ! »* — un silence — *« Bon. »*
 
 Et c'est tout. **Rien n'explique la révélation** : les parents n'étaient pas distraits
 depuis ce matin, ils préparaient. Le joueur le comprend en voyant le gâteau, pas en le
@@ -1539,8 +1538,12 @@ que personne ne le sait.
 **La scène prend son temps**, et c'est réglé dans le texte : certaines répliques portent une
 `pause` en millisecondes, et le jeu attend, écran vide, avant d'ouvrir la boîte suivante. Sans ces
 silences, la dernière scène du jeu défilait aussi vite qu'un dialogue de couloir et la fin tombait
-comme un couperet. La bougie farceuse est là pour la même raison : **il faut une blague entre le
-souffle et le noir**, sinon le jeu s'arrête au milieu d'une respiration.
+comme un couperet. Le *« Bon. »* de papa est là pour la même raison : **il faut une blague entre
+le souffle et le noir**, sinon le jeu s'arrête au milieu d'une respiration.
+
+Et juste avant de souffler, **Nino marche jusqu'à son gâteau** — trois pas, l'animation de
+marche, et il s'arrête au bord de la table. Il apparaissait à côté et soufflait de loin ;
+maintenant le souffle est un geste.
 
 Et avant le générique, **le mot « FIN » monte doucement du bas de l'écran** sur la scène
 immobile — Nino endormi près du gâteau, la famille autour — se pose au milieu, y reste

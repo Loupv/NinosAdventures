@@ -752,18 +752,18 @@ export const SOUFFLE = {
   moyen: ['Cinq bougies s’éteignent.', 'Puis se rallument, une par une.'],
   papaAdmet: ['« Je pensais que ça se rallumerait moins que ça. »'],
   encore: ['« Encore ! Plus fort ! »'],
-  reussi: ['Six bougies éteintes.', 'La septième repart toute seule.'],
+  reussi: ['Sept bougies éteintes.', 'D’un seul souffle.'],
 };
 
-/** La suite de la fête, une fois les six bougies éteintes : la farce, et le sommeil. */
-export const FETE_FARCE: typeof FETE = [
-  { qui: 'Papa', lignes: ['« Ah. »', '« Celle-là, c’est une farce. »'] },
-  { qui: 'Maman', lignes: ['« Ce n’est pas moi. »'] },
-  { qui: 'Papa', lignes: ['« Ce n’est pas moi non plus. »'], pause: 800 },
-  { lignes: ['Moon regarde ailleurs.'], pause: 1000 },
-  { lignes: ['Nino souffle une deuxième fois.'], son: 'bougies', pause: 1100 },
-  { lignes: ['Voilà.'], pause: 900 },
-  { lignes: ['Nino dort.'] },
+/**
+ * **Après le souffle, personne ne dit que Nino dort : on le voit.** Il est couché sur la
+ * table, des Z montent au-dessus de sa tête, et les parents l'appellent dans le vide.
+ * Les silences sont dans les `pause` — c'est eux qui font la blague.
+ */
+export const DODO: typeof FETE = [
+  { qui: 'Papa', lignes: ['« Nino... »'], pause: 1000 },
+  { qui: 'Maman', lignes: ['« Nino ! »'], pause: 1600 },
+  { qui: 'Papa', lignes: ['« Bon. »'], pause: 700 },
 ];
 
 /**
@@ -868,8 +868,6 @@ export const CREDITS: Array<{
 /** La toute dernière ligne du générique, et ce qu'on lit avant qu'il commence. */
 export const GENERIQUE = {
   fin: ['NINO', 'tout le reste.', 'Sept ans depuis ce matin.'],
-  /** Sur la table de la cuisine, la tête dans les bras. */
-  endormi: ['Nino s’endort sur la table.'],
 };
 
 // ═══════════════════════════════════════════════════════ 10. le sac et les pièces

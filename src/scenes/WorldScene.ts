@@ -29,7 +29,7 @@ import {
   DORT_PAPA,
   COUCHER,
   ECUREUIL_TREMPE,
-  FETE_FARCE,
+  DODO,
   FIN,
   SOUFFLE,
   POISSON_RIT,
@@ -477,49 +477,8 @@ export class WorldScene extends Phaser.Scene {
       if (id === 'chambre-parents') {
         // Le Z du grand lit naît au bord du lit, côté sol clair : au-dessus de la tête de
         // lit, sombre sur les briques sombres, il était invisible.
-        const sources = [
-          { x: 91, y: 27, grand: true },
-          { x: 28, y: 78, grand: false },
-        ];
-        sources.forEach((src, quel) => {
-          this.time.addEvent({
-            delay: 1700,
-            startAt: quel * 850,
-            loop: true,
-            callback: () => {
-              if (!state.flag('parapente-rentre') || state.flag('matin')) return;
-              // Six Z au plus en même temps : même précaution que les gouttes de pluie —
-              // un onglet en arrière-plan ne doit pas les empiler.
-              if (this.zzzVivants >= 6) return;
-              this.zzzVivants += 1;
-              const n = this.zzzNes++;
-              const z = this.add
-                .image(src.x, src.y, texKey(src.grand && n % 2 === 0 ? 'z-grand' : 'z-petit', this.pal))
-                .setOrigin(0.5, 0.5)
-                .setDepth(1200);
-              // Il naît une fois et demie trop grand, rapetisse en montant, et s'éteint
-              // tout petit : la respiration du sommeil, en un seul geste.
-              this.tweens.addCounter({
-                from: 0,
-                to: 1,
-                duration: 2600,
-                onUpdate: (t) => {
-                  const v = t.getValue() ?? 0;
-                  z.setPosition(
-                    Math.round(src.x + Math.sin(v * Math.PI * 2 + n) * 4),
-                    Math.round(src.y - v * 14),
-                  );
-                  // De 1,1 à 0,75 : une respiration discrète, pas un ballon.
-                  z.setScale(1.1 - v * 0.35);
-                },
-                onComplete: () => {
-                  this.zzzVivants -= 1;
-                  z.destroy();
-                },
-              });
-            },
-          });
-        });
+        this.fontaineDeZ(91, 27, true, () => state.flag('parapente-rentre') && !state.flag('matin'));
+        this.fontaineDeZ(28, 78, false, () => state.flag('parapente-rentre') && !state.flag('matin'), 850);
       }
       if (id === 'tour-pied' && !state.flag('nuit-dite')) {
         state.setFlag('nuit-dite');
@@ -3058,18 +3017,29 @@ export class WorldScene extends Phaser.Scene {
   }
 
   /** Les sept flammes du gâteau, et leur vacillement. */
-  private flammes: { go: Phaser.GameObjects.Rectangle; x: number; allumee: boolean }[] = [];
+  private flammes: {
+    clair: Phaser.GameObjects.Rectangle;
+    sombre: Phaser.GameObjects.Rectangle;
+    x: number;
+    allumee: boolean;
+  }[] = [];
 
   /**
-   * **Le gâteau s'allume à l'arrivée dans la cuisine.** Sept petites flammes d'un pixel de
-   * large qui tremblent chacune à leur rythme — le dessin du gâteau, lui, n'a que les mèches.
+   * **Le gâteau s'allume à l'arrivée dans la cuisine.** Sept petites flammes qui tremblent
+   * chacune à leur rythme — le dessin du gâteau, lui, n'a que les mèches. Chaque flamme est
+   * **deux pixels empilés, un clair et un sombre, qui s'échangent** : tout clair, elle se
+   * noyait dans le carrelage et on ne voyait que deux bougies allumées sur les sept.
    */
   private allumerLesBougies(): void {
     const GATEAU_POS = { x: 100, y: 66 };
     const COLONNES = [1, 3, 5, 7, 9, 11, 13];
     this.flammes = COLONNES.map((c) => ({
-      go: this.add
-        .rectangle(GATEAU_POS.x + c, GATEAU_POS.y - 2, 1, 2, shade(this.pal, 3))
+      clair: this.add
+        .rectangle(GATEAU_POS.x + c, GATEAU_POS.y - 2, 1, 1, shade(this.pal, 3))
+        .setOrigin(0, 0)
+        .setDepth(95),
+      sombre: this.add
+        .rectangle(GATEAU_POS.x + c, GATEAU_POS.y - 1, 1, 1, shade(this.pal, 0))
         .setOrigin(0, 0)
         .setDepth(95),
       x: GATEAU_POS.x + c,
@@ -3081,12 +3051,13 @@ export class WorldScene extends Phaser.Scene {
       callback: () => {
         const t = Math.floor(this.time.now / 150);
         this.flammes.forEach((f, i) => {
-          if (!f.go.active) return;
-          f.go.setVisible(f.allumee);
+          if (!f.clair.active) return;
+          f.clair.setVisible(f.allumee);
+          f.sombre.setVisible(f.allumee);
           if (!f.allumee) return;
-          const grande = (t + i) % 2 === 0;
-          f.go.setPosition(f.x, grande ? 64 : 65);
-          f.go.setSize(1, grande ? 2 : 1);
+          const clairEnHaut = (t + i) % 2 === 0;
+          f.clair.setPosition(f.x, clairEnHaut ? 64 : 65);
+          f.sombre.setPosition(f.x, clairEnHaut ? 65 : 64);
         });
       },
     });
@@ -3096,7 +3067,8 @@ export class WorldScene extends Phaser.Scene {
     const f = this.flammes[i];
     if (!f) return;
     f.allumee = allumee;
-    if (f.go.active) f.go.setVisible(allumee);
+    if (f.clair.active) f.clair.setVisible(allumee);
+    if (f.sombre.active) f.sombre.setVisible(allumee);
   }
 
   /** Dans la cuisine, tout le monde attend depuis ce matin. */
@@ -3113,29 +3085,56 @@ export class WorldScene extends Phaser.Scene {
      * pour qu'un silence soit un silence — sans ça, la dernière scène du jeu défilait aussi vite
      * qu'un dialogue de couloir, et la fin tombait comme un couperet.
      */
-    const jouerSerie = (serie: typeof FETE, i: number, fin: () => void) => {
-      if (i >= serie.length) {
-        fin();
+    // L'ouverture, puis Nino s'approche de son gâteau, puis le souffle — un mini-jeu —
+    // puis le sommeil, sans un mot : on le voit.
+    this.jouerLaSerie(FETE, 0, () =>
+      this.sApprocherDuGateau(() => this.soufflerLesBougies(() => this.endormiSurLaTable())),
+    );
+  }
+
+  /** Une série de répliques, avec ses silences (`pause`) entre les boîtes. */
+  private jouerLaSerie(serie: typeof FETE, i: number, fin: () => void): void {
+    if (i >= serie.length) {
+      fin();
+      return;
+    }
+    if (serie[i].son) jouer(this, serie[i].son!, { volume: 0.9 });
+    const suite = () => {
+      // **La boîte déverrouille le monde en se fermant** — mais la scène n'est pas finie :
+      // pendant un silence, ESPACE partait dans les interactions (Nino s'allongeait sur
+      // le carrelage au milieu de sa fête). On reverrouille aussitôt.
+      state.locked = true;
+      const pause = serie[i].pause;
+      if (!pause) {
+        this.jouerLaSerie(serie, i + 1, fin);
         return;
       }
-      if (serie[i].son) jouer(this, serie[i].son!, { volume: 0.9 });
-      // Le seul « bougies » d'une série est le deuxième souffle de la farce : la
-      // septième flamme s'éteint à ce moment-là, pas à la fin du texte.
-      if (serie[i].son === 'bougies') this.bougie(6, false);
-      const suite = () => {
-        const pause = serie[i].pause;
-        if (!pause) {
-          jouerSerie(serie, i + 1, fin);
-          return;
-        }
-        this.time.delayedCall(pause, () => jouerSerie(serie, i + 1, fin));
-      };
-      say({ speaker: serie[i].qui, lines: serie[i].lignes, focusY: 30, onDone: suite });
+      this.time.delayedCall(pause, () => this.jouerLaSerie(serie, i + 1, fin));
     };
-    // L'ouverture, puis le souffle — un mini-jeu — puis la farce, puis le sommeil.
-    jouerSerie(FETE, 0, () =>
-      this.soufflerLesBougies(() => jouerSerie(FETE_FARCE, 0, () => this.endormiSurLaTable())),
-    );
+    say({ speaker: serie[i].qui, lines: serie[i].lignes, focusY: 30, onDone: suite });
+  }
+
+  /**
+   * **Il marche jusqu'à son gâteau avant de souffler.** Il apparaissait déjà à côté et
+   * soufflait de loin ; trois pas vers les bougies, et le souffle devient un geste.
+   */
+  private sApprocherDuGateau(apres: () => void): void {
+    state.locked = true;
+    const sprite = this.player.sprite;
+    sprite.play(animKey('nino-walk-down', this.pal));
+    this.tweens.add({
+      targets: sprite,
+      x: 106,
+      y: 62,
+      duration: 750,
+      ease: 'Sine.easeInOut',
+      onComplete: () => {
+        sprite.anims.stop();
+        sprite.setFrame('down-0');
+        this.player.facing = 'down';
+        this.time.delayedCall(350, apres);
+      },
+    });
   }
 
   /**
@@ -3149,6 +3148,9 @@ export class WorldScene extends Phaser.Scene {
     /** Il faut dépasser ce trait pour éteindre les six : il est dessiné sur la jauge. */
     const SEUIL = 0.72;
     const inspire = () => {
+      // La boîte de l'inspiration vient de déverrouiller le monde : pendant la fenêtre
+      // de martèlement, ESPACE ne doit être qu'un souffle, jamais une interaction.
+      state.locked = true;
       // La jauge : un cadre, un remplissage, le trait du seuil, et la consigne qui martèle.
       const cadre = this.add.rectangle(39, 99, 82, 10, shade(this.pal, 0)).setOrigin(0, 0).setDepth(2100);
       const fond = this.add.rectangle(40, 100, 80, 8, shade(this.pal, 2)).setOrigin(0, 0).setDepth(2101);
@@ -3199,11 +3201,11 @@ export class WorldScene extends Phaser.Scene {
         }
 
         const resultat = () => {
+          state.locked = true;
           [cadre, fond, jauge, trait].forEach((r) => r.destroy());
           consigne.destroy();
           if (reussi) {
-            // La septième repart toute seule — c'est la farce, elle attend le deuxième souffle.
-            this.time.delayedCall(500, () => this.bougie(6, true));
+            // Toutes éteintes, pour de bon : une bougie qui se rallume, c'est un raté.
             say({ lines: SOUFFLE.reussi, focusY: 30, onDone: () => this.time.delayedCall(700, apres) });
             return;
           }
@@ -3380,10 +3382,11 @@ export class WorldScene extends Phaser.Scene {
       depth: 200,
       cacheNino: true,
     });
-    say({
-      lines: GENERIQUE.endormi,
-      focusY: 20,
-      onDone: () => {
+    // Personne ne dit qu'il dort : des Z montent au-dessus de sa tête, et les parents
+    // l'appellent dans le vide. « Nino... » « Nino ! » « Bon. »
+    this.fontaineDeZ(112, 49, true, () => true);
+    this.jouerLaSerie(DODO, 0, () => {
+      {
         this.transitioning = true;
         /**
          * **« FIN », qui dérive doucement.** Le mot monte du bas de l'écran jusqu'au
@@ -3408,7 +3411,7 @@ export class WorldScene extends Phaser.Scene {
             this.scene.restart({ room: CREDITS[0].room, cinema: 0 });
           }, 340);
         });
-      },
+      }
     });
   }
 
@@ -3428,6 +3431,48 @@ export class WorldScene extends Phaser.Scene {
         if (reponse !== 0) return;
         this.scene.stop('Ui');
         this.scene.start('Title');
+      },
+    });
+  }
+
+  /**
+   * **Une fontaine de Z** au-dessus d'un dormeur : naissance régulière, montée en zigzag,
+   * rapetissement, disparition. Le minuteur meurt avec la scène ; `encore` se relit à
+   * chaque naissance, pour qu'un réveil coupe la fontaine sans tuer le minuteur.
+   */
+  private fontaineDeZ(x: number, y: number, grand: boolean, encore: () => boolean, premier = 0): void {
+    this.time.addEvent({
+      delay: 1700,
+      startAt: premier,
+      loop: true,
+      callback: () => {
+        if (!encore()) return;
+        // Six Z au plus en même temps : même précaution que les gouttes de pluie —
+        // un onglet en arrière-plan ne doit pas les empiler.
+        if (this.zzzVivants >= 6) return;
+        this.zzzVivants += 1;
+        const n = this.zzzNes++;
+        const z = this.add
+          .image(x, y, texKey(grand && n % 2 === 0 ? 'z-grand' : 'z-petit', this.pal))
+          .setOrigin(0.5, 0.5)
+          .setDepth(1200);
+        // Il naît une fois et demie trop grand, rapetisse en montant, et s'éteint
+        // tout petit : la respiration du sommeil, en un seul geste.
+        this.tweens.addCounter({
+          from: 0,
+          to: 1,
+          duration: 2600,
+          onUpdate: (t) => {
+            const v = t.getValue() ?? 0;
+            z.setPosition(Math.round(x + Math.sin(v * Math.PI * 2 + n) * 4), Math.round(y - v * 14));
+            // De 1,1 à 0,75 : une respiration discrète, pas un ballon.
+            z.setScale(1.1 - v * 0.35);
+          },
+          onComplete: () => {
+            this.zzzVivants -= 1;
+            z.destroy();
+          },
+        });
       },
     });
   }
