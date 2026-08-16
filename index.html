@@ -2,7 +2,7 @@
 <html lang="fr">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>Les Aventures de Nino</title>
     <style>
       html,
@@ -16,6 +16,11 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        /* Aucun doigt ne doit faire défiler ou zoomer la page : c'est une console. */
+        touch-action: none;
+        -webkit-user-select: none;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
       }
       /* La console : un cadre gris autour de l'écran, comme une vraie Game Boy. */
       #shell {
@@ -69,6 +74,111 @@
           inset 1px 1px 0 #8f8c84,
           inset -1px -1px 0 #e6e3da;
       }
+
+      /*
+        ── LA MANETTE ──
+
+        Elle n'existe que sur les écrans qu'on touche : `pointer: coarse` désigne un doigt,
+        par opposition à une souris. Sur un ordinateur, ces boutons ne s'affichent jamais et
+        le clavier reste le seul pilote — un enfant devant un écran tactile, lui, n'a pas de
+        flèches à sa disposition.
+
+        Chaque bouton **envoie une vraie touche** au jeu (voir main.ts) : rien dans le moteur
+        ne sait qu'il existe une manette, et il n'y a donc pas deux façons de jouer à tenir
+        à jour.
+      */
+      #manette {
+        display: none;
+      }
+      @media (pointer: coarse) {
+        #manette {
+          display: grid;
+          grid-template-columns: auto 1fr auto;
+          align-items: center;
+          gap: 10px;
+          margin-top: 14px;
+        }
+        /* La croix : trois colonnes, trois rangées, et le trou du milieu. */
+        #croix {
+          display: grid;
+          grid-template-columns: repeat(3, 34px);
+          grid-template-rows: repeat(3, 34px);
+        }
+        #croix button {
+          border: 0;
+          padding: 0;
+          background: #4a4740;
+          color: #c9c6bd;
+          font: 14px/1 ui-monospace, Menlo, monospace;
+          box-shadow: inset -2px -2px 0 #2b2926;
+        }
+        #croix button:active {
+          background: #35332e;
+          box-shadow: inset 2px 2px 0 #2b2926;
+        }
+        /* Les coins de la croix sont vides : on ne joue pas en diagonale. */
+        #croix .vide {
+          visibility: hidden;
+        }
+        [data-touche='UP'] {
+          border-radius: 6px 6px 0 0;
+        }
+        [data-touche='DOWN'] {
+          border-radius: 0 0 6px 6px;
+        }
+        [data-touche='LEFT'] {
+          border-radius: 6px 0 0 6px;
+        }
+        [data-touche='RIGHT'] {
+          border-radius: 0 6px 6px 0;
+        }
+
+        /* A et B, en biais comme sur la console d'origine. */
+        #ab {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          transform: rotate(-18deg);
+        }
+        #ab button {
+          width: 46px;
+          height: 46px;
+          border: 0;
+          border-radius: 50%;
+          background: #8b2f5e;
+          color: #f0e6ec;
+          font: bold 15px/1 ui-monospace, Menlo, monospace;
+          box-shadow: inset -2px -2px 0 #5c1f3e;
+        }
+        #ab button:active {
+          background: #6d2449;
+          box-shadow: inset 2px 2px 0 #5c1f3e;
+        }
+
+        /* SELECT et START, les deux pastilles penchées du bas. */
+        #menus {
+          grid-column: 1 / -1;
+          display: flex;
+          justify-content: center;
+          gap: 18px;
+        }
+        #menus button {
+          border: 0;
+          border-radius: 10px;
+          padding: 7px 16px;
+          transform: rotate(-18deg);
+          background: #7d7a72;
+          color: #2b2926;
+          font: 9px/1 ui-monospace, Menlo, monospace;
+          letter-spacing: 1px;
+          text-transform: uppercase;
+          box-shadow: inset -1px -1px 0 #56544e;
+        }
+        #menus button:active {
+          background: #62605a;
+          box-shadow: inset 1px 1px 0 #56544e;
+        }
+      }
     </style>
   </head>
   <body>
@@ -77,6 +187,33 @@
       <div id="bas">
         <button id="son" type="button" title="Touche M">son : coupé</button>
         <span id="label">Nino&nbsp;Adventures</span>
+      </div>
+
+      <!--
+        La manette tactile. `data-touche` porte le nom de la touche envoyée au jeu :
+        c'est la seule chose que main.ts a besoin de savoir.
+      -->
+      <div id="manette">
+        <div id="croix">
+          <span class="vide"></span>
+          <button type="button" data-touche="UP" aria-label="Haut">▲</button>
+          <span class="vide"></span>
+          <button type="button" data-touche="LEFT" aria-label="Gauche">◀</button>
+          <span class="vide"></span>
+          <button type="button" data-touche="RIGHT" aria-label="Droite">▶</button>
+          <span class="vide"></span>
+          <button type="button" data-touche="DOWN" aria-label="Bas">▼</button>
+          <span class="vide"></span>
+        </div>
+        <div id="ab">
+          <!-- B arrose, A parle et valide : c'est la main droite d'une Game Boy. -->
+          <button type="button" data-touche="X" aria-label="Pistolet à eau">B</button>
+          <button type="button" data-touche="SPACE" aria-label="Parler, valider">A</button>
+        </div>
+        <div id="menus">
+          <button type="button" data-touche="ESCAPE" aria-label="Retour">select</button>
+          <button type="button" data-touche="ENTER" aria-label="Journal">start</button>
+        </div>
       </div>
     </div>
     <script type="module" src="/src/main.ts"></script>

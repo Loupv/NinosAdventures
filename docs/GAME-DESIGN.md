@@ -1752,10 +1752,26 @@ puis charge avec une barre : vingt méga-octets de musique, ça se voit passer.
 
 **Le build est entièrement statique** (`npm run build` → `dist/`), et `base: './'` le rend
 indifférent au dossier qui l'héberge : il tourne sous `/NinosAdventures/` comme à la racine.
-Un workflow GitHub Actions le publie à chaque poussée sur `main`. Deux limites à connaître :
-le jeu est **au clavier uniquement** — injouable sur tablette tant qu'on n'aura pas ajouté
-des commandes tactiles — et le dossier `dist` ne s'ouvre pas en double-cliquant `index.html`,
-parce que les modules JavaScript exigent un vrai serveur.
+Un workflow GitHub Actions le publie à chaque poussée sur `main`. Une limite à connaître :
+le dossier `dist` ne s'ouvre pas en double-cliquant `index.html`, parce que les modules
+JavaScript exigent un vrai serveur.
+
+### La manette tactile
+
+**Sur un écran qu'on touche, la console pousse des boutons** : une croix directionnelle,
+B et A en biais, SELECT et START penchés — la main droite d'une Game Boy. Ils n'existent
+que là où il n'y a pas de clavier (`@media (pointer: coarse)`), et l'écran de jeu se réduit
+d'autant pour leur laisser la place.
+
+**Chaque bouton envoie une vraie touche du clavier**, et rien dans le moteur ne sait qu'une
+manette existe : le jeu écoute `keydown`/`keyup` comme sur un ordinateur, si bien qu'il n'y
+a jamais deux façons de jouer à tenir à jour. Le nom de la touche est écrit sur le bouton
+(`data-touche`), et une trentaine de lignes dans [main.ts](../src/main.ts) font le reste.
+
+Deux détails qui font la différence entre une manette et des boutons : **un doigt qui glisse
+de ◀ vers ▶ change de direction** (il faut relâcher la capture que le navigateur donne au
+premier bouton touché), et **un doigt levé hors de la console relâche quand même la touche**
+— sans quoi Nino continue de marcher tout seul.
 
 ## Repartir à zéro
 
