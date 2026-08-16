@@ -859,7 +859,7 @@ export const CREDITS: Array<{
     // **Toujours vrai, quelle que soit la partie** : elle ne note une croûte de pizza que si
     // on la lui apporte, mais son devoir n'a jamais eu de bonne réponse — c'est sa règle.
     room: 'ecole',
-    lignes: ['LA MAÎTRESSE', 'notation.', 'Son devoir n’avait pas de bonne réponse.'],
+    lignes: ['LA MAÎTRESSE', 'notation.', 'N’a jamais demandé d’où ça venait.'],
     qui: { sprite: 'maitresse', x: 56, y: 54 },
   },
   {

@@ -1582,7 +1582,7 @@ sans rire. Tout le comique est dans le poste — et jamais dans une vanne ajout�
 | **L'ARAIGNÉE** | poète et mélancolique. Artiste sûrement trop incomprise. |
 | **L'ÉCUREUIL** | mauvaises idées. Nie toute participation à ce tournage. |
 | **LE JARDINIER** | arrosage. N'a pas arrosé. |
-| **LA MAÎTRESSE** | notation. Son devoir n'avait pas de bonne réponse. |
+| **LA MAÎTRESSE** | notation. N'a jamais demandé d'où ça venait. |
 | **L'ÉLÉPHANT DES MACHINES** | effets spéciaux : pluie. Douze mètres, aucune doublure. |
 | **PAPA** | bateau, chapeau, alibis. Cascades exécutées par lui-même. |
 | **MAMAN** | production, gâteau, sept bougies. Savait depuis ce matin. |
@@ -1621,7 +1621,9 @@ déguerpit** : un bond en arrière à chaque giclée, puis il file se poser aill
 cadre — et le jet le retrouve, parce que la cible est relue au moment du tir. Nier une
 participation en restant planté là, ce n'est pas nier. **Et si le bateau a coulé — c'est-à-dire toujours, mais le générique ne présume rien
 (`si`) — on descend le voir** : l'épave couchée dans la vase au fond de l'Erdre, penchée
-sur le flanc, avec trois poissons qui tournent autour sans se presser. C'est chez eux,
+sur le flanc, avec trois poissons qui tournent autour sans se presser. **En vert, pas en
+bleu** : c'est un fond de rivière, et le vert est la couleur du jeu ; le bleu reste à la
+mer, à qui il reste le grand large. C'est chez eux,
 maintenant. *« LE BATEAU / cascade finale. / A refusé toute doublure. »*
 
 **Le travelling s'arrête sur celui qu'on remercie**, quand la pièce est plus large que

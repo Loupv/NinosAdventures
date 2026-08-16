@@ -2245,7 +2245,10 @@ export const ROOMS: Record<string, Room> = {
    */
   epave: {
     id: 'epave',
-    palette: 'eau',
+    // **En vert, pas en bleu.** L'eau du jeu est bleue, mais cette eau-là est celle d'un
+    // fond de rivière verte, et le vert est la couleur du jeu : la mer garde le bleu, à
+    // qui il reste le grand large.
+    palette: 'real',
     theme: 'erdre',
     view: 'side',
     plateau: true,
