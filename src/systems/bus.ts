@@ -33,6 +33,8 @@ export interface RoomBanner {
 export interface Buttons {
   action: boolean;
   journal: boolean;
+  /** START : le menu de la console. */
+  reglages: boolean;
   cancel: boolean;
   up: boolean;
   down: boolean;

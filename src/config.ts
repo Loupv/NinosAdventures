@@ -25,4 +25,6 @@ export const KEYS = {
   arroser: ['X'],
   cancel: ['ESC', 'BACKSPACE'],
   journal: ['ENTER', 'J'],
+  /** Le menu de la console : START sur la manette, P au clavier. */
+  reglages: ['P'],
 } as const;

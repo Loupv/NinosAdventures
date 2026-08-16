@@ -46,6 +46,8 @@ const LIGNES: Ligne[] = [
 ];
 
 export class ReglagesScene extends Phaser.Scene {
+  /** La scène à réveiller en sortant : le monde si on vient d'une partie, sinon le titre. */
+  private retour?: string;
   private choix = 0;
   private lignes: PixelText[] = [];
   private aide!: PixelText;
@@ -55,7 +57,8 @@ export class ReglagesScene extends Phaser.Scene {
     super('Reglages');
   }
 
-  create(): void {
+  create(data?: { retour?: string }): void {
+    this.retour = data?.retour;
     this.choix = 0;
     this.lignes = [];
     this.cameras.main.setBackgroundColor(shadeHex(PALETTE, 0));
@@ -85,7 +88,10 @@ export class ReglagesScene extends Phaser.Scene {
         this.peindre();
       });
     }
-    for (const code of KEYS.cancel) kb.addKey(code).on('down', () => this.scene.start('Title'));
+    // On sort par où l'on est entré : START referme le menu, ÉCHAP aussi.
+    for (const code of [...KEYS.cancel, ...KEYS.reglages]) {
+      kb.addKey(code).on('down', () => this.sortir());
+    }
 
     this.peindre();
   }
@@ -101,6 +107,17 @@ export class ReglagesScene extends Phaser.Scene {
     const aide = LIGNES[this.choix].aide;
     this.aide.image.setPosition(Math.round((GB.W - measure(aide)) / 2), 104);
     this.aide.setLines([aide], shadeHex(PALETTE, 2));
+  }
+
+  private sortir(): void {
+    if (!this.retour) {
+      this.scene.start('Title');
+      return;
+    }
+    // La partie reprend là où elle en était, interface comprise.
+    this.scene.stop();
+    this.scene.resume(this.retour);
+    this.scene.resume('Ui');
   }
 
   private centrer(nom: string, texte: string, y: number): void {

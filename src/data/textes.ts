@@ -41,7 +41,7 @@ export const TITRE = {
   continuer: 'ESPACE : CONTINUER',
   commencer: 'APPUIE SUR ESPACE',
   recommencer: 'R : REPARTIR À ZÉRO',
-  reglages: 'ÉCHAP : RÉGLAGES',
+  reglages: '%REG% : RÉGLAGES',
   effacer: 'TOUT EFFACER ?',
   effacerOui: 'ESPACE : OUI',
   effacerNon: 'ÉCHAP : NON',
@@ -794,7 +794,7 @@ export const REGLAGES = {
   /** Ce que fait la ligne choisie, en une phrase — sous la liste. */
   aideSon: 'La musique et les bruitages.',
   aideRaccourcis: 'Les touches 1 à 8 sautent dans le jeu.',
-  sortir: 'ÉCHAP : RETOUR',
+  sortir: '%REG% : RETOUR',
 };
 
 /**

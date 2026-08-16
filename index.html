@@ -199,8 +199,13 @@
           <button type="button" data-touche="SPACE" aria-label="Parler, valider">A</button>
         </div>
         <div id="menus">
-          <button type="button" data-touche="ESCAPE" aria-label="Retour">select</button>
-          <button type="button" data-touche="ENTER" aria-label="Journal">start</button>
+          <!--
+            SELECT change de sens avec l'écran : le journal quand on marche, « revenir »
+            quand on vole — un carnet n'a aucun sens au milieu d'un vol en parapente.
+            C'est main.ts qui tranche, au moment de l'appui.
+          -->
+          <button type="button" data-touche="SELECT" aria-label="Journal, retour">select</button>
+          <button type="button" data-touche="P" aria-label="Réglages">start</button>
         </div>
       </div>
     </div>

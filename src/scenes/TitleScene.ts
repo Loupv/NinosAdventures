@@ -138,12 +138,11 @@ export class TitleScene extends Phaser.Scene {
     KEYS.action.forEach((c) =>
       kb.addKey(c).on('down', () => (this.demande ? this.begin(true) : this.begin(false))),
     );
-    // ÉCHAP (et SELECT, sur la manette) : renoncer à effacer, ou ouvrir les réglages.
-    KEYS.cancel.forEach((c) =>
-      kb.addKey(c).on('down', () => {
-        if (this.demande) this.proposer();
-        else this.scene.start('Reglages');
-      }),
+    // ÉCHAP : renoncer à effacer. C'est tout ce qu'il fait ici.
+    KEYS.cancel.forEach((c) => kb.addKey(c).on('down', () => this.demande && this.proposer()));
+    // START (P au clavier) : les réglages, comme depuis n'importe où dans le jeu.
+    KEYS.reglages.forEach((c) =>
+      kb.addKey(c).on('down', () => !this.demande && this.scene.start('Reglages')),
     );
     kb.addKey('R').on('down', () => this.demander());
   }

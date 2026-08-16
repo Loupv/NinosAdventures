@@ -129,7 +129,18 @@ function brancherLaManette(): void {
     X: 88,
     ESCAPE: 27,
     ENTER: 13,
+    P: 80,
   };
+
+  /**
+   * **SELECT change de sens avec l'écran.** Dans le monde, c'est le journal ; dans un
+   * mini-jeu, c'est « revenir » — un carnet de trouvailles n'a aucun sens au milieu d'un
+   * vol en parapente, et le vol, lui, a besoin d'une porte de sortie. Un seul bouton, la
+   * seule chose qu'il puisse vouloir dire à cet instant.
+   */
+  const MINI_JEUX = ['Flappy', 'Parapente'];
+  const sensDeSelect = () =>
+    game.scene.getScenes(true).some((s) => MINI_JEUX.includes(s.scene.key)) ? 'ESCAPE' : 'ENTER';
 
   const relacher = (pointer: number) => {
     const code = enfoncees.get(pointer);
@@ -140,12 +151,15 @@ function brancherLaManette(): void {
 
   const boutons = Array.from(document.querySelectorAll<HTMLElement>('[data-touche]'));
   for (const bouton of boutons) {
-    const code = bouton.dataset.touche!;
+    const ecrit = bouton.dataset.touche!;
+    // `SELECT` n'est pas une touche : c'est un bouton dont le sens dépend de l'écran.
+    const touche = () => (ecrit === 'SELECT' ? sensDeSelect() : ecrit);
     bouton.addEventListener('pointerdown', (e: PointerEvent) => {
       e.preventDefault();
       // Sans ça, le navigateur garde le doigt sur ce bouton même s'il glisse ailleurs.
       if (bouton.hasPointerCapture?.(e.pointerId)) bouton.releasePointerCapture(e.pointerId);
       relacher(e.pointerId);
+      const code = touche();
       enfoncees.set(e.pointerId, code);
       envoyer('keydown', code);
     });
@@ -153,6 +167,7 @@ function brancherLaManette(): void {
     bouton.addEventListener('pointerenter', (e: PointerEvent) => {
       if (e.buttons === 0 && e.pointerType === 'mouse') return;
       if (!enfoncees.has(e.pointerId) && e.pointerType === 'mouse') return;
+      const code = touche();
       if (enfoncees.get(e.pointerId) === code) return;
       relacher(e.pointerId);
       enfoncees.set(e.pointerId, code);

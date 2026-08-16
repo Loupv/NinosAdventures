@@ -599,6 +599,7 @@ export class WorldScene extends Phaser.Scene {
     const btn: Buttons = {
       action: this.just('action'),
       journal: this.just('journal'),
+      reglages: this.just('reglages'),
       cancel: this.just('cancel'),
       up: this.just('up'),
       down: this.just('down'),
@@ -662,6 +663,8 @@ export class WorldScene extends Phaser.Scene {
       state.locked = true;
       this.scene.launch('Journal');
     }
+    // START : le menu de la console, par-dessus la partie mise en pause.
+    if (btn.reglages) this.ouvrirLesReglages();
     // ÉCHAP : on quitte la partie et on revient au titre — d'où l'on peut repartir à zéro.
     if (btn.cancel) this.quitter();
   }
@@ -3577,6 +3580,17 @@ export class WorldScene extends Phaser.Scene {
    * en continu : on ne perd rien, et c'est de là qu'on peut repartir à zéro. On demande quand même,
    * parce qu'un enfant qui cherche la touche du pistolet à eau ne veut pas se retrouver au menu.
    */
+  /**
+   * **Le menu, par-dessus la partie.** On met le monde et son interface en pause plutôt
+   * que de les quitter : au retour, la boîte de dialogue à moitié lue est encore là, et
+   * le poisson n'a pas fini son saut sans nous.
+   */
+  private ouvrirLesReglages(): void {
+    this.scene.pause();
+    this.scene.pause('Ui');
+    this.scene.launch('Reglages', { retour: 'World' });
+  }
+
   private quitter(): void {
     state.locked = true;
     state.save();

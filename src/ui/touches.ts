@@ -22,17 +22,23 @@ export const MANETTE =
  */
 const NOMS: ReadonlyArray<readonly [RegExp, string]> = [
   [/ESPACE/g, 'A'],
+  // SELECT porte les deux : « revenir » dans un mini-jeu, le journal ailleurs.
   [/ÉCHAP/g, 'SELECT'],
-  [/ENTRÉE/g, 'START'],
+  [/ENTRÉE/g, 'SELECT'],
   // Les flèches du clavier sont la croix de la console.
   [/FLÈCHES/g, 'LA CROIX'],
   // « APPUIE SUR UNE TOUCHE » : on n'appuie pas sur une touche, on appuie sur un bouton.
   [/UNE TOUCHE/g, 'UN BOUTON'],
 ];
 
+/**
+ * **Le jeton `%REG%`** : la touche du menu n'a pas de nom commun entre les deux mondes —
+ * c'est **P** au clavier et **START** sur la manette, et aucun remplacement de mot ne
+ * pouvait deviner ça (un « P » se promène dans trop de phrases).
+ */
 export function enTouchesDeLaConsole(ligne: string): string {
-  if (!MANETTE) return ligne;
-  let sortie = ligne;
+  let sortie = ligne.replace(/%REG%/g, MANETTE ? 'START' : 'P');
+  if (!MANETTE) return sortie;
   for (const [motif, remplacement] of NOMS) sortie = sortie.replace(motif, remplacement);
   return sortie;
 }

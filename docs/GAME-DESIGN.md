@@ -1775,6 +1775,11 @@ manette existe : le jeu écoute `keydown`/`keyup` comme sur un ordinateur, si bi
 a jamais deux façons de jouer à tenir à jour. Le nom de la touche est écrit sur le bouton
 (`data-touche`), et une trentaine de lignes dans [main.ts](../src/main.ts) font le reste.
 
+**SELECT change de sens avec l'écran** : le journal quand on marche, « revenir » quand on
+vole. Un carnet de trouvailles n'a aucun sens au milieu d'un vol en parapente, et le vol,
+lui, a besoin d'une porte de sortie — un seul bouton, la seule chose qu'il puisse vouloir
+dire à cet instant. C'est `main.ts` qui tranche, au moment de l'appui.
+
 Deux détails qui font la différence entre une manette et des boutons : **un doigt qui glisse
 de ◀ vers ▶ change de direction** (il faut relâcher la capture que le navigateur donne au
 premier bouton touché), et **un doigt levé hors de la console relâche quand même la touche**
@@ -1784,8 +1789,10 @@ premier bouton touché), et **un doigt levé hors de la console relâche quand m
 
 **Deux interrupteurs, et rien d'autre** : le son, et les raccourcis de développement. Ce
 n'est pas un menu d'options — un jeu offert à un enfant de sept ans n'en a pas besoin, et
-chaque ligne de plus serait une ligne à lire. On y entre depuis l'écran-titre, avec ÉCHAP
-ou SELECT : l'endroit et le geste où l'on règle une console avant d'y jouer.
+chaque ligne de plus serait une ligne à lire. **On y entre avec START** — la touche `P` au clavier — depuis l'écran-titre comme au beau
+milieu d'une partie : c'est le bouton du menu sur toutes les consoles, et le jeu se met en
+pause derrière (le monde *et* son interface, pour retrouver au retour la boîte de dialogue
+à moitié lue). START referme, ÉCHAP aussi.
 
 Les défauts sont ceux d'un cadeau : **le son est allumé** — un jeu muet au premier
 lancement, personne ne pense à aller chercher pourquoi — et **les raccourcis sont éteints**,
