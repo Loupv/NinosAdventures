@@ -1579,27 +1579,28 @@ sans rire. Tout le comique est dans le poste — et jamais dans une vanne ajout�
 | **LA MAÎTRESSE** | notation. Son devoir n'avait pas de bonne réponse. |
 | **L'ÉLÉPHANT DES MACHINES** | effets spéciaux : pluie. Douze mètres, aucune doublure. |
 | **PAPA** | bateau, chapeau, alibis. Cascades exécutées par lui-même. |
-| **LA TOUR DE BRETAGNE** | décors. N'a pas bougé de la nuit. |
 | **MAMAN** | production, gâteau, sept bougies. Savait depuis ce matin. |
-| **HERMIONE** | cachettes. Aucune n'a jamais été expliquée. |
 | **NINO** | tout le reste. Sept ans depuis ce matin. |
 
 Puis **les mentions de fin**, celles que personne ne lit dans les vrais films :
 
 > *Aucun animal n'a été maltraité. L'écureuil a un avis différent.* — et l'écureuil est là,
 > au milieu de la rue, pendant qu'on le dément : c'est lui, la blague.
-> *Les bruits de la fusée sont d'origine. Aucun trucage.* — sur le grand lit du rêve.
-> *Toute ressemblance avec des personnes réelles est parfaitement assumée.*
+
+Il n'y en a qu'une : un générique de onze écrans n'a pas la place de radoter. La tour, les
+cachettes d'Hermione et les mentions de remplissage sont sorties au montage.
 
 Personne n'est remercié pour son travail : ils sont crédités pour **ce qu'ils ont fait dans
 l'histoire**, avec le sérieux d'une fiche technique.
 
-**Et celui qu'on remercie vient au milieu de sa pièce, comme un acteur qui salue.** Reposé
-là où on l'avait rencontré, Moon se fondait dans son radiateur et Gérard dans l'épaisseur
-de la baignoire — maintenant Moon s'assoit au centre de son tapis, Gérard saute au milieu
-du carrelage, et le double de scène se cache le temps du carton. Le tout dernier écran est
-**la chambre de Nino, avec Nino dedans** : endormi dans son lit, des Z au-dessus de la
-tête, pendant que le carton dit « tout le reste ».
+**Et celui qu'on remercie vient au milieu de sa pièce, comme un acteur qui salue.** Moon
+s'assoit au centre de son tapis. **Gérard saute dans l'Erdre, pour de vrai** : son carton
+ressuscite le sauteur de la rivière (`revele`), éclaboussures comprises — il a quitté le
+tournage, on le voit y aller. **L'araignée traverse la rue des bars** (`marcheVers`), en
+grand, pendant que les passants détalent vers les bords (`panique`) : poèmes, chorégraphie,
+panique. Le tout dernier écran est **la chambre de Nino, avec Nino dedans** : endormi dans
+son lit, des Z au-dessus de la tête, pendant que le carton dit « tout le reste » — et il
+dure deux fois plus longtemps que les autres (`duree`), parce que c'est lui, le film.
 
 Techniquement, c'est **le jeu lui-même qui joue le générique** : le mode cinéma est une variante de
 la scène de jeu (`cinema` dans l'arrivée), donc les décors, les animations et les personnages sont

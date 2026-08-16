@@ -715,8 +715,13 @@ export class WorldScene extends Phaser.Scene {
   }
 
   private trySpawn(def: RoomObject): void {
-    if (def.showIfFlag && !state.flag(def.showIfFlag)) return;
-    if (def.hideIfFlag && state.flag(def.hideIfFlag)) return;
+    // **Le générique peut ressusciter un disparu** : le poisson est parti à la mer,
+    // mais son carton le montre en train d'y sauter.
+    const ressuscite = this.cinema && CREDITS[this.arrival.cinema ?? 0]?.revele === def.id;
+    if (!ressuscite) {
+      if (def.showIfFlag && !state.flag(def.showIfFlag)) return;
+      if (def.hideIfFlag && state.flag(def.hideIfFlag)) return;
+    }
     if (this.live.some((l) => l.def.id === def.id)) return;
 
     const pal = this.pal;
@@ -3271,10 +3276,33 @@ export class WorldScene extends Phaser.Scene {
       if (q.anim && cite instanceof Phaser.GameObjects.Sprite) cite.play(animKey(q.anim, this.pal));
     } else if (deja) {
       cite = deja.go as typeof cite;
+    } else if (etape.revele) {
+      cite = this.live.find((l) => l.def.id === etape.revele)?.go as typeof cite;
     }
 
     // Une fontaine de Z, pour le carton où quelqu'un dort.
     if (etape.zzz) this.fontaineDeZ(etape.zzz.x, etape.zzz.y, true, () => true);
+
+    // **La traversée** : le personnage cité marche d'un bord à l'autre, tout du long.
+    if (etape.marcheVers !== undefined && cite) {
+      this.tweens.add({ targets: cite, x: etape.marcheVers, duration: GENERIQUE_ETAPE, ease: 'Linear' });
+    }
+
+    // **Et la rue se vide.** Les passants détalent vers le bord le plus proche — c'est
+    // une araignée de deux étages qui traverse, on les comprend.
+    if (etape.panique) {
+      for (const l of this.live) {
+        if (l.def.sprite !== 'copain') continue;
+        this.tweens.killTweensOf(l.go);
+        const fuite = l.go.x < GB.W / 2 ? -24 : GB.W + 24;
+        this.tweens.add({
+          targets: l.go,
+          x: fuite,
+          duration: 600 + Math.abs(fuite - l.go.x) * 7,
+          ease: 'Sine.easeIn',
+        });
+      }
+    }
 
     // **Le carton se pousse pour laisser voir celui qu'il remercie** : en haut par défaut,
     // en bas si le personnage cité vit dans la bande haute de l'écran.
@@ -3282,7 +3310,7 @@ export class WorldScene extends Phaser.Scene {
     this.carton(etape.lignes, ancre);
 
     // Un travelling lent d'un bord à l'autre, quand il y a de quoi traverser.
-    const duree = etape.court ? GENERIQUE_COURT : GENERIQUE_ETAPE;
+    const duree = etape.duree ?? (etape.court ? GENERIQUE_COURT : GENERIQUE_ETAPE);
     const cam = this.cameras.main;
     cam.stopFollow();
     if (this.roomW > GB.W) {

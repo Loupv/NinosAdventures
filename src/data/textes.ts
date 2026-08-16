@@ -803,6 +803,14 @@ export const CREDITS: Array<{
   };
   /** Une fontaine de Z au-dessus d'un dormeur, pour le carton où quelqu'un dort. */
   zzz?: { x: number; y: number };
+  /** Ressuscite un objet caché de la pièce le temps du carton (id d'objet). */
+  revele?: string;
+  /** Le personnage cité traverse la pièce : cible x, sur toute la durée du carton. */
+  marcheVers?: number;
+  /** Les passants de la pièce fuient en courant. C'est l'araignée, la raison. */
+  panique?: true;
+  /** Durée sur mesure, pour un carton qui mérite qu'on s'attarde. */
+  duree?: number;
 }> = [
   {
     room: 'salon',
@@ -812,14 +820,19 @@ export const CREDITS: Array<{
     qui: { sprite: 'moon', x: 68, y: 76, frame: 'idle-0', anim: 'moon-idle' },
   },
   {
-    room: 'sdb',
+    // **Il est parti à la mer — on l'y voit.** Le vrai sauteur de l'Erdre, ressuscité le
+    // temps du carton : il saute, il éclabousse, il a mieux à faire que le générique.
+    room: 'erdre',
     lignes: ['GÉRARD', 'rôle du poisson.', 'A quitté le tournage avant la fin.'],
-    qui: { sprite: 'poisson', x: 72, y: 62, frame: 'saut-0', anim: 'poisson-saut' },
+    revele: 'poisson-erdre',
   },
   {
-    room: 'mezzanine',
+    // **Elle traverse la rue des bars, et la rue se vide.** Poèmes, chorégraphie, panique.
+    room: 'bars',
     lignes: ['L’ARAIGNÉE', 'poèmes et chorégraphie.', 'Dix haïkus, une danse, aucun rappel.'],
-    qui: { sprite: 'araignee', x: 60, y: 74, frame: 'pattes-0', anim: 'araignee-pattes', scale: 2 },
+    qui: { sprite: 'araignee', x: 20, y: 74, frame: 'pattes-0', anim: 'araignee-pattes', scale: 2 },
+    marcheVers: 118,
+    panique: true,
   },
   {
     room: 'cour',
@@ -852,16 +865,10 @@ export const CREDITS: Array<{
     lignes: ['PAPA', 'bateau, chapeau, alibis.', 'Cascades exécutées par lui-même.'],
     qui: { sprite: 'papa', x: 52, y: 48 },
   },
-  { room: 'tour-toit', lignes: ['LA TOUR DE BRETAGNE', 'décors.', 'N’a pas bougé de la nuit.'] },
   {
     room: 'cuisine',
     lignes: ['MAMAN', 'production, gâteau, sept bougies.', 'Savait depuis ce matin.'],
     qui: { sprite: 'maman', x: 76, y: 58 },
-  },
-  {
-    room: 'chambre',
-    lignes: ['HERMIONE', 'cachettes.', 'Aucune n’a jamais été expliquée.'],
-    qui: { sprite: 'hermione', x: 20, y: 40, frame: 'idle-0', anim: 'hermione-idle' },
   },
   // ── Et les mentions de fin, celles que personne ne lit jamais dans les vrais films ──
   {
@@ -872,23 +879,14 @@ export const CREDITS: Array<{
     qui: { sprite: 'ecureuil', x: 76, y: 78, frame: 'queue-0', anim: 'ecureuil-queue' },
   },
   {
-    // Le grand lit du rêve de la fusée — et la vérité sur ses bruits de moteur.
-    room: 'chambre-parents',
-    lignes: ['Les bruits de la fusée sont d’origine.', 'Aucun trucage.'],
-    court: true,
-  },
-  {
-    room: 'tour-pied',
-    lignes: ['Toute ressemblance avec des personnes', 'réelles est parfaitement assumée.'],
-    court: true,
-  },
-  {
     // **Le dernier carton montre Nino.** Dans son lit, des Z au-dessus de la tête :
     // le générique le remercie pendant qu'il dort — il a fait tout ça aujourd'hui.
     room: 'chambre',
     lignes: ['NINO', 'tout le reste.', 'Sept ans depuis ce matin.'],
     qui: { sprite: 'nino-couche', x: 22, y: 22, depth: 300 },
     zzz: { x: 30, y: 18 },
+    // On s'attarde : c'est lui, le film.
+    duree: 7200,
   },
 ];
 
