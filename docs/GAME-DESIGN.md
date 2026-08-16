@@ -1603,10 +1603,18 @@ l'histoire**, avec le sérieux d'une fiche technique.
 s'assoit au centre de son tapis. **Gérard saute dans la mer** : son carton a son propre
 décor — un *plateau*, une pièce sans porte qu'aucun couloir du jeu ne traverse (le
 vérificateur ne lui demande pas d'être joignable) — de l'eau à perte de vue, deux nuages, et
-**sa bassine qui flotte au milieu**. Il est allé jusqu'à la mer pour continuer à sauter dans
-son eau douce : le sel, ça gratte, il l'a toujours dit. **L'araignée traverse la rue des bars** (`marcheVers`), en
-grand, pendant que les passants détalent vers les bords (`panique`) : *« poète et
-mélancolique. Artiste sûrement trop incomprise. »* — et la rue qui se vide lui donne raison. **Et pendant que l'écureuil nie toute participation à ce tournage, un enfant l'arrose au
+**sa bassine qui flotte au milieu**, dans laquelle il saute. Il est allé jusqu'à la mer pour
+continuer à sauter dans son eau douce : le sel, ça gratte, il l'a toujours dit. Le carton de
+cet écran-là vit **en bas** (`bas`) : c'est la ligne d'horizon qui dit que c'est la mer, et
+elle est en haut.
+
+Deux petites règles ont dû suivre : le décor **continue de vivre pendant un carton** — la
+boucle de jeu s'arrêtait au verrou du générique, et le poisson ne sautait jamais — et un
+carton peut forcer son côté au lieu de le déduire du personnage cité. **L'araignée se tient au bord gauche de la rue des bars**, en
+grand, immobile — elle n'a pas besoin de marcher : *« poète et mélancolique. Artiste
+sûrement trop incomprise. »* Et les passants détalent **à l'opposé d'elle** (`panique`,
+qui fuit la bête et non le bord le plus proche : un passant qui court vers l'araignée ne
+fuit rien). La rue qui se vide lui donne raison. **Et pendant que l'écureuil nie toute participation à ce tournage, un enfant l'arrose au
 pistolet à eau** (`tireur`), en boucle, sans un mot d'explication. Le tout dernier écran est
 **la chambre de Nino, avec Nino dedans** : endormi dans
 son lit, des Z au-dessus de la tête, pendant que le carton dit « tout le reste » — et il

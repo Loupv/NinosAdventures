@@ -2267,18 +2267,18 @@ export const ROOMS: Record<string, Room> = {
       { id: 'nuage-mer-1', x: 20, y: 10, sprite: 'nuage' },
       { id: 'nuage-mer-2', x: 112, y: 20, sprite: 'nuage' },
       // La bassine, posée sur la houle. Personne ne demande comment elle est arrivée là.
-      // Plus bas que le milieu : le carton mange le tiers haut, et un saut de seize
-      // pixels doit tenir en entier sous lui.
-      { id: 'bassine-mer', x: 68, y: 92, sprite: 'seau', frame: 'eau-0', anim: 'seau-eau', depth: 80 },
+      // Juste sous l'horizon : le carton vit en bas de cet écran, et tout le saut doit
+      // tenir au-dessus de lui, en pleine mer.
+      { id: 'bassine-mer', x: 68, y: 56, sprite: 'seau', frame: 'eau-0', anim: 'seau-eau', depth: 80 },
       {
         id: 'gerard-mer',
         x: 74,
-        y: 100,
+        y: 64,
         sprite: 'poisson',
         frame: 'saut-0',
         anim: 'poisson-saut',
         // Les mêmes bonds que dans le hall de la tour : c'est la même bassine.
-        saute: { gauche: 71, droite: 81, hauteur: 16, eau: 100 },
+        saute: { gauche: 71, droite: 81, hauteur: 16, eau: 64 },
         depth: 85,
       },
     ],

@@ -610,6 +610,10 @@ export class WorldScene extends Phaser.Scene {
     if (wasLocked || this.transitioning || state.locked) {
       this.player.freeze();
       this.bulle.setVisible(false);
+      // **Le décor continue de vivre pendant le générique.** Un carton verrouille le
+      // monde ; sans cette ligne, le poisson de la mer ne sautait jamais et son écran
+      // ne montrait qu'une bassine vide.
+      if (this.cinema) this.sauter(delta);
       return;
     }
 
@@ -910,7 +914,7 @@ export class WorldScene extends Phaser.Scene {
    * poisson à qui on parle replongerait au milieu de sa phrase.
    */
   private sauter(dt: number): void {
-    if (state.locked) return;
+    if (state.locked && !this.cinema) return;
     for (const s of this.sauteurs) {
       const go = s.live.go;
       if (s.attente > 0) {
@@ -3326,17 +3330,18 @@ export class WorldScene extends Phaser.Scene {
       });
     }
 
-    // **Et la rue se vide.** Les passants détalent vers le bord le plus proche — c'est
-    // une araignée de deux étages qui traverse, on les comprend.
+    // **Et la rue se vide.** Les passants détalent **à l'opposé de l'araignée** — pas
+    // vers le bord le plus proche : un passant qui court vers la bête ne fuit rien.
     if (etape.panique) {
+      const bete = cite?.x ?? 0;
+      const fuite = bete < GB.W / 2 ? GB.W + 24 : -24;
       for (const l of this.live) {
         if (l.def.sprite !== 'copain') continue;
         this.tweens.killTweensOf(l.go);
-        const fuite = l.go.x < GB.W / 2 ? -24 : GB.W + 24;
         this.tweens.add({
           targets: l.go,
           x: fuite,
-          duration: 600 + Math.abs(fuite - l.go.x) * 7,
+          duration: 900 + Math.abs(fuite - l.go.x) * 9,
           ease: 'Sine.easeIn',
         });
       }
@@ -3345,7 +3350,7 @@ export class WorldScene extends Phaser.Scene {
     // **Le carton se pousse pour laisser voir celui qu'il remercie** : en haut par défaut,
     // en bas si le personnage cité vit dans la bande haute de l'écran.
     const ancre = cite ? { y: cite.y, h: cite.displayHeight } : undefined;
-    this.carton(etape.lignes, ancre);
+    this.carton(etape.lignes, ancre, etape.bas);
 
     // Un travelling lent d'un bord à l'autre, quand il y a de quoi traverser.
     const duree = etape.duree ?? (etape.court ? GENERIQUE_COURT : GENERIQUE_ETAPE);
@@ -3386,6 +3391,8 @@ export class WorldScene extends Phaser.Scene {
     brutes: string[],
     /** Où vit le personnage cité (y et hauteur à l'écran) : le carton prend l'autre bande. */
     ancre?: { y: number; h: number },
+    /** Force le côté, quand ce n'est pas un personnage qu'il faut voir mais l'horizon. */
+    force?: 'bas',
   ): Phaser.GameObjects.GameObject[] {
     // **Le carton est une fenêtre de dialogue.** Même cadre à deux traits, même fond clair,
     // même encre : le générique parle la langue du jeu, au lieu d'une bande noire qui
@@ -3400,7 +3407,7 @@ export class WorldScene extends Phaser.Scene {
     // reste en haut, cacher des pieds vaut mieux que cacher une tête.
     const chevaucheHaut = ancre !== undefined && ancre.y < 4 + h + 4;
     const chevaucheBas = ancre !== undefined && ancre.y + ancre.h > GB.H - h - 8;
-    const enBas = chevaucheHaut && !chevaucheBas;
+    const enBas = force === 'bas' || (chevaucheHaut && !chevaucheBas);
     const y0 = enBas ? GB.H - h - 4 : 4;
 
     const g = this.add.graphics().setScrollFactor(0).setDepth(1900);

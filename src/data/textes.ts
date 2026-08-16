@@ -813,6 +813,8 @@ export const CREDITS: Array<{
   tireur?: { x: number; y: number };
   /** Durée sur mesure, pour un carton qui mérite qu'on s'attarde. */
   duree?: number;
+  /** Le carton va en bas quoi qu'il arrive : c'est l'horizon qu'on veut voir. */
+  bas?: 'bas';
 }> = [
   {
     room: 'salon',
@@ -827,13 +829,15 @@ export const CREDITS: Array<{
     room: 'mer',
     lignes: ['GÉRARD', 'rôle du poisson.', 'A quitté le tournage avant la fin.'],
     revele: 'gerard-mer',
+    // En bas : c'est la ligne d'horizon qui dit que c'est la mer, pas la bassine.
+    bas: 'bas',
   },
   {
     // **Elle traverse la rue des bars, et la rue se vide.** Artiste incomprise, la preuve.
     room: 'bars',
     lignes: ['L’ARAIGNÉE', 'poète et mélancolique.', 'Artiste sûrement trop incomprise.'],
-    qui: { sprite: 'araignee', x: 20, y: 74, frame: 'pattes-0', anim: 'araignee-pattes', scale: 2 },
-    marcheVers: 118,
+    // Elle ne bouge pas : elle est là, immense, sur le bord gauche. C'est bien assez.
+    qui: { sprite: 'araignee', x: 12, y: 70, frame: 'pattes-0', anim: 'araignee-pattes', scale: 2 },
     panique: true,
   },
   {
