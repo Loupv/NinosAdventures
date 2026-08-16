@@ -827,9 +827,9 @@ export const CREDITS: Array<{
     revele: 'poisson-erdre',
   },
   {
-    // **Elle traverse la rue des bars, et la rue se vide.** Poèmes, chorégraphie, panique.
+    // **Elle traverse la rue des bars, et la rue se vide.** Artiste incomprise, la preuve.
     room: 'bars',
-    lignes: ['L’ARAIGNÉE', 'poèmes et chorégraphie.', 'Dix haïkus, une danse, aucun rappel.'],
+    lignes: ['L’ARAIGNÉE', 'poète et mélancolique.', 'Artiste sûrement trop incomprise.'],
     qui: { sprite: 'araignee', x: 20, y: 74, frame: 'pattes-0', anim: 'araignee-pattes', scale: 2 },
     marcheVers: 118,
     panique: true,

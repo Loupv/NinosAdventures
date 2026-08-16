@@ -1573,7 +1573,7 @@ sans rire. Tout le comique est dans le poste — et jamais dans une vanne ajout�
 |---|---|
 | **MOON** | dans son propre rôle. Cachet : un bout de pizza. |
 | **GÉRARD** | rôle du poisson. A quitté le tournage avant la fin. |
-| **L'ARAIGNÉE** | poèmes et chorégraphie. Dix haïkus, une danse, aucun rappel. |
+| **L'ARAIGNÉE** | poète et mélancolique. Artiste sûrement trop incomprise. |
 | **L'ÉCUREUIL** | mauvaises idées. Nie toute participation. |
 | **LE JARDINIER** | arrosage. N'a pas arrosé. |
 | **LA MAÎTRESSE** | notation. Son devoir n'avait pas de bonne réponse. |
@@ -1597,8 +1597,8 @@ l'histoire**, avec le sérieux d'une fiche technique.
 s'assoit au centre de son tapis. **Gérard saute dans l'Erdre, pour de vrai** : son carton
 ressuscite le sauteur de la rivière (`revele`), éclaboussures comprises — il a quitté le
 tournage, on le voit y aller. **L'araignée traverse la rue des bars** (`marcheVers`), en
-grand, pendant que les passants détalent vers les bords (`panique`) : poèmes, chorégraphie,
-panique. Le tout dernier écran est **la chambre de Nino, avec Nino dedans** : endormi dans
+grand, pendant que les passants détalent vers les bords (`panique`) : *« poète et
+mélancolique. Artiste sûrement trop incomprise. »* — et la rue qui se vide lui donne raison. Le tout dernier écran est **la chambre de Nino, avec Nino dedans** : endormi dans
 son lit, des Z au-dessus de la tête, pendant que le carton dit « tout le reste » — et il
 dure deux fois plus longtemps que les autres (`duree`), parce que c'est lui, le film.
 
