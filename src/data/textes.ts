@@ -71,6 +71,7 @@ export const JOURNAL = {
   ],
   pied: 'ESPACE : fermer',
   soeurComptee: (n: number, total: number) => `Hermione retrouvée ${n} fois sur ${total}.`,
+
   /** Le projet d'art, une fois rendu. Avant, on n'en parle pas. */
   noteComptee: (n: number) => `Projet d’art : ${n} sur 20.`,
   sacVide: [
@@ -113,6 +114,21 @@ export const FUSEE = {
 };
 
 /** Le vol en parapente, depuis le toit de la tour. */
+/**
+ * **Le harnais, s'il l'a pris.** Deux phrases avant de sauter, et rien d'autre : le vol
+ * part exactement pareil sans lui. Un cadeau qu'on a rangé dans une mezzanine ne doit
+ * pas devenir un péage — mais Moon a le droit de le remarquer.
+ */
+export const HARNAIS_AVANT_LE_SAUT = {
+  avec: ['Nino serre le harnais.', 'Celui de son anniversaire.', 'Il tient.'],
+  sans: [
+    'Moon regarde Nino, puis le vide.',
+    '« Ç’aurait été plus sûr avec un harnais. »',
+    '« Enfin. »',
+    '« Vas-y. »',
+  ],
+};
+
 export const VOL = {
   consigne: 'Viser sa fenêtre.',
   demarrer: 'ESPACE saut   ÉCHAP toit',
@@ -165,7 +181,6 @@ export const FIN = {
  * n'existe pas.
  */
 export const CETTE_NUIT: Array<{ flag: string; ligne: string }> = [
-  { flag: 'ventilo-casse', ligne: 'Un ventilateur achevé.' },
   { flag: 'chat-parle', ligne: 'Un chat qui parle.' },
   { flag: 'bouchon-retire', ligne: 'Un poisson sauvé.' },
   { flag: 'araignee-partie', ligne: 'Dix haïkus, et une danse.' },
@@ -948,9 +963,13 @@ export const OBJETS: Record<string, { nom: string; desc: string }> = {
     nom: 'Parapente',
     desc: 'Trouvé sur le toit de la Tour de Bretagne. Personne ne l’a réclamé. Il tient sous un lit, une fois plié — mal plié, mais plié.',
   },
-  chaussure: {
-    nom: 'Vieille chaussure',
-    desc: 'Trouvée sur le quai de l’Erdre. Elle a beaucoup marché, et pas avec Nino.',
+  caillou: {
+    nom: 'Caillou à cristaux',
+    desc: 'Ramassé sur la bibliothèque du salon. Gris dehors, plein d’étoiles dedans. Personne ne les a mises là.',
+  },
+  harnais: {
+    nom: 'Harnais d’escalade',
+    desc: 'Rangé dans la mezzanine, avec ce qui ne sert qu’une fois par an. Il tient un enfant entier.',
   },
   bouchon: {
     nom: 'Bouchon de baignoire',
@@ -1083,8 +1102,8 @@ export const CASTING: Record<string, { nom: string; role: string }> = {
  * au devoir, c'est deux lignes au même endroit.
  */
 const OFFRABLES: ItemId[] = [
+  'caillou',
   'dessin',
-  'chaussure',
   'bouchon',
   'noisette',
   'ticket',
@@ -1177,23 +1196,28 @@ const ACCUEILS: Record<string, string[]> = {
 
 /** Une question, ses trois réponses, et ce que chacune vaut. */
 const DEVOIRS: Record<string, Devoir> = {
-  chaussure: {
+  /**
+   * **Le seul objet du jeu qui vaille vingt sur vingt.** La maîtresse demande en quoi
+   * c'est de l'art ; un caillou qui cache des cristaux répond tout seul, à condition
+   * d'oser dire qu'on n'y est pour rien. Six points possibles, comme il faut.
+   */
+  caillou: {
     etapes: [
       {
-        reponses: ['À personne', 'À moi', 'Je ne sais pas'],
+        reponses: ['Je l’ai cassé', 'Il était comme ça', 'Je l’ai trouvé'],
         retours: [
-          { points: 2, lines: ['« Une chaussure à personne. »', '« Bon. »'] },
-          { points: 0, lines: ['« Elle est beaucoup trop grande. »'] },
-          { points: 3, lines: ['« Voilà. »', '« C’est déjà une réponse. »'] },
+          { points: 2, lines: ['« Et dedans il y avait ça. »'] },
+          { points: 3, lines: ['« Depuis très, très longtemps. »', '« Continue. »'] },
+          { points: 1, lines: ['« Comme tout le monde. »'] },
         ],
       },
       {
         lines: ['« Et en quoi c’est de l’art ? »'],
-        reponses: ['Elle a marché', 'Elle est sale', 'Je l’ai décidé'],
+        reponses: ['C’est joli', 'Personne ne l’a fait', 'C’est caché dedans'],
         retours: [
-          { points: 2, lines: ['« Longtemps, et on ne sait pas où. »'] },
-          { points: 0, lines: ['« Ça, c’est vrai. »'] },
-          { points: 3, lines: ['La maîtresse repose la chaussure très doucement.'] },
+          { points: 1, lines: ['« Ça, c’est vrai. »'] },
+          { points: 3, lines: ['La maîtresse tourne le caillou vers la fenêtre.', '« ... »', '« Bon. »'] },
+          { points: 2, lines: ['« Il fallait le casser pour le voir. »'] },
         ],
       },
     ],
@@ -1242,7 +1266,7 @@ const DEVOIRS: Record<string, Devoir> = {
         lines: ['« Et en quoi c’est de l’art ? »'],
         reponses: ['Un arbre est dedans', 'C’est petit', 'Ça se mange'],
         retours: [
-          { points: 3, lines: ['« ... »', '« Un arbre entier, là-dedans. »'] },
+          { points: 2, lines: ['« ... »', '« Un arbre entier, là-dedans. »'] },
           { points: 2, lines: ['« Petit, et personne ne la regarde. »'] },
           { points: 0, lines: ['« Pas celle-là. Elle est vide. »'] },
         ],
@@ -1263,7 +1287,7 @@ const DEVOIRS: Record<string, Devoir> = {
         lines: ['« Et en quoi c’est de l’art ? »'],
         reponses: ['Je l’ai décidé', 'Il a été gardé', 'C’est du papier'],
         retours: [
-          { points: 3, lines: ['« Exactement ça. »'] },
+          { points: 2, lines: ['« Exactement ça. »'] },
           { points: 2, lines: ['« Par terre, ce n’est pas gardé. »', '« Mais presque. »'] },
           { points: 0, lines: ['« Du papier, oui. »'] },
         ],
@@ -1284,7 +1308,7 @@ const DEVOIRS: Record<string, Devoir> = {
         lines: ['« Et en quoi c’est de l’art ? »'],
         reponses: ['Il ne rebondit plus', 'On a joué avec', 'Il est rond'],
         retours: [
-          { points: 3, lines: ['« Un ballon qui ne rebondit plus. »', '« C’est triste et c’est beau. »'] },
+          { points: 2, lines: ['« Un ballon qui ne rebondit plus. »', '« C’est triste et c’est beau. »'] },
           { points: 2, lines: ['« Toute l’école a joué avec. »'] },
           { points: 0, lines: ['« Plus vraiment, justement. »'] },
         ],
@@ -1305,8 +1329,8 @@ const DEVOIRS: Record<string, Devoir> = {
         lines: ['« Et en quoi c’est de l’art ? »'],
         reponses: ['Elle volait', 'Je l’ai décidé', 'Elle est douce'],
         retours: [
-          { points: 3, lines: ['« Elle volait, et maintenant elle est là. »'] },
-          { points: 3, lines: ['« C’est ça. »', '« Tu as bien regardé. »'] },
+          { points: 2, lines: ['« Elle volait, et maintenant elle est là. »'] },
+          { points: 2, lines: ['« C’est ça. »', '« Tu as bien regardé. »'] },
           { points: 1, lines: ['« Oui. »'] },
         ],
       },
@@ -1326,8 +1350,8 @@ const DEVOIRS: Record<string, Devoir> = {
         lines: ['« Et en quoi c’est de l’art ? »'],
         reponses: ['Quelqu’un l’a jeté', 'Je l’ai décidé', 'C’est un dessin'],
         retours: [
-          { points: 3, lines: ['« Jeté, et te voilà avec. »', '« Oui. »'] },
-          { points: 3, lines: ['« Voilà. »', '« C’est ça. »'] },
+          { points: 2, lines: ['« Jeté, et te voilà avec. »', '« Oui. »'] },
+          { points: 2, lines: ['« Voilà. »', '« C’est ça. »'] },
           { points: 1, lines: ['« Un dessin, oui. »'] },
         ],
       },
@@ -1347,7 +1371,7 @@ const DEVOIRS: Record<string, Devoir> = {
         lines: ['« Et en quoi c’est de l’art ? »'],
         reponses: ['Je l’ai décidé', 'Quelqu’un a commencé', 'Ça se mange'],
         retours: [
-          { points: 3, lines: ['« ... »', '« Tu as gagné, Nino. »'] },
+          { points: 2, lines: ['« ... »', '« Tu as gagné, Nino. »'] },
           { points: 2, lines: ['« Un chat, mais quelqu’un. »'] },
           { points: 0, lines: ['« Plus maintenant. »'] },
         ],
@@ -1554,20 +1578,6 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
       effects: { flag: 'pistolet-teste' },
     },
     { lines: ['Le dinosaure le regarde.', 'Toujours pareil.'] },
-  ],
-
-  ventilo: [
-    {
-      when: () => !state.flag('ventilo-casse'),
-      lines: [
-        'Nino appuie sur le bouton du ventilateur.',
-        'Le ventilateur fait « klk klk klk ».',
-        'Et puis plus rien.',
-        'Il fait toujours aussi chaud.',
-      ],
-      effects: { flag: 'ventilo-casse' },
-    },
-    { lines: ['Le ventilateur est cassé.', 'Il fait semblant de réfléchir.'] },
   ],
 
   // -------------------------------------------------------------- la cuisine
@@ -2870,6 +2880,60 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
     },
   ],
 
+  /**
+   * **Le poster de « Little Nino ».** Accroché au mur du fond de sa chambre depuis un
+   * anniversaire d'avant. Personne ne sait encore que la dernière heure de cette nuit
+   * ressemblera au dessin — et quand Nino rentre, il ne dit rien, il le regarde.
+   */
+  poster: [
+    {
+      when: () => state.flag('parapente-rentre'),
+      lines: ['Le dessin de Nino qui vole.', '« LITTLE NINO ».', '...', 'C’est à peu près ça.'],
+    },
+    {
+      lines: [
+        'Un dessin de Nino, punaisé au mur.',
+        'On le voit voler, les bras écartés.',
+        'En dessous, il a écrit « LITTLE NINO ».',
+      ],
+    },
+  ],
+
+  /**
+   * **Le harnais.** Un cadeau d'une autre année, rangé dans la mezzanine. Il ne sert à
+   * rien — jusqu'au moment où l'on saute d'une tour de trente-deux étages.
+   */
+  harnais: [
+    {
+      when: () => state.has('harnais'),
+      lines: ['Il l’a déjà sur lui.', 'Il est un peu grand.'],
+    },
+    {
+      lines: [
+        'Le harnais d’escalade, sur l’étagère.',
+        'Cadeau d’un anniversaire d’avant.',
+        'Il n’a encore jamais servi.',
+      ],
+      effects: { give: 'harnais', flag: 'harnais-pris' },
+    },
+  ],
+
+  /** Un caillou qu'on a cassé un jour, et qui s'est révélé plein d'étoiles. */
+  caillou: [
+    {
+      when: () => state.has('caillou'),
+      lines: ['Il l’a déjà dans son sac.'],
+    },
+    {
+      lines: [
+        'Un caillou gris, posé sur la bibliothèque.',
+        'Il est fendu, et dedans il y a des cristaux.',
+        'Nino le prend.',
+      ],
+      effects: { give: 'caillou', flag: 'caillou-pris' },
+    },
+  ],
+
   plume: [
     {
       lines: ['Une plume, sur le quai.', 'Grise, très longue.', 'Nino la prend.'],
@@ -2877,17 +2941,6 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
     },
   ],
 
-  /** Le projet d'art, avant de savoir que c'en est un. */
-  chaussure: [
-    {
-      lines: [
-        'Une vieille chaussure, sur le quai.',
-        'Elle a beaucoup marché, et pas avec Nino.',
-        'Il la prend.',
-      ],
-      effects: { give: 'chaussure', flag: 'chaussure-prise' },
-    },
-  ],
 
   'ballon-ecole': [
     {

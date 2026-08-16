@@ -1306,6 +1306,67 @@ const PLANTE_RADIEUSE: Art = [
   '..000000..',
 ];
 
+/**
+ * **Le poster de « Little Nino ».** Un dessin d'enfant punaisé au mur : un bonhomme bras
+ * écartés, deux traits de vitesse derrière lui, et son titre écrit à la main sous le
+ * dessin. Il est accroché dans la chambre depuis le début — et il annonce, sans que
+ * personne le sache, la dernière heure du jeu.
+ */
+const POSTER: Art = [
+  '0000000000000000',
+  '0333333333333330',
+  '0330000000000330',
+  '0300003300000030',
+  '0300033330000030',
+  '0300003300000030',
+  '0300033333300030',
+  '0300003300000030',
+  '0300000330000030',
+  '0300003003000030',
+  '0330000000000330',
+  '0303030303030330',
+  '0330000000000330',
+  '0333333333333330',
+  '0000000000000000',
+];
+
+/**
+ * **Le harnais d'escalade.** Deux boucles, des sangles, un mousqueton. Posé sur la
+ * bibliothèque de la mezzanine, là où on range ce qui ne sert qu'une fois par an.
+ */
+const HARNAIS: Art = [
+  '...000....000...',
+  '..03330..03330..',
+  '..03030..03030..',
+  '..03330..03330..',
+  '...0300..0030...',
+  '....0300003 0...'.replace(' ', '0'),
+  '.....000000.....',
+  '....03333330....',
+  '...0333003330...',
+  '...0330...0330..',
+  '...030.....030..',
+  '...00.......00..',
+];
+
+/**
+ * **Le caillou aux cristaux.** Une pierre grise, fendue, et dedans des éclats clairs qui
+ * ne devraient pas être là. C'est exactement la question que pose la maîtresse : en quoi
+ * c'est de l'art ? Un caillou qui cache quelque chose, voilà en quoi.
+ */
+const CAILLOU: Art = [
+  '....000000....',
+  '..0033333300..',
+  '.003300003300.',
+  '.030030300030.',
+  '0300303003 030'.replace(' ', '0'),
+  '0300030300030.',
+  '0330003030300.',
+  '.03300030030..',
+  '..003333300...',
+  '....00000.....',
+];
+
 const VENTILO: Art = [
   '..000000..',
   '.03300330.',
@@ -2257,6 +2318,9 @@ export const SHEETS: Record<string, Record<string, Art>> = {
 
 /** Images fixes. */
 export const IMAGES: Record<string, Art> = {
+  poster: POSTER,
+  harnais: HARNAIS,
+  caillou: CAILLOU,
   maman: MAMAN,
   papa: PAPA,
   maitresse: MAITRESSE,

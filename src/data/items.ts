@@ -10,13 +10,16 @@ export type ItemId =
   | 'croute'
   | 'pistolet-eau'
   | 'parapente'
-  | 'chaussure'
   | 'bouchon'
   | 'noisette'
   | 'ticket'
   | 'ballon-degonfle'
   | 'plume'
-  | 'dessin';
+  | 'dessin'
+  /** Le harnais d'escalade, un cadeau d'anniversaire d'une autre année. Facultatif. */
+  | 'harnais'
+  /** Le caillou aux cristaux : le seul objet du jeu qui vaille vingt sur vingt. */
+  | 'caillou';
 
 export interface ItemDef {
   id: ItemId;
@@ -32,13 +35,14 @@ const SPRITES: Record<ItemId, string> = {
   parapente: 'parapente',
   pizza: 'pizza',
   croute: 'pizza',
-  chaussure: 'chaussure',
   bouchon: 'bouchon',
   noisette: 'noisette',
   ticket: 'ticket',
   'ballon-degonfle': 'ballon',
   plume: 'plume',
   dessin: 'dessin',
+  harnais: 'harnais',
+  caillou: 'caillou',
 };
 
 const fiche = (id: ItemId): ItemDef => ({
@@ -53,11 +57,12 @@ export const ITEMS: Record<ItemId, ItemDef> = {
   parapente: fiche('parapente'),
   pizza: fiche('pizza'),
   croute: fiche('croute'),
-  chaussure: fiche('chaussure'),
   bouchon: fiche('bouchon'),
   noisette: fiche('noisette'),
   ticket: fiche('ticket'),
   'ballon-degonfle': fiche('ballon-degonfle'),
   plume: fiche('plume'),
   dessin: fiche('dessin'),
+  harnais: fiche('harnais'),
+  caillou: fiche('caillou'),
 };

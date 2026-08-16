@@ -121,6 +121,11 @@ un bouchon, Nino. »* La vieille chaussure, elle, peut valoir vingt : il faut os
 *« Je ne sais pas »* puis *« Je l'ai décidé »*, et c'est exactement le genre de réponses que ce
 devoir veut récompenser.
 
+**Un seul objet vaut vingt sur vingt : le caillou aux cristaux.** Tous les autres
+plafonnent à seize — la question « en quoi c'est de l'art ? » n'a qu'une réponse qui la
+retourne complètement, et c'est un caillou gris qui cache des étoiles. Il est posé sur la
+bibliothèque du salon, et c'est un vrai cadeau d'un anniversaire d'avant.
+
 **Et le vingt sur vingt vaut une pièce**, une seule fois : *« Ne le dis pas aux autres. »* La
 maîtresse ne la donne qu'au premier sans-faute — refaire vingt avec un autre objet ne donne rien,
 et elle ne s'en explique pas.
@@ -132,7 +137,6 @@ d'art de Nino : *« Rapporte-moi un objet, et explique-moi en quoi c'est de l'ar
 
 | L'objet | Où | Ce qu'elle en dit |
 |---|---|---|
-| Une **vieille chaussure** | le quai de l'Erdre | *« Ah ! Tu as apporté quelque chose. »* |
 | Le **bouchon de la baignoire** | la salle de bain, après le poisson | *« Un bouchon. »* |
 | Une **noisette** | un coin de la cour | elle la regarde ; la noisette ne bouge pas |
 | Un **ticket de tram** | sous le tram, sur la place | *« Poinçonné, en plus. »* |
@@ -1784,6 +1788,27 @@ Deux détails qui font la différence entre une manette et des boutons : **un do
 de ◀ vers ▶ change de direction** (il faut relâcher la capture que le navigateur donne au
 premier bouton touché), et **un doigt levé hors de la console relâche quand même la touche**
 — sans quoi Nino continue de marcher tout seul.
+
+## Les cadeaux des années d'avant
+
+Trois objets de la vraie vie de Nino sont posés dans le jeu — **des choses à regarder, pas
+des mécaniques** : leur force est d'être des souvenirs, et une collection les transformerait
+en cases à cocher.
+
+**Le poster « LITTLE NINO »** est accroché au mur du fond de sa chambre, à la place du
+ventilateur qui ne servait plus qu'à une ligne de l'écran de fin. C'est un dessin de lui en
+train de voler, bras écartés — vu dans les premières minutes, il ne dit rien ; il devient
+une prophétie une fois qu'on a sauté du toit de la Tour de Bretagne. Quand Nino rentre par
+la fenêtre, cette nuit-là, il le regarde autrement : *« C'est à peu près ça. »*
+
+**Le harnais d'escalade** attend dans la mezzanine, avec ce qui ne sert qu'une fois par an.
+Le prendre ne débloque rien : c'est **deux phrases au moment de sauter** — *« Nino serre le
+harnais. Celui de son anniversaire. »* Et si on ne l'a pas, c'est Moon qui le remarque :
+*« Ç'aurait été plus sûr avec un harnais. » « Enfin. » « Vas-y. »* Un cadeau rangé dans une
+mezzanine ne doit jamais devenir un péage.
+
+**Le caillou aux cristaux** est le seul des trois à avoir un rôle : il rejoint le projet
+d'art, où il est le seul objet du jeu qui vaille vingt sur vingt.
 
 ## Le journal se pagine, partout
 

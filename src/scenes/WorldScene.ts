@@ -74,6 +74,7 @@ import {
   QUEL_OBJET,
   beatObjet,
   portables,
+  HARNAIS_AVANT_LE_SAUT,
 } from '../data/textes';
 import {
   CACHETTES,
@@ -2920,10 +2921,21 @@ export class WorldScene extends Phaser.Scene {
           onDone: () => {
             this.applyEffects(branche.effects, l);
             if (reponse !== 0) return;
-            this.transitioning = true;
-            portalWarp(this, this.pal, () => {
-              this.scene.stop('Ui');
-              this.scene.start('Parapente');
+            // **Le harnais compte pour deux phrases, pas pour un péage.** Qui l'a pris le
+            // sent au moment de sauter ; qui ne l'a pas s'entend le dire par Moon, et
+            // saute quand même — on ne bloque pas une fin de jeu pour un objet facultatif.
+            const avec = state.has('harnais');
+            say({
+              speaker: avec ? undefined : 'Moon',
+              lines: avec ? HARNAIS_AVANT_LE_SAUT.avec : HARNAIS_AVANT_LE_SAUT.sans,
+              focusY: l.def.y,
+              onDone: () => {
+                this.transitioning = true;
+                portalWarp(this, this.pal, () => {
+                  this.scene.stop('Ui');
+                  this.scene.start('Parapente');
+                });
+              },
             });
           },
         });

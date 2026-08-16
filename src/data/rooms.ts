@@ -718,11 +718,15 @@ export const ROOMS: Record<string, Room> = {
         dialogue: 'coffre',
       },
       {
-        id: 'ventilo',
-        ...at(17, 13),
-        sprite: 'ventilo',
-        solid: true,
-        dialogue: 'ventilo',
+        // **Le poster, sur le mur du fond**, à la place du ventilateur qui ne servait plus
+        // qu'à une ligne de l'écran de fin. Un dessin de Nino qui vole, accroché là depuis
+        // un anniversaire d'avant : la seule chose de cette chambre qui sait comment la
+        // nuit va finir.
+        id: 'poster',
+        ...at(11, 1),
+        sprite: 'poster',
+        dialogue: 'poster',
+        portee: 20,
       },
       {
         id: 'plante-chambre',
@@ -981,6 +985,16 @@ export const ROOMS: Record<string, Room> = {
         dialogue: 'bibliotheque',
       },
       { id: 'carton', x: 40, y: 24, sprite: 'carton', solid: true },
+      // Le harnais d'escalade, posé sur l'étagère avec ce qui ne sert qu'une fois par an.
+      {
+        id: 'harnais',
+        x: 92,
+        y: 46,
+        sprite: 'harnais',
+        dialogue: 'harnais',
+        hideIfFlag: 'harnais-pris',
+        portee: 16,
+      },
     ],
     doors: [
       // On redescend en marchant dans l'escalier, en haut à droite.
@@ -1271,6 +1285,19 @@ export const ROOMS: Record<string, Room> = {
         sprite: 'bibliotheque',
         solid: true,
         dialogue: 'bibliotheque',
+      },
+
+      // **Le caillou aux cristaux**, posé sur la bibliothèque. Un cadeau d'un autre
+      // anniversaire, qu'on a cassé un jour pour voir — et qui s'est révélé plein
+      // d'étoiles. C'est le seul objet du jeu qui vaille vingt sur vingt.
+      {
+        id: 'caillou',
+        x: 26,
+        y: 20,
+        sprite: 'caillou',
+        dialogue: 'caillou',
+        hideIfFlag: 'caillou-pris',
+        portee: 16,
       },
       {
         id: 'table-ronde',
@@ -2200,14 +2227,6 @@ export const ROOMS: Record<string, Room> = {
         hideIfFlag: 'plume-prise',
       },
       // Le projet d'art de Nino, qui ne le sait pas encore.
-      {
-        id: 'chaussure',
-        x: 128,
-        y: 86,
-        sprite: 'chaussure',
-        dialogue: 'chaussure',
-        hideIfFlag: 'chaussure-prise',
-      },
       {
         id: 'panneau-erdre',
         x: 80,
