@@ -1575,6 +1575,10 @@ vide n'a pas le même effet.
 **La forme est celle d'un générique de film** : le nom en capitales, le poste, puis un détail dit
 sans rire. Tout le comique est dans le poste — et jamais dans une vanne ajoutée par-dessus.
 
+**Ça s'ouvre comme au cinéma** : un écran sans personne, *« AVEC, DANS LES RÔLES
+PRINCIPAUX »*, et tout ce qui suit devient une distribution. Sans lui, le générique
+commençait par un homme sur une terrasse et il fallait deviner qu'on lisait des crédits.
+
 **Et l'ordre raconte quelque chose** : d'abord les parents, qui ont tenu la journée sans rien
 en dire ; puis les bêtes, qui ont fait tout le travail ; puis le bateau, qui a coulé pour de
 bon ; puis Nino, qui dort. Les seconds rôles — la maîtresse, le jardinier — sont sortis au
@@ -1620,8 +1624,9 @@ bête et non le bord le plus proche : un passant qui court vers l'araignée ne f
 qui partent ensemble, c'est une chorégraphie ; l'un après l'autre, c'est une rumeur qui se
 répand. La rue qui se vide lui donne raison. **Et pendant que l'écureuil nie toute participation à ce tournage, un enfant l'arrose au
 pistolet à eau** (`tireur`), en boucle, sans un mot d'explication. **Il encaisse et il
-déguerpit** : un bond en arrière à chaque giclée, puis il file se poser ailleurs dans le
-cadre — et le jet le retrouve, parce que la cible est relue au moment du tir. Nier une
+déguerpit** : un bond en arrière à chaque giclée, puis il va se poser un peu plus loin — quatre
+pas de côté autour de sa place, jamais à l'autre bout de l'écran, sinon l'enfant et lui ne sont
+plus dans le même plan. Et le jet le retrouve, parce que la cible est relue au moment du tir. Nier une
 participation en restant planté là, ce n'est pas nier. **Et si le bateau a coulé — c'est-à-dire toujours, mais le générique ne présume rien
 (`si`) — on descend le voir** : l'épave couchée dans la vase au fond de l'Erdre, penchée
 sur le flanc, avec trois poissons qui tournent autour sans se presser. **En vert, pas en

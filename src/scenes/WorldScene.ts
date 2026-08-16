@@ -3334,7 +3334,10 @@ export class WorldScene extends Phaser.Scene {
       // **Il ne tient pas en place.** Il détale d'un bout du cadre à l'autre entre deux
       // giclées — et le jet le suit : la cible est relue au moment du tir, pas fixée une
       // fois pour toutes. Nier une participation en restant planté là, ce n'est pas nier.
-      const perchoirs = [cite.x, 24, GB.W - 40, 72];
+      // Quatre pas de côté autour de sa place, pas quatre coins de l'écran : il gigote,
+      // il ne déménage pas — et l'enfant reste dans le même plan que lui.
+      const chez = cite.x;
+      const perchoirs = [chez, chez + 14, chez - 8, chez + 6];
       let ou = 0;
       const detaler = () => {
         ou = (ou + 1) % perchoirs.length;

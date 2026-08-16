@@ -816,6 +816,16 @@ export const CREDITS: Array<{
   /** Le carton n'existe que si ce drapeau est posé. */
   si?: string;
 }> = [
+  /**
+   * **L'annonce, comme au cinéma.** Un écran sans personne, juste la formule — et tout ce
+   * qui suit devient une distribution. Sans elle, le générique commençait par un homme sur
+   * une terrasse et il fallait deviner qu'on lisait des crédits.
+   */
+  {
+    room: 'terrasse',
+    lignes: ['AVEC, DANS LES RÔLES PRINCIPAUX'],
+    duree: 2200,
+  },
   // ── D'abord les parents : ce sont eux qui ont tenu la journée sans rien en dire ──
   {
     room: 'terrasse',
