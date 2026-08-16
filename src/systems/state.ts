@@ -95,15 +95,26 @@ class GameState {
       eauDepuis: this.eauDepuis,
       room: this.room,
     };
-    localStorage.setItem(SAVE_KEY, JSON.stringify(snap));
+    // **Écrire peut échouer** : navigation privée, quota plein, cookies refusés — et
+    // `save()` est appelé à chaque drapeau posé. Une partie qui ne se retient pas vaut
+    // mieux qu'une partie qui plante.
+    try {
+      localStorage.setItem(SAVE_KEY, JSON.stringify(snap));
+    } catch {
+      // Tant pis : on joue, ça ne se souviendra pas.
+    }
   }
 
   /** Vrai si une partie a été chargée. */
   load(): boolean {
-    const raw = localStorage.getItem(SAVE_KEY);
+    const raw = this.lire();
     if (!raw) return false;
     try {
       const snap = JSON.parse(raw) as Snapshot;
+      // **On valide avant de toucher à l'état.** `reset()` d'abord, puis une lecture qui
+      // échoue à mi-chemin, laissait une partie à moitié vide alors que l'écran-titre
+      // continuait de proposer « continuer ».
+      if (!Array.isArray(snap?.items) || !Array.isArray(snap?.flags)) return false;
       this.reset();
       snap.items.forEach((i) => this.items.add(i));
       snap.flags.forEach((f) => this.flags.add(f));
@@ -114,19 +125,32 @@ class GameState {
       this.hermione = snap.hermione ?? 0;
       this.ecrans = snap.ecrans ?? 0;
       this.eauDepuis = snap.eauDepuis ?? 0;
-      this.room = snap.room;
+      this.room = snap.room ?? 'chambre';
       return true;
     } catch {
       return false;
     }
   }
 
+  /** Lire le disque sans jamais lever : certains navigateurs refusent l'accès lui-même. */
+  private lire(): string | null {
+    try {
+      return localStorage.getItem(SAVE_KEY);
+    } catch {
+      return null;
+    }
+  }
+
   hasSave() {
-    return localStorage.getItem(SAVE_KEY) !== null;
+    return this.lire() !== null;
   }
 
   clearSave() {
-    localStorage.removeItem(SAVE_KEY);
+    try {
+      localStorage.removeItem(SAVE_KEY);
+    } catch {
+      // Rien à effacer si l'on n'a rien pu écrire.
+    }
   }
 }
 

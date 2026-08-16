@@ -1492,7 +1492,11 @@ export const ROOMS: Record<string, Room> = {
         w: 16,
         h: 8,
         to: { room: 'cuisine', x: 80, y: 118 },
+        // **La maison se rouvre une fois Nino rentré.** Bloquée « pour toujours », elle
+        // enfermait dehors qui ressortait la nuit du retour : plus de lit, plus de
+        // gâteau, plus de fin — et la sauvegarde écrite à chaque pièce traversée.
         blockedIfFlag: 'maman-quai-partie',
+        blockedSaufFlag: 'parapente-rentre',
         blockedDialogue: ['maison-fermee'],
       },
       {
@@ -1502,6 +1506,7 @@ export const ROOMS: Record<string, Room> = {
         h: 8,
         to: { room: 'salon', x: 80, y: 124 },
         blockedIfFlag: 'maman-quai-partie',
+        blockedSaufFlag: 'parapente-rentre',
         blockedDialogue: ['maison-fermee'],
       },
     ],

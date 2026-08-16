@@ -65,7 +65,10 @@ export class JournalScene extends Phaser.Scene {
         return;
       }
       if (b.left || b.right) {
-        this.page = (this.page + 1) % PAGES.length;
+        // Le pied de page annonce « < > » : la flèche gauche doit reculer, faute de quoi
+        // il fallait refaire le tour complet des cinq pages pour revenir d'une.
+        const sens = b.left ? -1 : 1;
+        this.page = (this.page + sens + PAGES.length) % PAGES.length;
         this.render();
       }
     };

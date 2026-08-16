@@ -311,6 +311,10 @@ export class WorldScene extends Phaser.Scene {
     // plafond restait plein à vie.
     this.zzzVivants = 0;
     this.zzzNes = 0;
+    // Mêmes compteurs, même piège : un redémarrage détruit les tweens sans passer par
+    // leur `onComplete`, et la pluie ne retombait plus jamais.
+    this.gouttes = 0;
+    this.jets = 0;
     this.errants = [];
     this.transitioning = false;
   }
@@ -610,6 +614,17 @@ export class WorldScene extends Phaser.Scene {
     // façon synchrone, donc la boîte de dialogue peut se fermer (et déverrouiller)
     // pendant l'emit. Sans ce garde-fou, le même appui fermerait le dialogue puis
     // rouvrirait aussitôt le même dialogue.
+    /**
+     * **START répond toujours.** Le menu était lu tout en bas de la boucle, après le
+     * garde qui suspend les commandes pendant un dialogue — or le jeu s'ouvre sur un
+     * dialogue, et le joueur appuyait sans que rien ne se passe. Un bouton de menu qui
+     * ne répond qu'à certains moments n'a l'air que d'être cassé.
+     */
+    if (btn.reglages && !this.transitioning) {
+      this.ouvrirLesReglages();
+      return;
+    }
+
     const wasLocked = this.transitioning || state.locked;
     bus.emit(EV.input, btn);
 
@@ -663,8 +678,7 @@ export class WorldScene extends Phaser.Scene {
       state.locked = true;
       this.scene.launch('Journal');
     }
-    // START : le menu de la console, par-dessus la partie mise en pause.
-    if (btn.reglages) this.ouvrirLesReglages();
+
     // ÉCHAP : on quitte la partie et on revient au titre — d'où l'on peut repartir à zéro.
     if (btn.cancel) this.quitter();
   }

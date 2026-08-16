@@ -3,7 +3,7 @@ import { GB, KEYS } from '../config';
 import { shade, shadeHex } from '../art/palette';
 import { animKey, texKey } from '../art/pixels';
 import { state } from '../systems/state';
-import { jouerAmbiance, jouerMusique } from '../systems/audio';
+import { jouer, jouerAmbiance, jouerMusique } from '../systems/audio';
 import { TITRE } from '../data/textes';
 import { PixelText, measure } from '../ui/PixelText';
 
@@ -77,10 +77,10 @@ export class TitleScene extends Phaser.Scene {
     };
     invite(34, 108, 'ecureuil', 'queue-0', 'ecureuil-queue', state.flag('ecureuil-vu'));
     invite(50, 108, 'hermione', 'idle-0', 'hermione-idle', state.hermione > 0);
-    invite(112, 108, 'papa-capitaine', 'marche-0', undefined, state.flag('papa-capitaine-vu'));
+    invite(112, 108, 'papa-capitaine', 'marche-0', undefined, state.flag('papa-sauve'));
     // Gérard pose dans son seau, et il en saute de temps en temps : c'est comme ça qu'il
     // voyage, c'est comme ça qu'il pose.
-    invite(132, 108, 'seau', 'eau-0', 'seau-saute', state.flag('poisson-arrive'));
+    invite(132, 108, 'seau', 'eau-0', 'seau-saute', state.flag('poisson-vu'));
     // L'araignée n'est pas dans le rang : elle pend à son fil, sous le « LES » du titre,
     // à sa taille normale — et elle monte et descend, lentement, avec une pause à chaque
     // bout. Le fil s'arrête à elle : il grandit et raccourcit avec la descente.
@@ -136,15 +136,34 @@ export class TitleScene extends Phaser.Scene {
 
     const kb = this.input.keyboard!;
     KEYS.action.forEach((c) =>
-      kb.addKey(c).on('down', () => (this.demande ? this.begin(true) : this.begin(false))),
+      kb.addKey(c).on('down', () => {
+        jouer(this, 'valider', { volume: 0.6 });
+        this.demande ? this.begin(true) : this.begin(false);
+      }),
     );
     // ÉCHAP : renoncer à effacer. C'est tout ce qu'il fait ici.
-    KEYS.cancel.forEach((c) => kb.addKey(c).on('down', () => this.demande && this.proposer()));
+    KEYS.cancel.forEach((c) =>
+      kb.addKey(c).on('down', () => {
+        if (!this.demande) return;
+        jouer(this, 'menu', { volume: 0.5 });
+        this.proposer();
+      }),
+    );
     // START (P au clavier) : les réglages, comme depuis n'importe où dans le jeu.
     KEYS.reglages.forEach((c) =>
-      kb.addKey(c).on('down', () => !this.demande && this.scene.start('Reglages')),
+      kb.addKey(c).on('down', () => {
+        if (this.demande) return;
+        jouer(this, 'menu', { volume: 0.5 });
+        this.scene.start('Reglages');
+      }),
     );
-    kb.addKey('R').on('down', () => this.demander());
+    // R au clavier, B sur la manette : la seule chose que B peut vouloir dire ici.
+    const effacer = () => {
+      jouer(this, 'menu', { volume: 0.5 });
+      this.demander();
+    };
+    kb.addKey('R').on('down', effacer);
+    KEYS.arroser.forEach((c) => kb.addKey(c).on('down', effacer));
   }
 
   /**

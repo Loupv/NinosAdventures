@@ -16,9 +16,15 @@ const CLEF = 'ninos-adventures/reglages/v1';
 export interface Reglages {
   son: boolean;
   raccourcis: boolean;
+  /**
+   * **Le jeu a été fini au moins une fois.** C'est ce qui déverrouille la liste « Aller
+   * à… » : avant, sauter dans l'histoire n'aurait servi qu'à s'en priver — et un enfant
+   * qui explore le menu aurait pu effacer sa nuit d'un appui. Après, c'est un jouet.
+   */
+  fini: boolean;
 }
 
-const DEFAUTS: Reglages = { son: true, raccourcis: false };
+const DEFAUTS: Reglages = { son: true, raccourcis: false, fini: false };
 
 function lire(): Reglages {
   try {
@@ -28,6 +34,7 @@ function lire(): Reglages {
     return {
       son: typeof vu.son === 'boolean' ? vu.son : DEFAUTS.son,
       raccourcis: typeof vu.raccourcis === 'boolean' ? vu.raccourcis : DEFAUTS.raccourcis,
+      fini: typeof vu.fini === 'boolean' ? vu.fini : DEFAUTS.fini,
     };
   } catch {
     // Navigateur sans stockage, mode privé, quota plein : on joue avec les défauts.

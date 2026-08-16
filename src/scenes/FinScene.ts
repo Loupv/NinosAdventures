@@ -3,6 +3,7 @@ import { GB, KEYS } from '../config';
 import { shade as shadeNum, shadeHex } from '../art/palette';
 import { animKey, texKey } from '../art/pixels';
 import { state } from '../systems/state';
+import { enregistrerReglages, reglages } from '../systems/reglages';
 import { jouerAmbiance, jouerMusique } from '../systems/audio';
 import { CACHETTES } from '../data/hermione';
 import { PIECES } from '../data/pieces';
@@ -34,6 +35,12 @@ export class FinScene extends Phaser.Scene {
   }
 
   create(): void {
+    // Finir le jeu déverrouille « Aller à… » dans les réglages : on ne saute pas une
+    // histoire qu'on n'a pas encore vécue.
+    if (!reglages.fini) {
+      reglages.fini = true;
+      enregistrerReglages();
+    }
     state.palette = PALETTE;
     // La mélodie de la maison, mais du soir. Tant que le fichier n'est pas posé : silence,
     // ce qui va très bien à un enfant endormi.
@@ -111,8 +118,8 @@ export class FinScene extends Phaser.Scene {
       [50, 'hermione', 'idle-0', 'hermione-idle', state.hermione > 0],
       [68, 'nino', 'down-0', 'nino-walk-down', true],
       [86, 'moon', 'idle-0', 'moon-idle', true],
-      [106, 'papa-capitaine', 'marche-0', undefined, state.flag('papa-capitaine-vu')],
-      [130, 'seau', 'eau-0', 'seau-saute', state.flag('poisson-arrive')],
+      [106, 'papa-capitaine', 'marche-0', undefined, state.flag('papa-sauve')],
+      [130, 'seau', 'eau-0', 'seau-saute', state.flag('poisson-vu')],
     ];
     for (const [x, sprite, frame, anim, la] of troupe) {
       if (!la) continue;

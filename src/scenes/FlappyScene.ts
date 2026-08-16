@@ -82,6 +82,12 @@ export class FlappyScene extends Phaser.Scene {
   }
 
   create(): void {
+    // **Les champs d'une scène survivent à son redémarrage.** Sans ces deux lignes, on
+    // revenait dans le rêve avec `etat === 'gagne'` et un `gagneA` vieux de plusieurs
+    // minutes : le premier appui réveillait Nino aussitôt, et le mini-jeu ne se rejouait
+    // plus jamais. C'est le même piège que les Z des dormeurs.
+    this.etat = 'attente';
+    this.gagneA = 0;
     state.palette = PALETTE;
     // Le rêve a sa musique à lui — et tant que le fichier n'est pas posé, ça coupe
     // simplement celle de la maison : on rêve en silence.

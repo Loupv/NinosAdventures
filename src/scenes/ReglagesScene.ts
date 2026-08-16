@@ -2,10 +2,11 @@ import Phaser from 'phaser';
 import { GB, KEYS } from '../config';
 import { shade, shadeHex } from '../art/palette';
 import { CREDITS, REGLAGES } from '../data/textes';
-import { couperSon } from '../systems/audio';
+import { couperSon, jouer } from '../systems/audio';
 import { enregistrerReglages, reglages } from '../systems/reglages';
 import { ETAPES, preparerEtape, type Etape } from '../dev/etapes';
 import { PixelText, measure } from '../ui/PixelText';
+import { MANETTE } from '../ui/touches';
 
 /**
  * **Le couvercle de la console.** Deux interrupteurs — le son, les raccourcis — et le
@@ -36,6 +37,13 @@ interface Ligne {
   activer: (scene: ReglagesScene) => void;
 }
 
+/**
+ * **« Aller à… » ne dépend de rien.** C'était la troisième ligne d'un réglage qui parle
+ * de touches numérotées — or sur une tablette il n'y a pas de touches, et c'était
+ * justement là que la liste servait. Elle est donc toujours offerte, et l'interrupteur
+ * des raccourcis ne gouverne plus que les chiffres du clavier : il disparaît là où il
+ * n'y a pas de clavier.
+ */
 const INTERRUPTEURS: Ligne[] = [
   {
     nom: REGLAGES.son,
@@ -47,21 +55,33 @@ const INTERRUPTEURS: Ligne[] = [
       couperSon(scene, !reglages.son);
     },
   },
-  {
-    nom: REGLAGES.raccourcis,
-    aide: REGLAGES.aideRaccourcis,
-    valeur: () => (reglages.raccourcis ? REGLAGES.oui : REGLAGES.non),
-    activer: () => {
-      reglages.raccourcis = !reglages.raccourcis;
-    },
-  },
-  {
-    nom: REGLAGES.allerA,
-    aide: REGLAGES.aideAllerA,
-    valeur: () => '',
-    activer: (scene) => scene.ouvrirLesEtapes(),
-  },
+  ...(MANETTE
+    ? []
+    : [
+        {
+          nom: REGLAGES.raccourcis,
+          aide: REGLAGES.aideRaccourcis,
+          valeur: () => (reglages.raccourcis ? REGLAGES.oui : REGLAGES.non),
+          activer: () => {
+            reglages.raccourcis = !reglages.raccourcis;
+          },
+        },
+      ]),
 ];
+
+/** Les lignes visibles maintenant : « Aller à… » n'existe qu'une fois le jeu fini. */
+function lignesVisibles(): Ligne[] {
+  if (!reglages.fini) return INTERRUPTEURS;
+  return [
+    ...INTERRUPTEURS,
+    {
+      nom: REGLAGES.allerA,
+      aide: REGLAGES.aideAllerA,
+      valeur: () => '',
+      activer: (scene) => scene.ouvrirLesEtapes(),
+    },
+  ];
+}
 
 /** Les étapes proposées : celles que le clavier atteint par un chiffre. */
 const SAUTS: Etape[] = ETAPES.filter((e) => /^[0-9]$/.test(e.touche));
@@ -74,6 +94,8 @@ export class ReglagesScene extends Phaser.Scene {
   /** La scène à réveiller en sortant : le monde si on vient d'une partie, sinon le titre. */
   private retour?: string;
   private page: 'reglages' | 'etapes' = 'reglages';
+  /** L'étape choisie, en attente de confirmation : sauter efface la partie en cours. */
+  private aConfirmer?: Etape;
   private choix = 0;
   private lignes: PixelText[] = [];
   private aide!: PixelText;
@@ -119,31 +141,38 @@ export class ReglagesScene extends Phaser.Scene {
   /** La liste des moments du jeu, quand les raccourcis sont allumés. */
   ouvrirLesEtapes(): void {
     this.page = 'etapes';
+    this.aConfirmer = undefined;
     this.choix = 0;
     this.peindre();
   }
 
   private get combien(): number {
-    if (this.page === 'etapes') return SAUTS.length;
-    // La ligne « Aller à… » n'existe que si les raccourcis sont allumés.
-    return reglages.raccourcis ? INTERRUPTEURS.length : INTERRUPTEURS.length - 1;
+    return this.page === 'etapes' ? SAUTS.length : lignesVisibles().length;
   }
 
   private bouger(sens: number): void {
     const n = this.combien;
     this.choix = (this.choix + sens + n) % n;
+    jouer(this, 'menu', { volume: 0.5 });
     this.peindre();
   }
 
   private activer(): void {
-    if (this.page === 'etapes') {
-      this.sauter(SAUTS[this.choix]);
+    jouer(this, 'valider', { volume: 0.6 });
+    // **On demande avant de sauter.** Une étape repart de zéro : elle écrase la partie
+    // en cours, exactement comme « repartir à zéro » sur l'écran-titre, qui pose la
+    // question. Un enfant qui explore le menu ne doit pas perdre sa nuit d'un appui.
+    if (this.aConfirmer) {
+      this.sauter(this.aConfirmer);
       return;
     }
-    INTERRUPTEURS[this.choix].activer(this);
+    if (this.page === 'etapes') {
+      this.aConfirmer = SAUTS[this.choix];
+      this.peindre();
+      return;
+    }
+    lignesVisibles()[this.choix].activer(this);
     enregistrerReglages();
-    // Éteindre les raccourcis efface la ligne sur laquelle on se tient : on remonte.
-    if (this.choix >= this.combien) this.choix = this.combien - 1;
     this.peindre();
   }
 
@@ -166,6 +195,18 @@ export class ReglagesScene extends Phaser.Scene {
     const etapes = this.page === 'etapes';
     this.centrer(this.titre, etapes ? REGLAGES.etapes : REGLAGES.titre, 14);
 
+    // La question posée, la liste s'efface : on ne choisit plus, on répond.
+    if (this.aConfirmer) {
+      this.lignes.forEach((t) => t.setLines([''], shadeHex(PALETTE, 3)));
+      this.curseur.setVisible(false);
+      this.centrer(this.lignes[1], court(this.aConfirmer.nom), 44);
+      this.centrer(this.lignes[3], REGLAGES.confirmer, 66);
+      this.centrer(this.aide, REGLAGES.confirmerOui, 100, 3);
+      this.centrer(this.pied, REGLAGES.confirmerNon, 114);
+      return;
+    }
+    this.curseur.setVisible(true);
+
     this.lignes.forEach((t, i) => {
       if (i >= this.combien) {
         t.setLines([''], shadeHex(PALETTE, 3));
@@ -173,28 +214,36 @@ export class ReglagesScene extends Phaser.Scene {
       }
       const texte = etapes
         ? court(SAUTS[i].nom)
-        : `${INTERRUPTEURS[i].nom}${this.remplissage(i)}${INTERRUPTEURS[i].valeur()}`;
+        : `${lignesVisibles()[i].nom}${this.remplissage(i)}${lignesVisibles()[i].valeur()}`;
       t.setLines([texte], shadeHex(PALETTE, 3));
     });
 
     this.curseur.setY(HAUT + 4 + this.choix * PAS);
     // La liste occupe tout l'écran : son aide et son pied de page céderaient la place à
     // une ligne de trop, et on sait déjà comment revenir — on vient d'entrer.
-    this.centrer(this.aide, etapes ? '' : INTERRUPTEURS[this.choix].aide, 118, 2);
+    this.centrer(this.aide, etapes ? '' : lignesVisibles()[this.choix].aide, 118, 2);
     this.centrer(this.pied, etapes ? '' : REGLAGES.sortir, 131);
   }
 
   /** L'espace entre le nom et sa valeur, pour que la colonne de droite s'aligne. */
   private remplissage(i: number): string {
-    const large = 20 - INTERRUPTEURS[i].nom.length - INTERRUPTEURS[i].valeur().length;
+    const l = lignesVisibles()[i];
+    const large = 20 - l.nom.length - l.valeur().length;
     return ' '.repeat(Math.max(1, large));
   }
 
   private sortir(): void {
+    jouer(this, 'menu', { volume: 0.5 });
+    // On renonce au saut avant de quitter la liste : un retour à la fois.
+    if (this.aConfirmer) {
+      this.aConfirmer = undefined;
+      this.peindre();
+      return;
+    }
     // Depuis la liste, on remonte d'abord aux réglages : un écran, un retour.
     if (this.page === 'etapes') {
       this.page = 'reglages';
-      this.choix = INTERRUPTEURS.length - 1;
+      this.choix = lignesVisibles().length - 1;  // sur « Aller à… », d'où l'on vient
       this.peindre();
       return;
     }

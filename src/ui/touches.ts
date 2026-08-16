@@ -32,12 +32,15 @@ const NOMS: ReadonlyArray<readonly [RegExp, string]> = [
 ];
 
 /**
- * **Le jeton `%REG%`** : la touche du menu n'a pas de nom commun entre les deux mondes —
- * c'est **P** au clavier et **START** sur la manette, et aucun remplacement de mot ne
- * pouvait deviner ça (un « P » se promène dans trop de phrases).
+ * **Les jetons `%REG%` et `%EFF%`** : la touche du menu et celle qui efface une partie
+ * n'ont pas de nom commun entre les deux mondes — c'est **P** et **R** au clavier,
+ * **START** et **B** sur la manette. Aucun remplacement de mot ne pouvait deviner ça :
+ * un « P » ou un « R » se promènent dans trop de phrases.
  */
 export function enTouchesDeLaConsole(ligne: string): string {
-  let sortie = ligne.replace(/%REG%/g, MANETTE ? 'START' : 'P');
+  let sortie = ligne
+    .replace(/%REG%/g, MANETTE ? 'START' : 'P')
+    .replace(/%EFF%/g, MANETTE ? 'B' : 'R');
   if (!MANETTE) return sortie;
   for (const [motif, remplacement] of NOMS) sortie = sortie.replace(motif, remplacement);
   return sortie;

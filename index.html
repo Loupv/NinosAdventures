@@ -126,8 +126,11 @@
           border-radius: 0 6px 6px 0;
         }
 
-        /* A et B, en biais comme sur la console d'origine. */
+        /* A et B, en biais comme sur la console d'origine, contre le bord droit. */
         #ab {
+          /* Sans ça, ils se posaient en deuxième colonne : au milieu, loin du pouce. */
+          grid-column: 3;
+          justify-self: end;
           display: flex;
           align-items: center;
           gap: 12px;

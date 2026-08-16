@@ -40,7 +40,7 @@ export const TITRE = {
   ligne2: 'DE NINO',
   continuer: 'ESPACE : CONTINUER',
   commencer: 'APPUIE SUR ESPACE',
-  recommencer: 'R : REPARTIR À ZÉRO',
+  recommencer: '%EFF% : REPARTIR À ZÉRO',
   reglages: '%REG% : RÉGLAGES',
   effacer: 'TOUT EFFACER ?',
   effacerOui: 'ESPACE : OUI',
@@ -800,6 +800,10 @@ export const REGLAGES = {
   aideAllerA: 'Sauter à un moment du jeu.',
   /** Le titre de la liste des étapes. */
   etapes: 'ALLER À',
+  /** Sauter écrase la partie en cours : on le demande, comme pour tout effacer. */
+  confirmer: 'La partie en cours sera perdue.',
+  confirmerOui: 'ESPACE : OUI',
+  confirmerNon: '%REG% : NON',
 };
 
 /**
