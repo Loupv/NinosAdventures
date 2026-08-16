@@ -67,6 +67,8 @@ export class FlappyScene extends Phaser.Scene {
   private tuyaux: Tuyau[] = [];
   private score = 0;
   private etat: 'attente' | 'vol' | 'perdu' | 'gagne' = 'attente';
+  /** L'heure de la victoire : l'écran refuse de se fermer pendant la lecture. */
+  private gagneA = 0;
   private titre!: PixelText;
   private sous!: PixelText;
   /** Le fond clair posé sous les deux lignes : sans lui, elles tombent sur un tuyau noir. */
@@ -175,7 +177,10 @@ export class FlappyScene extends Phaser.Scene {
 
     if (this.etat !== 'vol') {
       if (appui) {
-        if (this.etat === 'gagne') this.repartir();
+        // **On martèle ESPACE pour voler** : sans ce délai, l'appui suivant fermait
+        // l'écran de victoire avant qu'on ait pu lire le nom de la pièce gagnée.
+        if (this.etat === 'gagne' && this.time.now - this.gagneA > 1800) this.repartir();
+        else if (this.etat === 'gagne') { /* trop tôt : on laisse lire */ }
         else {
           this.reinitialiser();
           this.annoncer(FUSEE.score(this.score), `${FUSEE.reessayer}   ${FUSEE.abandonner}`);
@@ -322,6 +327,7 @@ export class FlappyScene extends Phaser.Scene {
 
   private gagner(): void {
     this.etat = 'gagne';
+    this.gagneA = this.time.now;
     const neuve = !state.pieces.has('reve');
     state.pieces.add('reve');
     jouer(this, 'piece', { volume: 0.8 });

@@ -833,15 +833,18 @@ export const CREDITS: Array<{
       'effets spéciaux : pluie.',
       'Douze mètres, aucune doublure.',
     ],
+    qui: { sprite: 'elephant', x: 140, y: 26, frame: 'boit', anim: 'elephant-boit', scale: 2 },
   },
   {
     room: 'terrasse',
     lignes: ['PAPA', 'bateau, chapeau, alibis.', 'Cascades exécutées par lui-même.'],
+    qui: { sprite: 'papa', x: 52, y: 48 },
   },
   { room: 'tour-toit', lignes: ['LA TOUR DE BRETAGNE', 'décors.', 'N’a pas bougé de la nuit.'] },
   {
     room: 'cuisine',
     lignes: ['MAMAN', 'production, gâteau, sept bougies.', 'Savait depuis ce matin.'],
+    qui: { sprite: 'maman', x: 76, y: 58 },
   },
   {
     room: 'chambre',
@@ -1323,6 +1326,11 @@ export const MAMAN_PARTIE = ['Elle ne nous a pas vus…'];
 export const POISSON_RIT = ['« Hihihi ! »', '« Encore ! »', '« Ça, ça ne gratte pas. »'];
 
 export const POISSON_PART = { qui: 'Le poisson', lignes: ['« Aaaaaaaaaaaaaah. »'] };
+
+/** Le premier vingt sur vingt : elle le dit avant de donner, sinon la pièce tombe de nulle part. */
+export const MAITRESSE_PIECE = {
+  lignes: ['« Attends. »', '« Tiens — prends cette pièce. »', '« C’est ta récompense. »'],
+};
 
 export const BAREME: Bareme[] = [
   { min: 6, note: 20, lines: ['« ... »', '« Vingt sur vingt. »', '« Ne le dis pas aux autres. »'] },
@@ -2361,14 +2369,15 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
     {
       when: () => state.flag('poisson-essaye'),
       speaker: 'Le poisson',
-      lines: ['« Alors ? »', '« Qu’est-ce qui monte et descend sans bouger ? »'],
+      lines: ['« Alors ? »', '« Qu’est-ce qui avance et recule deux fois par jour, sans jamais être en retard ? »'],
       montre: { sprite: 'seau', frame: 'saute-0', x: 68, y: 40, depth: 72 },
       enigme: {
-        reponses: ['L’ascenseur', 'La mer', 'Un escalier'],
+        reponses: ['Le tram', 'La mer', 'Le facteur'],
         bonne: 1,
         juste: {
           lines: [
             '« La marée. Oui. »',
+            '« Jamais en retard. Pas comme le tram. »',
             'Le seau frémit. Il y a un escalier, maintenant.',
             '« Monte. Moi, j’y vais à mon rythme. »',
           ],
@@ -2389,18 +2398,19 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
         '« L’eau salée, ça gratte. Personne ne le dit. »',
         '« Puisque je suis là : une énigme par étage, et tout en haut. »',
         '« C’est la règle des tours. Toi aussi, ça te concerne. »',
-        '« Qu’est-ce qui monte et descend sans bouger ? »',
+        '« Qu’est-ce qui avance et recule deux fois par jour, sans jamais être en retard ? »',
       ],
       // Il sort la tête pour parler : c'est la révélation du seau.
       montre: { sprite: 'seau', frame: 'saute-0', x: 68, y: 40, depth: 72 },
       enigme: {
         // Jamais la bonne réponse en premier : un appui trop rapide sur ESPACE validait
         // le premier choix, et l'énigme se passait toute seule. Vaut pour toutes les tours.
-        reponses: ['L’ascenseur', 'La mer', 'Un escalier'],
+        reponses: ['Le tram', 'La mer', 'Le facteur'],
         bonne: 1,
         juste: {
           lines: [
             '« La marée. Oui. »',
+            '« Jamais en retard. Pas comme le tram. »',
             'Le seau frémit. Il y a un escalier, maintenant.',
             '« Monte. Moi, j’y vais à mon rythme. »',
           ],

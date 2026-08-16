@@ -1300,7 +1300,7 @@ déjà rencontrés — sauf un, et personne ne demande comment il est monté :
 
 | Étage | Qui | L'énigme | La bonne réponse |
 |---|---|---|---|
-| Hall | **Le poisson, dans un seau** | *« Qu'est-ce qui monte et descend sans bouger ? »* | La mer |
+| Hall | **Le poisson, dans un seau** | *« Qu'est-ce qui avance et recule deux fois par jour, sans jamais être en retard ? »* | La mer |
 | 13e | **L'écureuil** | *« Qu'est-ce qui est mieux qu'une noisette ? »* | Deux noisettes |
 | 27e | **L'araignée** | *« Le fer blanc du mardi ne dort jamais deux fois sous la même chaussette. Qu'est-ce que ça veut dire ? »* | C'est un beau poème |
 | 31e | **L'Éléphant des Machines** | *« Combien de pas, d'ici jusqu'à la mer ? »* | Je ne sais pas |
@@ -1513,13 +1513,19 @@ Puis il suffit d'aller au lit :
 5. *« Tu as bien dormi ? »* — *« ... »* — *« Oui. »* C'est le seul mensonge de Nino dans tout le
    jeu, et il tient en un mot.
 6. *« Souffle ! »* — et **le souffle est un mini-jeu** : marteler ESPACE remplit une jauge
-   qui fuit toute seule, et la puissance décide du sort des bougies. Trop faible, elles se
-   rallument — *« Cinq bougies s'éteignent. Puis se rallument, une par une. »* — et papa
-   admet, au premier raté : *« Je pensais que ça se rallumerait moins que ça. »* Maman
-   relance — *« Encore ! Plus fort ! »* — autant de fois qu'il faut. Nino est en haut, à
+   qui fuit toute seule, avec **un trait de seuil dessiné dessus** — on voit le niveau à
+   dépasser. À la fin de la fenêtre, **la jauge se vide pendant que le souffle agit** : les
+   flammes s'éteignent une à une, deux sur un petit souffle, cinq sur un moyen, six sur un
+   grand. Car **le gâteau est vraiment allumé** : sept petites flammes qui vacillent chacune
+   à leur rythme — le dessin du gâteau, lui, n'a que les mèches, c'est la fête qui l'allume.
+   Trop faible, les farceuses se rallument une par une — et papa admet, au premier raté :
+   *« Je pensais que ça se rallumerait moins que ça. »* Maman relance — *« Encore ! Plus
+   fort ! »* — et **le mini-jeu se rejoue, autant de fois qu'il faut**. Nino est en haut, à
    côté de son gâteau, Hermione entre Maman et la table : la boîte vit en bas, et le héros
    de la fête ne passe jamais dessous.
-7. **Un grand souffle : six bougies éteintes. La septième repart toute seule.** *« Celle-là,
+7. **Un grand souffle : six bougies éteintes. La septième repart toute seule** — à l'écran
+   aussi : six flammes meurent, la septième se rallume, et elle ne s'éteindra qu'au deuxième
+   souffle de la farce. *« Celle-là,
    c'est une farce. »* — *« Ce n'est pas moi. »* — *« Ce n'est pas moi non plus. »* —
    **« Moon regarde ailleurs. »**
 8. *« Nino souffle une deuxième fois. »* — *« Voilà. »* — et **il s'endort sur la table**, la tête
@@ -1546,10 +1552,12 @@ compte ce qui a été **trouvé**, pas ce qui a été réussi : les cachettes d'
 ## Le générique
 
 **Fondu, et le jeu repasse par ses propres écrans.** Onze pièces, une par carton — et **le carton
+est une fenêtre de dialogue** : même cadre à deux traits, même fond clair, même encre. Le générique
+parle la langue du jeu, au lieu d'une bande noire qui recouvrait la moitié de l'écran. Et **il
 évite celui qu'il remercie** : en haut par défaut, en bas si le personnage cité vit justement dans
-la bande haute (Hermione sous son lit, Gérard dans la baignoire). La bande est serrée au plus près
-du texte, et le tout dernier écran ne cumule plus rien : la dernière mention passe, puis **NINO a
-son carton à lui** — et à chaque fois **celui qu'on remercie est reposé là où on l'a rencontré** :
+la bande haute (Hermione sous son lit, Gérard dans la baignoire, l'éléphant qui boit). Chaque
+carton de personnage porte une ancre vers son sujet ; le tout dernier écran ne cumule plus rien :
+la dernière mention passe, puis **NINO a son carton à lui** — et à chaque fois **celui qu'on remercie est reposé là où on l'a rencontré** :
 Moon sur son canapé, Gérard dans la baignoire, l'araignée dans la mezzanine, l'écureuil dans la cour,
 Hermione sous le lit. À la fin du jeu presque aucun n'est encore chez lui — le chat est sorti avec les
 parents, le poisson est parti à la mer, l'araignée a dansé et s'en est allée — et remercier une pièce

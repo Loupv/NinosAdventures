@@ -2067,9 +2067,10 @@ const PARAPENTE_VOL: Art = [
   '.........00..00.........',
 ];
 
-/** Le gâteau. Sept bougies : à sept ans, on les compte. */
+/** Le gâteau. Sept bougies : à sept ans, on les compte. Les flammes sont dessinées
+ * par la scène de la fête — un gâteau ne s'allume pas tout seul. */
 const GATEAU: Art = [
-  '.3.3.3.3.3.3.3..',
+  '................',
   '.0.0.0.0.0.0.0..',
   '.0.0.0.0.0.0.0..',
   '00000000000000..',

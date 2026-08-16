@@ -2070,6 +2070,9 @@ export const ROOMS: Record<string, Room> = {
         // lui prennent la parole quand on est à côté d'eux.
         portee: 40,
         dialogue: 'bateau',
+        // **Un bateau coulé reste coulé.** Papa et la corde avaient leur drapeau, pas la
+        // coque : on revenait de nuit et le bateau flottait à nouveau, tout neuf.
+        hideIfFlag: 'bateau-coule',
       },
       // Debout au bastingage, et il n'en descendra pas.
       {

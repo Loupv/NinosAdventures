@@ -37,6 +37,7 @@ import {
   VERRES_PARRAIN,
   ECUREUIL_VANNES,
   JARDINIER_MERCI,
+  MAITRESSE_PIECE,
   JARDINIER_PART,
   JARDINIER_PART_MAISON,
   JARDINIER_PIECE,
@@ -1674,10 +1675,13 @@ export class WorldScene extends Phaser.Scene {
     state.locked = true;
     state.setFlag('jardinier-merci');
     state.save();
-    // Par la porte la plus proche de la plante, comme Maman quand elle vient chercher Hermione.
+    // **Par l'entrée principale de la pièce** — la porte la plus proche du point d'arrivée
+    // du joueur. La porte la plus proche de la plante l'envoyait dans l'escalier du hall
+    // de la tour : il sortait d'un mur, et y repartait.
+    const seuil = this.room.spawn;
     const porte = this.entrees().reduce((a, b) =>
-      Phaser.Math.Distance.Between(a.x, a.y, l.def.x, l.def.y) <
-      Phaser.Math.Distance.Between(b.x, b.y, l.def.x, l.def.y)
+      Phaser.Math.Distance.Between(a.x, a.y, seuil.x, seuil.y) <
+      Phaser.Math.Distance.Between(b.x, b.y, seuil.x, seuil.y)
         ? a
         : b,
     );
@@ -3053,9 +3057,52 @@ export class WorldScene extends Phaser.Scene {
     });
   }
 
+  /** Les sept flammes du gâteau, et leur vacillement. */
+  private flammes: { go: Phaser.GameObjects.Rectangle; x: number; allumee: boolean }[] = [];
+
+  /**
+   * **Le gâteau s'allume à l'arrivée dans la cuisine.** Sept petites flammes d'un pixel de
+   * large qui tremblent chacune à leur rythme — le dessin du gâteau, lui, n'a que les mèches.
+   */
+  private allumerLesBougies(): void {
+    const GATEAU_POS = { x: 100, y: 66 };
+    const COLONNES = [1, 3, 5, 7, 9, 11, 13];
+    this.flammes = COLONNES.map((c) => ({
+      go: this.add
+        .rectangle(GATEAU_POS.x + c, GATEAU_POS.y - 2, 1, 2, shade(this.pal, 3))
+        .setOrigin(0, 0)
+        .setDepth(95),
+      x: GATEAU_POS.x + c,
+      allumee: true,
+    }));
+    this.time.addEvent({
+      delay: 150,
+      loop: true,
+      callback: () => {
+        const t = Math.floor(this.time.now / 150);
+        this.flammes.forEach((f, i) => {
+          if (!f.go.active) return;
+          f.go.setVisible(f.allumee);
+          if (!f.allumee) return;
+          const grande = (t + i) % 2 === 0;
+          f.go.setPosition(f.x, grande ? 64 : 65);
+          f.go.setSize(1, grande ? 2 : 1);
+        });
+      },
+    });
+  }
+
+  private bougie(i: number, allumee: boolean): void {
+    const f = this.flammes[i];
+    if (!f) return;
+    f.allumee = allumee;
+    if (f.go.active) f.go.setVisible(allumee);
+  }
+
   /** Dans la cuisine, tout le monde attend depuis ce matin. */
   private anniversaire(): void {
     state.locked = true;
+    this.allumerLesBougies();
     // **Nino est en haut, à côté de son gâteau** : la boîte de dialogue vit en bas, et
     // le héros de la fête ne doit jamais passer dessous.
     this.player.sprite.setPosition(112, 56);
@@ -3072,6 +3119,9 @@ export class WorldScene extends Phaser.Scene {
         return;
       }
       if (serie[i].son) jouer(this, serie[i].son!, { volume: 0.9 });
+      // Le seul « bougies » d'une série est le deuxième souffle de la farce : la
+      // septième flamme s'éteint à ce moment-là, pas à la fin du texte.
+      if (serie[i].son === 'bougies') this.bougie(6, false);
       const suite = () => {
         const pause = serie[i].pause;
         if (!pause) {
@@ -3096,11 +3146,17 @@ export class WorldScene extends Phaser.Scene {
    * farce écrite, elle attend le vrai souffle.
    */
   private soufflerLesBougies(apres: () => void, essai = 0): void {
+    /** Il faut dépasser ce trait pour éteindre les six : il est dessiné sur la jauge. */
+    const SEUIL = 0.72;
     const inspire = () => {
-      // La jauge : un cadre, un remplissage, et la consigne qui martèle.
+      // La jauge : un cadre, un remplissage, le trait du seuil, et la consigne qui martèle.
       const cadre = this.add.rectangle(39, 99, 82, 10, shade(this.pal, 0)).setOrigin(0, 0).setDepth(2100);
       const fond = this.add.rectangle(40, 100, 80, 8, shade(this.pal, 2)).setOrigin(0, 0).setDepth(2101);
       const jauge = this.add.rectangle(40, 100, 1, 8, shade(this.pal, 3)).setOrigin(0, 0).setDepth(2102);
+      const trait = this.add
+        .rectangle(40 + Math.round(SEUIL * 80), 99, 1, 10, shade(this.pal, 0))
+        .setOrigin(0, 0)
+        .setDepth(2103);
       const consigne = new PixelText(this, 'wl-souffle', 0, 114, GB.W, 12);
       consigne.image
         .setPosition(Math.round((GB.W - measure(SOUFFLE.consigne)) / 2), 114)
@@ -3125,13 +3181,35 @@ export class WorldScene extends Phaser.Scene {
       this.time.delayedCall(2600, () => {
         touche.off('down', souffler);
         fuite.destroy();
-        [cadre, fond, jauge].forEach((r) => r.destroy());
-        consigne.destroy();
         jouer(this, 'bougies', { volume: 0.9 });
+        const reussi = puissance >= SEUIL;
+
+        // **Le souffle se voit** : la jauge se vide pendant que les flammes réagissent —
+        // six s'éteignent sur un grand souffle, cinq vacillent sur un moyen, deux sur un
+        // petit. Puis les farceuses se rallument, une par une, comme le texte le dit.
+        const soufflees = reussi ? 7 : puissance >= 0.4 ? 5 : 2;
+        this.tweens.addCounter({
+          from: puissance,
+          to: 0,
+          duration: 900,
+          onUpdate: (tw) => jauge.setSize(Math.max(1, Math.round((tw.getValue() ?? 0) * 80)), 8),
+        });
+        for (let i = 0; i < soufflees; i++) {
+          this.time.delayedCall(200 + i * 130, () => this.bougie(i, false));
+        }
+
         const resultat = () => {
-          if (puissance >= 0.72) {
+          [cadre, fond, jauge, trait].forEach((r) => r.destroy());
+          consigne.destroy();
+          if (reussi) {
+            // La septième repart toute seule — c'est la farce, elle attend le deuxième souffle.
+            this.time.delayedCall(500, () => this.bougie(6, true));
             say({ lines: SOUFFLE.reussi, focusY: 30, onDone: () => this.time.delayedCall(700, apres) });
             return;
+          }
+          // Les farceuses se rallument, une par une.
+          for (let i = 0; i < soufflees; i++) {
+            this.time.delayedCall(500 + i * 420, () => this.bougie(i, true));
           }
           const constat = puissance >= 0.4 ? SOUFFLE.moyen : SOUFFLE.faible;
           say({
@@ -3154,7 +3232,7 @@ export class WorldScene extends Phaser.Scene {
             },
           });
         };
-        this.time.delayedCall(600, resultat);
+        this.time.delayedCall(1100, resultat);
       });
     };
     say({ lines: [SOUFFLE.inspire], focusY: 30, onDone: inspire });
@@ -3247,30 +3325,40 @@ export class WorldScene extends Phaser.Scene {
     /** Où vit le personnage cité (y et hauteur à l'écran) : le carton prend l'autre bande. */
     ancre?: { y: number; h: number },
   ): Phaser.GameObjects.GameObject[] {
-    // **Les lignes se replient toutes seules.** Un remerciement un peu long sortait de l'écran par
-    // la droite, exactement comme les lignes trop longues de l'écran de fin : on ne compte plus les
-    // caractères à la main, on laisse le retour à la ligne faire son travail.
-    const lignes = brutes.flatMap((l) => (l ? wrap(l, GB.W - 10) : ['']));
-    const h = 4 + lignes.length * LINE_H + 2;
+    // **Le carton est une fenêtre de dialogue.** Même cadre à deux traits, même fond clair,
+    // même encre : le générique parle la langue du jeu, au lieu d'une bande noire qui
+    // recouvrait la moitié de l'écran. Les lignes se replient toutes seules.
+    const CADRE = { x: 4, w: 152, pad: 6 };
+    const lignes = brutes.flatMap((l) => (l ? wrap(l, 132) : ['']));
+    const h = lignes.length * LINE_H + 11;
 
-    // **Le carton évite celui qu'il remercie.** En haut par défaut — c'est la bande qui cache
-    // le moins de monde — mais si le personnage cité vit justement là (Hermione sous le lit,
-    // le poisson dans la baignoire), le carton descend. Sauf s'il vit aussi en bas : alors
-    // on reste en haut, cacher des pieds vaut mieux que cacher une tête.
-    const chevaucheHaut = ancre !== undefined && ancre.y < h + 6;
-    const chevaucheBas = ancre !== undefined && ancre.y + ancre.h > GB.H - h - 6;
+    // **Et il évite celui qu'il remercie.** En haut par défaut — c'est la bande qui cache le
+    // moins de monde — mais si le personnage cité vit justement là (Hermione sous le lit, le
+    // poisson dans la baignoire), le carton descend. Sauf s'il vit aussi en bas : alors on
+    // reste en haut, cacher des pieds vaut mieux que cacher une tête.
+    const chevaucheHaut = ancre !== undefined && ancre.y < 4 + h + 4;
+    const chevaucheBas = ancre !== undefined && ancre.y + ancre.h > GB.H - h - 8;
     const enBas = chevaucheHaut && !chevaucheBas;
-    const y0 = enBas ? GB.H - h : 0;
+    const y0 = enBas ? GB.H - h - 4 : 4;
 
-    const fond = this.add
-      .rectangle(0, y0, GB.W, h, shade(this.pal, 0))
-      .setOrigin(0, 0)
-      .setScrollFactor(0)
-      .setDepth(1900);
-    const texte = new PixelText(this, 'gen-carton', 0, y0 + 3, GB.W, lignes.length * LINE_H + 2);
+    const g = this.add.graphics().setScrollFactor(0).setDepth(1900);
+    const sombre = shade(this.pal, 0);
+    const clair = shade(this.pal, 3);
+    g.fillStyle(sombre, 1).fillRect(CADRE.x, y0, CADRE.w, h);
+    g.fillStyle(clair, 1).fillRect(CADRE.x + 1, y0 + 1, CADRE.w - 2, h - 2);
+    g.lineStyle(1, sombre, 1).strokeRect(CADRE.x + 3.5, y0 + 3.5, CADRE.w - 7, h - 7);
+
+    const texte = new PixelText(
+      this,
+      'gen-carton',
+      CADRE.x + CADRE.pad,
+      y0 + 6,
+      132,
+      lignes.length * LINE_H + 2,
+    );
     texte.image.setScrollFactor(0).setDepth(1910);
-    texte.setLines(lignes, shadeHex(this.pal, 3));
-    return [fond, texte.image];
+    texte.setLines(lignes, shadeHex(this.pal, 0));
+    return [g, texte.image];
   }
 
   /**
@@ -3852,24 +3940,38 @@ export class WorldScene extends Phaser.Scene {
                 ? RENOTE.pareil
                 : RENOTE.moins;
           state.note = Math.max(state.note, bareme.note);
-          // **Le vingt sur vingt vaut une pièce**, une seule fois : la maîtresse ne la
-          // donne qu'au premier sans-faute, et elle ne le dit pas aux autres.
-          if (bareme.note >= 20 && !state.pieces.has('vingt')) {
-            state.pieces.add('vingt');
-            jouer(this, 'piece', { volume: 0.8 });
-            toast(ANNONCES.pieceTrouvee(piece('vingt')?.name ?? 'vingt'));
-          }
+          // **Le vingt sur vingt vaut une pièce**, une seule fois — et elle la donne
+          // APRÈS son verdict, en le disant : la pièce sonnait pendant qu'elle parlait,
+          // et on ne savait pas d'où elle tombait.
+          const donneLaPiece = bareme.note >= 20 && !state.pieces.has('vingt');
+          const finir = () => {
+            // Les effets du beat comptent aussi ici : c'est eux qui retiennent quel objet a été
+            // rendu, et donc ce qu'elle dira au troisième, au cinquième et au huitième.
+            this.applyEffects(beat.effects, l);
+            state.save();
+            bus.emit(EV.hud);
+          };
           jouer(this, bareme.note >= 16 ? 'enigme-juste' : 'valider', { volume: 0.6 });
           say({
             speaker: beat.speaker,
             lines: [...bareme.lines, ...rappel],
             focusY: l?.def.y,
             onDone: () => {
-              // Les effets du beat comptent aussi ici : c'est eux qui retiennent quel objet a été
-              // rendu, et donc ce qu'elle dira au troisième, au cinquième et au huitième.
-              this.applyEffects(beat.effects, l);
-              state.save();
-              bus.emit(EV.hud);
+              if (!donneLaPiece) {
+                finir();
+                return;
+              }
+              say({
+                speaker: beat.speaker,
+                lines: MAITRESSE_PIECE.lignes,
+                focusY: l?.def.y,
+                onDone: () => {
+                  state.pieces.add('vingt');
+                  jouer(this, 'piece', { volume: 0.8 });
+                  toast(ANNONCES.pieceTrouvee(piece('vingt')?.name ?? 'vingt'));
+                  finir();
+                },
+              });
             },
           });
           return;
