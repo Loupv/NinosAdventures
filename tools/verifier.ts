@@ -17,7 +17,10 @@ import { CACHETTES, CACHETTES_MAISON } from '../src/data/hermione';
 import { DIALOGUES } from '../src/data/dialogues';
 import { PLANTES } from '../src/data/textes';
 
-const SOLID = new Set(['#', '~', 'X', 'T', 'V', 'Q', 'M', 'G']);
+// **Les tuiles bloquantes viennent du jeu, pas d'une copie.** Recopiées ici à la main,
+// elles pouvaient diverger en silence — et le vérificateur aurait laissé passer
+// exactement ce qu'il existe pour attraper : un Nino enfermé, une porte murée.
+import { SOLID } from '../src/art/tiles';
 
 /** Taille de chaque dessin, en pixels. */
 const dim: Record<string, [number, number]> = {};

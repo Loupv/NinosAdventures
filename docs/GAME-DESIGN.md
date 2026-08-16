@@ -1785,6 +1785,16 @@ de ◀ vers ▶ change de direction** (il faut relâcher la capture que le navig
 premier bouton touché), et **un doigt levé hors de la console relâche quand même la touche**
 — sans quoi Nino continue de marcher tout seul.
 
+## Le journal se pagine, partout
+
+Les lieux étaient déjà paginés ; **le sac ne l'était pas** et se coupait à huit lignes :
+passé le deuxième objet, les suivants n'apparaissaient nulle part — alors qu'il y en a onze
+à porter. Chaque objet prend maintenant deux lignes (son nom, puis ce qu'il est, terminé par
+des points de suspension s'il déborde), et le sac gonfle en pages avec le sac. L'icône se
+pose à la hauteur **calculée** de la ligne du nom : elle était à une hauteur en dur qui ne
+valait que pour un en-tête d'une seule ligne, et glissait d'un cran dès que la note d'art
+existait.
+
 ## Les réglages
 
 **Deux interrupteurs, et rien d'autre** : le son, et les raccourcis de développement. Ce

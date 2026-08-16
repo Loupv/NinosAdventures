@@ -1921,6 +1921,8 @@ export const ROOMS: Record<string, Room> = {
     id: 'terrasse',
     palette: 'ville',
     theme: 'ville',
+    // Le soleil se couche ici : papa dit lui-même « il est couché à cette heure-ci ».
+    heure: 'nuit',
     spawn: { x: 16, y: 104 },
     tiles: [
       INT.wall,

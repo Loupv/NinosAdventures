@@ -4,7 +4,7 @@ import { shade, shadeHex } from '../art/palette';
 import { CREDITS, REGLAGES } from '../data/textes';
 import { couperSon, jouer } from '../systems/audio';
 import { enregistrerReglages, reglages } from '../systems/reglages';
-import { ETAPES, preparerEtape, type Etape } from '../dev/etapes';
+import { SAUTS, preparerEtape, type Etape } from '../dev/etapes';
 import { PixelText, measure } from '../ui/PixelText';
 import { MANETTE } from '../ui/touches';
 
@@ -82,9 +82,6 @@ function lignesVisibles(): Ligne[] {
     },
   ];
 }
-
-/** Les étapes proposées : celles que le clavier atteint par un chiffre. */
-const SAUTS: Etape[] = ETAPES.filter((e) => /^[0-9]$/.test(e.touche));
 
 /** Le nom d'une étape, coupé à la largeur de l'écran. */
 const court = (nom: string) =>

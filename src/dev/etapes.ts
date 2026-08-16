@@ -145,6 +145,13 @@ export const ETAPES: Etape[] = [
 ];
 
 /**
+ * **Les étapes qu'un chiffre atteint.** Une seule liste, lue par le clavier (WorldScene)
+ * et par la liste « Aller à… » des réglages : elles divergeaient — l'un acceptait 1 à 8,
+ * l'autre affichait 0 à 9 — si bien que deux étapes du menu ne répondaient à aucune touche.
+ */
+export const SAUTS: Etape[] = ETAPES.filter((e) => /^[0-9]$/.test(e.touche));
+
+/**
  * **Poser l'état d'une étape**, sans décider de l'écran : c'est l'appelant qui sait s'il
  * doit redémarrer une pièce, lancer un mini-jeu ou dérouler le générique.
  *

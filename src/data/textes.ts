@@ -1801,7 +1801,7 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
       speaker: 'Maman',
       lines: [
         'Oui, je sais. Je t’ai dit ça dans la cuisine.',
-        'J’y suis aussi.',
+        'Je le redis ici.',
         '...',
         'Ne commence pas.',
       ],
@@ -2089,21 +2089,8 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
       lines: ['Une corde, tendue depuis le bateau.', 'Elle est bien serrée.'],
     },
     {
-      when: () => state.flag('bouchon-retire'),
-      lines: ['Une corde, tendue depuis le bateau.', 'Tirer ?'],
-      choice: {
-        oui: {
-          lines: [
-            'Nino tire sur la corde.',
-            'Un bouchon saute au fond du bateau.',
-            'Personne ne regardait.',
-          ],
-          effects: { flag: 'bateau-coule' },
-        },
-        non: { lines: ['Nino lâche la corde.', 'Elle se retend toute seule.'] },
-      },
-    },
-    {
+      // Un seul beat pour tirer : celui d'avant était son clone mot pour mot, gardé d'une
+      // époque où sauver le poisson changeait le sauvetage de papa. Ce n'est plus le cas.
       lines: ['Une corde, tendue depuis le bateau.', 'Tirer ?'],
       choice: {
         oui: {
@@ -2289,23 +2276,6 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
 
   'porte-cabinet': [{ lines: ['« CABINET DENTAIRE »', 'Fermé.', 'Tant mieux.'] }],
 
-  /**
-   * **La plante du couloir.** Trois états : elle a soif, elle a soif et Nino a de quoi (sans lui
-   * dire lequel — un pistolet à eau se devine), et elle est arrosée. C'est la seule interaction du
-   * couloir, et la seule chose du jeu qui **change d'apparence pour de bon** sans que ce soit une
-   * bêtise.
-   */
-  plante: [
-    {
-      when: () => state.flag('plante-arrosee'),
-      lines: ['La plante du couloir.', 'Elle a l’air beaucoup plus contente.'],
-    },
-    {
-      when: () => state.has('pistolet-eau'),
-      lines: ['La plante du couloir.', 'La terre est sèche, sèche, sèche.', 'Nino a ce qu’il faut.'],
-    },
-    { lines: ['La plante du couloir.', 'La terre est sèche, sèche, sèche.'] },
-  ],
 
   /**
    * **Le jardinier de la place.** Il se plaint de la chaleur, ce qui est le sport local, et il
@@ -3048,7 +3018,12 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
      * toutes les autres non-réactions plus drôles, à condition qu'elle n'arrive qu'une fois.
      */
     {
-      when: () => state.flag('poisson-parti') && !state.flag('papa-doute'),
+      // **Après la présentation, jamais avant.** La terrasse ne s'ouvre qu'une fois le
+      // poisson parti : sans ce garde, tous les joueurs entendaient « il paraît qu'il a
+      // plu » comme première phrase de papa, et la blague qui fonde la scène arrivait
+      // en second.
+      when: () =>
+        state.flag('papa-terrasse-vu') && state.flag('poisson-parti') && !state.flag('papa-doute'),
       speaker: 'Papa',
       lines: [
         '« Il paraît qu’il a plu, cet après-midi. »',

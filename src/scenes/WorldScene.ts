@@ -90,7 +90,7 @@ import { gbFade, portalWarp, sparkle, splash } from '../systems/fx';
 import { jouer, jouerAmbiance, jouerMusique } from '../systems/audio';
 import { musiquePour } from '../data/sons';
 import { Player, type ViewMode } from '../entities/Player';
-import { ETAPES, preparerEtape, type Etape } from '../dev/etapes';
+import { ETAPES, SAUTS, preparerEtape, type Etape } from '../dev/etapes';
 import { PixelText, measure } from '../ui/PixelText';
 import { LINE_H, wrap } from '../art/font';
 import { reglages } from '../systems/reglages';
@@ -488,11 +488,14 @@ export class WorldScene extends Phaser.Scene {
         this.fontaineDeZ(91, 27, true, () => state.flag('parapente-rentre') && !state.flag('matin'));
         this.fontaineDeZ(28, 78, false, () => state.flag('parapente-rentre') && !state.flag('matin'), 850);
       }
-      if (id === 'tour-pied' && !state.flag('nuit-dite')) {
+      // **La nuit s'annonce là où elle tombe.** C'est la terrasse qui l'apporte
+      // maintenant ; le pied de la tour reste un repli, pour qui l'atteindrait autrement.
+      // Le drapeau garantit qu'elle ne se dit qu'une fois.
+      if ((id === 'terrasse' || id === 'tour-pied') && !state.flag('nuit-dite')) {
         state.setFlag('nuit-dite');
         state.save();
         this.time.delayedCall(700, () => {
-          if (this.room.id === 'tour-pied' && !state.locked && !this.transitioning) {
+          if (this.room.id === id && !state.locked && !this.transitioning) {
             this.runDialogue('nuit-tombe');
           }
         });
@@ -566,7 +569,9 @@ export class WorldScene extends Phaser.Scene {
        * console : `nino.etape('f')`.
        */
       this.input.keyboard!.on('keydown', (ev: KeyboardEvent) => {
-        if (!/^[1-8]$/.test(ev.key)) return;
+        // La même liste que le menu « Aller à… » : un chiffre affiché quelque part doit
+        // répondre partout.
+        if (!SAUTS.some((e) => e.touche === ev.key)) return;
         const etape = ETAPES.find((e) => e.touche === ev.key);
         if (etape) this.allerEtape(etape);
       });

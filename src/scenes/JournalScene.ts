@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import { GB } from '../config';
-import { wrap } from '../art/font';
+import { LINE_H, wrap } from '../art/font';
 import { shade, shadeHex } from '../art/palette';
 import { texKey } from '../art/pixels';
 import { ITEMS } from '../data/items';
@@ -19,12 +19,34 @@ import { PixelText, measure } from '../ui/PixelText';
  */
 const PER_PAGE = 5;
 const PAGES_LIEUX = Math.ceil(LIEUX_ORDER.length / PER_PAGE);
-const PAGES = [
-  ...Array.from({ length: PAGES_LIEUX }, () => JOURNAL.pageLieux),
-  JOURNAL.pageSac,
-  JOURNAL.pagePieces,
-  JOURNAL.pagePlantes,
-];
+
+/**
+ * **Le sac se pagine comme les lieux.** Il tenait sur une page unique coupée à huit
+ * lignes : passé le deuxième objet, les suivants n'apparaissaient nulle part — alors
+ * qu'il y en a dix à porter. Chaque objet prend deux lignes (son nom, puis une ligne de
+ * ce qu'il est), et la première page porte en plus le compte d'Hermione et la note.
+ */
+const SAC_LIGNES = 8;
+const OBJET_LIGNES = 2;
+
+function pagesDuSac(): number {
+  const objets = state.items.size;
+  if (objets === 0) return 1;
+  // L'en-tête (deux lignes plus un blanc) ne mange que la première page.
+  const surLaPremiere = Math.max(1, Math.floor((SAC_LIGNES - 3) / OBJET_LIGNES));
+  const reste = Math.max(0, objets - surLaPremiere);
+  return 1 + Math.ceil(reste / Math.floor(SAC_LIGNES / OBJET_LIGNES));
+}
+
+/** Les pages du journal, telles qu'elles sont maintenant : le sac gonfle avec le sac. */
+function pages(): string[] {
+  return [
+    ...Array.from({ length: PAGES_LIEUX }, () => JOURNAL.pageLieux),
+    ...Array.from({ length: pagesDuSac() }, () => JOURNAL.pageSac),
+    JOURNAL.pagePieces,
+    JOURNAL.pagePlantes,
+  ];
+}
 
 /**
  * Le journal : la mémoire de Nino. C'est là qu'on voit ce qui a été découvert,
@@ -68,7 +90,7 @@ export class JournalScene extends Phaser.Scene {
         // Le pied de page annonce « < > » : la flèche gauche doit reculer, faute de quoi
         // il fallait refaire le tour complet des cinq pages pour revenir d'une.
         const sens = b.left ? -1 : 1;
-        this.page = (this.page + sens + PAGES.length) % PAGES.length;
+        this.page = (this.page + sens + pages().length) % pages().length;
         this.render();
       }
     };
@@ -89,24 +111,25 @@ export class JournalScene extends Phaser.Scene {
     this.frame.lineStyle(1, dark, 1).strokeRect(4.5, 4.5, GB.W - 9, GB.H - 9);
     this.frame.fillStyle(dark, 1).fillRect(5, 19, GB.W - 10, 1);
 
-    const heading = `${JOURNAL.titre}  -  ${PAGES[this.page]}`;
+    const heading = `${JOURNAL.titre}  -  ${pages()[this.page]}`;
     this.title.image.setPosition(Math.round((GB.W - measure(heading)) / 2), 8);
     this.title.setLines([heading], ink);
 
     this.icons.forEach((i) => i.destroy());
     this.icons = [];
 
+    const finDuSac = PAGES_LIEUX + pagesDuSac();
     const lines =
       this.page < PAGES_LIEUX
         ? this.lieuxLines(this.page)
-        : this.page === PAGES_LIEUX
-          ? this.sacLines()
-          : this.page === PAGES_LIEUX + 1
+        : this.page < finDuSac
+          ? this.sacLines(this.page - PAGES_LIEUX)
+          : this.page === finDuSac
             ? this.piecesLines()
             : this.plantesLines();
-    this.bodyText.setLines(lines.slice(0, 8), ink);
+    this.bodyText.setLines(lines.slice(0, SAC_LIGNES), ink);
 
-    const foot = `< >  ${this.page + 1}/${PAGES.length}   ${JOURNAL.pied}`;
+    const foot = `< >  ${this.page + 1}/${pages().length}   ${JOURNAL.pied}`;
     this.footer.image.setPosition(Math.round((GB.W - measure(foot)) / 2), 126);
     this.footer.setLines([foot], ink);
   }
@@ -146,24 +169,39 @@ export class JournalScene extends Phaser.Scene {
     return lines;
   }
 
-  private sacLines(): string[] {
+  private sacLines(page: number): string[] {
     const soeur = JOURNAL.soeurComptee(state.hermione, CACHETTES.length);
     // La note du projet d'art n'apparaît qu'une fois rendu : avant, la ligne n'existe pas.
-    const entete = state.note > 0 ? [soeur, JOURNAL.noteComptee(state.note)] : [soeur];
+    const entete = page === 0 ? [soeur, ...(state.note > 0 ? [JOURNAL.noteComptee(state.note)] : []), ''] : [];
     const owned = [...state.items];
-    if (owned.length === 0) return [...entete, '', ...JOURNAL.sacVide];
-    const lines: string[] = [...entete, ''];
-    owned.forEach((id, i) => {
+    if (owned.length === 0) return [...entete, ...JOURNAL.sacVide];
+
+    // Ce que cette page-ci porte, sachant que la première a moins de place.
+    const surLaPremiere = Math.max(1, Math.floor((SAC_LIGNES - 3) / OBJET_LIGNES));
+    const parPage = Math.floor(SAC_LIGNES / OBJET_LIGNES);
+    const debut = page === 0 ? 0 : surLaPremiere + (page - 1) * parPage;
+    const combien = page === 0 ? surLaPremiere : parPage;
+
+    const lines: string[] = [...entete];
+    for (const id of owned.slice(debut, debut + combien)) {
       const item = ITEMS[id];
-      lines.push(`   ${item.name}`);
-      // L'icône est posée par-dessus la ligne du nom.
-      const icon = this.add
-        .image(12, 49 + i * 36, texKey(item.sprite, state.palette))
-        .setOrigin(0, 0)
-        .setDepth(1010);
-      this.icons.push(icon);
-      lines.push(...wrap(item.desc, 140).slice(0, 2));
-    });
+      // **Un objet inconnu ne fait pas tomber le journal.** Une sauvegarde écrite par une
+      // version d'avant peut nommer un objet qui n'existe plus : on l'ignore.
+      if (!item) continue;
+      // **L'icône suit la ligne du nom**, calculée et non devinée : elle était posée à
+      // une hauteur en dur qui ne valait que pour un en-tête d'une seule ligne, et
+      // glissait d'un cran dès que la note existait.
+      const y = 25 + LINE_H * lines.length;
+      // Quatre espaces : l'icône fait seize pixels de large et mordait sur la première
+      // lettre du nom. Et la description qui déborde se termine par des points de
+      // suspension plutôt que par une coupure au milieu d'un mot.
+      const desc = wrap(item.desc, 116);
+      lines.push(`    ${item.name}`);
+      lines.push(`    ${desc[0]}${desc.length > 1 ? '…' : ''}`);
+      this.icons.push(
+        this.add.image(12, y, texKey(item.sprite, state.palette)).setOrigin(0, 0).setDepth(1010),
+      );
+    }
     return lines;
   }
 }
