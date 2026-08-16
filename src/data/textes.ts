@@ -780,6 +780,16 @@ export const DODO: typeof FETE = [
  * qu'un générique qui déroule des noms sur du noir. On peut passer avec ESPACE : un enfant de sept
  * ans qui a fini un jeu a le droit d'être pressé.
  */
+/**
+ * **Le tout premier écran, avant même le chargement.** Les navigateurs refusent de
+ * décoder le moindre son tant que personne n'a touché la page : sans cette invite, le
+ * jeu s'ouvrait sur un écran vide et immobile, et rien ne disait quoi faire.
+ */
+export const DEMARRAGE = {
+  invite: 'APPUIE SUR UNE TOUCHE',
+  charge: 'CHARGEMENT',
+};
+
 export const CREDITS: Array<{
   room: string;
   lignes: string[];

@@ -1741,6 +1741,22 @@ en deux lignes. C'est le seul endroit du jeu où Moon parle de lui.
 C'est la récompense discrète de l'écran qu'on voit le plus : lancer le jeu raconte où on
 en est, sans un chiffre.
 
+## Le premier écran, et le partage
+
+**Rien ne se charge avant qu'on ait touché une touche.** Les navigateurs interdisent de
+décoder le moindre son tant que la page n'a pas reçu une interaction : les fichiers
+arrivaient, le décodage restait suspendu, et le jeu s'ouvrait sur **un écran vide et
+immobile** — sans un mot, sans barre, sans rien à faire. Personne ne devine qu'il faut
+cliquer sur du vide. Le jeu affiche donc d'abord *« APPUIE SUR UNE TOUCHE »*, qui clignote,
+puis charge avec une barre : vingt méga-octets de musique, ça se voit passer.
+
+**Le build est entièrement statique** (`npm run build` → `dist/`), et `base: './'` le rend
+indifférent au dossier qui l'héberge : il tourne sous `/NinosAdventures/` comme à la racine.
+Un workflow GitHub Actions le publie à chaque poussée sur `main`. Deux limites à connaître :
+le jeu est **au clavier uniquement** — injouable sur tablette tant qu'on n'aura pas ajouté
+des commandes tactiles — et le dossier `dist` ne s'ouvre pas en double-cliquant `index.html`,
+parce que les modules JavaScript exigent un vrai serveur.
+
 ## Repartir à zéro
 
 **En pleine partie, ÉCHAP ramène à l'écran-titre** — après une question, parce qu'un enfant qui

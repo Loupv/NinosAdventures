@@ -1,34 +1,85 @@
 import Phaser from 'phaser';
-import { PALETTE_IDS, type PaletteId } from '../art/palette';
+import { GB } from '../config';
+import { PALETTE_IDS, shade, shadeHex, type PaletteId } from '../art/palette';
 import { animKey, bakeImage, bakeSheet, texKey } from '../art/pixels';
 import { IMAGES, SHEETS } from '../art/sprites';
 import { bakeFont } from '../art/font';
 import { chargerSons } from '../systems/audio';
+import { DEMARRAGE } from '../data/textes';
+import { PixelText, measure } from '../ui/PixelText';
+
+/** L'écran d'attente est dans les couleurs de l'écran-titre : c'est la même porte. */
+const PALETTE: PaletteId = 'titre';
 
 /**
- * Rien à charger : tout le jeu est dessiné au démarrage, une fois par palette.
- * C'est ce qui nous permet de changer la couleur du monde entier d'un seul coup.
+ * Le dessin du jeu se fabrique ici, une fois par palette — c'est ce qui nous permet de
+ * changer la couleur du monde entier d'un seul coup.
+ *
+ * **Mais rien ne se charge avant qu'on ait touché une touche.** Les navigateurs
+ * interdisent de décoder le moindre son tant que la page n'a pas été touchée : les
+ * fichiers arrivaient, le décodage restait en attente, et le jeu s'ouvrait sur un écran
+ * vide et immobile — sans un mot, sans barre, sans rien à faire. On affiche donc d'abord
+ * une invite, et le chargement ne commence qu'après.
  */
 export class BootScene extends Phaser.Scene {
   constructor() {
     super('Boot');
   }
 
-  preload(): void {
-    // Les sons dont les fichiers sont là. Le reste du jeu marche sans eux.
-    chargerSons(this);
-  }
-
   create(): void {
+    // Tout ceci est instantané : ce sont des dessins, pas des fichiers.
     bakeFont();
-
     for (const pal of PALETTE_IDS) {
       for (const [name, frames] of Object.entries(SHEETS)) bakeSheet(this, name, frames, pal);
       for (const [name, art] of Object.entries(IMAGES)) bakeImage(this, name, art, pal);
       this.makeAnims(pal);
     }
+    this.attendre();
+  }
 
-    this.scene.start('Title');
+  /** « APPUIE SUR UNE TOUCHE », qui clignote — la seule chose à faire sur cet écran. */
+  private attendre(): void {
+    this.cameras.main.setBackgroundColor(shadeHex(PALETTE, 0));
+    const invite = this.ligne(DEMARRAGE.invite, 68);
+    this.tweens.add({
+      targets: invite.image,
+      alpha: 0.15,
+      duration: 650,
+      yoyo: true,
+      repeat: -1,
+      ease: 'Sine.easeInOut',
+    });
+
+    const partir = () => {
+      this.tweens.killTweensOf(invite.image);
+      invite.destroy();
+      this.charger();
+    };
+    this.input.keyboard!.once('keydown', partir);
+    this.input.once('pointerdown', partir);
+  }
+
+  /**
+   * Le chargement, avec sa barre : vingt méga-octets de musique, ça se voit passer sur
+   * une connexion de téléphone, et une barre qui avance vaut mieux qu'un écran patient.
+   */
+  private charger(): void {
+    this.ligne(DEMARRAGE.charge, 62);
+    const cadre = this.add.rectangle(39, 79, 82, 8, shade(PALETTE, 3)).setOrigin(0, 0);
+    const jauge = this.add.rectangle(40, 80, 1, 6, shade(PALETTE, 2)).setOrigin(0, 0);
+    void cadre;
+
+    chargerSons(this);
+    this.load.on('progress', (p: number) => jauge.setSize(Math.max(1, Math.round(p * 80)), 6));
+    this.load.once('complete', () => this.scene.start('Title'));
+    this.load.start();
+  }
+
+  private ligne(texte: string, y: number): PixelText {
+    const t = new PixelText(this, `boot-${y}`, 0, y, GB.W, 12);
+    t.image.setPosition(Math.round((GB.W - measure(texte)) / 2), y);
+    t.setLines([texte], shadeHex(PALETTE, 3));
+    return t;
   }
 
   private makeAnims(pal: PaletteId): void {
