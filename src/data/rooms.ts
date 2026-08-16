@@ -1291,11 +1291,16 @@ export const ROOMS: Record<string, Room> = {
       // anniversaire, qu'on a cassé un jour pour voir — et qui s'est révélé plein
       // d'étoiles. C'est le seul objet du jeu qui vaille vingt sur vingt.
       {
+        // **Tout en haut de la bibliothèque, hors d'atteinte.** Il ne se ramasse pas : il
+        // se fait tomber, au pistolet à eau. Deux gestes au lieu d'un — l'indice est dans
+        // les livres, la solution dans le coffre à jouets — et le vingt sur vingt se
+        // mérite au lieu de traîner sur une étagère au début du jeu.
         id: 'caillou',
         x: 26,
         y: 20,
         sprite: 'caillou',
         dialogue: 'caillou',
+        showIfFlag: 'caillou-tombe',
         hideIfFlag: 'caillou-pris',
         portee: 16,
       },
@@ -1478,12 +1483,17 @@ export const ROOMS: Record<string, Room> = {
       },
       // Une noisette, dans un coin. L'écureuil n'est pas loin.
       {
+        // **Loin de l'écureuil.** Elle était posée à huit pixels de lui — et comme un
+        // personnage l'emporte toujours sur un objet quand on vise, c'est lui qu'on
+        // attrapait à chaque fois : la noisette était introuvable. Elle a aussi une
+        // portée à elle : elle fait huit pixels de côté, la marge de visée en fait six.
         id: 'noisette',
-        x: 132,
-        y: 112,
+        x: 44,
+        y: 78,
         sprite: 'noisette',
         dialogue: 'noisette',
         hideIfFlag: 'noisette-prise',
+        portee: 14,
       },
       { id: 'ballon', ...at(9, 11), sprite: 'ballon', ballon: true },
       {
@@ -1585,6 +1595,7 @@ export const ROOMS: Record<string, Room> = {
         sprite: 'ticket',
         dialogue: 'ticket',
         hideIfFlag: 'ticket-pris',
+        portee: 14,
       },
       {
         id: 'conducteur',
@@ -2225,6 +2236,7 @@ export const ROOMS: Record<string, Room> = {
         sprite: 'plume',
         dialogue: 'plume',
         hideIfFlag: 'plume-prise',
+        portee: 14,
       },
       // Le projet d'art de Nino, qui ne le sait pas encore.
       {

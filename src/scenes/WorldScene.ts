@@ -75,6 +75,7 @@ import {
   beatObjet,
   portables,
   HARNAIS_AVANT_LE_SAUT,
+  CAILLOU_TOMBE,
 } from '../data/textes';
 import {
   CACHETTES,
@@ -1380,6 +1381,17 @@ export class WorldScene extends Phaser.Scene {
      * pistolet, c'est une poignée de main : à défaut de quelqu'un dans la portée des dialogues, on
      * prend le plus proche à quarante pixels, du côté où Nino regarde.
      */
+    /**
+     * **L'étagère du salon fait tomber son caillou.** Le pistolet ne vise que ce qui est
+     * vivant : un meuble n'est jamais « visé », c'est donc la cible du regard qu'on
+     * regarde. Le jet part droit devant — vers le haut de la bibliothèque — et ce qui
+     * brillait entre deux livres dégringole.
+     */
+    const etagere =
+      this.target?.def.id === 'bibliotheque' &&
+      this.room.id === 'salon' &&
+      !state.flag('caillou-tombe');
+
     const vise = this.target && vivant(this.target) ? this.target : this.quiEstDansLeJet();
     // Sans personne en face, le jet part droit devant : arroser le vide fait partie du jeu.
     const f = this.player.facing;
@@ -1432,6 +1444,15 @@ export class WorldScene extends Phaser.Scene {
           g.destroy();
           if (i < 2) return;
           splash(this, this.pal, cible.x, cible.y);
+          if (etagere) {
+            state.setFlag('caillou-tombe');
+            state.save();
+            jouer(this, 'objet-tombe', { volume: 0.7 });
+            this.refreshObjects();
+            state.locked = true;
+            say({ lines: CAILLOU_TOMBE, focusY: 40 });
+            return;
+          }
           // L'eau douce, après la mer qui gratte, c'est un cadeau. Le rire s'ancre sur la
           // bassine, bien au-dessus de l'arc du saut : posé sur le poisson, il retombait
           // avec lui et son fond sombre le masquait.

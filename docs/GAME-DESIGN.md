@@ -121,10 +121,19 @@ un bouchon, Nino. »* La vieille chaussure, elle, peut valoir vingt : il faut os
 *« Je ne sais pas »* puis *« Je l'ai décidé »*, et c'est exactement le genre de réponses que ce
 devoir veut récompenser.
 
-**Un seul objet vaut vingt sur vingt : le caillou aux cristaux.** Tous les autres
-plafonnent à seize — la question « en quoi c'est de l'art ? » n'a qu'une réponse qui la
-retourne complètement, et c'est un caillou gris qui cache des étoiles. Il est posé sur la
-bibliothèque du salon, et c'est un vrai cadeau d'un anniversaire d'avant.
+**Les objets ne valent pas tous pareil, et c'est le sel du devoir.** La croûte de pizza et
+le ballon dégonflé plafonnent à douze — l'un est donné par un chat, l'autre appartient à
+l'école. Le bouchon, la noisette, le ticket, la plume et le dessin montent à seize : ils ont
+une histoire. Et **un seul objet vaut vingt sur vingt, le caillou aux cristaux** : la
+question « en quoi c'est de l'art ? » n'a qu'une réponse qui la retourne complètement, et
+c'est un caillou gris qui cache des étoiles.
+
+**Encore faut-il l'attraper.** Il ne traîne pas sur une étagère : il est tout en haut de la
+bibliothèque du salon, hors d'atteinte, et il ne se ramasse pas — il se fait tomber **au
+pistolet à eau**. Les livres donnent l'indice (*« quelque chose brille entre deux livres.
+Beaucoup trop haut pour Nino. »*), le coffre à jouets donne l'outil, et le jeu ne dit jamais
+de faire le lien. C'est le même patron que la pièce sous le frigo : deux gestes au lieu d'un,
+et le second n'existe que parce qu'on a fait le premier.
 
 **Et le vingt sur vingt vaut une pièce**, une seule fois : *« Ne le dis pas aux autres. »* La
 maîtresse ne la donne qu'au premier sans-faute — refaire vingt avec un autre objet ne donne rien,

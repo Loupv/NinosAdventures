@@ -1308,8 +1308,8 @@ const DEVOIRS: Record<string, Devoir> = {
         lines: ['« Et en quoi c’est de l’art ? »'],
         reponses: ['Il ne rebondit plus', 'On a joué avec', 'Il est rond'],
         retours: [
-          { points: 2, lines: ['« Un ballon qui ne rebondit plus. »', '« C’est triste et c’est beau. »'] },
-          { points: 2, lines: ['« Toute l’école a joué avec. »'] },
+          { points: 0, lines: ['« Un ballon qui ne rebondit plus. »', '« C’est triste et c’est beau. »'] },
+          { points: 0, lines: ['« Toute l’école a joué avec. »'] },
           { points: 0, lines: ['« Plus vraiment, justement. »'] },
         ],
       },
@@ -1371,8 +1371,8 @@ const DEVOIRS: Record<string, Devoir> = {
         lines: ['« Et en quoi c’est de l’art ? »'],
         reponses: ['Je l’ai décidé', 'Quelqu’un a commencé', 'Ça se mange'],
         retours: [
-          { points: 2, lines: ['« ... »', '« Tu as gagné, Nino. »'] },
-          { points: 2, lines: ['« Un chat, mais quelqu’un. »'] },
+          { points: 0, lines: ['« ... »', '« Tu as gagné, Nino. »'] },
+          { points: 0, lines: ['« Un chat, mais quelqu’un. »'] },
           { points: 0, lines: ['« Plus maintenant. »'] },
         ],
       },
@@ -1446,6 +1446,13 @@ export const AU_BORD_DE_LEAU: Array<{ qui: string; lignes: string[] }> = [
   { qui: 'Le poisson', lignes: ['« ... »', '« D’accord. »'] },
 ];
 
+
+/** Ce qu'on lit quand le caillou dégringole enfin de son étagère. */
+export const CAILLOU_TOMBE = [
+  'Le jet frappe le haut de la bibliothèque.',
+  'Quelque chose dégringole entre deux livres.',
+  'Un caillou.',
+];
 
 export const DIALOGUES: Record<string, DialogueBeat[]> = {
   // ------------------------------------------------------------- la chambre
@@ -1851,6 +1858,19 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
         'Nino remet le livre exactement où il était.',
       ],
       effects: { flag: 'bibliotheque-fouillee' },
+    },
+    /**
+     * **L'indice du caillou.** Après l'album, on lève les yeux : quelque chose brille
+     * tout en haut, hors d'atteinte. Le jeu ne dit pas quoi faire — il dit que c'est
+     * trop haut, et Nino a un pistolet à eau dans son coffre.
+     */
+    {
+      when: () => !state.flag('caillou-tombe'),
+      lines: [
+        'L’album n’est plus là.',
+        'Tout en haut de l’étagère, quelque chose brille entre deux livres.',
+        'Beaucoup trop haut pour Nino.',
+      ],
     },
     { lines: ['L’album n’est plus là.', 'Il reste un vide sur l’étagère.'] },
   ],
@@ -2918,7 +2938,7 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
     },
   ],
 
-  /** Un caillou qu'on a cassé un jour, et qui s'est révélé plein d'étoiles. */
+/** Un caillou qu'on a cassé un jour, et qui s'est révélé plein d'étoiles. */
   caillou: [
     {
       when: () => state.has('caillou'),
