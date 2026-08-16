@@ -1588,13 +1588,10 @@ sans rire. Tout le comique est dans le poste — et jamais dans une vanne ajout�
 | **MAMAN** | production, gâteau, sept bougies. Savait depuis ce matin. |
 | **NINO** | tout le reste. Sept ans depuis ce matin. |
 
-Puis **les mentions de fin**, celles que personne ne lit dans les vrais films :
-
-> *Aucun animal n'a été maltraité. L'écureuil a un avis différent.* — et l'écureuil est là,
-> au milieu de la rue, pendant qu'on le dément : c'est lui, la blague.
-
-Il n'y en a qu'une : un générique de onze écrans n'a pas la place de radoter. La tour, les
-cachettes d'Hermione et les mentions de remplissage sont sorties au montage.
+**Et plus aucune mention de fin** : la tour, les cachettes d'Hermione, les bruits de fusée,
+la ressemblance assumée et « aucun animal n'a été maltraité » sont toutes sorties au montage.
+Un générique de dix écrans n'a pas la place de radoter, et les vannes hors-champ passaient
+mal après des cartons qui montrent quelqu'un.
 
 Personne n'est remercié pour son travail : ils sont crédités pour **ce qu'ils ont fait dans
 l'histoire**, avec le sérieux d'une fiche technique.
@@ -1603,9 +1600,9 @@ l'histoire**, avec le sérieux d'une fiche technique.
 s'assoit au centre de son tapis. **Gérard saute dans la mer** : son carton a son propre
 décor — un *plateau*, une pièce sans porte qu'aucun couloir du jeu ne traverse (le
 vérificateur ne lui demande pas d'être joignable) — de l'eau à perte de vue, deux nuages, et
-**sa bassine qui flotte au milieu**, dans laquelle il saute — et qui **tangue
-vraiment** : deux pixels de houle verticale, un pixel horizontal, sur deux rythmes qui ne
-retombent jamais ensemble. Posée immobile, elle avait l'air peinte sur la mer. Il est allé jusqu'à la mer pour
+**sa bassine qui flotte au milieu**, dans laquelle il saute — et qui **monte et
+descend** doucement, deux pixels, sur une seule respiration lente. Deux mouvements croisés
+donnaient un tremblement de sprite mal calé ; une houle, c'est vertical. Il est allé jusqu'à la mer pour
 continuer à sauter dans son eau douce : le sel, ça gratte, il l'a toujours dit. Le carton de
 cet écran-là vit **en bas** (`bas`) : c'est la ligne d'horizon qui dit que c'est la mer, et
 elle est en haut.
@@ -1619,8 +1616,18 @@ bête et non le bord le plus proche : un passant qui court vers l'araignée ne f
 **un par un** — le plus proche d'abord, sept dixièmes de seconde entre chacun. Trois passants
 qui partent ensemble, c'est une chorégraphie ; l'un après l'autre, c'est une rumeur qui se
 répand. La rue qui se vide lui donne raison. **Et pendant que l'écureuil nie toute participation à ce tournage, un enfant l'arrose au
-pistolet à eau** (`tireur`), en boucle, sans un mot d'explication — et **il encaisse** : un
-petit bond en arrière à chaque giclée, sinon l'eau lui traversait le corps sans qu'il bronche. Le tout dernier écran est
+pistolet à eau** (`tireur`), en boucle, sans un mot d'explication. **Il encaisse et il
+déguerpit** : un bond en arrière à chaque giclée, puis il file se poser ailleurs dans le
+cadre — et le jet le retrouve, parce que la cible est relue au moment du tir. Nier une
+participation en restant planté là, ce n'est pas nier. **Et si le bateau a coulé — c'est-à-dire toujours, mais le générique ne présume rien
+(`si`) — on descend le voir** : l'épave couchée dans la vase au fond de l'Erdre, penchée
+sur le flanc, avec trois poissons qui tournent autour sans se presser. C'est chez eux,
+maintenant. *« LE BATEAU / cascade finale. / A refusé toute doublure. »*
+
+**Le travelling s'arrête sur celui qu'on remercie**, quand la pièce est plus large que
+l'écran : la caméra filait jusqu'au bout du quai et laissait l'éléphant derrière elle.
+
+Le tout dernier écran est
 **la chambre de Nino, avec Nino dedans** : endormi dans
 son lit, des Z au-dessus de la tête, pendant que le carton dit « tout le reste » — et il
 dure deux fois plus longtemps que les autres (`duree`), parce que c'est lui, le film.

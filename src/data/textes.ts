@@ -815,6 +815,8 @@ export const CREDITS: Array<{
   duree?: number;
   /** Le carton va en bas quoi qu'il arrive : c'est l'horizon qu'on veut voir. */
   bas?: 'bas';
+  /** Le carton n'existe que si ce drapeau est posé. */
+  si?: string;
 }> = [
   {
     room: 'salon',
@@ -870,6 +872,14 @@ export const CREDITS: Array<{
     qui: { sprite: 'elephant', x: 140, y: 26, frame: 'boit', anim: 'elephant-boit', scale: 2 },
   },
   {
+    // **Le contrechamp du naufrage**, s'il a eu lieu : l'épave dans la vase, et des
+    // locataires qui ne se sont pas annoncés.
+    room: 'epave',
+    lignes: ['LE BATEAU', 'cascade finale.', 'A refusé toute doublure.'],
+    si: 'bateau-coule',
+    bas: 'bas',
+  },
+  {
     room: 'terrasse',
     lignes: ['PAPA', 'bateau, chapeau, alibis.', 'Cascades exécutées par lui-même.'],
     qui: { sprite: 'papa', x: 52, y: 48 },
@@ -880,13 +890,6 @@ export const CREDITS: Array<{
     qui: { sprite: 'maman', x: 76, y: 58 },
   },
   // ── Et les mentions de fin, celles que personne ne lit jamais dans les vrais films ──
-  {
-    room: 'bars',
-    lignes: ['Aucun animal n’a été maltraité.', 'L’écureuil a un avis différent.'],
-    court: true,
-    // Il est là pendant qu'on le dément : c'est lui, la blague.
-    qui: { sprite: 'ecureuil', x: 76, y: 78, frame: 'queue-0', anim: 'ecureuil-queue' },
-  },
   {
     // **Le dernier carton montre Nino.** Dans son lit, des Z au-dessus de la tête :
     // le générique le remercie pendant qu'il dort — il a fait tout ça aujourd'hui.

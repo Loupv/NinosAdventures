@@ -24,6 +24,8 @@ export interface Portal {
 export interface RoomObject {
   /** Posé sur l'eau : il tangue doucement pendant le générique. */
   flotte0?: true;
+  /** Penché, en degrés. Une épave n'est pas d'aplomb. */
+  angle?: number;
   id: string;
   /** Coin haut-gauche, en pixels. */
   x: number;
@@ -2236,6 +2238,76 @@ export const ROOMS: Record<string, Room> = {
    * bassine de Gérard qui flotte au milieu. Il est allé jusqu'à la mer pour continuer à
    * sauter dans son eau douce : le sel, ça gratte, il l'a toujours dit.
    */
+  /**
+   * **Le fond de l'Erdre.** Un plateau de générique, comme la mer : on y voit l'épave du
+   * bateau de papa, posée dans la vase, et des poissons qui la visitent. Il n'existe que
+   * si le bateau a coulé — c'est-à-dire toujours, mais le générique ne présume rien.
+   */
+  epave: {
+    id: 'epave',
+    palette: 'eau',
+    theme: 'erdre',
+    view: 'side',
+    plateau: true,
+    spawn: { x: 80, y: 132 },
+    tiles: [
+      'wwwwwwwwwwwwwwwwwwww',
+      'WWWWWWWWWWWWWWWWWWWW',
+      'wwwwwwwwwwwwwwwwwwww',
+      'WWWWWWWWWWWWWWWWWWWW',
+      'WWWWWWWWWWWWWWWWWWWW',
+      'wwwwwwwwwwwwwwwwwwww',
+      'WWWWWWWWWWWWWWWWWWWW',
+      'WWWWWWWWWWWWWWWWWWWW',
+      'wwwwwwwwwwwwwwwwwwww',
+      'WWWWWWWWWWWWWWWWWWWW',
+      'BBBBBBBBBBBBBBBBBBBB',
+      'BBBBBBBBBBBBBBBBBBBB',
+      'BBBBBBBBBBBBBBBBBBBB',
+      'BBBBBBBBBBBBBBBBBBBB',
+      'BBBBBBBBBBBBBBBBBBBB',
+      'BBBBBBBBBBBBBBBBBBBB',
+      'BBBBBBBBBBBBBBBBBBBB',
+      'BBBBBBBBBBBBBBBBBBBB',
+    ],
+    objects: [
+      // L'épave, **couchée** dans la vase : bien droite, elle avait l'air de flotter.
+      { id: 'epave-bateau', x: 30, y: 58, sprite: 'bateau', depth: 40, angle: 14 },
+      // Les visiteurs. Ils tournent autour sans se presser : c'est chez eux, maintenant.
+      {
+        id: 'poisson-epave-1',
+        x: 116,
+        y: 70,
+        sprite: 'poisson',
+        frame: 'saut-0',
+        anim: 'poisson-saut',
+        errance: { rayon: 18, vitesse: 9 },
+        depth: 60,
+      },
+      {
+        id: 'poisson-epave-2',
+        x: 132,
+        y: 92,
+        sprite: 'poisson',
+        frame: 'saut-0',
+        anim: 'poisson-saut',
+        errance: { rayon: 14, vitesse: 7 },
+        depth: 60,
+      },
+      {
+        id: 'poisson-epave-3',
+        x: 96,
+        y: 46,
+        sprite: 'poisson',
+        frame: 'saut-0',
+        anim: 'poisson-saut',
+        errance: { rayon: 20, vitesse: 11 },
+        depth: 60,
+      },
+    ],
+    doors: [],
+  },
+
   mer: {
     id: 'mer',
     palette: 'eau',

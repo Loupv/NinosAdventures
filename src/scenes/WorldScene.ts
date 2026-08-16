@@ -793,6 +793,7 @@ export class WorldScene extends Phaser.Scene {
       this.patrouiller(live, def.patrouille, true);
     }
 
+    if (def.angle) go.setAngle(def.angle);
     if (def.saute) {
       this.sauteurs.push({
         live,
@@ -3260,6 +3261,15 @@ export class WorldScene extends Phaser.Scene {
   private etapeDuGenerique(i: number): void {
     state.locked = true;
     const etape = CREDITS[i];
+    // **Un carton peut ne pas avoir lieu d'être** : l'épave au fond de l'Erdre n'existe
+    // que si le bateau a coulé. On passe au suivant sans le montrer.
+    if (etape.si && !state.flag(etape.si)) {
+      this.time.delayedCall(10, () => {
+        if (i + 1 >= CREDITS.length) this.scene.start('Fin');
+        else this.scene.restart({ room: CREDITS[i + 1].room, cinema: i + 1 });
+      });
+      return;
+    }
     const dernier = i + 1 >= CREDITS.length;
 
     // **Celui qu'on remercie vient au milieu de sa pièce, comme un acteur qui salue.**
@@ -3287,22 +3297,15 @@ export class WorldScene extends Phaser.Scene {
     // Une fontaine de Z, pour le carton où quelqu'un dort.
     if (etape.zzz) this.fontaineDeZ(etape.zzz.x, etape.zzz.y, true, () => true);
 
-    // **Ce qui flotte tangue.** Deux pixels de houle, sans rythme rond, pour que la
-    // bassine de Gérard ait l'air posée sur la mer et non peinte dessus.
+    // **Ce qui flotte monte et descend, et c'est tout.** Deux mouvements croisés sur des
+    // rythmes différents donnaient un tremblement de sprite mal calé, pas une houle : une
+    // seule respiration verticale, lente, suffit à la poser sur l'eau.
     for (const l of this.live) {
       if (!l.def.flotte0) continue;
       this.tweens.add({
         targets: l.go,
         y: l.go.y + 2,
-        duration: 1300,
-        yoyo: true,
-        repeat: -1,
-        ease: 'Sine.easeInOut',
-      });
-      this.tweens.add({
-        targets: l.go,
-        x: l.go.x + 1,
-        duration: 2100,
+        duration: 2200,
         yoyo: true,
         repeat: -1,
         ease: 'Sine.easeInOut',
@@ -3323,13 +3326,27 @@ export class WorldScene extends Phaser.Scene {
         .setOrigin(0, 0)
         .setDepth(tireur.y + 16);
       const depart = { x: tireur.x + 10, y: tireur.y + 8 };
-      const but = { x: Math.round(cite.x + 4), y: Math.round(cite.y + 6) };
+      // **Il ne tient pas en place.** Il détale d'un bout du cadre à l'autre entre deux
+      // giclées — et le jet le suit : la cible est relue au moment du tir, pas fixée une
+      // fois pour toutes. Nier une participation en restant planté là, ce n'est pas nier.
+      const perchoirs = [cite.x, 24, GB.W - 40, 72];
+      let ou = 0;
+      const detaler = () => {
+        ou = (ou + 1) % perchoirs.length;
+        this.tweens.add({
+          targets: cite,
+          x: perchoirs[ou],
+          duration: 520,
+          ease: 'Sine.easeInOut',
+        });
+      };
       this.time.addEvent({
         delay: 1100,
         startAt: 500,
         loop: true,
         callback: () => {
           jouer(this, 'pistolet', { volume: 0.35 });
+          const but = { x: Math.round(cite.x + 4), y: Math.round(cite.y + 6) };
           for (let i = 0; i < 3; i++) {
             const g = this.add
               .image(depart.x, depart.y, texKey('goutte', this.pal))
@@ -3346,8 +3363,7 @@ export class WorldScene extends Phaser.Scene {
                 g.destroy();
                 if (i !== 2) return;
                 splash(this, this.pal, but.x, but.y);
-                // **Il encaisse.** Un petit bond en arrière à chaque giclée : sans ça
-                // l'eau lui traversait le corps sans qu'il bronche.
+                // Touché : il sursaute, puis il va se poser ailleurs.
                 const recule = cite.x < tireur.x ? -4 : 4;
                 this.tweens.add({
                   targets: cite,
@@ -3356,6 +3372,7 @@ export class WorldScene extends Phaser.Scene {
                   duration: 90,
                   yoyo: true,
                   ease: 'Quad.easeOut',
+                  onComplete: detaler,
                 });
               },
             });
@@ -3391,13 +3408,17 @@ export class WorldScene extends Phaser.Scene {
     const ancre = cite ? { y: cite.y, h: cite.displayHeight } : undefined;
     this.carton(etape.lignes, ancre, etape.bas);
 
-    // Un travelling lent d'un bord à l'autre, quand il y a de quoi traverser.
+    // **Un travelling lent, qui s'arrête sur celui qu'on remercie** — et non au bout du
+    // quai : l'éléphant de l'Erdre passait à l'écran et la caméra continuait sans lui.
     const duree = etape.duree ?? (etape.court ? GENERIQUE_COURT : GENERIQUE_ETAPE);
     const cam = this.cameras.main;
     cam.stopFollow();
     if (this.roomW > GB.W) {
       cam.setScroll(0, 0);
-      cam.pan(this.roomW - GB.W / 2, cam.midPoint.y, duree, 'Sine.easeInOut');
+      const arrivee = cite
+        ? Phaser.Math.Clamp(cite.x + cite.displayWidth / 2, GB.W / 2, this.roomW - GB.W / 2)
+        : this.roomW - GB.W / 2;
+      cam.pan(arrivee, cam.midPoint.y, duree, 'Sine.easeInOut');
     }
 
     const suite = () => {
