@@ -42,7 +42,6 @@ import {
   JARDINIER_PART_MAISON,
   JARDINIER_PIECE,
   CREDITS,
-  GENERIQUE,
   QUITTER,
   PLANTE,
   PLANTES,
@@ -3254,28 +3253,33 @@ export class WorldScene extends Phaser.Scene {
     const etape = CREDITS[i];
     const dernier = i + 1 >= CREDITS.length;
 
-    // Celui qu'on remercie, reposé là où on l'a rencontré : à la fin du jeu, presque aucun n'est
-    // encore dans sa pièce, et remercier une pièce vide n'a pas le même effet.
-    // Et pas deux fois : si la pièce l'a encore chez elle, on ne le double pas.
-    const q = etape.qui && !this.live.some((l) => l.def.sprite === etape.qui?.sprite) ? etape.qui : undefined;
+    // **Celui qu'on remercie vient au milieu de sa pièce, comme un acteur qui salue.**
+    // Posé là où on l'avait rencontré, Moon se fondait dans son radiateur et Gérard dans
+    // l'épaisseur de la baignoire. S'il est encore chez lui, son double de scène se cache
+    // le temps du carton — sauf l'éléphant de l'Erdre, découpé à la ligne d'eau : lui reste
+    // où il est, on le regarde sans le déplacer.
+    const q = etape.qui;
     let cite: Phaser.GameObjects.Image | Phaser.GameObjects.Sprite | undefined;
-    if (q) {
+    const deja = q ? this.live.find((l) => l.def.sprite === q.sprite) : undefined;
+    if (q && deja?.def.flotte === undefined) {
+      if (deja) deja.go.setVisible(false);
       cite = q.anim
         ? this.add.sprite(q.x, q.y, texKey(q.sprite, this.pal), q.frame)
         : this.add.image(q.x, q.y, texKey(q.sprite, this.pal), q.frame);
       cite.setOrigin(0, 0).setScale(q.scale ?? 1);
-      cite.setDepth(q.y + cite.displayHeight);
+      cite.setDepth(q.depth ?? q.y + cite.displayHeight);
       if (q.anim && cite instanceof Phaser.GameObjects.Sprite) cite.play(animKey(q.anim, this.pal));
-    } else if (etape.qui) {
-      // Il est encore chez lui : c'est lui qu'on regarde pour placer le carton.
-      const la = this.live.find((l) => l.def.sprite === etape.qui?.sprite);
-      cite = la?.go as typeof cite;
+    } else if (deja) {
+      cite = deja.go as typeof cite;
     }
+
+    // Une fontaine de Z, pour le carton où quelqu'un dort.
+    if (etape.zzz) this.fontaineDeZ(etape.zzz.x, etape.zzz.y, true, () => true);
 
     // **Le carton se pousse pour laisser voir celui qu'il remercie** : en haut par défaut,
     // en bas si le personnage cité vit dans la bande haute de l'écran.
     const ancre = cite ? { y: cite.y, h: cite.displayHeight } : undefined;
-    const carton = this.carton(etape.lignes, ancre);
+    this.carton(etape.lignes, ancre);
 
     // Un travelling lent d'un bord à l'autre, quand il y a de quoi traverser.
     const duree = etape.court ? GENERIQUE_COURT : GENERIQUE_ETAPE;
@@ -3304,16 +3308,6 @@ export class WorldScene extends Phaser.Scene {
      * quarante secondes à la fin d'un jeu qu'on vient de finir n'est pas une punition ; le rater
      * par accident, si.
      */
-    if (dernier) {
-      // **Le carton de Nino a son propre temps.** Collé sous celui d'Hermione, les deux
-      // mangeaient la moitié de l'écran — et Hermione avec. L'un, puis l'autre.
-      this.time.delayedCall(duree + 600, () => {
-        carton.forEach((g) => g.destroy());
-        this.carton(GENERIQUE.fin, ancre);
-        this.time.delayedCall(GENERIQUE_ETAPE + 600, suite);
-      });
-      return;
-    }
     this.time.delayedCall(duree + 600, suite);
   }
 

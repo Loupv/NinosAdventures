@@ -792,17 +792,29 @@ export const CREDITS: Array<{
    * triste ; on les repose donc là où on les a rencontrés, juste pour la photo — et **au-dessus de
    * la bande de texte**, qui mange le bas de l'écran.
    */
-  qui?: { sprite: string; x: number; y: number; frame?: string; anim?: string; scale?: number };
+  qui?: {
+    sprite: string;
+    x: number;
+    y: number;
+    frame?: string;
+    anim?: string;
+    scale?: number;
+    depth?: number;
+  };
+  /** Une fontaine de Z au-dessus d'un dormeur, pour le carton où quelqu'un dort. */
+  zzz?: { x: number; y: number };
 }> = [
   {
     room: 'salon',
     lignes: ['MOON', 'dans son propre rôle.', 'Cachet : un bout de pizza.'],
-    qui: { sprite: 'moon', x: 16, y: 86, frame: 'idle-0', anim: 'moon-idle' },
+    // **Au milieu de la pièce, comme un acteur qui salue** : posé à sa place d'origine,
+    // il se fondait dans le radiateur et on ne le voyait pas.
+    qui: { sprite: 'moon', x: 68, y: 76, frame: 'idle-0', anim: 'moon-idle' },
   },
   {
     room: 'sdb',
     lignes: ['GÉRARD', 'rôle du poisson.', 'A quitté le tournage avant la fin.'],
-    qui: { sprite: 'poisson', x: 24, y: 44, frame: 'saut-0', anim: 'poisson-saut' },
+    qui: { sprite: 'poisson', x: 72, y: 62, frame: 'saut-0', anim: 'poisson-saut' },
   },
   {
     room: 'mezzanine',
@@ -852,10 +864,17 @@ export const CREDITS: Array<{
     qui: { sprite: 'hermione', x: 20, y: 40, frame: 'idle-0', anim: 'hermione-idle' },
   },
   // ── Et les mentions de fin, celles que personne ne lit jamais dans les vrais films ──
-  { room: 'bars', lignes: ['Aucun animal n’a été maltraité.', 'L’écureuil a un avis différent.'] , court: true },
   {
-    room: 'couloir',
-    lignes: ['Ce couloir a quatre portes', 'et un escalier.', 'Il n’a jamais servi à rien.'],
+    room: 'bars',
+    lignes: ['Aucun animal n’a été maltraité.', 'L’écureuil a un avis différent.'],
+    court: true,
+    // Il est là pendant qu'on le dément : c'est lui, la blague.
+    qui: { sprite: 'ecureuil', x: 76, y: 78, frame: 'queue-0', anim: 'ecureuil-queue' },
+  },
+  {
+    // Le grand lit du rêve de la fusée — et la vérité sur ses bruits de moteur.
+    room: 'chambre-parents',
+    lignes: ['Les bruits de la fusée sont d’origine.', 'Aucun trucage.'],
     court: true,
   },
   {
@@ -863,12 +882,15 @@ export const CREDITS: Array<{
     lignes: ['Toute ressemblance avec des personnes', 'réelles est parfaitement assumée.'],
     court: true,
   },
+  {
+    // **Le dernier carton montre Nino.** Dans son lit, des Z au-dessus de la tête :
+    // le générique le remercie pendant qu'il dort — il a fait tout ça aujourd'hui.
+    room: 'chambre',
+    lignes: ['NINO', 'tout le reste.', 'Sept ans depuis ce matin.'],
+    qui: { sprite: 'nino-couche', x: 22, y: 22, depth: 300 },
+    zzz: { x: 30, y: 18 },
+  },
 ];
-
-/** La toute dernière ligne du générique, et ce qu'on lit avant qu'il commence. */
-export const GENERIQUE = {
-  fin: ['NINO', 'tout le reste.', 'Sept ans depuis ce matin.'],
-};
 
 // ═══════════════════════════════════════════════════════ 10. le sac et les pièces
 

@@ -1586,12 +1586,20 @@ sans rire. Tout le comique est dans le poste — et jamais dans une vanne ajout�
 
 Puis **les mentions de fin**, celles que personne ne lit dans les vrais films :
 
-> *Aucun animal n'a été maltraité. L'écureuil a un avis différent.*
-> *Ce couloir a quatre portes et un escalier. Il n'a jamais servi à rien.*
+> *Aucun animal n'a été maltraité. L'écureuil a un avis différent.* — et l'écureuil est là,
+> au milieu de la rue, pendant qu'on le dément : c'est lui, la blague.
+> *Les bruits de la fusée sont d'origine. Aucun trucage.* — sur le grand lit du rêve.
 > *Toute ressemblance avec des personnes réelles est parfaitement assumée.*
 
 Personne n'est remercié pour son travail : ils sont crédités pour **ce qu'ils ont fait dans
 l'histoire**, avec le sérieux d'une fiche technique.
+
+**Et celui qu'on remercie vient au milieu de sa pièce, comme un acteur qui salue.** Reposé
+là où on l'avait rencontré, Moon se fondait dans son radiateur et Gérard dans l'épaisseur
+de la baignoire — maintenant Moon s'assoit au centre de son tapis, Gérard saute au milieu
+du carrelage, et le double de scène se cache le temps du carton. Le tout dernier écran est
+**la chambre de Nino, avec Nino dedans** : endormi dans son lit, des Z au-dessus de la
+tête, pendant que le carton dit « tout le reste ».
 
 Techniquement, c'est **le jeu lui-même qui joue le générique** : le mode cinéma est une variante de
 la scène de jeu (`cinema` dans l'arrivée), donc les décors, les animations et les personnages sont
