@@ -8,21 +8,42 @@ import { JournalScene } from './scenes/JournalScene';
 import { FlappyScene } from './scenes/FlappyScene';
 import { ParapenteScene } from './scenes/ParapenteScene';
 import { FinScene } from './scenes/FinScene';
+import { ReglagesScene } from './scenes/ReglagesScene';
 import { couperSon, estCoupe } from './systems/audio';
+import { enregistrerReglages, reglages } from './systems/reglages';
 
-/**
- * Zoom entier uniquement : un pixel du jeu = N pixels de l'écran, jamais 1,5.
- *
- * Sur un écran tactile, la manette occupe le bas de la console : on lui réserve sa place
- * avant de calculer, sinon l'écran mangeait les boutons et Nino se retrouvait à jouer
- * sans croix directionnelle.
- */
 const TACTILE = window.matchMedia('(pointer: coarse)').matches;
 
+/**
+ * **Sur un ordinateur : un zoom entier, jamais 1,5.** Un pixel du jeu vaut N pixels de
+ * l'écran, sans quoi la grille se déforme et le dessin bave.
+ */
 function bestZoom(): number {
   const w = window.innerWidth - 60;
-  const h = window.innerHeight - (TACTILE ? 260 : 80);
+  const h = window.innerHeight - 80;
   return Math.max(1, Math.min(6, Math.floor(Math.min(w / GB.W, h / GB.H))));
+}
+
+/**
+ * **Sur un téléphone : l'écran prend toute la place qu'il peut.** Un zoom entier y perdait
+ * la moitié de la largeur — 375 pixels de large ne font que deux fois 160 — et le jeu
+ * s'affichait en timbre-poste au milieu d'une grande console grise. On étire donc le
+ * canevas en CSS, sans toucher à sa résolution interne : le rendu reste `pixelated`, les
+ * pixels ne sont juste plus tous de la même taille. À bout de bras, ça ne se voit pas ;
+ * un écran deux fois trop petit, si.
+ *
+ * La manette et la marque gardent leur place : on mesure ce qui reste, et on prend le
+ * plus petit des deux côtés pour ne jamais déborder.
+ */
+function ajusterEcranTactile(): void {
+  const canvas = document.getElementById('game')?.querySelector('canvas');
+  if (!canvas) return;
+  const manette = document.getElementById('manette');
+  const bas = document.getElementById('bas');
+  const pris = (manette?.offsetHeight ?? 0) + (bas?.offsetHeight ?? 0) + 60;
+  const large = Math.min(window.innerWidth - 36, ((window.innerHeight - pris) * GB.W) / GB.H);
+  canvas.style.width = `${Math.floor(large)}px`;
+  canvas.style.height = `${Math.floor((large * GB.H) / GB.W)}px`;
 }
 
 const game = new Phaser.Game({
@@ -30,7 +51,7 @@ const game = new Phaser.Game({
   parent: 'game',
   width: GB.W,
   height: GB.H,
-  zoom: bestZoom(),
+  zoom: TACTILE ? 1 : bestZoom(),
   pixelArt: true,
   roundPixels: true,
   backgroundColor: '#0f380f',
@@ -40,6 +61,7 @@ const game = new Phaser.Game({
   scene: [
     BootScene,
     TitleScene,
+    ReglagesScene,
     WorldScene,
     FlappyScene,
     ParapenteScene,
@@ -49,34 +71,26 @@ const game = new Phaser.Game({
   ],
 });
 
-window.addEventListener('resize', () => game.scale.setZoom(bestZoom()));
+const ajuster = () => {
+  if (TACTILE) ajusterEcranTactile();
+  else game.scale.setZoom(bestZoom());
+};
+window.addEventListener('resize', ajuster);
+window.addEventListener('orientationchange', () => setTimeout(ajuster, 120));
+// Le canevas n'existe pas encore quand ce fichier s'exécute : on attend qu'il soit là.
+game.events.once('ready', ajuster);
 
 /**
- * ── Bouton du son : TEMPORAIRE ──
- *
- * **Le son est coupé au démarrage** : on développe en silence, et on l'allume pour
- * vérifier un bruitage. Le bouton est dans la page, sous l'écran — pas dans le jeu, pour
- * ne pas manger de pixels et pour qu'il suffise de retirer ce bloc et le <button> de
- * index.html le jour où on n'en veut plus. La touche **M** fait la même chose.
+ * **La touche M coupe le son**, et c'est tout ce qui en reste dans la page : le bouton
+ * gris sous l'écran a rejoint les réglages du jeu (ÉCHAP sur l'écran-titre), où il a sa
+ * place. Une console n'a pas d'étiquette « son : coupé » collée sur sa façade.
  */
-const bouton = document.getElementById('son');
-const majSon = () => {
-  if (bouton) bouton.textContent = estCoupe() ? 'son : coupé' : 'son : allumé';
-};
-const basculerSon = () => {
-  // La scène courante sert juste à relayer aux leviers de Phaser ; l'état vit dans audio.ts.
-  couperSon(game.scene.scenes.find((s) => s.scene.isActive()), !estCoupe());
-  majSon();
-};
-bouton?.addEventListener('click', () => {
-  basculerSon();
-  // Le clic rend aussi la main au clavier : sinon les flèches pilotent le bouton.
-  (document.activeElement as HTMLElement | null)?.blur();
-});
 window.addEventListener('keydown', (e) => {
-  if (e.key === 'm' || e.key === 'M') basculerSon();
+  if (e.key !== 'm' && e.key !== 'M') return;
+  reglages.son = estCoupe();
+  couperSon(game.scene.scenes.find((s) => s.scene.isActive()), !reglages.son);
+  enregistrerReglages();
 });
-majSon();
 
 /**
  * ── LA MANETTE TACTILE ──

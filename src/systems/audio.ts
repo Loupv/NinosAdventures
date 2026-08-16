@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import { DOSSIER, SONS, VOIX, piocher, son } from '../data/sons';
+import { reglages } from './reglages';
 
 /**
  * Le son du jeu, en trois fonctions.
@@ -23,7 +24,7 @@ const cle = (id: string, n: number) => `${id}-${n}`;
  * **Coupé au démarrage, le temps du développement** : on travaille en silence, et on
  * l'allume pour vérifier un bruitage.
  */
-let coupe = true;
+let coupe = !reglages.son;
 
 export const estCoupe = () => coupe;
 

@@ -93,6 +93,7 @@ import { Player, type ViewMode } from '../entities/Player';
 import { ETAPES, type Etape } from '../dev/etapes';
 import { PixelText, measure } from '../ui/PixelText';
 import { LINE_H, wrap } from '../art/font';
+import { reglages } from '../systems/reglages';
 
 /**
  * **Hermione ne copie pas le chemin de son frère : elle a le sien.**
@@ -499,7 +500,7 @@ export class WorldScene extends Phaser.Scene {
     state.save();
 
     // Sonde de développement : position, pièce, verrou. Absente du build.
-    if (import.meta.env.DEV) {
+    if (import.meta.env.DEV || reglages.raccourcis) {
       (window as unknown as { nino?: unknown }).nino = {
         where: () => ({
           room: this.room.id,

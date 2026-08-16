@@ -41,7 +41,7 @@
       #bas {
         display: flex;
         align-items: center;
-        justify-content: space-between;
+        justify-content: flex-end;
         margin-top: 8px;
         font: 10px/1 ui-monospace, Menlo, monospace;
         letter-spacing: 2px;
@@ -49,30 +49,6 @@
       }
       #label {
         color: #6b2b6b;
-      }
-      /*
-        Bouton du son : TEMPORAIRE, le temps du développement. Il vit dans la page et pas
-        dans le jeu, pour ne pas manger de pixels à l'écran — et pour qu'il suffise de
-        supprimer ce bloc et le <button> le jour où on n'en veut plus.
-      */
-      #son {
-        font: inherit;
-        letter-spacing: inherit;
-        text-transform: inherit;
-        color: #4a4740;
-        background: #bdb9b0;
-        border: 0;
-        border-radius: 3px;
-        padding: 3px 7px;
-        cursor: pointer;
-        box-shadow:
-          inset -1px -1px 0 #8f8c84,
-          inset 1px 1px 0 #e6e3da;
-      }
-      #son:active {
-        box-shadow:
-          inset 1px 1px 0 #8f8c84,
-          inset -1px -1px 0 #e6e3da;
       }
 
       /*
@@ -91,12 +67,25 @@
         display: none;
       }
       @media (pointer: coarse) {
+        /* La console remplit l'écran du téléphone : plus de marge perdue autour. */
+        #shell {
+          width: 100%;
+          box-sizing: border-box;
+          padding: 10px;
+          border-radius: 0;
+        }
+        #game canvas {
+          margin: 0 auto;
+          border-width: 2px;
+        }
         #manette {
           display: grid;
           grid-template-columns: auto 1fr auto;
           align-items: center;
           gap: 10px;
-          margin-top: 14px;
+          /* De l'air sur les côtés : la croix touchait le bord de la console. */
+          padding: 0 10px;
+          margin-top: 12px;
         }
         /* La croix : trois colonnes, trois rangées, et le trou du milieu. */
         #croix {
@@ -185,7 +174,6 @@
     <div id="shell">
       <div id="game"></div>
       <div id="bas">
-        <button id="son" type="button" title="Touche M">son : coupé</button>
         <span id="label">Nino&nbsp;Adventures</span>
       </div>
 

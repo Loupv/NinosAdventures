@@ -586,9 +586,12 @@ export const SONS: Son[] = [
   },
   {
     id: 'titre',
+    present: true,
+    provisoire: true,
     quand: 'L’écran-titre.',
     variantes: 1,
-    cherche: 'Six notes, et on entre dans le jeu. Personne n’attend sur un écran-titre.',
+    cherche:
+      'La première chose qu’on entend du jeu. Le fichier posé : « Three Red Hearts » (Abstraction, CC0), le morceau qui donne son nom au pack — une mélodie franche, qui démarre tout de suite.',
     priorite: 'plus tard',
     boucle: true,
   },

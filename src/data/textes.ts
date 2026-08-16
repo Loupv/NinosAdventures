@@ -41,6 +41,7 @@ export const TITRE = {
   continuer: 'ESPACE : CONTINUER',
   commencer: 'APPUIE SUR ESPACE',
   recommencer: 'R : REPARTIR À ZÉRO',
+  reglages: 'ÉCHAP : RÉGLAGES',
   effacer: 'TOUT EFFACER ?',
   effacerOui: 'ESPACE : OUI',
   effacerNon: 'ÉCHAP : NON',
@@ -780,6 +781,22 @@ export const DODO: typeof FETE = [
  * qu'un générique qui déroule des noms sur du noir. On peut passer avec ESPACE : un enfant de sept
  * ans qui a fini un jeu a le droit d'être pressé.
  */
+/**
+ * **Les réglages de la console.** Deux interrupteurs et rien d'autre : ce n'est pas un
+ * menu d'options, c'est un couvercle qu'on soulève quand il faut.
+ */
+export const REGLAGES = {
+  titre: 'RÉGLAGES',
+  son: 'Le son',
+  raccourcis: 'Les raccourcis',
+  oui: 'oui',
+  non: 'non',
+  /** Ce que fait la ligne choisie, en une phrase — sous la liste. */
+  aideSon: 'La musique et les bruitages.',
+  aideRaccourcis: 'Les touches 1 à 8 sautent dans le jeu.',
+  sortir: 'ÉCHAP : RETOUR',
+};
+
 /**
  * **Le tout premier écran, avant même le chargement.** Les navigateurs refusent de
  * décoder le moindre son tant que personne n'a touché la page : sans cette invite, le

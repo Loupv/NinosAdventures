@@ -1758,6 +1758,13 @@ JavaScript exigent un vrai serveur.
 
 ### La manette tactile
 
+**Sur un téléphone, l'écran prend toute la place qu'il peut.** Un zoom entier y perdait la
+moitié de la largeur — 375 pixels de large ne font que deux fois 160 — et le jeu s'affichait
+en timbre-poste au milieu d'une grande console grise. Le canevas est donc étiré en CSS, sans
+toucher à sa résolution interne : le rendu reste `pixelated`, les pixels ne sont juste plus
+tous de la même taille. À bout de bras ça ne se voit pas ; un écran deux fois trop petit, si.
+Sur un ordinateur, le zoom reste entier — un pixel du jeu vaut N pixels de l'écran, jamais 1,5.
+
 **Sur un écran qu'on touche, la console pousse des boutons** : une croix directionnelle,
 B et A en biais, SELECT et START penchés — la main droite d'une Game Boy. Ils n'existent
 que là où il n'y a pas de clavier (`@media (pointer: coarse)`), et l'écran de jeu se réduit
@@ -1772,6 +1779,34 @@ Deux détails qui font la différence entre une manette et des boutons : **un do
 de ◀ vers ▶ change de direction** (il faut relâcher la capture que le navigateur donne au
 premier bouton touché), et **un doigt levé hors de la console relâche quand même la touche**
 — sans quoi Nino continue de marcher tout seul.
+
+## Les réglages
+
+**Deux interrupteurs, et rien d'autre** : le son, et les raccourcis de développement. Ce
+n'est pas un menu d'options — un jeu offert à un enfant de sept ans n'en a pas besoin, et
+chaque ligne de plus serait une ligne à lire. On y entre depuis l'écran-titre, avec ÉCHAP
+ou SELECT : l'endroit et le geste où l'on règle une console avant d'y jouer.
+
+Les défauts sont ceux d'un cadeau : **le son est allumé** — un jeu muet au premier
+lancement, personne ne pense à aller chercher pourquoi — et **les raccourcis sont éteints**,
+pour qu'un enfant qui cherche la touche du pistolet à eau ne se retrouve pas téléporté au
+pied de la Tour de Bretagne. Le bouton gris « son : coupé » qui vivait sur la façade de la
+console a disparu avec eux : une console n'a pas d'étiquette collée dessus.
+
+Les réglages vivent **à côté de la partie**, dans leur propre clé de stockage : effacer sa
+sauvegarde pour recommencer ne doit pas rallumer un son qu'on avait coupé.
+
+### Le jeu nomme les touches qu'on a sous les doigts
+
+Au clavier, une consigne dit *« ESPACE : CONTINUER »*. Sur une tablette, il n'y a pas
+d'espace : il y a un bouton rond marqué **A**. Les consignes disent donc **A**, **B**,
+**START** et **SELECT** dès que la manette est là — et *« appuie sur une touche »* devient
+*« appuie sur un bouton »*.
+
+La traduction se fait **au dernier moment, à l'affichage**, dans
+[PixelText](../src/ui/PixelText.ts) : les textes restent écrits une seule fois dans
+`textes.ts`, et aucune consigne ne peut l'oublier — pas même celles que j'écrirai demain.
+La mesure de largeur passe par le même filtre, sinon tout ce qui est centré part de travers.
 
 ## Repartir à zéro
 

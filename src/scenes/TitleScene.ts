@@ -11,6 +11,7 @@ import { PixelText, measure } from '../ui/PixelText';
 export class TitleScene extends Phaser.Scene {
   private prompt!: PixelText;
   private aussi?: PixelText;
+  private trois?: PixelText;
   private blink = true;
   /** Vrai quand la question « tout effacer ? » est posée et attend une réponse. */
   private demande = false;
@@ -118,8 +119,9 @@ export class TitleScene extends Phaser.Scene {
         .play(animKey('elephant-oreille', pal));
     }
 
-    this.prompt = this.line('', 114, ink, 'ttl-3');
-    this.aussi = this.line('', 127, ink, 'ttl-4');
+    this.prompt = this.line('', 110, ink, 'ttl-3');
+    this.aussi = this.line('', 123, ink, 'ttl-4');
+    this.trois = this.line('', 134, ink, 'ttl-5');
     this.proposer();
 
     this.time.addEvent({
@@ -136,7 +138,13 @@ export class TitleScene extends Phaser.Scene {
     KEYS.action.forEach((c) =>
       kb.addKey(c).on('down', () => (this.demande ? this.begin(true) : this.begin(false))),
     );
-    KEYS.cancel.forEach((c) => kb.addKey(c).on('down', () => this.demande && this.proposer()));
+    // ÉCHAP (et SELECT, sur la manette) : renoncer à effacer, ou ouvrir les réglages.
+    KEYS.cancel.forEach((c) =>
+      kb.addKey(c).on('down', () => {
+        if (this.demande) this.proposer();
+        else this.scene.start('Reglages');
+      }),
+    );
     kb.addKey('R').on('down', () => this.demander());
   }
 
@@ -147,8 +155,11 @@ export class TitleScene extends Phaser.Scene {
   private proposer(): void {
     this.demande = false;
     const garde = state.hasSave();
-    this.ecrire(this.prompt, garde ? TITRE.continuer : TITRE.commencer, 114);
-    this.ecrire(this.aussi!, garde ? TITRE.recommencer : '', 127);
+    this.ecrire(this.prompt, garde ? TITRE.continuer : TITRE.commencer, 110);
+    // Une partie en cours propose d'effacer ; sinon la ligne sert aux réglages, qui
+    // ont besoin d'être trouvables sans qu'on les cherche.
+    this.ecrire(this.aussi!, garde ? TITRE.recommencer : TITRE.reglages, 123);
+    this.ecrire(this.trois!, garde ? TITRE.reglages : '', 134);
   }
 
   /** La question. Tant qu'elle est posée, ESPACE efface et ÉCHAP renonce. */
@@ -161,7 +172,8 @@ export class TitleScene extends Phaser.Scene {
     }
     this.demande = true;
     this.ecrire(this.prompt, TITRE.effacer, 110);
-    this.ecrire(this.aussi!, `${TITRE.effacerOui}   ${TITRE.effacerNon}`, 126);
+    this.ecrire(this.aussi!, `${TITRE.effacerOui}   ${TITRE.effacerNon}`, 123);
+    this.ecrire(this.trois!, '', 134);
   }
 
   private ecrire(t: PixelText, texte: string, y: number): void {
