@@ -1721,8 +1721,8 @@ partie.** S'il n'y a rien à effacer, R démarre simplement une partie neuve, sa
 
 ## Les raccourcis de développement
 
-**Cinq touches, et seulement des chiffres** : `1` le réveil, `2` la cour, `3` Nantes, `4` l'Erdre,
-`5` la tour. Les lettres étaient branchées elles aussi — et un enfant qui cherche la touche du
+**Huit touches, et seulement des chiffres** : `1` le réveil, `2` la cour, `3` Nantes, `4` l'Erdre,
+`5` la tour, `6` le saut en parapente, `7` l'outro, `8` le générique. Les lettres étaient branchées elles aussi — et un enfant qui cherche la touche du
 pistolet à eau se retrouvait téléporté au pied de la Tour de Bretagne sans comprendre pourquoi. Les
 autres étapes restent accessibles depuis la console : `nino.etape('f')`, et `nino.etapes()` en donne
 la liste.

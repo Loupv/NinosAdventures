@@ -17,7 +17,7 @@ import type { ItemId } from '../data/items';
  */
 export interface Etape {
   /**
-   * L'identifiant du raccourci. **Seuls « 1 » à « 7 » répondent au clavier** : les lettres étaient
+   * L'identifiant du raccourci. **Seuls « 1 » à « 8 » répondent au clavier** : les lettres étaient
    * branchées elles aussi, et un enfant qui cherche la touche du pistolet à eau se retrouvait
    * téléporté au pied de la tour. Les autres se lancent depuis la console : `nino.etape('d')`.
    */
@@ -38,6 +38,8 @@ export interface Etape {
   eauVieille?: boolean;
   /** Lance un mini-jeu au lieu d'une pièce. */
   minijeu?: string;
+  /** Lance le générique : la pièce déclarée est ignorée, le premier carton choisit la sienne. */
+  cinema?: true;
 }
 
 /**
@@ -94,7 +96,7 @@ export const ETAPES: Etape[] = [
     // Les énigmes faites, le travelling déjà vu : le parapente attend contre le parapet.
     flags: [...APRES_LE_NAUFRAGE, ...ENIGMES, 'toit-decouvert'],
   },
-  { touche: '8', nom: 'La fusée', room: 'chambre-parents', minijeu: 'Flappy' },
+  { touche: 'f', nom: 'La fusée', room: 'chambre-parents', minijeu: 'Flappy' },
   {
     touche: '9',
     nom: 'Hermione suit',
@@ -128,5 +130,15 @@ export const ETAPES: Etape[] = [
     // la fin part d'ici. `nuit` et `aube` sont posés en chemin par la tour, normalement.
     flags: [...APRES_LE_NAUFRAGE, ...ENIGMES, 'nuit', 'aube', 'parapente-rentre'],
     items: ['parapente'],
+  },
+  {
+    touche: '8',
+    nom: 'Le générique',
+    // La pièce est ignorée : `cinema` lance le premier carton, qui connaît la sienne.
+    room: 'salon',
+    // L'état d'après la fête, pour que les pièces du générique racontent la bonne fin :
+    // le bateau coulé, la maison réveillée, le matin de l'anniversaire.
+    flags: [...APRES_LE_NAUFRAGE, ...ENIGMES, 'nuit', 'aube', 'parapente-rentre', 'matin', 'anniversaire', 'fin'],
+    cinema: true,
   },
 ];

@@ -557,7 +557,7 @@ export class WorldScene extends Phaser.Scene {
        * console : `nino.etape('f')`.
        */
       this.input.keyboard!.on('keydown', (ev: KeyboardEvent) => {
-        if (!/^[1-7]$/.test(ev.key)) return;
+        if (!/^[1-8]$/.test(ev.key)) return;
         const etape = ETAPES.find((e) => e.touche === ev.key);
         if (etape) this.allerEtape(etape);
       });
@@ -4198,6 +4198,10 @@ export class WorldScene extends Phaser.Scene {
     this.scene.stop('Ui');
     if (e.minijeu) {
       this.scene.start(e.minijeu);
+      return;
+    }
+    if (e.cinema) {
+      this.scene.restart({ room: CREDITS[0].room, cinema: 0 });
       return;
     }
     // Le bandeau de la pièce annonce l'arrivée : on sait où on a atterri.
