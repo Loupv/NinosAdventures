@@ -809,6 +809,8 @@ export const CREDITS: Array<{
   marcheVers?: number;
   /** Les passants de la pièce fuient en courant. C'est l'araignée, la raison. */
   panique?: true;
+  /** Un enfant posé là, qui arrose le personnage cité au pistolet à eau, en boucle. */
+  tireur?: { x: number; y: number };
   /** Durée sur mesure, pour un carton qui mérite qu'on s'attarde. */
   duree?: number;
 }> = [
@@ -820,11 +822,11 @@ export const CREDITS: Array<{
     qui: { sprite: 'moon', x: 68, y: 76, frame: 'idle-0', anim: 'moon-idle' },
   },
   {
-    // **Il est parti à la mer — on l'y voit.** Le vrai sauteur de l'Erdre, ressuscité le
-    // temps du carton : il saute, il éclabousse, il a mieux à faire que le générique.
-    room: 'erdre',
+    // **Il est parti à la mer — on l'y voit.** Et il saute dans sa bassine, qui flotte
+    // au milieu : le sel, ça gratte, il l'a toujours dit.
+    room: 'mer',
     lignes: ['GÉRARD', 'rôle du poisson.', 'A quitté le tournage avant la fin.'],
-    revele: 'poisson-erdre',
+    revele: 'gerard-mer',
   },
   {
     // **Elle traverse la rue des bars, et la rue se vide.** Artiste incomprise, la preuve.
@@ -835,9 +837,11 @@ export const CREDITS: Array<{
     panique: true,
   },
   {
+    // **Pendant qu'il nie, un enfant l'arrose.** Personne ne commente.
     room: 'cour',
-    lignes: ['L’ÉCUREUIL', 'mauvaises idées.', 'Nie toute participation.'],
+    lignes: ['L’ÉCUREUIL', 'mauvaises idées.', 'Nie toute participation à ce tournage.'],
     qui: { sprite: 'ecureuil', x: 124, y: 72, frame: 'queue-0', anim: 'ecureuil-queue' },
+    tireur: { x: 98, y: 70 },
   },
   {
     room: 'nantes',

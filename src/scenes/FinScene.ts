@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import { GB, KEYS } from '../config';
-import { shadeHex } from '../art/palette';
-import { texKey } from '../art/pixels';
+import { shade as shadeNum, shadeHex } from '../art/palette';
+import { animKey, texKey } from '../art/pixels';
 import { state } from '../systems/state';
 import { jouerAmbiance, jouerMusique } from '../systems/audio';
 import { CACHETTES } from '../data/hermione';
@@ -64,12 +64,9 @@ export class FinScene extends Phaser.Scene {
   // ───────────────────────────────────────────────────────── page 1 : le gâteau
 
   private gateau(): void {
-    this.ecran.push(
-      this.add
-        .image(GB.W / 2 - 16, 26, texKey('gateau', PALETTE))
-        .setOrigin(0, 0)
-        .setScale(2),
-    );
+    // **Pas de gâteau ici** : on vient de le souffler, et la troupe le remplace mieux
+    // qu'un dessin de plus. Le nom de la page lui reste, c'est la page du gâteau.
+    this.laTroupe();
 
     this.centre('fin-titre', FIN.titre, 76);
     this.centre('fin-bon', FIN.voeu, 92);
@@ -82,6 +79,49 @@ export class FinScene extends Phaser.Scene {
     // que ce qui a eu lieu.
     if (state.note > 0) this.centre('fin-note', FIN.note(state.note), 118);
     this.centre('fin-suite', FIN.suite, 130);
+  }
+
+  /**
+   * **Toute la troupe est venue pour l'anniversaire**, comme sur l'écran-titre rempli :
+   * ceux qu'on a rencontrés seulement, alignés sous le gâteau sur une même ligne de sol.
+   *
+   * Les places sont **fixes et espacées de vingt pixels** : aucun ne se marche dessus,
+   * quel que soit le nombre de présents. L'éléphant n'entre pas dans le rang — il est au
+   * fond, derrière tout le monde, et sa tête sort du cadre comme sur l'affiche.
+   */
+  private laTroupe(): void {
+    const SOL = 72;
+    if (state.flag('elephant-vu')) {
+      // **Il est le décor, comme sur l'affiche** : du sol jusqu'au-delà du haut de
+      // l'écran, derrière tout le monde, la tête hors cadre. Personne ne trouve ça
+      // bizarre, et toute la troupe pose devant lui.
+      this.ecran.push(
+        this.add
+          .sprite(GB.W + 10, SOL + 2, texKey('elephant', PALETTE), 'boit')
+          .setOrigin(1, 1)
+          .setScale(5)
+          .setDepth(-6)
+          .play(animKey('elephant-oreille', PALETTE)),
+      );
+    }
+    /** Les invités, de gauche à droite, avec ce qui les fait exister. */
+    const troupe: Array<[number, string, string, string | undefined, boolean]> = [
+      [14, 'ecureuil', 'queue-0', 'ecureuil-queue', state.flag('ecureuil-vu')],
+      [32, 'araignee', 'pattes-0', 'araignee-pattes', state.haiku > 0],
+      [50, 'hermione', 'idle-0', 'hermione-idle', state.hermione > 0],
+      [68, 'nino', 'down-0', 'nino-walk-down', true],
+      [86, 'moon', 'idle-0', 'moon-idle', true],
+      [106, 'papa-capitaine', 'marche-0', undefined, state.flag('papa-capitaine-vu')],
+      [130, 'seau', 'eau-0', 'seau-saute', state.flag('poisson-arrive')],
+    ];
+    for (const [x, sprite, frame, anim, la] of troupe) {
+      if (!la) continue;
+      const s = this.add.sprite(x, SOL, texKey(sprite, PALETTE), frame).setOrigin(0.5, 1);
+      if (anim) s.play(animKey(anim, PALETTE));
+      this.ecran.push(s);
+    }
+    // Le sol sous leurs pieds, comme sur l'affiche.
+    this.ecran.push(this.add.rectangle(8, SOL, GB.W - 16, 1, shadeNum(PALETTE, 1)).setOrigin(0, 0));
   }
 
   // ──────────────────────────────────────── page 2 : ce qu'il a fait cette nuit-là

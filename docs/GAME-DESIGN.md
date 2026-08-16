@@ -1552,6 +1552,12 @@ quelques secondes, puis le fondu le plus lent du jeu emmène aux cartons.
 L'écran de fin est dans la palette du jour — c'est le matin de son anniversaire — et il
 compte ce qui a été **trouvé**, pas ce qui a été réussi : les cachettes d'Hermione, les pièces. Il n'y a pas de score dans ce jeu.
 
+**Et toute la troupe est venue**, comme sur l'écran-titre rempli : ceux qu'on a rencontrés,
+alignés sur une même ligne de sol à des places fixes espacées de dix-huit pixels — aucun ne
+se marche dessus, quel qu'en soit le nombre. L'éléphant n'entre pas dans le rang : il est le
+décor, du sol jusqu'au-delà du haut de l'écran, la tête hors cadre. Le gâteau a disparu de
+cette page : on vient de le souffler, et une troupe vaut mieux qu'un dessin de plus.
+
 ## Le générique
 
 **Fondu, et le jeu repasse par ses propres écrans.** Onze pièces, une par carton — et **le carton
@@ -1574,7 +1580,7 @@ sans rire. Tout le comique est dans le poste — et jamais dans une vanne ajout�
 | **MOON** | dans son propre rôle. Cachet : un bout de pizza. |
 | **GÉRARD** | rôle du poisson. A quitté le tournage avant la fin. |
 | **L'ARAIGNÉE** | poète et mélancolique. Artiste sûrement trop incomprise. |
-| **L'ÉCUREUIL** | mauvaises idées. Nie toute participation. |
+| **L'ÉCUREUIL** | mauvaises idées. Nie toute participation à ce tournage. |
 | **LE JARDINIER** | arrosage. N'a pas arrosé. |
 | **LA MAÎTRESSE** | notation. Son devoir n'avait pas de bonne réponse. |
 | **L'ÉLÉPHANT DES MACHINES** | effets spéciaux : pluie. Douze mètres, aucune doublure. |
@@ -1594,11 +1600,15 @@ Personne n'est remercié pour son travail : ils sont crédités pour **ce qu'ils
 l'histoire**, avec le sérieux d'une fiche technique.
 
 **Et celui qu'on remercie vient au milieu de sa pièce, comme un acteur qui salue.** Moon
-s'assoit au centre de son tapis. **Gérard saute dans l'Erdre, pour de vrai** : son carton
-ressuscite le sauteur de la rivière (`revele`), éclaboussures comprises — il a quitté le
-tournage, on le voit y aller. **L'araignée traverse la rue des bars** (`marcheVers`), en
+s'assoit au centre de son tapis. **Gérard saute dans la mer** : son carton a son propre
+décor — un *plateau*, une pièce sans porte qu'aucun couloir du jeu ne traverse (le
+vérificateur ne lui demande pas d'être joignable) — de l'eau à perte de vue, deux nuages, et
+**sa bassine qui flotte au milieu**. Il est allé jusqu'à la mer pour continuer à sauter dans
+son eau douce : le sel, ça gratte, il l'a toujours dit. **L'araignée traverse la rue des bars** (`marcheVers`), en
 grand, pendant que les passants détalent vers les bords (`panique`) : *« poète et
-mélancolique. Artiste sûrement trop incomprise. »* — et la rue qui se vide lui donne raison. Le tout dernier écran est **la chambre de Nino, avec Nino dedans** : endormi dans
+mélancolique. Artiste sûrement trop incomprise. »* — et la rue qui se vide lui donne raison. **Et pendant que l'écureuil nie toute participation à ce tournage, un enfant l'arrose au
+pistolet à eau** (`tireur`), en boucle, sans un mot d'explication. Le tout dernier écran est
+**la chambre de Nino, avec Nino dedans** : endormi dans
 son lit, des Z au-dessus de la tête, pendant que le carton dit « tout le reste » — et il
 dure deux fois plus longtemps que les autres (`duree`), parce que c'est lui, le film.
 

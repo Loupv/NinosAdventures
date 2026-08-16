@@ -179,7 +179,8 @@ for (const [i, c] of CACHETTES.entries()) {
  */
 const listees = new Set(LIEUX_ORDER);
 for (const id of Object.keys(ROOMS)) {
-  if (!listees.has(id)) dit(`JOURNAL : la pièce ${id} n'est pas dans LIEUX_ORDER`);
+  // Les plateaux de générique ne sont pas des lieux : le journal ne les liste pas.
+  if (!listees.has(id) && !ROOMS[id].plateau) dit(`JOURNAL : la pièce ${id} n'est pas dans LIEUX_ORDER`);
 }
 for (const id of LIEUX_ORDER) {
   if (!ROOMS[id]) dit(`JOURNAL : LIEUX_ORDER cite ${id}, qui n'est pas une pièce`);
@@ -338,7 +339,9 @@ const FIN = new Set([
   'parapente-pris',
 ]);
 const apres = joignables(FIN);
-for (const r of Object.keys(ROOMS)) if (!apres.has(r)) dit(r, 'injoignable même en fin de partie');
+// Les plateaux de générique n'ont pas de porte : le carton y va tout seul.
+for (const r of Object.keys(ROOMS))
+  if (!apres.has(r) && !ROOMS[r].plateau) dit(r, 'injoignable même en fin de partie');
 // La tour ne s'ouvre qu'avec le naufrage : c'est tout le sens de la chaîne du poisson.
 const sansNaufrage = joignables(new Set(['parents-sortis', 'fenetre-ouverte', 'bouchon-retire']));
 for (const r of Object.keys(ROOMS)) {

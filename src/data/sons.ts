@@ -629,6 +629,7 @@ const MUSIQUE_PAR_PIECE: Record<string, string> = {
   bars: 'musique-ville',
   terrasse: 'musique-ville',
   erdre: 'musique-eau',
+  mer: 'musique-eau',
 };
 
 /** La musique d'une pièce, ou `undefined` pour le silence. */

@@ -3288,6 +3288,44 @@ export class WorldScene extends Phaser.Scene {
       this.tweens.add({ targets: cite, x: etape.marcheVers, duration: GENERIQUE_ETAPE, ease: 'Linear' });
     }
 
+    // **L'enfant au pistolet à eau.** Il arrose le personnage cité, en boucle, pendant
+    // tout le carton. L'écureuil nie toute participation ; l'enfant n'a pas l'air d'accord.
+    if (etape.tireur && cite) {
+      const tireur = etape.tireur;
+      this.add
+        .image(tireur.x, tireur.y, texKey('copain', this.pal))
+        .setOrigin(0, 0)
+        .setDepth(tireur.y + 16);
+      const depart = { x: tireur.x + 10, y: tireur.y + 8 };
+      const but = { x: Math.round(cite.x + 4), y: Math.round(cite.y + 6) };
+      this.time.addEvent({
+        delay: 1100,
+        startAt: 500,
+        loop: true,
+        callback: () => {
+          jouer(this, 'pistolet', { volume: 0.35 });
+          for (let i = 0; i < 3; i++) {
+            const g = this.add
+              .image(depart.x, depart.y, texKey('goutte', this.pal))
+              .setOrigin(0.5, 0.5)
+              .setDepth(1350);
+            this.tweens.add({
+              targets: g,
+              x: but.x,
+              y: but.y,
+              duration: 240,
+              delay: i * 80,
+              ease: 'Quad.easeOut',
+              onComplete: () => {
+                g.destroy();
+                if (i === 2) splash(this, this.pal, but.x, but.y);
+              },
+            });
+          }
+        },
+      });
+    }
+
     // **Et la rue se vide.** Les passants détalent vers le bord le plus proche — c'est
     // une araignée de deux étages qui traverse, on les comprend.
     if (etape.panique) {

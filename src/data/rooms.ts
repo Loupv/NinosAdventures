@@ -165,6 +165,12 @@ export interface Room {
    * la pièce qui le dit, pas une liste d'identifiants dans la scène.
    */
   heure?: 'nuit' | 'aube';
+  /**
+   * **Un plateau de générique** : aucune porte n'y mène, aucun couloir du jeu ne le
+   * traverse — il n'existe que pour un carton. Le vérificateur ne lui demande pas
+   * d'être joignable.
+   */
+  plateau?: true;
   /** Où Nino apparaît si on entre dans la pièce sans venir d'une porte. */
   spawn: { x: number; y: number };
   tiles: string[];
@@ -2221,6 +2227,62 @@ export const ROOMS: Record<string, Room> = {
         blockedDialogue: ['quai-est'],
       },
     ],
+  },
+
+  /**
+   * **La mer.** Un plateau de générique : de l'eau à perte de vue, deux nuages — et la
+   * bassine de Gérard qui flotte au milieu. Il est allé jusqu'à la mer pour continuer à
+   * sauter dans son eau douce : le sel, ça gratte, il l'a toujours dit.
+   */
+  mer: {
+    id: 'mer',
+    palette: 'eau',
+    theme: 'erdre',
+    view: 'side',
+    plateau: true,
+    spawn: { x: 80, y: 132 },
+    // Un seul écran de large : les bandes de l'Erdre font vingt tuiles, et la caméra
+    // partait en travelling en laissant la bassine hors champ.
+    tiles: [
+      'CCCCCCCCCCCCCCCCCCCC'.slice(0, 20),
+      'CCCCCCCCCCCCCCCCCCCC'.slice(0, 20),
+      'CCCCCCCCCCCCCCCCCCCC'.slice(0, 20),
+      'CCCCCCCCCCCCCCCCCCCC'.slice(0, 20),
+      'hhhhhhhhhhhhhhhhhhhh'.slice(0, 20),
+      'wwwwwwwwwwwwwwwwwwww'.slice(0, 20),
+      'WWWWWWWWWWWWWWWWWWWW'.slice(0, 20),
+      'wwwwwwwwwwwwwwwwwwww'.slice(0, 20),
+      'WWWWWWWWWWWWWWWWWWWW'.slice(0, 20),
+      'WWWWWWWWWWWWWWWWWWWW'.slice(0, 20),
+      'wwwwwwwwwwwwwwwwwwww'.slice(0, 20),
+      'WWWWWWWWWWWWWWWWWWWW'.slice(0, 20),
+      'WWWWWWWWWWWWWWWWWWWW'.slice(0, 20),
+      'wwwwwwwwwwwwwwwwwwww'.slice(0, 20),
+      'WWWWWWWWWWWWWWWWWWWW'.slice(0, 20),
+      'WWWWWWWWWWWWWWWWWWWW'.slice(0, 20),
+      'wwwwwwwwwwwwwwwwwwww'.slice(0, 20),
+      'WWWWWWWWWWWWWWWWWWWW'.slice(0, 20),
+    ],
+    objects: [
+      { id: 'nuage-mer-1', x: 20, y: 10, sprite: 'nuage' },
+      { id: 'nuage-mer-2', x: 112, y: 20, sprite: 'nuage' },
+      // La bassine, posée sur la houle. Personne ne demande comment elle est arrivée là.
+      // Plus bas que le milieu : le carton mange le tiers haut, et un saut de seize
+      // pixels doit tenir en entier sous lui.
+      { id: 'bassine-mer', x: 68, y: 92, sprite: 'seau', frame: 'eau-0', anim: 'seau-eau', depth: 80 },
+      {
+        id: 'gerard-mer',
+        x: 74,
+        y: 100,
+        sprite: 'poisson',
+        frame: 'saut-0',
+        anim: 'poisson-saut',
+        // Les mêmes bonds que dans le hall de la tour : c'est la même bassine.
+        saute: { gauche: 71, droite: 81, hauteur: 16, eau: 100 },
+        depth: 85,
+      },
+    ],
+    doors: [],
   },
 };
 
