@@ -227,6 +227,8 @@ interface Arrival {
    * personnages qui bougent, et une ligne de remerciement en bas de l'écran.
    */
   cinema?: number;
+  /** Le carton précédent était dans ce décor : on enchaîne sans fondu. */
+  sansFondu?: true;
 }
 
 /**
@@ -410,7 +412,10 @@ export class WorldScene extends Phaser.Scene {
 
     state.locked = true;
     if (this.cinema) {
-      gbFade(this, this.pal, 'in', () => this.etapeDuGenerique(this.arrival.cinema ?? 0));
+      // **Deux cartons dans le même décor s'enchaînent sans fondu** : un fondu au noir
+      // entre l'annonce et Papa, sur la même terrasse, ressemblait à un bug.
+      if (this.arrival.sansFondu) this.etapeDuGenerique(this.arrival.cinema ?? 0);
+      else gbFade(this, this.pal, 'in', () => this.etapeDuGenerique(this.arrival.cinema ?? 0));
       return;
     }
     gbFade(this, this.pal, 'in', () => {
@@ -3309,8 +3314,19 @@ export class WorldScene extends Phaser.Scene {
       if (!l.def.flotte0) continue;
       this.tweens.add({
         targets: l.go,
-        y: l.go.y + 2,
-        duration: 2200,
+        y: l.go.y + 3,
+        duration: 1700,
+        yoyo: true,
+        repeat: -1,
+        ease: 'Sine.easeInOut',
+      });
+      // **Et elle roule.** Monter et descendre tout droit, c'est un ascenseur ; c'est
+      // l'inclinaison qui dit que quelque chose flotte.
+      l.go.setAngle(-4);
+      this.tweens.add({
+        targets: l.go,
+        angle: 4,
+        duration: 2300,
         yoyo: true,
         repeat: -1,
         ease: 'Sine.easeInOut',
@@ -3432,6 +3448,11 @@ export class WorldScene extends Phaser.Scene {
     const suite = () => {
       if (this.transitioning) return;
       this.transitioning = true;
+      // Même décor que le carton suivant : on change juste le texte, sans fondu.
+      if (!dernier && CREDITS[i + 1].room === etape.room) {
+        this.scene.restart({ room: etape.room, cinema: i + 1, sansFondu: true });
+        return;
+      }
       gbFade(this, this.pal, 'out', () => {
         if (dernier) {
           this.scene.start('Fin');

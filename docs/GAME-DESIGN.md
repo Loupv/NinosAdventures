@@ -1576,7 +1576,8 @@ vide n'a pas le même effet.
 sans rire. Tout le comique est dans le poste — et jamais dans une vanne ajoutée par-dessus.
 
 **Ça s'ouvre comme au cinéma** : un écran sans personne, *« AVEC, DANS LES RÔLES
-PRINCIPAUX »*, et tout ce qui suit devient une distribution. Sans lui, le générique
+PRINCIPAUX »*, puis Papa — **sans fondu entre les deux**, puisque c'est la même terrasse :
+seul le texte change. Et tout ce qui suit devient une distribution. Sans lui, le générique
 commençait par un homme sur une terrasse et il fallait deviner qu'on lisait des crédits.
 
 **Et l'ordre raconte quelque chose** : d'abord les parents, qui ont tenu la journée sans rien
@@ -1592,7 +1593,7 @@ montage : ils n'ont pas fait la nuit de Nino, ils ont croisé sa journée.
 | **L'ÉCUREUIL** | mauvaises idées. Nie toute participation à ce tournage. |
 | **L'ÉLÉPHANT DES MACHINES** | effets spéciaux : pluie. Douze mètres, aucune doublure. |
 | **PAPA** | bateau, chapeau, alibis. Cascades exécutées par lui-même. |
-| **MAMAN** | production, gâteau, sept bougies. Savait depuis ce matin. |
+| **MAMAN** | production, gâteau, sept bougies. Cherchait Hermione entre deux prises. |
 | **NINO** | tout le reste. Sept ans depuis ce matin. |
 
 **Et plus aucune mention de fin** : la tour, les cachettes d'Hermione, les bruits de fusée,
@@ -1607,8 +1608,9 @@ l'histoire**, avec le sérieux d'une fiche technique.
 s'assoit au centre de son tapis. **Gérard saute dans la mer** : son carton a son propre
 décor — un *plateau*, une pièce sans porte qu'aucun couloir du jeu ne traverse (le
 vérificateur ne lui demande pas d'être joignable) — de l'eau à perte de vue, deux nuages, et
-**sa bassine qui flotte au milieu**, dans laquelle il saute — et qui **monte et
-descend** doucement, deux pixels, sur une seule respiration lente. Deux mouvements croisés
+**sa bassine qui flotte au milieu**, dans laquelle il saute — et qui **monte, descend et
+roule** : trois pixels de houle et quatre degrés de gîte, sur deux rythmes différents.
+Monter tout droit, c'est un ascenseur ; c'est l'inclinaison qui dit que ça flotte. Deux mouvements croisés
 donnaient un tremblement de sprite mal calé ; une houle, c'est vertical. Il est allé jusqu'à la mer pour
 continuer à sauter dans son eau douce : le sel, ça gratte, il l'a toujours dit. Le carton de
 cet écran-là vit **en bas** (`bas`) : c'est la ligne d'horizon qui dit que c'est la mer, et

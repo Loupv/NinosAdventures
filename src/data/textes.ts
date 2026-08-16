@@ -834,7 +834,7 @@ export const CREDITS: Array<{
   },
   {
     room: 'cuisine',
-    lignes: ['MAMAN', 'production, gâteau, sept bougies.', 'Savait depuis ce matin.'],
+    lignes: ['MAMAN', 'production, gâteau, sept bougies.', 'Cherchait Hermione entre deux prises.'],
     qui: { sprite: 'maman', x: 76, y: 58 },
   },
   // ── Puis les bêtes, qui ont fait tout le travail ──
