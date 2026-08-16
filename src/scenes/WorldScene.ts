@@ -3287,6 +3287,28 @@ export class WorldScene extends Phaser.Scene {
     // Une fontaine de Z, pour le carton où quelqu'un dort.
     if (etape.zzz) this.fontaineDeZ(etape.zzz.x, etape.zzz.y, true, () => true);
 
+    // **Ce qui flotte tangue.** Deux pixels de houle, sans rythme rond, pour que la
+    // bassine de Gérard ait l'air posée sur la mer et non peinte dessus.
+    for (const l of this.live) {
+      if (!l.def.flotte0) continue;
+      this.tweens.add({
+        targets: l.go,
+        y: l.go.y + 2,
+        duration: 1300,
+        yoyo: true,
+        repeat: -1,
+        ease: 'Sine.easeInOut',
+      });
+      this.tweens.add({
+        targets: l.go,
+        x: l.go.x + 1,
+        duration: 2100,
+        yoyo: true,
+        repeat: -1,
+        ease: 'Sine.easeInOut',
+      });
+    }
+
     // **La traversée** : le personnage cité marche d'un bord à l'autre, tout du long.
     if (etape.marcheVers !== undefined && cite) {
       this.tweens.add({ targets: cite, x: etape.marcheVers, duration: GENERIQUE_ETAPE, ease: 'Linear' });
@@ -3322,7 +3344,19 @@ export class WorldScene extends Phaser.Scene {
               ease: 'Quad.easeOut',
               onComplete: () => {
                 g.destroy();
-                if (i === 2) splash(this, this.pal, but.x, but.y);
+                if (i !== 2) return;
+                splash(this, this.pal, but.x, but.y);
+                // **Il encaisse.** Un petit bond en arrière à chaque giclée : sans ça
+                // l'eau lui traversait le corps sans qu'il bronche.
+                const recule = cite.x < tireur.x ? -4 : 4;
+                this.tweens.add({
+                  targets: cite,
+                  x: cite.x + recule,
+                  y: cite.y - 3,
+                  duration: 90,
+                  yoyo: true,
+                  ease: 'Quad.easeOut',
+                });
               },
             });
           }
@@ -3335,16 +3369,21 @@ export class WorldScene extends Phaser.Scene {
     if (etape.panique) {
       const bete = cite?.x ?? 0;
       const fuite = bete < GB.W / 2 ? GB.W + 24 : -24;
-      for (const l of this.live) {
-        if (l.def.sprite !== 'copain') continue;
+      // **Un par un** : trois passants qui détalent ensemble, c'est une chorégraphie ;
+      // l'un après l'autre, c'est une rumeur qui se répand. Le plus proche part le premier.
+      const passants = this.live
+        .filter((l) => l.def.sprite === 'copain')
+        .sort((a, b) => Math.abs(a.go.x - bete) - Math.abs(b.go.x - bete));
+      passants.forEach((l, rang) => {
         this.tweens.killTweensOf(l.go);
         this.tweens.add({
           targets: l.go,
           x: fuite,
+          delay: rang * 700,
           duration: 900 + Math.abs(fuite - l.go.x) * 9,
           ease: 'Sine.easeIn',
         });
-      }
+      });
     }
 
     // **Le carton se pousse pour laisser voir celui qu'il remercie** : en haut par défaut,

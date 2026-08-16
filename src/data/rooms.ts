@@ -22,6 +22,8 @@ export interface Portal {
 }
 
 export interface RoomObject {
+  /** Posé sur l'eau : il tangue doucement pendant le générique. */
+  flotte0?: true;
   id: string;
   /** Coin haut-gauche, en pixels. */
   x: number;
@@ -2269,7 +2271,7 @@ export const ROOMS: Record<string, Room> = {
       // La bassine, posée sur la houle. Personne ne demande comment elle est arrivée là.
       // Juste sous l'horizon : le carton vit en bas de cet écran, et tout le saut doit
       // tenir au-dessus de lui, en pleine mer.
-      { id: 'bassine-mer', x: 68, y: 56, sprite: 'seau', frame: 'eau-0', anim: 'seau-eau', depth: 80 },
+      { id: 'bassine-mer', x: 68, y: 56, sprite: 'seau', frame: 'eau-0', anim: 'seau-eau', depth: 80, flotte0: true },
       {
         id: 'gerard-mer',
         x: 74,

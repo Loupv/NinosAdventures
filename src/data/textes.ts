@@ -836,8 +836,9 @@ export const CREDITS: Array<{
     // **Elle traverse la rue des bars, et la rue se vide.** Artiste incomprise, la preuve.
     room: 'bars',
     lignes: ['L’ARAIGNÉE', 'poète et mélancolique.', 'Artiste sûrement trop incomprise.'],
-    // Elle ne bouge pas : elle est là, immense, sur le bord gauche. C'est bien assez.
+    // Elle avance doucement depuis le bord gauche, et la rue se vide devant elle.
     qui: { sprite: 'araignee', x: 12, y: 70, frame: 'pattes-0', anim: 'araignee-pattes', scale: 2 },
+    marcheVers: 54,
     panique: true,
   },
   {
