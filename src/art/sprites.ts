@@ -753,6 +753,29 @@ const PISTOLET: Art = [
 ];
 
 /** Silhouette d'enfant — base des copains, et des passants. */
+/**
+ * **Brune.** La même silhouette que les copains, avec des cheveux qui tombent sur les
+ * épaules : à huit pixels de large, c'est tout ce qui distingue quelqu'un — et c'est
+ * suffisant pour qu'on sache que ce n'est pas le même enfant.
+ */
+const COPINE: Art = [
+  '..0000..',
+  '.033330.',
+  '.333333.',
+  '.033330.',
+  '30200203',
+  '30222203',
+  '3.0220.3',
+  '.022220.',
+  '02222220',
+  '30222203',
+  '.022220.',
+  '..2222..',
+  '..0..0..',
+  '..2..2..',
+  '..00.00.',
+];
+
 const COPAIN: Art = [
   '..0000..',
   '.022220.',
@@ -2318,6 +2341,7 @@ export const SHEETS: Record<string, Record<string, Art>> = {
 
 /** Images fixes. */
 export const IMAGES: Record<string, Art> = {
+  copine: COPINE,
   poster: POSTER,
   harnais: HARNAIS,
   caillou: CAILLOU,

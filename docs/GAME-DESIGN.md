@@ -38,9 +38,10 @@ avec cynisme, et personne n'est méchant.
 | **Le jardinier** | la place, près du tram | Chapeau, tablier, et il se plaint de la chaleur — le sport local. Il n'arrive pas à suivre, il ne demande jamais rien, et il dit merci si les sept plantes ont été arrosées sans lui. |
 | **L'employé des Machines** | l'entrée de la place | Le personnage le plus terne de la ville porte la plus grosse information du jeu, et la donne comme un problème d'effectifs : *« L'éléphant s'est échappé. »* Ses nouvelles suivent l'éléphant avec un temps de retard — il apprend par ouï-dire ce que Nino a vu de ses yeux, et personne ne fait jamais le rapprochement. |
 | **La maîtresse** | derrière les grilles de l'école | Réclame le projet d'art de Nino. N'importe quel objet fait l'affaire ; ce qu'elle note, c'est ce qu'on en dit — et elle garde la meilleure note. |
-| **Copains ×3** | école *(à construire)* | Un qui croit tout, un qui ne croit rien, un qui a déjà vu une dimension et n'en parle jamais. |
+| **Brune** | école | Croit Nino sur parole, à chaque fois. La seule des trois à avoir un nom. |
+| **Copains ×2** | école *(à nommer)* | Un qui ne croit rien, un qui a déjà vu une dimension et n'en parle jamais. |
 
-Les copains attendent leurs noms — ils sont déjà déclarés dans
+Les deux derniers copains attendent leurs noms — ils sont déjà déclarés dans
 [characters.ts](../src/data/characters.ts) avec leur rôle narratif.
 
 ## La carte
@@ -210,8 +211,10 @@ Techniquement c'est un troisième type de réplique, à côté du choix Oui/Non 
 entrée dans **[textes.ts](../src/data/textes.ts)**, rien d'autre.
 
 **L'école** est là parce qu'elle devait y être : on passe devant, la grille est ouverte un
-jour sans classe, et il y a du monde dans la cour. Les trois copains n'ont pas de nom — ils
-sont dans le casting comme ça, et ce sont ceux de la vraie vie. Le premier croit Nino sur
+jour sans classe, et il y a du monde dans la cour. **Brune** est la seule des trois à avoir
+un nom, et c'est celle qui croit Nino — on ne croit pas quelqu'un anonymement. Elle a son
+propre dessin : la même silhouette, avec des cheveux qui tombent sur les épaules, parce
+qu'à huit pixels de large c'est tout ce qui distingue quelqu'un. Elle croit Nino sur
 parole (*« Tu sais que les chats parlent, en fait ? »*), le deuxième ne croit rien (*« Et il
 n'y a pas de poisson dans les baignoires. »*), le troisième ne dit rien et **fait oui de la
 tête, une fois**. La maîtresse a des devoirs pour lui, mais pas aujourd'hui : il fait trop
@@ -1901,7 +1904,7 @@ Chaque saut **repart de zéro** et ne pose que ce que l'étape déclare, sinon l
 ## Ce qui reste à faire
 
 **Court terme**
-- [ ] Nommer les copains (branche D les nomme naturellement).
+- [ ] Nommer les deux derniers copains (Brune est nommée ; la branche D les nommerait naturellement).
 - [x] Retrouver l'araignée quelque part — elle est au 27e étage de la tour.
 - [ ] Une troisième bêtise pour l'écureuil : le patron **proposer / insister / nier** est
       posé, il ne demande qu'un objet fragile et un adulte à accuser.

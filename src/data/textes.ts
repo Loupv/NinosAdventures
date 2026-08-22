@@ -1081,7 +1081,7 @@ export const CASTING: Record<string, { nom: string; role: string }> = {
     nom: 'La maîtresse',
     role: 'Réclame le projet d’art de Nino, derrière les grilles de l’école. N’importe quel objet fait l’affaire ; ce qu’elle note, c’est ce qu’on en dit.',
   },
-  copain1: { nom: 'Copain nº1 (à nommer)', role: 'Échange des objets. Croit Nino sur parole.' },
+  copain1: { nom: 'Brune', role: 'Échange des objets. Croit Nino sur parole, à chaque fois.' },
   copain2: { nom: 'Copain nº2 (à nommer)', role: 'Ne croit rien. Contre-poids comique.' },
   copain3: { nom: 'Copain nº3 (à nommer)', role: 'A déjà vu une dimension et n’en parle jamais.' },
 };
@@ -2785,10 +2785,13 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
   ],
 
   /**
-   * **Les trois copains, et ce que Nino a fait cette nuit.** Le premier croit tout et surenchérit,
-   * le deuxième nie tout au nom de la physique, et le troisième ne dit rien — il fait oui de la
+   * **Les copains, et ce que Nino a fait cette nuit.** Brune croit tout et surenchérit, le
+   * deuxième nie tout au nom de la physique, et le troisième ne dit rien — il fait oui de la
    * tête, une fois, **sur la seule chose qui est vraie**. Comme tout est vrai, il hoche à chaque
    * fois, et c'est ça la blague.
+   *
+   * **Brune est la seule à avoir un nom** : c'est elle qui croit Nino, et on ne croit pas
+   * quelqu'un anonymement.
    *
    * Sans ces répliques, Nino arrivait à l'école après avoir coulé un bateau et traversé Nantes en
    * parapente, et ses copains lui parlaient de la récré.
@@ -2796,7 +2799,7 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
   copain1: [
     {
       when: () => state.flag('bateau-coule'),
-      speaker: 'Un copain',
+      speaker: 'Brune',
       lines: [
         '« Tu as coulé le bateau de ton père ?! »',
         '« Moi mon père il a même pas de bateau. »',
@@ -2804,21 +2807,21 @@ export const DIALOGUES: Record<string, DialogueBeat[]> = {
     },
     {
       when: () => state.flag('parapente-rentre'),
-      speaker: 'Un copain',
+      speaker: 'Brune',
       lines: ['« Tu as volé ? »', '« En vrai ? »', '« Moi aussi, une fois. »', '« Presque. »'],
     },
     {
       when: () => state.flag('poisson-parti'),
-      speaker: 'Un copain',
+      speaker: 'Brune',
       lines: ['« Un éléphant a envoyé un poisson à la mer ? »', '« Ah. »', '« Normal. »'],
     },
     {
       when: () => state.flag('copains-vus'),
-      speaker: 'Un copain',
+      speaker: 'Brune',
       lines: ['« Tu reviens quand ? »'],
     },
     {
-      speaker: 'Un copain',
+      speaker: 'Brune',
       lines: [
         '« Nino ! »',
         '« Tu sais que les chats parlent, en fait ? »',

@@ -32,7 +32,7 @@ const FICHES: Record<string, { sprites: string[]; lieux: string[] }> = {
   parrain: { sprites: ['parrain'], lieux: ['terrasse'] },
   jardinier: { sprites: ['jardinier'], lieux: ['nantes'] },
   maitresse: { sprites: ['maitresse'], lieux: ['ecole'] },
-  copain1: { sprites: ['copain'], lieux: ['ecole'] },
+  copain1: { sprites: ['copine'], lieux: ['ecole'] },
   copain2: { sprites: ['copain'], lieux: ['ecole'] },
   copain3: { sprites: ['copain'], lieux: ['ecole'] },
 };

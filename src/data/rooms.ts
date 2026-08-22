@@ -1746,7 +1746,7 @@ export const ROOMS: Record<string, Room> = {
         id: 'copain1',
         x: 28,
         y: 52,
-        sprite: 'copain',
+        sprite: 'copine',
         priorite: 2,
         portee: 24,
         dialogue: 'copain1',
